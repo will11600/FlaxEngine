@@ -135,12 +135,12 @@ namespace FlaxEditor.Options
             return false;
         }
 
-        private bool ProcessModifiers(Control control)
+        private readonly bool ProcessModifiers(Control control)
         {
             return ProcessModifiers(control.Root.GetKey);
         }
 
-        private bool ProcessModifiers(Window window)
+        private readonly bool ProcessModifiers(Window window)
         {
             return ProcessModifiers(window.GetKey);
         }
@@ -260,7 +260,7 @@ namespace FlaxEditor.Options
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             return obj is InputBinding other && Equals(other);
         }

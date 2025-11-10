@@ -103,7 +103,7 @@ namespace FlaxEditor.Surface.Undo
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             return obj is ContextHandle other && Equals(other);
         }

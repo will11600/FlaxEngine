@@ -570,7 +570,7 @@ namespace FlaxEngine
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -595,7 +595,7 @@ namespace FlaxEngine
         /// <param name="other">The <see cref="Vector4" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Vector4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(Plane other)
+        public readonly bool Equals(Plane other)
         {
             return Equals(ref other);
         }
@@ -605,7 +605,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="value">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object value)
+        public override readonly bool Equals(object value)
         {
             return value is Plane other && Equals(ref other);
         }

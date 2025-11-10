@@ -196,7 +196,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override bool Equals(object value)
+        public override readonly bool Equals(object value)
         {
             return value is Color other && Equals(ref other);
         }

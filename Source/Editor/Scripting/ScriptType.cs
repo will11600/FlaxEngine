@@ -430,7 +430,7 @@ namespace FlaxEditor.Scripting
             }
 
             /// <inheritdoc />
-            public override string ToString()
+            public override readonly string ToString()
             {
                 var sb = new StringBuilder();
                 ToString(sb);

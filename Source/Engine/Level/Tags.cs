@@ -96,19 +96,19 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public bool Equals(string other)
+        public readonly bool Equals(string other)
         {
             return string.Equals(ToString(), other, StringComparison.Ordinal);
         }
 
         /// <inheritdoc />
-        public int CompareTo(Tag other)
+        public readonly int CompareTo(Tag other)
         {
             return string.Compare(ToString(), ToString(), StringComparison.Ordinal);
         }
 
         /// <inheritdoc />
-        public int CompareTo(string other)
+        public readonly int CompareTo(string other)
         {
             return string.Compare(ToString(), other, StringComparison.Ordinal);
         }

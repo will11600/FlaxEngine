@@ -218,7 +218,7 @@ namespace FlaxEngine
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="row"/> or <paramref name="column"/>is out of the range [0, 1].</exception>
         public float this[int row, int column]
         {
-            get
+            readonly get
             {
                 if (row < 0 || row > 1)
                     throw new ArgumentOutOfRangeException(nameof(row), "Rows and columns for matrices run from 0 to 1, inclusive.");
@@ -429,7 +429,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="format">The format.</param>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             if (format == null)
                 return ToString();
@@ -452,7 +452,7 @@ namespace FlaxEngine
         /// <param name="format">The format.</param>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public string ToString(string format, IFormatProvider formatProvider)
+        public readonly string ToString(string format, IFormatProvider formatProvider)
         {
             if (format == null)
                 return ToString(formatProvider);
@@ -491,7 +491,7 @@ namespace FlaxEngine
         /// <param name="other">The <see cref="Matrix2x2"/> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Matrix2x2"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(Matrix2x2 other)
+        public readonly bool Equals(Matrix2x2 other)
         {
             return Equals(ref other);
         }
@@ -509,7 +509,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="value">The <see cref="System.Object"/> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object value)
+        public override readonly bool Equals(object value)
         {
             return value is Matrix2x2 other && Equals(ref other);
         }

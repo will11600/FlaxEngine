@@ -383,7 +383,7 @@ namespace FlaxEditor.GUI.Timeline.Tracks
             }
 
             /// <inheritdoc />
-            public override bool Equals(object obj)
+            public override readonly bool Equals(object obj)
             {
                 return obj is Request other && Equals(other);
             }

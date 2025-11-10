@@ -42,7 +42,7 @@ namespace FlaxEngine
         public readonly bool Intersect(ref TextRange other) => Math.Min(EndIndex, other.EndIndex) > Math.Max(StartIndex, other.StartIndex);
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format("Range: [{0}, {1}), Length: {2}", StartIndex, EndIndex, Length);
         }

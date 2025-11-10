@@ -15,7 +15,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             return obj is FontOptions other && Equals(other);
         }

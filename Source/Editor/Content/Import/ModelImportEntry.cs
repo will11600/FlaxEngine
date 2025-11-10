@@ -16,10 +16,10 @@ namespace FlaxEngine.Tools
             private readonly bool ShowModel => Type == ModelType.Model || Type == ModelType.Prefab;
             private readonly bool ShowSkinnedModel => Type == ModelType.SkinnedModel || Type == ModelType.Prefab;
             private readonly bool ShowAnimation => Type == ModelType.Animation || Type == ModelType.Prefab;
-            private bool ShowRootMotion => ShowAnimation && RootMotion != RootMotionMode.None;
-            private bool ShowSmoothingNormalsAngle => ShowGeometry && CalculateNormals;
-            private bool ShowSmoothingTangentsAngle => ShowGeometry && CalculateTangents;
-            private bool ShowFramesRange => ShowAnimation && Duration == AnimationDuration.Custom;
+            private readonly bool ShowRootMotion => ShowAnimation && RootMotion != RootMotionMode.None;
+            private readonly bool ShowSmoothingNormalsAngle => ShowGeometry && CalculateNormals;
+            private readonly bool ShowSmoothingTangentsAngle => ShowGeometry && CalculateTangents;
+            private readonly bool ShowFramesRange => ShowAnimation && Duration == AnimationDuration.Custom;
             private readonly bool ShowSplitting => Type != ModelType.Prefab;
         }
     }

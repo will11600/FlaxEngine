@@ -352,7 +352,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -378,7 +378,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public bool Equals(GPUTextureDescription other)
+        public readonly bool Equals(GPUTextureDescription other)
         {
             return Dimensions == other.Dimensions &&
                    Width == other.Width &&

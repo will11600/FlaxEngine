@@ -187,7 +187,7 @@ namespace FlaxEngine
         /// <param name="other">The <see cref="Viewport"/> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Viewport"/> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(Viewport other)
+        public readonly bool Equals(Viewport other)
         {
             return Equals(ref other);
         }
@@ -197,7 +197,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="obj">The object to compare with this instance.</param>
         /// <returns><c>true</c> if the specified object is equal to this instance; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             return obj is Viewport other && Equals(ref other);
         }
@@ -263,7 +263,7 @@ namespace FlaxEngine
         /// <param name="view">The view matrix.</param>
         /// <param name="world">The world matrix.</param>
         /// <returns>The projected vector.</returns>
-        public Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
+        public readonly Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
         {
             Matrix.Multiply(ref world, ref view, out Matrix matrix);
             Matrix.Multiply(ref matrix, ref projection, out matrix);
@@ -301,7 +301,7 @@ namespace FlaxEngine
         /// <param name="view">The view matrix.</param>
         /// <param name="world">The world matrix.</param>
         /// <returns>The unprojected Vector.</returns>
-        public Vector3 Unproject(Vector3 source, Matrix projection, Matrix view, Matrix world)
+        public readonly Vector3 Unproject(Vector3 source, Matrix projection, Matrix view, Matrix world)
         {
             Matrix.Multiply(ref world, ref view, out Matrix matrix);
             Matrix.Multiply(ref matrix, ref projection, out matrix);

@@ -118,7 +118,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public int CompareTo(object obj)
+        public readonly int CompareTo(object obj)
         {
             if (obj is BehaviorKnowledgeSelectorAny other)
                 return CompareTo(other);
@@ -235,7 +235,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public int CompareTo(object obj)
+        public readonly int CompareTo(object obj)
         {
             if (obj is BehaviorKnowledgeSelectorAny otherAny)
                 return CompareTo(otherAny);

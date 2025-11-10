@@ -160,12 +160,12 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a value indicting whether this instance is normalized.
         /// </summary>
-        public bool IsNormalized => Mathf.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
+        public readonly bool IsNormalized => Mathf.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
 
         /// <summary>
         /// Gets the euler angle (pitch, yaw, roll) in degrees.
         /// </summary>
-        public Float3 EulerAngles
+        public readonly Float3 EulerAngles
         {
             get
             {
@@ -212,7 +212,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets the angle of the quaternion.
         /// </summary>
-        public float Angle
+        public readonly float Angle
         {
             get
             {
@@ -226,7 +226,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets the axis components of the quaternion.
         /// </summary>
-        public Float3 Axis
+        public readonly Float3 Axis
         {
             get
             {
@@ -247,7 +247,7 @@ namespace FlaxEngine
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0, 3].</exception>
         public float this[int index]
         {
-            get
+            readonly get
             {
                 switch (index)
                 {
@@ -348,7 +348,7 @@ namespace FlaxEngine
         /// Creates an array containing the elements of the quaternion.
         /// </summary>
         /// <returns>A four-element array containing the components of the quaternion.</returns>
-        public float[] ToArray()
+        public readonly float[] ToArray()
         {
             return [X, Y, Z, W];
         }
@@ -1622,7 +1622,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="format">The format.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public string ToString(string format)
+        public readonly string ToString(string format)
         {
             if (format == null)
                 return ToString();
@@ -1647,7 +1647,7 @@ namespace FlaxEngine
         /// <param name="format">The format.</param>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public string ToString(string format, IFormatProvider formatProvider)
+        public readonly string ToString(string format, IFormatProvider formatProvider)
         {
             if (format == null)
                 return ToString(formatProvider);
@@ -1714,7 +1714,7 @@ namespace FlaxEngine
         /// <param name="other">The <see cref="Quaternion" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Quaternion" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(Quaternion other)
+        public readonly bool Equals(Quaternion other)
         {
             return Equals(ref other);
         }
@@ -1724,7 +1724,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="value">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object value)
+        public override readonly bool Equals(object value)
         {
             return value is Quaternion other && Equals(ref other);
         }
