@@ -338,7 +338,7 @@ namespace FlaxEngine
         {
             get
             {
-                OrientedBoundingBox bounds = new OrientedBoundingBox
+                OrientedBoundingBox bounds = new()
                 {
                     Extents = new Float3(_guiRoot.Size * 0.5f, Mathf.Epsilon)
                 };
@@ -585,9 +585,9 @@ namespace FlaxEngine
         internal string Serialize(UICanvas other)
         {
             bool noOther = other == null;
-            StringBuilder sb = new StringBuilder(256);
-            StringWriter sw = new StringWriter(sb, CultureInfo.InvariantCulture);
-            using (JsonTextWriter jsonWriter = new JsonTextWriter(sw))
+            StringBuilder sb = new(256);
+            StringWriter sw = new(sb, CultureInfo.InvariantCulture);
+            using (JsonTextWriter jsonWriter = new(sw))
             {
                 jsonWriter.IndentChar = '\t';
                 jsonWriter.Indentation = 1;

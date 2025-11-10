@@ -13,7 +13,7 @@ namespace FlaxEngine.GUI
         /// <summary>
         /// The panel area margins.
         /// </summary>
-        protected Margin _margin = new Margin(2.0f);
+        protected Margin _margin = new(2.0f);
 
         /// <summary>
         /// The space between the items.

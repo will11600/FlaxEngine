@@ -97,8 +97,8 @@ namespace FlaxEditor.GUI.Docking
         public const float DefaultSplitterValue = 0.25f;
 
         private readonly DockPanel _parentPanel;
-        private readonly List<DockPanel> _childPanels = new List<DockPanel>();
-        private readonly List<DockWindow> _tabs = new List<DockWindow>();
+        private readonly List<DockPanel> _childPanels = new();
+        private readonly List<DockWindow> _tabs = new();
         private DockWindow _selectedTab;
         private DockPanelProxy _tabsProxy;
 

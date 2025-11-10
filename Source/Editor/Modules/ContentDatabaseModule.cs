@@ -24,7 +24,7 @@ namespace FlaxEditor.Modules
         private bool _rebuildInitFlag;
         private int _itemsCreated;
         private int _itemsDeleted;
-        private readonly HashSet<MainContentTreeNode> _dirtyNodes = new HashSet<MainContentTreeNode>();
+        private readonly HashSet<MainContentTreeNode> _dirtyNodes = new();
 
         /// <summary>
         /// The project directory.
@@ -39,12 +39,12 @@ namespace FlaxEditor.Modules
         /// <summary>
         /// The list of all projects workspace directories (including game, engine and plugins projects).
         /// </summary>
-        public readonly List<ProjectTreeNode> Projects = new List<ProjectTreeNode>();
+        public readonly List<ProjectTreeNode> Projects = new();
 
         /// <summary>
         /// The list with all content items proxy objects. Use <see cref="AddProxy"/> and <see cref="RemoveProxy"/> to modify this or <see cref="Rebuild"/> to refresh database when adding new item proxy types.
         /// </summary>
-        public readonly List<ContentProxy> Proxy = new List<ContentProxy>(128);
+        public readonly List<ContentProxy> Proxy = new(128);
 
         /// <summary>
         /// Occurs when new items is added to the workspace content database.
@@ -952,7 +952,7 @@ namespace FlaxEditor.Modules
                 if (childFolderNode == null)
                 {
                     // Create node
-                    ContentTreeNode n = new ContentTreeNode(node, childPath);
+                    ContentTreeNode n = new(node, childPath);
                     if (!_isDuringFastSetup)
                         sortChildren = true;
 
@@ -1353,7 +1353,7 @@ namespace FlaxEditor.Modules
                 }
             }
 
-            List<ContentProxy> removeProxies = new List<ContentProxy>();
+            List<ContentProxy> removeProxies = new();
             foreach (var proxy in Editor.Instance.ContentDatabase.Proxy)
             {
                 if (proxy.GetType().IsCollectible)

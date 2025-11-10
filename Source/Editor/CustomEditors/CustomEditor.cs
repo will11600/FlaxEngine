@@ -49,7 +49,7 @@ namespace FlaxEditor.CustomEditors
         private LayoutElementsContainer _layout;
         private CustomEditorPresenter _presenter;
         private CustomEditor _parent;
-        private readonly List<CustomEditor> _children = new List<CustomEditor>();
+        private readonly List<CustomEditor> _children = new();
         private ValueContainer _values;
         private bool _isSetBlocked;
         private bool _skipChildrenRefresh;

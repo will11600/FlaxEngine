@@ -59,7 +59,7 @@ namespace FlaxEditor.Modules
             }
         }
 
-        private readonly List<WindowRestoreData> _restoreWindows = new List<WindowRestoreData>();
+        private readonly List<WindowRestoreData> _restoreWindows = new();
 
         /// <summary>
         /// The main editor window.
@@ -144,7 +144,7 @@ namespace FlaxEditor.Modules
         /// <summary>
         /// List with all created editor windows.
         /// </summary>
-        public readonly List<EditorWindow> Windows = new List<EditorWindow>(32);
+        public readonly List<EditorWindow> Windows = new(32);
 
         /// <summary>
         /// Occurs when new window gets opened and added to the editor windows list.
@@ -287,7 +287,7 @@ namespace FlaxEditor.Modules
                 return false;
             }
 
-            XmlDocument doc = new XmlDocument();
+            XmlDocument doc = new();
             var masterPanel = Editor.UI.MasterPanel;
 
             try

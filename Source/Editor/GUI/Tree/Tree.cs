@@ -62,7 +62,7 @@ namespace FlaxEditor.GUI.Tree
         /// List with all selected nodes
         /// </summary>
         [HideInEditor, NoSerialize]
-        public readonly List<TreeNode> Selection = new List<TreeNode>();
+        public readonly List<TreeNode> Selection = new();
 
         /// <summary>
         /// Gets the first selected node or null.
@@ -424,7 +424,7 @@ namespace FlaxEditor.GUI.Tree
                         Assert.AreNotEqual(-1, myIndex);
 
                         // Up
-                        List<TreeNode> toSelect = new List<TreeNode>();
+                        List<TreeNode> toSelect = new();
                         if (shiftDown && _supportMultiSelect)
                         {
                             toSelect.AddRange(Selection);

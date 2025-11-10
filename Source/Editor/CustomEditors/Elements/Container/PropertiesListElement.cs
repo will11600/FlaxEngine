@@ -49,7 +49,7 @@ namespace FlaxEditor.CustomEditors.Elements
             return Object(values, editor);
         }
 
-        internal readonly List<PropertyNameLabel> Labels = new List<PropertyNameLabel>();
+        internal readonly List<PropertyNameLabel> Labels = new();
 
         internal void OnAddProperty(string name, string tooltip)
         {

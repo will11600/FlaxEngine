@@ -142,7 +142,7 @@ namespace FlaxEditor.Windows
         private bool _useAspect = false;
         private bool _freeAspect = true;
 
-        private List<PlayModeFocusOptions> _focusOptions = new List<PlayModeFocusOptions>()
+        private List<PlayModeFocusOptions> _focusOptions = new()
         {
             new PlayModeFocusOptions
             {

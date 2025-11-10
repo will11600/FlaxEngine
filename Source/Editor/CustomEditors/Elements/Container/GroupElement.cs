@@ -16,7 +16,7 @@ namespace FlaxEditor.CustomEditors.Elements
         /// <summary>
         /// The drop panel.
         /// </summary>
-        public readonly DropPanel Panel = new DropPanel
+        public readonly DropPanel Panel = new()
         {
             Pivot = Float2.Zero,
             ArrowImageClosed = new SpriteBrush(Style.Current.ArrowRight),

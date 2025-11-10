@@ -19,7 +19,7 @@ namespace FlaxEditor.Surface
     [HideInEditor]
     public class AnimGraphSurface : VisjectSurface
     {
-        private static readonly List<GroupArchetype> StateMachineGroupArchetypes = new List<GroupArchetype>(new[]
+        private static readonly List<GroupArchetype> StateMachineGroupArchetypes = new(new[]
         {
             // Customized Animations group with special nodes to use here
             new GroupArchetype
@@ -61,7 +61,7 @@ namespace FlaxEditor.Surface
             }
         });
 
-        private static readonly GroupArchetype StateMachineTransitionGroupArchetype = new GroupArchetype
+        private static readonly GroupArchetype StateMachineTransitionGroupArchetype = new()
         {
             GroupID = 9,
             Name = "Transition",
@@ -87,7 +87,7 @@ namespace FlaxEditor.Surface
             }
         };
 
-        private static NodesCache _nodesCache = new NodesCache(IterateNodesCache);
+        private static NodesCache _nodesCache = new(IterateNodesCache);
 
         /// <inheritdoc />
         public override bool UseContextMenuDescriptionPanel => true;

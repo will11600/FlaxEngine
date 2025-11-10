@@ -67,7 +67,7 @@ namespace FlaxEngine
         /// <summary>
         /// A <see cref="BoundingSphere"/> which represents an empty space.
         /// </summary>
-        public static readonly BoundingSphere Empty = new BoundingSphere(Vector3.Zero, 0.0f);
+        public static readonly BoundingSphere Empty = new(Vector3.Zero, 0.0f);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BoundingBox" /> struct.

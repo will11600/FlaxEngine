@@ -23,8 +23,8 @@ namespace FlaxEditor.Modules
 
         // Firstly service is collecting import requests and then performs actual importing in the background.
 
-        private readonly Queue<IFileEntryAction> _importingQueue = new Queue<IFileEntryAction>();
-        private readonly List<Request> _requests = new List<Request>();
+        private readonly Queue<IFileEntryAction> _importingQueue = new();
+        private readonly List<Request> _requests = new();
 
         private long _workerEndFlag;
         private Thread _workerThread;
@@ -395,7 +395,7 @@ namespace FlaxEditor.Modules
         private void OnScriptsReloadBegin()
         {
             // Remove import file types from scripting assemblies
-            List<string> removeFileTypes = new List<string>();
+            List<string> removeFileTypes = new();
             foreach (var pair in ImportFileEntry.FileTypes)
             {
                 if (pair.Value.Method.IsCollectible || (pair.Value.Target != null && pair.Value.Target.GetType().IsCollectible))
@@ -417,7 +417,7 @@ namespace FlaxEditor.Modules
                 try
                 {
                     // Get entries
-                    List<ImportFileEntry> entries = new List<ImportFileEntry>(_requests.Count);
+                    List<ImportFileEntry> entries = new(_requests.Count);
                     bool needSettingsDialog = false;
                     for (int i = 0; i < _requests.Count; i++)
                     {

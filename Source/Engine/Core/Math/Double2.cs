@@ -82,32 +82,32 @@ namespace FlaxEngine
         /// <summary>
         /// The X unit <see cref="Double2" /> (1, 0).
         /// </summary>
-        public static readonly Double2 UnitX = new Double2(1.0, 0.0);
+        public static readonly Double2 UnitX = new(1.0, 0.0);
 
         /// <summary>
         /// The Y unit <see cref="Double2" /> (0, 1).
         /// </summary>
-        public static readonly Double2 UnitY = new Double2(0.0, 1.0);
+        public static readonly Double2 UnitY = new(0.0, 1.0);
 
         /// <summary>
         /// A <see cref="Double2" /> with all of its components set to half.
         /// </summary>
-        public static readonly Double2 Half = new Double2(0.5f, 0.5f);
+        public static readonly Double2 Half = new(0.5f, 0.5f);
 
         /// <summary>
         /// A <see cref="Double2" /> with all of its components set to one.
         /// </summary>
-        public static readonly Double2 One = new Double2(1.0, 1.0);
+        public static readonly Double2 One = new(1.0, 1.0);
 
         /// <summary>
         /// A <see cref="Double2" /> with all components equal to <see cref="double.MinValue"/>.
         /// </summary>
-        public static readonly Double2 Minimum = new Double2(double.MinValue);
+        public static readonly Double2 Minimum = new(double.MinValue);
 
         /// <summary>
         /// A <see cref="Double2" /> with all components equal to <see cref="double.MaxValue"/>.
         /// </summary>
-        public static readonly Double2 Maximum = new Double2(double.MaxValue);
+        public static readonly Double2 Maximum = new(double.MaxValue);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Double2" /> struct.
@@ -208,12 +208,12 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a vector with values being absolute values of that vector.
         /// </summary>
-        public readonly Double2 Absolute => new Double2(Mathd.Abs(X), Mathd.Abs(Y));
+        public readonly Double2 Absolute => new(Mathd.Abs(X), Mathd.Abs(Y));
 
         /// <summary>
         /// Gets a vector with values being opposite to values of that vector.
         /// </summary>
-        public readonly Double2 Negative => new Double2(-X, -Y);
+        public readonly Double2 Negative => new(-X, -Y);
 
         /// <summary>
         /// Gets or sets the component at the specified index.

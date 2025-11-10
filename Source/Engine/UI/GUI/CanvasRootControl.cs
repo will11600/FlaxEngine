@@ -168,7 +168,7 @@ namespace FlaxEngine.GUI
 
             // Transform canvas local-space point to the game root location
             _canvas.GetWorldMatrix(out Matrix world);
-            Vector3 locationCanvasSpace = new Vector3(location, 0.0f);
+            Vector3 locationCanvasSpace = new(location, 0.0f);
             Vector3.Transform(ref locationCanvasSpace, ref world, out Vector3 locationWorldSpace);
             camera.ProjectPoint(locationWorldSpace, out location);
             return location;

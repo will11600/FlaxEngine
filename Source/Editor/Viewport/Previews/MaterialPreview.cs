@@ -29,11 +29,11 @@ namespace FlaxEditor.Viewport.Previews
 
         private static readonly Transform[] Transforms =
         {
-            new Transform(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
-            new Transform(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
-            new Transform(Vector3.Zero, Quaternion.Identity, new Vector3(0.45f)),
-            new Transform(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
-            new Transform(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
+            new(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
+            new(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
+            new(Vector3.Zero, Quaternion.Identity, new Vector3(0.45f)),
+            new(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
+            new(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
         };
 
         private StaticModel _previewModel;

@@ -442,7 +442,7 @@ namespace FlaxEngine.GUI
         [EditorOrder(50)]
         public TextRange SelectionRange
         {
-            get => new TextRange(SelectionLeft, SelectionRight);
+            get => new(SelectionLeft, SelectionRight);
             set => SetSelection(value.StartIndex, value.EndIndex, false);
         }
 
@@ -486,12 +486,12 @@ namespace FlaxEngine.GUI
         /// <summary>
         /// Gets rectangle with area for text
         /// </summary>
-        protected virtual Rectangle TextRectangle => new Rectangle(DefaultMargin, 1, Width - 2 * DefaultMargin, Height - 2);
+        protected virtual Rectangle TextRectangle => new(DefaultMargin, 1, Width - 2 * DefaultMargin, Height - 2);
 
         /// <summary>
         /// Gets rectangle used to clip text
         /// </summary>
-        protected virtual Rectangle TextClipRectangle => new Rectangle(1, 1, Width - 2, Height - 2);
+        protected virtual Rectangle TextClipRectangle => new(1, 1, Width - 2, Height - 2);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBoxBase"/> class.

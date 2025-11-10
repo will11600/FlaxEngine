@@ -25,7 +25,7 @@ namespace FlaxEditor.Gizmo
         /// <summary>
         /// The start transforms list cached for selected objects before transformation apply. Can be used to create undo operations.
         /// </summary>
-        protected readonly List<Transform> _startTransforms = new List<Transform>();
+        protected readonly List<Transform> _startTransforms = new();
 
         /// <summary>
         /// Flag used to indicate that navigation data was modified.

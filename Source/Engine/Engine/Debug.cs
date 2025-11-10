@@ -10,7 +10,7 @@ namespace FlaxEngine
     /// </summary>
     public static class Debug
     {
-        internal static Logger _logger = new Logger(new DebugLogHandler());
+        internal static Logger _logger = new(new DebugLogHandler());
 
         /// <summary>
         /// Get default debug logger.

@@ -177,7 +177,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// <seealso cref="FlaxEditor.Surface.SurfaceNode" />
         public class BlendPose : SurfaceNode
         {
-            private readonly List<InputBox> _blendPoses = new List<InputBox>(MaxBlendPoses);
+            private readonly List<InputBox> _blendPoses = new(MaxBlendPoses);
             private Button _addButton;
             private Button _removeButton;
 
@@ -366,8 +366,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// </summary>
         public static NodeArchetype[] Nodes =
         {
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 1,
                 Create = (id, context, arch, groupArch) => new Output(id, context, arch, groupArch),
                 Title = "Animation Output",
@@ -385,8 +384,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(80, Surface.Constants.LayoutOffsetY, 100, 0, typeof(RootMotionMode))
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 2,
                 Create = (id, context, arch, groupArch) => new Sample(id, context, arch, groupArch),
                 Title = "Animation",
@@ -414,8 +412,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Asset(0, Surface.Constants.LayoutOffsetY * 4, 0, typeof(FlaxEngine.Animation)),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 // [Deprecated on 13.05.2020, expires on 13.05.2021]
                 TypeID = 3,
                 Title = "[deprecated] Transform Bone (local space)",
@@ -440,8 +437,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Mode:"),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 // [Deprecated on 13.05.2020, expires on 13.05.2021]
                 TypeID = 4,
                 Title = "[deprecated] Transform Bone (model space)",
@@ -466,8 +462,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Mode:"),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 // [Deprecated on 15.05.2020, expires on 15.05.2021]
                 TypeID = 5,
                 Title = "[deprecated] Local To Model",
@@ -480,8 +475,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 // [Deprecated on 15.05.2020, expires on 15.05.2021]
                 TypeID = 6,
                 Title = "[deprecated] Model To Local",
@@ -494,8 +488,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 // [Deprecated on 13.05.2020, expires on 13.05.2021]
                 TypeID = 7,
                 Title = "[deprecated] Copy Bone",
@@ -526,8 +519,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Copy Scale:"),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 // [Deprecated on 13.05.2020, expires on 13.05.2021]
                 TypeID = 8,
                 Title = "[deprecated] Get Bone Transform (model space)",
@@ -546,8 +538,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "Transform", typeof(Transform), 1),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 9,
                 Title = "Blend",
                 Description = "Blend animation poses",
@@ -565,8 +556,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(2, "Alpha", true, typeof(float), 3, 0),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 10,
                 Title = "Blend Additive",
                 Description =
@@ -592,8 +582,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(2, "Blend Alpha", true, typeof(float), 3, 0),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 11,
                 Title = "Blend with Mask",
                 Description = "Blend animation poses using skeleton mask",
@@ -615,8 +604,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Asset(0, Surface.Constants.LayoutOffsetY * 4, 1, typeof(SkeletonMask)),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 12,
                 Create = (id, context, arch, groupArch) => new MultiBlend1D(id, context, arch, groupArch),
                 Title = "Multi Blend 1D",
@@ -651,8 +639,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Vector_Y(145, 3 * Surface.Constants.LayoutOffsetY + 2, 0),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 13,
                 Create = (id, context, arch, groupArch) => new MultiBlend2D(id, context, arch, groupArch),
                 Title = "Multi Blend 2D",
@@ -693,8 +680,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Vector_W(145, 4 * Surface.Constants.LayoutOffsetY + 2, 0),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 14,
                 Create = (id, context, arch, groupArch) => new BlendPose(id, context, arch, groupArch),
                 Title = "Blend Poses",
@@ -726,8 +712,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(10, "Pose 7", true, typeof(void), 10),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 15,
                 Title = "Get Root Motion",
                 Description = "Gets the computed root motion from the pose",
@@ -740,8 +725,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(0, "Pose", true, typeof(void), 2),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 16,
                 Title = "Set Root Motion",
                 Description = "Overrides the root motion of the pose",
@@ -755,8 +739,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(2, "Rotation", true, typeof(Quaternion), 3),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 17,
                 Title = "Add Root Motion",
                 Description = "Applies the custom root motion transformation the root motion of the pose",
@@ -770,8 +753,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(2, "Rotation", true, typeof(Quaternion), 3),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 18,
                 Create = (id, context, arch, groupArch) => new StateMachine(id, context, arch, groupArch),
                 Title = "State Machine",
@@ -791,8 +773,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "", typeof(void), 0)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 19,
                 Create = (id, context, arch, groupArch) => new StateMachineEntry(id, context, arch, groupArch),
                 Title = "Entry",
@@ -804,8 +785,7 @@ namespace FlaxEditor.Surface.Archetypes
                     -1,
                 },
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 20,
                 Create = (id, context, arch, groupArch) => new StateMachineState(id, context, arch, groupArch),
                 Title = "State",
@@ -819,8 +799,7 @@ namespace FlaxEditor.Surface.Archetypes
                     Utils.GetEmptyArray<byte>(),
                 },
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 21,
                 Title = "State Output",
                 Description = "The animation states machine state output node",
@@ -831,8 +810,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(0, "Pose", true, typeof(void), 0)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 22,
                 Title = "Rule Output",
                 Description = "The animation states machine transition rule output node",
@@ -843,8 +821,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(0, "Can Start Transition", true, typeof(bool), 0)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 23,
                 Title = "Transition Source State Anim",
                 Description = "The animation state machine transition source state animation data information",
@@ -859,8 +836,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(4, "Remaining Normalized Time", typeof(float), 4),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 24,
                 Create = (id, context, arch, groupArch) => new AnimationGraphFunctionNode(id, context, arch, groupArch),
                 Title = "Animation Graph Function",
@@ -876,8 +852,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Asset(0, 0, 0, typeof(AnimationGraphFunction)),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 25,
                 Title = "Transform Node (local space)",
                 Description = "Transforms the skeleton node",
@@ -901,8 +876,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Mode:"),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 26,
                 Title = "Transform Node (model space)",
                 Description = "Transforms the skeleton node",
@@ -926,8 +900,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Mode:"),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 27,
                 Title = "Copy Node",
                 Description = "Copies the skeleton node transformation data (in local space)",
@@ -957,8 +930,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Copy Scale:"),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 28,
                 Title = "Get Node Transform (model space)",
                 Description = "Samples the skeleton node transformation (in model space)",
@@ -976,8 +948,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "Transform", typeof(Transform), 1),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 29,
                 Title = "Aim IK",
                 Description = "Rotates a node so it aims at a target.",
@@ -998,8 +969,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 3, "Node:"),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 30,
                 Title = "Get Node Transform (local space)",
                 Description = "Samples the skeleton node transformation (in local space)",
@@ -1017,8 +987,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "Transform", typeof(Transform), 1),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 31,
                 Title = "Two Bone IK",
                 Description = "Performs inverse kinematic on a three nodes chain.",
@@ -1044,8 +1013,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 6, "Node:"),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 32,
                 Title = "Animation Slot",
                 Description = "Plays the animation from code with blending (eg. hit reaction).",
@@ -1063,8 +1031,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.TextBox(30, Surface.Constants.LayoutOffsetY, 140, TextBox.DefaultHeight, 0, false),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 33,
                 Title = "Animation Instance Data",
                 Description = "Caches custom data per-instance and allow sampling it. Can be used to randomize animation play offset to offer randomization for crowds reusing the same graph.",
@@ -1076,8 +1043,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(0, "Init", true, typeof(Float4), 1),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 34,
                 Create = (id, context, arch, groupArch) => new StateMachineAny(id, context, arch, groupArch),
                 Title = "Any",

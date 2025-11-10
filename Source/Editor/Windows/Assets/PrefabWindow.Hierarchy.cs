@@ -164,7 +164,7 @@ namespace FlaxEditor.Windows.Assets
                     // Drag assets
                     if (_dragAssets != null && _dragAssets.HasValidDrag)
                     {
-                        List<SceneGraphNode> graphNodes = new List<SceneGraphNode>();
+                        List<SceneGraphNode> graphNodes = new();
                         for (int i = 0; i < _dragAssets.Objects.Count; i++)
                         {
                             var item = _dragAssets.Objects[i];
@@ -221,7 +221,7 @@ namespace FlaxEditor.Windows.Assets
                     // Drag script item
                     else if (_dragScriptItems != null && _dragScriptItems.HasValidDrag)
                     {
-                        List<SceneGraphNode> graphNodes = new List<SceneGraphNode>();
+                        List<SceneGraphNode> graphNodes = new();
                         for (int i = 0; i < _dragScriptItems.Objects.Count; i++)
                         {
                             var item = _dragScriptItems.Objects[i];

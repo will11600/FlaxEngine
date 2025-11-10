@@ -39,9 +39,9 @@ namespace FlaxEditor.Utilities
     /// </summary>
     public static class Utils
     {
-        private static readonly StringBuilder CachedSb = new StringBuilder(256);
-        private static readonly Regex IncNameRegex1 = new Regex("(\\d+)$");
-        private static readonly Regex IncNameRegex2 = new Regex("\\((\\d+)\\)$");
+        private static readonly StringBuilder CachedSb = new(256);
+        private static readonly Regex IncNameRegex1 = new("(\\d+)$");
+        private static readonly Regex IncNameRegex2 = new("\\((\\d+)\\)$");
 
         private static readonly string[] MemorySizePostfixes =
         {
@@ -1462,13 +1462,13 @@ namespace FlaxEditor.Utilities
             if (e >= 0)
             {
                 e -= numDecimals;
-                string z = new string('0', e);
+                string z = new('0', e);
                 s = s + z;
             }
             else
             {
                 e = -e - 1;
-                string z = new string('0', e);
+                string z = new('0', e);
                 if (isNegative)
                     s = "-0." + z + s;
                 else

@@ -10,7 +10,7 @@ namespace FlaxEditor.Windows
 {
     public partial class ContentWindow
     {
-        private static readonly List<ContentTreeNode> NavUpdateCache = new List<ContentTreeNode>(8);
+        private static readonly List<ContentTreeNode> NavUpdateCache = new(8);
 
         private void OnTreeSelectionChanged(List<TreeNode> from, List<TreeNode> to)
         {

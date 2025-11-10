@@ -36,7 +36,7 @@ namespace FlaxEngine.Tools
             [EditorOrder(110), VisibleIf(nameof(Resize)), DefaultValue(typeof(Int2), "1024,1024")]
             public Int2 Size
             {
-                readonly get => new Int2(SizeX, SizeY);
+                readonly get => new(SizeX, SizeY);
                 set
                 {
                     SizeX = value.X;

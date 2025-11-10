@@ -44,9 +44,9 @@ namespace FlaxEditor.GUI.Timeline
         private TrackFlags _flags;
         private Track _parentTrack;
         internal float _xOffset;
-        private Margin _margin = new Margin(2.0f);
-        private readonly List<Media> _media = new List<Media>();
-        private readonly List<Track> _subTracks = new List<Track>();
+        private Margin _margin = new(2.0f);
+        private readonly List<Media> _media = new();
+        private readonly List<Track> _subTracks = new();
         private bool _opened;
         private bool _isMouseDown;
         private bool _mouseOverArrow;
@@ -298,7 +298,7 @@ namespace FlaxEditor.GUI.Timeline
         /// <summary>
         /// Gets the arrow rectangle.
         /// </summary>
-        protected Rectangle ArrowRect => new Rectangle(_xOffset + 2 + _margin.Left, (HeaderHeight - 12) * 0.5f, 12, 12);
+        protected Rectangle ArrowRect => new(_xOffset + 2 + _margin.Left, (HeaderHeight - 12) * 0.5f, 12, 12);
 
         /// <summary>
         /// Called when parent timeline gets changed.

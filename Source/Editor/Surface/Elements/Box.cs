@@ -59,7 +59,7 @@ namespace FlaxEditor.Surface.Elements
         /// <summary>
         /// List with all connections to other boxes.
         /// </summary>
-        public readonly List<Box> Connections = new List<Box>();
+        public readonly List<Box> Connections = new();
 
         /// <summary>
         /// The box text.
@@ -552,7 +552,7 @@ namespace FlaxEditor.Surface.Elements
                 {
                     if (IsOutput && Input.GetKey(KeyboardKeys.Control))
                     {
-                        List<Box> connectedBoxes = new List<Box>(Connections);
+                        List<Box> connectedBoxes = new(Connections);
 
                         for (int i = 0; i < connectedBoxes.Count; i++)
                         {

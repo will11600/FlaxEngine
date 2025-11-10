@@ -154,7 +154,7 @@ namespace FlaxEngine.Json.JsonCustomSerializers
                 Type? genericTypeDef = assembly.GetType(genericTypeDefName);
                 if (genericTypeDef != null)
                 {
-                    List<Type> genericTypeArguments = new List<Type>(); // Recursively resolve the arguments
+                    List<Type> genericTypeArguments = new(); // Recursively resolve the arguments
                     int scope = 0;
                     int typeArgStartIndex = 0;
                     int endIndex = typeName.Length - 1;

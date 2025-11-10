@@ -13,7 +13,7 @@ namespace FlaxEditor.States
     [HideInEditor]
     public sealed class EditorStateMachine : StateMachine
     {
-        private readonly Queue<EditorState> _pendingStates = new Queue<EditorState>();
+        private readonly Queue<EditorState> _pendingStates = new();
 
         /// <summary>
         /// Gets the current state.

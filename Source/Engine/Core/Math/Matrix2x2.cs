@@ -30,7 +30,7 @@ namespace FlaxEngine
         /// <summary>
         /// The identity <see cref="Matrix2x2"/>.
         /// </summary>
-        public static readonly Matrix2x2 Identity = new Matrix2x2
+        public static readonly Matrix2x2 Identity = new()
         {
             M11 = 1.0f,
             M22 = 1.0f
@@ -102,7 +102,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 Row1
         {
-            readonly get => new Float2(M11, M12);
+            readonly get => new(M11, M12);
             set
             {
                 M11 = value.X;
@@ -115,7 +115,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 Row2
         {
-            readonly get => new Float2(M21, M22);
+            readonly get => new(M21, M22);
             set
             {
                 M21 = value.X;
@@ -128,7 +128,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 Column1
         {
-            readonly get => new Float2(M11, M21);
+            readonly get => new(M11, M21);
             set
             {
                 M11 = value.X;
@@ -141,7 +141,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 Column2
         {
-            readonly get => new Float2(M12, M22);
+            readonly get => new(M12, M22);
             set
             {
                 M12 = value.X;
@@ -154,7 +154,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 ScaleVector
         {
-            readonly get => new Float2(M11, M22);
+            readonly get => new(M11, M22);
             set
             {
                 M11 = value.X;

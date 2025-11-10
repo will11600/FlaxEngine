@@ -12,7 +12,7 @@ namespace FlaxEditor.Windows.Assets
 {
     public sealed partial class PrefabWindow
     {
-        private readonly List<SceneGraphNode> _selection = new List<SceneGraphNode>();
+        private readonly List<SceneGraphNode> _selection = new();
 
         /// <summary>
         /// Occurs when selection gets changed.

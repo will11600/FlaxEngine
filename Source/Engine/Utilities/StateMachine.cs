@@ -18,7 +18,7 @@ namespace FlaxEngine.Utilities
         /// <summary>
         /// The states.
         /// </summary>
-        protected readonly List<State> states = new List<State>();
+        protected readonly List<State> states = new();
 
         /// <summary>
         /// Gets the current state.

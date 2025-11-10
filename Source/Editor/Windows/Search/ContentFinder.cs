@@ -19,7 +19,7 @@ namespace FlaxEditor.Windows.Search
         private Panel _resultPanel;
         private TextBox _searchBox;
         private SearchItem _selectedItem;
-        private List<SearchItem> _matchedItems = new List<SearchItem>();
+        private List<SearchItem> _matchedItems = new();
 
         /// <summary>
         /// Gets or sets the height per item.

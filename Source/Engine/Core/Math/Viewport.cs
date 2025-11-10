@@ -138,7 +138,7 @@ namespace FlaxEngine
         /// <value>The bounds.</value>
         public Rectangle Bounds
         {
-            readonly get => new Rectangle(X, Y, Width, Height);
+            readonly get => new(X, Y, Width, Height);
             set
             {
                 X = value.X;
@@ -153,7 +153,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 Size
         {
-            readonly get => new Float2(Width, Height);
+            readonly get => new(Width, Height);
             set
             {
                 Width = value.X;

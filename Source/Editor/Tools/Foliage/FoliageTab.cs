@@ -90,7 +90,7 @@ namespace FlaxEditor.Tools.Foliage
         /// <summary>
         /// The foliage type model asset IDs checked to paint with them by default.
         /// </summary>
-        public readonly Dictionary<Guid, bool> FoliageTypeModelIdsToPaint = new Dictionary<Guid, bool>();
+        public readonly Dictionary<Guid, bool> FoliageTypeModelIdsToPaint = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FoliageTab"/> class.

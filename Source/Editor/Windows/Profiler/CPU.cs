@@ -234,7 +234,7 @@ namespace FlaxEditor.Windows.Profiler
             public double Start;
             public double End;
 
-            public static ViewRange Full = new ViewRange
+            public static ViewRange Full = new()
             {
                 Start = float.MinValue,
                 End = float.MaxValue

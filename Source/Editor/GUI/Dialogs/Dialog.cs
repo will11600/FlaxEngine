@@ -32,7 +32,7 @@ namespace FlaxEditor.GUI.Dialogs
         /// <summary>
         /// The dialog size.
         /// </summary>
-        protected Float2 _dialogSize = new Float2(300, 100);
+        protected Float2 _dialogSize = new(300, 100);
 
         /// <summary>
         /// Gets the dialog result.

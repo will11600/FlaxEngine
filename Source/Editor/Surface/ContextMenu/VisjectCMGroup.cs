@@ -24,7 +24,7 @@ namespace FlaxEditor.Surface.ContextMenu
         /// <summary>
         /// The archetypes (one or more).
         /// </summary>
-        public readonly List<GroupArchetype> Archetypes = new List<GroupArchetype>();
+        public readonly List<GroupArchetype> Archetypes = new();
 
         /// <summary>
         /// A computed score for the context menu order.

@@ -22,7 +22,7 @@ namespace FlaxEngine
     /// <seealso cref="System.IDisposable" />
     internal class MainThreadTaskScheduler : TaskScheduler, IDisposable
     {
-        private readonly BlockingCollection<Task> _tasks = new BlockingCollection<Task>();
+        private readonly BlockingCollection<Task> _tasks = new();
 
         internal void Execute()
         {
@@ -71,8 +71,8 @@ namespace FlaxEngine
     /// </summary>
     public static partial class Scripting
     {
-        private static readonly List<Action> UpdateActions = new List<Action>();
-        private static readonly MainThreadTaskScheduler MainThreadTaskScheduler = new MainThreadTaskScheduler();
+        private static readonly List<Action> UpdateActions = new();
+        private static readonly MainThreadTaskScheduler MainThreadTaskScheduler = new();
 
         /// <summary>
         /// Occurs on scripting update.

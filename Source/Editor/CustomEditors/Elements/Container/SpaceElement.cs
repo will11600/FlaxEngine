@@ -13,7 +13,7 @@ namespace FlaxEditor.CustomEditors.Elements
         /// <summary>
         /// The spacer.
         /// </summary>
-        public readonly Spacer Spacer = new Spacer(0, 0);
+        public readonly Spacer Spacer = new(0, 0);
 
         /// <summary>
         /// Initializes the element.

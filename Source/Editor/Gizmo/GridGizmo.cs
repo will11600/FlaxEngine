@@ -98,10 +98,10 @@ namespace FlaxEditor.Gizmo
                 float y = 1.5f; // Add small bias to reduce Z-fighting with geometry at scene origin
                 var vertices = new Float3[]
                 {
-                    new Float3(-gridSize, y, -gridSize),
-                    new Float3(gridSize, y, gridSize),
-                    new Float3(-gridSize, y, gridSize),
-                    new Float3(gridSize, y, -gridSize),
+                    new(-gridSize, y, -gridSize),
+                    new(gridSize, y, gridSize),
+                    new(-gridSize, y, gridSize),
+                    new(gridSize, y, -gridSize),
                 };
                 fixed (Float3* ptr = vertices)
                 {

@@ -55,7 +55,7 @@ namespace FlaxEngine
         [Tooltip("Joint motion options (per-axis).")]
         internal D6JointAxisMotion AxisMotion
         {
-            get => new D6JointAxisMotion
+            get => new()
             {
                 X = GetMotion(D6JointAxis.X),
                 Y = GetMotion(D6JointAxis.Y),

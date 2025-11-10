@@ -27,7 +27,7 @@ namespace FlaxEditor.GUI
         /// <summary>
         /// The enum entries. The same order as items in combo box.
         /// </summary>
-        protected readonly List<Entry> _entries = new List<Entry>();
+        protected readonly List<Entry> _entries = new();
 
         /// <summary>
         /// The cached value from the UI.

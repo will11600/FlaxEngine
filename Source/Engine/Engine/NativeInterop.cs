@@ -160,7 +160,7 @@ namespace FlaxEngine.Interop
 
             int length = str.Length + 1;
             void* ptr = NativeMemory.AlignedAlloc((UIntPtr)length, 16);
-            Span<byte> byteSpan = new Span<byte>(ptr, length);
+            Span<byte> byteSpan = new(ptr, length);
             Encoding.ASCII.GetBytes(str, byteSpan);
             byteSpan[length - 1] = 0;
 
@@ -347,9 +347,9 @@ namespace FlaxEngine.Interop
         internal delegate void MarshalToNativeDelegate(object managedObject, IntPtr nativePtr);
         internal delegate void MarshalToNativeFieldDelegate(FieldInfo field, int fieldOffset, object fieldOwner, IntPtr nativePtr, out int fieldSize);
 
-        internal static ConcurrentDictionary<Type, MarshalToManagedDelegate> toManagedMarshallers = new ConcurrentDictionary<Type, MarshalToManagedDelegate>(1, 3);
-        internal static ConcurrentDictionary<Type, MarshalToNativeDelegate> toNativeMarshallers = new ConcurrentDictionary<Type, MarshalToNativeDelegate>(1, 3);
-        internal static ConcurrentDictionary<Type, MarshalToNativeFieldDelegate> toNativeFieldMarshallers = new ConcurrentDictionary<Type, MarshalToNativeFieldDelegate>(1, 3);
+        internal static ConcurrentDictionary<Type, MarshalToManagedDelegate> toManagedMarshallers = new(1, 3);
+        internal static ConcurrentDictionary<Type, MarshalToNativeDelegate> toNativeMarshallers = new(1, 3);
+        internal static ConcurrentDictionary<Type, MarshalToNativeFieldDelegate> toNativeFieldMarshallers = new(1, 3);
 
         internal static object MarshalToManaged(IntPtr nativePtr, Type type)
         {
@@ -1373,7 +1373,7 @@ namespace FlaxEngine.Interop
 
         internal static ManagedHandle GetMethodGCHandle(MethodInfo method)
         {
-            MethodHolder methodHolder = new MethodHolder(method);
+            MethodHolder methodHolder = new(method);
             ManagedHandle handle = ManagedHandle.Alloc(methodHolder);
 #if FLAX_EDITOR
             if (methodHolder.parameterTypes.Any(x => x.IsCollectible) || method.IsCollectible)
@@ -1472,9 +1472,9 @@ namespace FlaxEngine.Interop
         {
             internal delegate Array CreateArrayDelegate(long size);
 
-            internal static ConcurrentDictionary<Type, Type> marshalledTypes = new ConcurrentDictionary<Type, Type>(1, 3);
-            internal static ConcurrentDictionary<Type, Type> arrayTypes = new ConcurrentDictionary<Type, Type>(1, 3);
-            internal static ConcurrentDictionary<Type, CreateArrayDelegate> createArrayDelegates = new ConcurrentDictionary<Type, CreateArrayDelegate>(1, 3);
+            internal static ConcurrentDictionary<Type, Type> marshalledTypes = new(1, 3);
+            internal static ConcurrentDictionary<Type, Type> arrayTypes = new(1, 3);
+            internal static ConcurrentDictionary<Type, CreateArrayDelegate> createArrayDelegates = new(1, 3);
 
             internal static Type GetMarshalledType(Type elementType)
             {
@@ -1807,14 +1807,14 @@ namespace FlaxEngine.Interop
                         return;
                 }
 
-                List<Type> methodTypes = new List<Type>();
+                List<Type> methodTypes = new();
                 if (!method.IsStatic)
                     methodTypes.Add(method.DeclaringType);
                 if (method.ReturnType != typeof(void))
                     methodTypes.Add(method.ReturnType);
                 methodTypes.AddRange(parameterTypes);
 
-                List<Type> genericParamTypes = new List<Type>();
+                List<Type> genericParamTypes = new();
                 foreach (var type in methodTypes)
                 {
                     if (type.IsByRef)

@@ -727,17 +727,17 @@ namespace FlaxEditor.Scripting
         /// <summary>
         /// A <see cref="ScriptType" /> that is System.Void.
         /// </summary>
-        public static readonly ScriptType Void = new ScriptType(typeof(void));
+        public static readonly ScriptType Void = new(typeof(void));
 
         /// <summary>
         /// A <see cref="ScriptType" /> that is System.Object.
         /// </summary>
-        public static readonly ScriptType Object = new ScriptType(typeof(object));
+        public static readonly ScriptType Object = new(typeof(object));
 
         /// <summary>
         /// A <see cref="ScriptType" /> that is FlaxEngine.Object.
         /// </summary>
-        public static readonly ScriptType FlaxObject = new ScriptType(typeof(FlaxEngine.Object));
+        public static readonly ScriptType FlaxObject = new(typeof(FlaxEngine.Object));
 
         /// <summary>
         /// Gets the type of the script as <see cref="System.Type"/>.

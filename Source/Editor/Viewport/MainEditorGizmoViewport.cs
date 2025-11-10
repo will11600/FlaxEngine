@@ -104,7 +104,7 @@ namespace FlaxEditor.Viewport
 
         private bool _lockedFocus;
         private double _lockedFocusOffset;
-        private readonly ViewportDebugDrawData _debugDrawData = new ViewportDebugDrawData(32);
+        private readonly ViewportDebugDrawData _debugDrawData = new(32);
         private EditorSpritesRenderer _editorSpritesRenderer;
         private ViewportRubberBandSelector _rubberBandSelector;
 

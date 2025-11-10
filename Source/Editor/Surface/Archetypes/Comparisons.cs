@@ -97,7 +97,7 @@ namespace FlaxEditor.Surface.Archetypes
 
                         // Setup switch value inputs
                         int id = firstBox;
-                        ScriptType type = new ScriptType();
+                        ScriptType type = new();
                         for (; id < maxBoxes; id++)
                         {
                             var box = GetBox(id);
@@ -177,8 +177,7 @@ namespace FlaxEditor.Surface.Archetypes
             Op(4, "<", "Determines whether the first value is less than the other", new[] { "less than", "smaller than" }),
             Op(5, "<=", "Determines whether the first value is less or equal to the other", new[] { "less equals than", "smaller equals than" }),
             Op(6, ">=", "Determines whether the first value is greater or equal to the other", new[] { "greater equals than", "larger equals than", "bigger equals than" }),
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 7,
                 Title = "Switch On Bool",
                 AlternativeTitles = new[] { "if", "switch" },
@@ -208,8 +207,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 8,
                 Title = "Switch On Enum",
                 Create = (id, context, arch, groupArch) => new SwitchOnEnumNode(id, context, arch, groupArch),

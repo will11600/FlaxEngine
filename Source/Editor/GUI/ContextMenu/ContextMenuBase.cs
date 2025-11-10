@@ -96,7 +96,7 @@ namespace FlaxEditor.GUI.ContextMenu
         /// <summary>
         /// External dialog popups opened within the context window (eg. color picker) that should preserve context menu visibility (prevent from closing context menu).
         /// </summary>
-        public List<Window> ExternalPopups = new List<Window>();
+        public List<Window> ExternalPopups = new();
 
         /// <summary>
         /// Optional flag that can disable popup visibility based on window focus and use external control via Hide.

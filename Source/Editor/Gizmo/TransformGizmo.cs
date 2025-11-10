@@ -29,8 +29,8 @@ namespace FlaxEditor.Gizmo
         /// <param name="scaleDelta">The scale delta.</param>
         public delegate void ApplyTransformationDelegate(List<SceneGraphNode> selection, ref Vector3 translationDelta, ref Quaternion rotationDelta, ref Vector3 scaleDelta);
 
-        private readonly List<SceneGraphNode> _selection = new List<SceneGraphNode>();
-        private readonly List<SceneGraphNode> _selectionParents = new List<SceneGraphNode>();
+        private readonly List<SceneGraphNode> _selection = new();
+        private readonly List<SceneGraphNode> _selectionParents = new();
 
         /// <summary>
         /// The event to apply objects transformation.

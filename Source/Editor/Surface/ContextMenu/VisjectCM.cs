@@ -44,7 +44,7 @@ namespace FlaxEditor.Surface.ContextMenu
         private const float DefaultWidth = 300;
         private const float DefaultHeight = 400;
 
-        private readonly List<VisjectCMGroup> _groups = new List<VisjectCMGroup>(16);
+        private readonly List<VisjectCMGroup> _groups = new(16);
         private CheckBox _contextSensitiveToggle;
         private bool _contextSensitiveSearchEnabled = true;
         private readonly TextBox _searchBox;
@@ -53,7 +53,7 @@ namespace FlaxEditor.Surface.ContextMenu
         private Panel _panel1;
         private VerticalPanel _groupsPanel;
         private readonly ParameterGetterDelegate _parametersGetter;
-        private List<Elements.Box> _selectedBoxes = new List<Elements.Box>();
+        private List<Elements.Box> _selectedBoxes = new();
         private NodeArchetype _parameterGetNodeArchetype;
         private NodeArchetype _parameterSetNodeArchetype;
 

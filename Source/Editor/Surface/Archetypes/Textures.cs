@@ -92,8 +92,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// </summary>
         public static NodeArchetype[] Nodes =
         {
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 1,
                 Title = "Texture",
                 Create = (id, context, arch, groupArch) => new Constants.ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(Texture))),
@@ -116,8 +115,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Asset(0, 20, 0, typeof(Texture))
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 2,
                 Title = "Texcoords",
                 AlternativeTitles = new string[] { "UV", "UVs" },
@@ -135,8 +133,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "UVs", typeof(Float2), 0)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 3,
                 Title = "Cube Texture",
                 Create = (id, context, arch, groupArch) => new Constants.ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(CubeTexture))),
@@ -159,8 +156,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Asset(0, 20, 0, typeof(CubeTexture))
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 4,
                 Title = "Normal Map",
                 Create = (id, context, arch, groupArch) => new Constants.ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(NormalMap))),
@@ -182,8 +178,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Asset(0, 20, 0, typeof(Texture))
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 5,
                 Title = "Parallax Occlusion Mapping",
                 Description = "Parallax occlusion mapping",
@@ -214,8 +209,7 @@ namespace FlaxEditor.Surface.Archetypes
                     })
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 6,
                 Title = "Scene Texture",
                 Description = "Graphics pipeline textures lookup node",
@@ -237,8 +231,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(0, Surface.Constants.LayoutOffsetY, 120, 0, typeof(MaterialSceneTextures))
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 7,
                 Title = "Scene Color",
                 Description = "Scene color texture lookup node",
@@ -255,8 +248,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(5, "A", typeof(float), 5)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 8,
                 Title = "Scene Depth",
                 Description = "Scene depth buffer texture lookup node",
@@ -269,8 +261,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(1, "Depth", typeof(float), 1),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 9,
                 Create = (id, context, arch, groupArch) => new SampleTextureNode(id, context, arch, groupArch),
                 Title = "Sample Texture",
@@ -295,8 +286,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(50, Surface.Constants.LayoutOffsetY * 4, 100, 0, typeof(CommonSamplerType))
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 10,
                 Title = "Flipbook",
                 Description = "Texture sheet animation",
@@ -319,8 +309,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float2), 5),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 11,
                 Title = "Texture",
                 Description = "Two dimensional texture object",
@@ -353,8 +342,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Asset(0, 0, 0, typeof(CubeTexture))
                 }
             },*/
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 13,
                 Title = "Load Texture",
                 Description = "Reads data from the texture at the given location (unsigned integer in range [0; size-1] per axis, last component is a mipmap level)",
@@ -368,8 +356,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(1, "Location", true, null, 2),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 14,
                 Title = "Sample Global SDF",
                 Description = "Samples the Global SDF to get the distance to the closest surface (in world-space). Requires models SDF to be generated and checking `Enable Global SDF` in Graphics Settings.",
@@ -383,8 +370,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(1, "Start Cascade", true, typeof(int), 2, 0),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 15,
                 Title = "Sample Global SDF Gradient",
                 Description = "Samples the Global SDF to get the gradient and distance to the closest surface (in world-space). Normalize gradient to get SDF surface normal vector. Requires models SDF to be generated and checking `Enable Global SDF` in Graphics Settings.",
@@ -399,8 +385,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(1, "Start Cascade", true, typeof(int), 3, 0),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 16,
                 Title = "Triplanar Texture",
                 Description = "Projects a texture using world-space coordinates with triplanar mapping.",
@@ -427,8 +412,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Bool(190, Surface.Constants.LayoutOffsetY * 4, 4),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 17,
                 Create = (id, context, arch, groupArch) => new SampleTextureNode(id, context, arch, groupArch),
                 Title = "Procedural Sample Texture",
@@ -452,8 +436,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(50, Surface.Constants.LayoutOffsetY * 4, 100, 0, typeof(CommonSamplerType))
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 18,
                 Title = "Lightmap UV",
                 AlternativeTitles = new string[] { "Lightmap TexCoord" }, 
@@ -465,8 +448,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "UVs", typeof(Float2), 0)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 23,
                 Title = "Triplanar Normal Map",
                 Description = "Projects a normal map texture using world-space coordinates with triplanar mapping.",
@@ -493,8 +475,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Bool(190, Surface.Constants.LayoutOffsetY * 4, 4),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 24,
                 Title = "Texture Size",
                 Description = "Gets the size of the texture (in pixels). If texture is during streaming, then returns size of the highest resident mip.",

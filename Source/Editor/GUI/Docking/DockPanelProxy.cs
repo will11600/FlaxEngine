@@ -60,7 +60,7 @@ namespace FlaxEditor.GUI.Docking
         /// </summary>
         public DockWindow StartDragAsyncWindow;
 
-        private Rectangle HeaderRectangle => new Rectangle(0, 0, Width, _tabHeight);
+        private Rectangle HeaderRectangle => new(0, 0, Width, _tabHeight);
         private bool IsSingleFloatingWindow => _hideTabForSingleTab && _panel.TabsCount == 1 && _panel.IsFloating && _panel.ChildPanelsCount == 0;
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace FlaxEditor.CustomEditors.Elements
         /// <summary>
         /// The tree control.
         /// </summary>
-        public readonly Tree TreeControl = new Tree(false);
+        public readonly Tree TreeControl = new(false);
 
         /// <inheritdoc />
         public override ContainerControl ContainerControl => TreeControl;
@@ -22,7 +22,7 @@ namespace FlaxEditor.CustomEditors.Elements
         /// <inheritdoc />
         public TreeNodeElement Node(string text)
         {
-            TreeNodeElement element = new TreeNodeElement();
+            TreeNodeElement element = new();
             element.TreeNode.Text = text;
             OnAddElement(element);
             return element;

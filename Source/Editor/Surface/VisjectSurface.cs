@@ -24,7 +24,7 @@ namespace FlaxEditor.Surface
     [HideInEditor]
     public partial class VisjectSurface : ContainerControl, IParametersDependantNode
     {
-        private static readonly List<VisjectSurfaceContext> NavUpdateCache = new List<VisjectSurfaceContext>(8);
+        private static readonly List<VisjectSurfaceContext> NavUpdateCache = new(8);
 
         /// <summary>
         /// The surface control.
@@ -121,7 +121,7 @@ namespace FlaxEditor.Surface
         /// <summary>
         /// The connection start.
         /// </summary>
-        protected List<IConnectionInstigator> _connectionInstigators = new List<IConnectionInstigator>();
+        protected List<IConnectionInstigator> _connectionInstigators = new();
 
         /// <summary>
         /// The last connection instigator under mouse.

@@ -298,12 +298,12 @@ namespace FlaxEditor.Windows
         private readonly VerticalPanel _entriesPanel;
         private LogEntry _selected;
         private readonly int[] _logCountPerGroup = new int[(int)LogGroup.Max];
-        private readonly Regex _logRegex = new Regex("at (.*) in (.*):(line (\\d*)|(\\d*))");
-        private readonly ThreadLocal<StringBuilder> _stringBuilder = new ThreadLocal<StringBuilder>(() => new StringBuilder(), false);
+        private readonly Regex _logRegex = new("at (.*) in (.*):(line (\\d*)|(\\d*))");
+        private readonly ThreadLocal<StringBuilder> _stringBuilder = new(() => new StringBuilder(), false);
         private InterfaceOptions.TimestampsFormats _timestampsFormats;
 
-        private readonly object _locker = new object();
-        private readonly List<LogEntry> _pendingEntries = new List<LogEntry>(32);
+        private readonly object _locker = new();
+        private readonly List<LogEntry> _pendingEntries = new(32);
 
         private readonly ToolStripButton _clearOnPlayButton;
         private readonly ToolStripButton _collapseLogsButton;
@@ -619,7 +619,7 @@ namespace FlaxEditor.Windows
 
         private void LogHandlerOnSendExceptionLog(Exception exception, Object o)
         {
-            LogEntryDescription desc = new LogEntryDescription
+            LogEntryDescription desc = new()
             {
                 Level = LogType.Error,
                 Title = exception.Message,

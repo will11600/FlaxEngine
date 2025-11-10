@@ -267,7 +267,7 @@ namespace FlaxEditor.Surface
             if (_connectionInstigators.Count == 0)
                 return;
 
-            List<IConnectionInstigator> instigators = new List<IConnectionInstigator>(_connectionInstigators);
+            List<IConnectionInstigator> instigators = new(_connectionInstigators);
             for (int i = 0; i < instigators.Count; i++)
             {
                 var start = instigators[i];

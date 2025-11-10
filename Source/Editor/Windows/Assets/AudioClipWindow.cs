@@ -71,7 +71,7 @@ namespace FlaxEditor.Windows.Assets
             private AudioClipWindow _window;
 
             [EditorOrder(1000), EditorDisplay("Import Settings", EditorDisplayAttribute.InlineStyle)]
-            public AudioImportSettings ImportSettings = new AudioImportSettings();
+            public AudioImportSettings ImportSettings = new();
 
             public sealed class ProxyEditor : GenericEditor
             {

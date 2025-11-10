@@ -109,42 +109,42 @@ namespace FlaxEngine
         /// <summary>
         /// The X unit <see cref="Vector4" /> (1, 0, 0, 0).
         /// </summary>
-        public static readonly Vector4 UnitX = new Vector4(1.0f, 0.0f, 0.0f, 0.0f);
+        public static readonly Vector4 UnitX = new(1.0f, 0.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// The Y unit <see cref="Vector4" /> (0, 1, 0, 0).
         /// </summary>
-        public static readonly Vector4 UnitY = new Vector4(0.0f, 1.0f, 0.0f, 0.0f);
+        public static readonly Vector4 UnitY = new(0.0f, 1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// The Z unit <see cref="Vector4" /> (0, 0, 1, 0).
         /// </summary>
-        public static readonly Vector4 UnitZ = new Vector4(0.0f, 0.0f, 1.0f, 0.0f);
+        public static readonly Vector4 UnitZ = new(0.0f, 0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// The W unit <see cref="Vector4" /> (0, 0, 0, 1).
         /// </summary>
-        public static readonly Vector4 UnitW = new Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+        public static readonly Vector4 UnitW = new(0.0f, 0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Vector4" /> with all of its components set to half.
         /// </summary>
-        public static readonly Vector4 Half = new Vector4(0.5f, 0.5f, 0.5f, 0.5f);
+        public static readonly Vector4 Half = new(0.5f, 0.5f, 0.5f, 0.5f);
 
         /// <summary>
         /// A <see cref="Vector4" /> with all of its components set to one.
         /// </summary>
-        public static readonly Vector4 One = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        public static readonly Vector4 One = new(1.0f, 1.0f, 1.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Vector4" /> with all components equal to <see cref="double.MinValue"/> (or <see cref="float.MinValue"/> if using 32-bit precision).
         /// </summary>
-        public static readonly Vector4 Minimum = new Vector4(Real.MinValue);
+        public static readonly Vector4 Minimum = new(Real.MinValue);
 
         /// <summary>
         /// A <see cref="Vector4" /> with all components equal to <see cref="double.MaxValue"/> (or <see cref="float.MaxValue"/> if using 32-bit precision).
         /// </summary>
-        public static readonly Vector4 Maximum = new Vector4(Real.MaxValue);
+        public static readonly Vector4 Maximum = new(Real.MaxValue);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector4" /> struct.
@@ -291,12 +291,12 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a vector with values being absolute values of that vector.
         /// </summary>
-        public readonly Vector4 Absolute => new Vector4(Mathr.Abs(X), Mathr.Abs(Y), Mathr.Abs(Z), Mathr.Abs(W));
+        public readonly Vector4 Absolute => new(Mathr.Abs(X), Mathr.Abs(Y), Mathr.Abs(Z), Mathr.Abs(W));
 
         /// <summary>
         /// Gets a vector with values being opposite to values of that vector.
         /// </summary>
-        public readonly Vector4 Negative => new Vector4(-X, -Y, -Z, -W);
+        public readonly Vector4 Negative => new(-X, -Y, -Z, -W);
 
         /// <summary>
         /// Gets or sets the component at the specified index.

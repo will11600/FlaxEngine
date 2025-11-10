@@ -14,8 +14,7 @@ namespace FlaxEditor.Content.Settings
         [EditorOrder(5000), EditorDisplay("Presets", EditorDisplayAttribute.InlineStyle), Tooltip("Build presets configuration")]
         public BuildPreset[] Presets =
         {
-            new BuildPreset
-            {
+            new() {
                 Name = "Development",
                 Targets = new[]
                 {
@@ -28,8 +27,7 @@ namespace FlaxEditor.Content.Settings
                     },
                 }
             },
-            new BuildPreset
-            {
+            new() {
                 Name = "Release",
                 Targets = new[]
                 {

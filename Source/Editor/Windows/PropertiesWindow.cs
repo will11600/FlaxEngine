@@ -21,7 +21,7 @@ namespace FlaxEditor.Windows
     {
         private IEnumerable<object> undoRecordObjects;
 
-        private readonly Dictionary<Guid, float> _actorScrollValues = new Dictionary<Guid, float>();
+        private readonly Dictionary<Guid, float> _actorScrollValues = new();
         private bool _lockObjects = false;
 
         /// <inheritdoc />

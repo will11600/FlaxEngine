@@ -34,12 +34,12 @@ namespace FlaxEngine.GUI
             Render2D.PeekTint(out Color oldColor);
             if (IgnoreStack)
             {
-                Color newColor = new Color(oldColor.R, oldColor.G, oldColor.B, Alpha);
+                Color newColor = new(oldColor.R, oldColor.G, oldColor.B, Alpha);
                 Render2D.PushTint(ref newColor, false);
             }
             else
             {
-                Color newColor = new Color(oldColor.R, oldColor.G, oldColor.B, oldColor.A * Alpha);
+                Color newColor = new(oldColor.R, oldColor.G, oldColor.B, oldColor.A * Alpha);
                 Render2D.PushTint(ref newColor, false);
             }
 

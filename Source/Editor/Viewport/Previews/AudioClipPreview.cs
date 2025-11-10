@@ -35,7 +35,7 @@ namespace FlaxEditor.Viewport.Previews
             Looped,
         };
 
-        private readonly object _locker = new object();
+        private readonly object _locker = new();
         private AudioClip _asset;
         private int _pcmSequence = 0;
         private float[] _pcmData;

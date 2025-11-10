@@ -103,7 +103,7 @@ namespace FlaxEngine.GUI
         /// The sprite borders (in texture space, range 0-1).
         /// </summary>
         [ExpandGroups, EditorOrder(3), Limit(0, 1), Tooltip("The sprite borders (in texture space, range 0-1).")]
-        public Margin Border = new Margin(0.1f);
+        public Margin Border = new(0.1f);
 
 #if FLAX_EDITOR
         /// <summary>

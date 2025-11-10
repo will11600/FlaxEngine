@@ -11,7 +11,7 @@ namespace FlaxEngine.GUI
     public abstract class RootControl : ContainerControl
     {
         private static ContainerControl _gameRoot;
-        private static CanvasContainer _canvasContainer = new CanvasContainer();
+        private static CanvasContainer _canvasContainer = new();
 
         /// <summary>
         /// Gets the main GUI control (it can be window or editor overriden control). Use it to plug-in custom GUI controls.
@@ -49,17 +49,17 @@ namespace FlaxEngine.GUI
         /// <summary>
         /// The update callbacks collection. Controls can register for this to get the update event for logic handling.
         /// </summary>
-        public readonly List<UpdateDelegate> UpdateCallbacks = new List<UpdateDelegate>(1024);
+        public readonly List<UpdateDelegate> UpdateCallbacks = new(1024);
 
         /// <summary>
         /// The update callbacks to add before invoking the update.
         /// </summary>
-        public List<UpdateDelegate> UpdateCallbacksToAdd = new List<UpdateDelegate>();
+        public List<UpdateDelegate> UpdateCallbacksToAdd = new();
 
         /// <summary>
         /// The update callbacks to remove before invoking the update.
         /// </summary>
-        public List<UpdateDelegate> UpdateCallbacksToRemove = new List<UpdateDelegate>();
+        public List<UpdateDelegate> UpdateCallbacksToRemove = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RootControl"/> class.

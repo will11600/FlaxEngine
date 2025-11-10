@@ -387,7 +387,7 @@ namespace FlaxEditor.GUI.Timeline.Tracks
                    type.IsClass;
         }
 
-        private static readonly HashSet<Type> InvalidGenericTypes = new HashSet<Type>
+        private static readonly HashSet<Type> InvalidGenericTypes = new()
         {
             typeof(Action), typeof(Action<>), typeof(Action<,>),
             typeof(Func<>), typeof(Func<,>), typeof(Func<,,>),
@@ -396,7 +396,7 @@ namespace FlaxEditor.GUI.Timeline.Tracks
         /// <summary>
         /// Maps the type to the default track archetype for it.
         /// </summary>
-        protected static readonly Dictionary<Type, TrackArchetype> BasicTypesTrackArchetypes = new Dictionary<Type, TrackArchetype>
+        protected static readonly Dictionary<Type, TrackArchetype> BasicTypesTrackArchetypes = new()
         {
             { typeof(bool), KeyframesPropertyTrack.GetArchetype() },
             { typeof(byte), KeyframesPropertyTrack.GetArchetype() },

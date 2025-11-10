@@ -121,7 +121,7 @@ namespace FlaxEditor.Windows
             }
         }
 
-        private readonly List<CameraPreview> _previews = new List<CameraPreview>();
+        private readonly List<CameraPreview> _previews = new();
         private Actor _pilotActor;
         private BoundingBox _pilotBounds;
         private Transform _pilotStart;

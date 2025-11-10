@@ -83,7 +83,7 @@ namespace FlaxEditor.Tools.Foliage
             [EditorOrder(215), EditorDisplay("Painting"), Limit(0.0f, 360.0f), Tooltip("The minimum and maximum ground slope angle to paint foliage on it (in degrees).")]
             public Float2 PaintGroundSlopeAngleRange
             {
-                get => new Float2(_type.PaintGroundSlopeAngleMin, _type.PaintGroundSlopeAngleMax);
+                get => new(_type.PaintGroundSlopeAngleMin, _type.PaintGroundSlopeAngleMax);
                 set
                 {
                     _type.PaintGroundSlopeAngleMin = value.X;

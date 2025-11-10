@@ -34,7 +34,7 @@ namespace FlaxEditor.Tools.Terrain
         private class Options
         {
             [EditorOrder(100), EditorDisplay("Layout", "Number Of Patches"), DefaultValue(typeof(Int2), "1,1"), Limit(0, 512), Tooltip("Amount of terrain patches in each direction (X and Z). Each terrain patch contains a grid of 16 chunks. Patches can be later added or removed from terrain using a terrain editor tool.")]
-            public Int2 NumberOfPatches = new Int2(1, 1);
+            public Int2 NumberOfPatches = new(1, 1);
 
             [EditorOrder(110), EditorDisplay("Layout"), DefaultValue(ChunkSizes._127), Tooltip("The size of the chunk (amount of quads per edge for the highest LOD).")]
             public ChunkSizes ChunkSize = ChunkSizes._127;
@@ -61,7 +61,7 @@ namespace FlaxEditor.Tools.Terrain
             public Texture Splatmap2;
 
             [EditorOrder(400), EditorDisplay("Transform", "Position"), DefaultValue(typeof(Double3), "0,0,0"), Tooltip("Position of the terrain (importer offset it on the Y axis.)")]
-            public Double3 Position = new Double3(0.0f, 0.0f, 0.0f);
+            public Double3 Position = new(0.0f, 0.0f, 0.0f);
 
             [EditorOrder(410), EditorDisplay("Transform", "Rotation"), DefaultValue(typeof(Quaternion), "0,0,0,1"), Tooltip("Orientation of the terrain")]
             public Quaternion Orientation = Quaternion.Identity;
@@ -70,7 +70,7 @@ namespace FlaxEditor.Tools.Terrain
             public float Scale = 1.0f;
         }
 
-        private readonly Options _options = new Options();
+        private readonly Options _options = new();
         private bool _isDone;
         private bool _isWorking;
         private FlaxEngine.Terrain _terrain;

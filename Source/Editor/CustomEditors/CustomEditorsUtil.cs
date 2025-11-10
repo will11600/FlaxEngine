@@ -16,7 +16,7 @@ namespace FlaxEditor.CustomEditors
 {
     internal static partial class CustomEditorsUtil
     {
-        internal static readonly Dictionary<Type, string> InBuildTypeNames = new Dictionary<Type, string>()
+        internal static readonly Dictionary<Type, string> InBuildTypeNames = new()
         {
             { typeof(bool), "bool" },
             { typeof(byte), "byte" },

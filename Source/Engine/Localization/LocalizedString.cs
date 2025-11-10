@@ -23,7 +23,7 @@ namespace FlaxEngine
         /// <summary>
         /// Empty string without localization.
         /// </summary>
-        public static readonly LocalizedString Empty = new LocalizedString(null);
+        public static readonly LocalizedString Empty = new(null);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalizedString"/> class.

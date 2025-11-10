@@ -468,7 +468,7 @@ namespace FlaxEditor.Windows
         private InterfaceOptions.TimestampsFormats _timestampsFormats;
         private bool _showLogType;
 
-        private List<Entry> _entries = new List<Entry>(1024);
+        private List<Entry> _entries = new(1024);
         private bool _isDirty;
         private int _logTypeShowMask = (int)LogType.Info | (int)LogType.Warning | (int)LogType.Error | (int)LogType.Fatal;
         private float _scrollSize = 18.0f;
@@ -477,10 +477,10 @@ namespace FlaxEditor.Windows
         private byte[] _outLogTypes = new byte[OutCapacity];
         private long[] _outLogTimes = new long[OutCapacity];
         private int _textBufferCount;
-        private StringBuilder _textBuffer = new StringBuilder();
-        private List<TextBlock> _textBlocks = new List<TextBlock>();
+        private StringBuilder _textBuffer = new();
+        private List<TextBlock> _textBlocks = new();
         private DateTime _startupTime;
-        private Regex _compileRegex = new Regex("(?<path>^(?:[a-zA-Z]\\:|\\\\\\\\[ \\-\\.\\w\\.]+\\\\[ \\-\\.\\w.$]+)\\\\(?:[ \\-\\.\\w]+\\\\)*\\w([ \\w.])+)\\((?<line>\\d{1,}),\\d{1,},\\d{1,},\\d{1,}\\): (?<level>error|warning) (?<message>.*)", RegexOptions.Compiled);
+        private Regex _compileRegex = new("(?<path>^(?:[a-zA-Z]\\:|\\\\\\\\[ \\-\\.\\w\\.]+\\\\[ \\-\\.\\w.$]+)\\\\(?:[ \\-\\.\\w]+\\\\)*\\w([ \\w.])+)\\((?<line>\\d{1,}),\\d{1,},\\d{1,},\\d{1,}\\): (?<level>error|warning) (?<message>.*)", RegexOptions.Compiled);
         private List<string> _commandHistory;
         private const string CommandHistoryKey = "CommandHistory";
         private const int CommandHistoryLimit = 30;

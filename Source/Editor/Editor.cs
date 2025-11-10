@@ -48,7 +48,7 @@ namespace FlaxEditor
             JsonSerializer.Settings.Converters.Add(new SceneTreeNodeConverter());
         }
 
-        private readonly List<EditorModule> _modules = new List<EditorModule>(16);
+        private readonly List<EditorModule> _modules = new(16);
         private bool _isAfterInit, _areModulesInited, _areModulesAfterInitEnd, _isHeadlessMode, _autoExit;
         private string _projectToOpen;
         private bool _projectIsNew;
@@ -217,7 +217,7 @@ namespace FlaxEditor
         /// <summary>
         /// The custom data container that is stored in Editor instance. Can be used by plugins to store the state during editor session (state is preserved during scripts reloads).
         /// </summary>
-        public Dictionary<string, string> CustomData = new Dictionary<string, string>();
+        public Dictionary<string, string> CustomData = new();
 
         /// <summary>
         /// The game project info.

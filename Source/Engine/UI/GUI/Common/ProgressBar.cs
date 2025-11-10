@@ -228,7 +228,7 @@ namespace FlaxEngine.GUI
             float progressNormalized = Mathf.InverseLerp(_minimum, _maximum, _current);
             if (progressNormalized > 0.001f)
             {
-                Rectangle barRect = new Rectangle(0, 0, Width * progressNormalized, Height);
+                Rectangle barRect = new(0, 0, Width * progressNormalized, Height);
                 switch (Origin)
                 {
                 case BarOrigin.HorizontalLeft:

@@ -43,7 +43,7 @@ namespace FlaxEditor.Windows
 
             // Create context menu
             ContextMenuButton b;
-            ContextMenu cm = new ContextMenu
+            ContextMenu cm = new()
             {
                 Tag = item
             };

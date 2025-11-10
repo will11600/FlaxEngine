@@ -337,8 +337,7 @@ namespace FlaxEditor.Surface.Archetypes
         public static NodeArchetype[] Nodes =
         {
             // Packing
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 20,
                 Title = "Pack Float2",
                 Description = "Pack components to Float2",
@@ -356,8 +355,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(1, "Y", true, typeof(float), 2, 1),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 21,
                 Title = "Pack Float3",
                 Description = "Pack components to Float3",
@@ -377,8 +375,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(2, "Z", true, typeof(float), 3, 2),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 22,
                 Title = "Pack Float4",
                 Description = "Pack components to Float4",
@@ -400,8 +397,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(3, "W", true, typeof(float), 4, 3),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 23,
                 Title = "Pack Rotation",
                 Description = "Pack components to Rotation",
@@ -421,8 +417,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(2, "Roll", true, typeof(float), 3, 2),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 24,
                 Title = "Pack Transform",
                 Description = "Pack components to Transform",
@@ -436,8 +431,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(2, "Scale", true, typeof(Float3), 3),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 25,
                 Title = "Pack Box",
                 Description = "Pack components to BoundingBox",
@@ -450,8 +444,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(1, "Maximum", true, typeof(Vector3), 2),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 26,
                 Title = "Pack Structure",
                 Create = (id, context, arch, groupArch) => new PackStructureNode(id, context, arch, groupArch),
@@ -474,8 +467,7 @@ namespace FlaxEditor.Surface.Archetypes
             // When adding more nodes here update logic in VisualScriptSurface to match the Pack/Unpack node archetypes indices
 
             // Unpacking
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 30,
                 Title = "Unpack Float2",
                 Description = "Unpack components from Float2",
@@ -488,8 +480,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(1, "Y", typeof(float), 2)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 31,
                 Title = "Unpack Float3",
                 Description = "Unpack components from Float3",
@@ -503,8 +494,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(2, "Z", typeof(float), 3)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 32,
                 Title = "Unpack Float4",
                 Description = "Unpack components from Float4",
@@ -519,8 +509,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(3, "W", typeof(float), 4)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 33,
                 Title = "Unpack Rotation",
                 Description = "Unpack components from Rotation",
@@ -534,8 +523,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(2, "Roll", typeof(float), 3)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 34,
                 Title = "Unpack Transform",
                 Description = "Unpack components from Transform",
@@ -549,8 +537,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(2, "Scale", typeof(Float3), 3)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 35,
                 Title = "Unpack Box",
                 Description = "Unpack components from BoundingBox",
@@ -563,8 +550,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(1, "Maximum", typeof(Vector3), 2),
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 36,
                 Title = "Unpack Structure",
                 Create = (id, context, arch, groupArch) => new UnpackStructureNode(id, context, arch, groupArch),
@@ -586,8 +572,7 @@ namespace FlaxEditor.Surface.Archetypes
             },
 
             // Mask X,Y,Z,W
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 40,
                 Title = "Mask X",
                 Description = "Unpack X component from Vector",
@@ -600,8 +585,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "X", typeof(float), 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 41,
                 Title = "Mask Y",
                 Description = "Unpack Y component from Vector",
@@ -614,8 +598,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "Y", typeof(float), 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 42,
                 Title = "Mask Z",
                 Description = "Unpack Z component from Vector",
@@ -628,8 +611,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "Z", typeof(float), 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 43,
                 Title = "Mask W",
                 Description = "Unpack W component from Vector",
@@ -644,8 +626,7 @@ namespace FlaxEditor.Surface.Archetypes
             },
 
             // Mask XY, YZ, XZ,...
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 44,
                 Title = "Mask XY",
                 Description = "Unpack XY components from Vector",
@@ -658,8 +639,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "XY", typeof(Float2), 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 45,
                 Title = "Mask XZ",
                 Description = "Unpack XZ components from Vector",
@@ -672,8 +652,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "XZ", typeof(Float2), 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 46,
                 Title = "Mask YZ",
                 Description = "Unpack YZ components from Vector",
@@ -686,8 +665,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "YZ", typeof(Float2), 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 47,
                 Title = "Mask ZW",
                 Description = "Unpack ZW components from Vector",
@@ -702,8 +680,7 @@ namespace FlaxEditor.Surface.Archetypes
             },
 
             // Mask XYZ
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 70,
                 Title = "Mask XYZ",
                 Description = "Unpack XYZ components from Vector",
@@ -717,8 +694,7 @@ namespace FlaxEditor.Surface.Archetypes
                 }
             },
 
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 100,
                 Title = "Append",
                 Description = "Appends vector or scalar value into vector",

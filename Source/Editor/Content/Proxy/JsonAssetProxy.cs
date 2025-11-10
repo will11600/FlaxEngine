@@ -153,7 +153,7 @@ namespace FlaxEditor.Content
             }
         }
 
-        private readonly Options _options = new Options();
+        private readonly Options _options = new();
 
         /// <inheritdoc />
         public override object Settings => _options;

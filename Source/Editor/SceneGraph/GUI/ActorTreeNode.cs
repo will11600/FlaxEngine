@@ -679,7 +679,7 @@ namespace FlaxEditor.SceneGraph.GUI
                     if (spawnParent.GetType() != typeof(Scene))
                     {
                         // Set all Actors static flags to match parents
-                        List<Actor> childActors = new List<Actor>();
+                        List<Actor> childActors = new();
                         Utilities.Utils.GetActorsTree(childActors, actor);
                         foreach (var child in childActors)
                         {

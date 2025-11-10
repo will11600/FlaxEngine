@@ -497,7 +497,7 @@ namespace FlaxEditor.Windows
         private Item CreateEditorAssetItem(string name, string path)
         {
             string globalPath = StringUtils.CombinePaths(Globals.EngineContentFolder, "Editor", path);
-            Item item = new Item(name, GUI.Drag.DragItems.GetDragData(globalPath));
+            Item item = new(name, GUI.Drag.DragItems.GetDragData(globalPath));
             item.TooltipText = $"{path}\nActor with a {name} asset.";
             return item;
         }

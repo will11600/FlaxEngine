@@ -168,7 +168,7 @@ namespace FlaxEditor.Surface
             if (nodes.Count <= 1)
                 return;
 
-            List<MoveNodesAction> undoActions = new List<MoveNodesAction>();
+            List<MoveNodesAction> undoActions = new();
 
             // Only process nodes that have any connection
             List<SurfaceNode> connectedNodes = nodes.Where(n => n.GetBoxes().Any(b => b.HasAnyConnection)).ToList();
@@ -203,7 +203,7 @@ namespace FlaxEditor.Surface
                         float boxASurfaceY = boxA.PointToParent(this, Float2.Zero).Y;
                         float boxBSurfaceY = boxB.PointToParent(this, Float2.Zero).Y;
                         float deltaY = (boxASurfaceY - boxBSurfaceY) / ViewScale;
-                        Float2 delta = new Float2(0f, deltaY);
+                        Float2 delta = new(0f, deltaY);
 
                         nodeB.Location += delta;
 

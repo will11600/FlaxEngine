@@ -29,7 +29,7 @@ namespace FlaxEditor.Surface.Archetypes
         public class SurfaceNodeParamsGet : SurfaceNode, IParametersDependantNode
         {
             private ComboBoxElement _combobox;
-            private readonly List<ISurfaceNodeElement> _dynamicChildren = new List<ISurfaceNodeElement>();
+            private readonly List<ISurfaceNodeElement> _dynamicChildren = new();
             private bool _isUpdateLocked;
             private ScriptType _layoutType;
             private NodeElementArchetype[] _layoutElements;
@@ -42,7 +42,7 @@ namespace FlaxEditor.Surface.Archetypes
             /// <summary>
             /// The default prototypes for the node elements to use for the given parameter type.
             /// </summary>
-            public static readonly Dictionary<Type, NodeElementArchetype[]> DefaultPrototypes = new Dictionary<Type, NodeElementArchetype[]>
+            public static readonly Dictionary<Type, NodeElementArchetype[]> DefaultPrototypes = new()
             {
                 {
                     typeof(bool),
@@ -557,7 +557,7 @@ namespace FlaxEditor.Surface.Archetypes
             /// <summary>
             /// The <see cref="SurfaceNodeParamsGet.DefaultPrototypes"/> implementation for Particle Emitter graph.
             /// </summary>
-            public static readonly Dictionary<Type, NodeElementArchetype[]> DefaultPrototypesParticleEmitter = new Dictionary<Type, NodeElementArchetype[]>
+            public static readonly Dictionary<Type, NodeElementArchetype[]> DefaultPrototypesParticleEmitter = new()
             {
                 {
                     typeof(bool),
@@ -1020,8 +1020,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// </summary>
         public static NodeArchetype[] Nodes =
         {
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 1,
                 Create = (id, context, arch, groupArch) => new SurfaceNodeParamsGet(id, context, arch, groupArch),
                 IsInputCompatible = SurfaceNodeParamsGet.IsInputCompatible,
@@ -1039,8 +1038,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(2, 0, 116)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 2,
                 Create = (id, context, arch, groupArch) => new SurfaceNodeParamsGetParticleEmitter(id, context, arch, groupArch),
                 IsInputCompatible = SurfaceNodeParamsGetParticleEmitter.IsInputCompatible,
@@ -1058,8 +1056,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(2, 0, 116)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 3,
                 Create = (id, context, arch, groupArch) => new SurfaceNodeParamsGetVisualScript(id, context, arch, groupArch),
                 IsInputCompatible = SurfaceNodeParamsGetVisualScript.IsInputCompatible,
@@ -1077,8 +1074,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(2, 0, 116)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 4,
                 Create = (id, context, arch, groupArch) => new SurfaceNodeParamsSet(id, context, arch, groupArch),
                 IsInputCompatible = SurfaceNodeParamsSet.IsInputCompatible,

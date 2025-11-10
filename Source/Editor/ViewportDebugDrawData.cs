@@ -16,7 +16,7 @@ namespace FlaxEditor
         private readonly List<IntPtr> _actors;
         private readonly List<HighlightData> _highlights;
         private MaterialBase _highlightMaterial;
-        private readonly List<Float3> _highlightTriangles = new List<Float3>(64);
+        private readonly List<Float3> _highlightTriangles = new(64);
         private Float3[] _highlightTrianglesSet;
         private int[] _highlightIndicesSet;
         private Model _highlightTrianglesModel;

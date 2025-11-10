@@ -105,13 +105,13 @@ namespace FlaxEditor.GUI
             }
         }
 
-        private Rectangle IconRect => new Rectangle(0, 0, Height, Height);
+        private Rectangle IconRect => new(0, 0, Height, Height);
 
-        private Rectangle Button1Rect => new Rectangle(Height + ButtonsOffset, 0, ButtonsSize, ButtonsSize);
+        private Rectangle Button1Rect => new(Height + ButtonsOffset, 0, ButtonsSize, ButtonsSize);
 
-        private Rectangle Button2Rect => new Rectangle(Height + ButtonsOffset, ButtonsSize + 2, ButtonsSize, ButtonsSize);
+        private Rectangle Button2Rect => new(Height + ButtonsOffset, ButtonsSize + 2, ButtonsSize, ButtonsSize);
 
-        private Rectangle Button3Rect => new Rectangle(Height + ButtonsOffset, (ButtonsSize + 2) * 2, ButtonsSize, ButtonsSize);
+        private Rectangle Button3Rect => new(Height + ButtonsOffset, (ButtonsSize + 2) * 2, ButtonsSize, ButtonsSize);
 
         /// <inheritdoc />
         public override void Draw()

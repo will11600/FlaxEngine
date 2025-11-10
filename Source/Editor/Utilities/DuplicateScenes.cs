@@ -18,7 +18,7 @@ namespace FlaxEditor.Utilities
             public byte[] Bytes;
         }
 
-        private readonly List<SceneData> _scenesData = new List<SceneData>(16);
+        private readonly List<SceneData> _scenesData = new(16);
 
         /// <summary>
         /// Checks if scene data has been gathered.

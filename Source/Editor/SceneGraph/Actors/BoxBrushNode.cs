@@ -158,7 +158,7 @@ namespace FlaxEditor.SceneGraph.Actors
                 {
                     var actor = Brush;
                     var localOffset = _offset * actor.Size + actor.Center;
-                    Transform localTrans = new Transform(localOffset);
+                    Transform localTrans = new(localOffset);
                     return actor.Transform.LocalToWorld(localTrans);
                 }
                 set

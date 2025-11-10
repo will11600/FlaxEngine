@@ -284,7 +284,7 @@ namespace FlaxEngine
         {
             int zeroExponent = -112;
 
-            Packed packed = new Packed(rawValue);
+            Packed packed = new(rawValue);
             uint* result = stackalloc uint[4];
             uint exponent;
 

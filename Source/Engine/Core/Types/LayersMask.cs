@@ -46,7 +46,7 @@ namespace FlaxEngine
         /// <returns>A layer mask with the mask set to the layers found. Returns a mask with 0 if not found.</returns>
         public static LayersMask GetMask(params string[] layerNames)
         {
-            LayersMask mask = new LayersMask();
+            LayersMask mask = new();
             foreach (var layerName in layerNames)
             {
                 // Ignore blank entries
@@ -85,7 +85,7 @@ namespace FlaxEngine
         /// <param name="left">The left mask.</param>
         /// <param name="right">The right mask.</param>
         /// <returns>The sum of the two masks.</returns>
-        public static LayersMask operator +(LayersMask left, LayersMask right) => new LayersMask(left.Mask | right.Mask);
+        public static LayersMask operator +(LayersMask left, LayersMask right) => new(left.Mask | right.Mask);
 
         /// <summary>
         /// Removes one mask from another.
@@ -93,7 +93,7 @@ namespace FlaxEngine
         /// <param name="left">The left mask.</param>
         /// <param name="right">The right mask.</param>
         /// <returns>The left mask without right mask.</returns>
-        public static LayersMask operator -(LayersMask left, LayersMask right) => new LayersMask(left.Mask & ~right.Mask);
+        public static LayersMask operator -(LayersMask left, LayersMask right) => new(left.Mask & ~right.Mask);
 
         /// <summary>
         /// Performance bitwise OR of the masks.
@@ -101,7 +101,7 @@ namespace FlaxEngine
         /// <param name="left">The left mask.</param>
         /// <param name="right">The right mask.</param>
         /// <returns>The sum of the two masks.</returns>
-        public static LayersMask operator |(LayersMask left, LayersMask right) => new LayersMask(left.Mask | right.Mask);
+        public static LayersMask operator |(LayersMask left, LayersMask right) => new(left.Mask | right.Mask);
 
         /// <summary>
         /// Performance bitwise AND of the masks.
@@ -109,7 +109,7 @@ namespace FlaxEngine
         /// <param name="left">The left mask.</param>
         /// <param name="right">The right mask.</param>
         /// <returns>The conjunction of the two masks.</returns>
-        public static LayersMask operator &(LayersMask left, LayersMask right) => new LayersMask(left.Mask & right.Mask);
+        public static LayersMask operator &(LayersMask left, LayersMask right) => new(left.Mask & right.Mask);
 
         /// <summary>
         /// Performance bitwise XOR of the masks.
@@ -117,14 +117,14 @@ namespace FlaxEngine
         /// <param name="left">The left mask.</param>
         /// <param name="right">The right mask.</param>
         /// <returns>The difference of the two masks.</returns>
-        public static LayersMask operator ^(LayersMask left, LayersMask right) => new LayersMask(left.Mask ^ right.Mask);
+        public static LayersMask operator ^(LayersMask left, LayersMask right) => new(left.Mask ^ right.Mask);
 
         /// <summary>
         /// Performance bitwise NOT of the mask.
         /// </summary>
         /// <param name="left">The mask.</param>
         /// <returns>The negated mask.</returns>
-        public static LayersMask operator ~(LayersMask left) => new LayersMask(~left.Mask);
+        public static LayersMask operator ~(LayersMask left) => new(~left.Mask);
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="LayersMask"/> to <see cref="System.UInt32"/>.

@@ -22,7 +22,7 @@ namespace FlaxEditor.Tools.Foliage
         /// <summary>
         /// Gets the current brush.
         /// </summary>
-        public readonly Brush CurrentBrush = new Brush();
+        public readonly Brush CurrentBrush = new();
 
         /// <summary>
         /// The last valid cursor position of the brush (in world space).

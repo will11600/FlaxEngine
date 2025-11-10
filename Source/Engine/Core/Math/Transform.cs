@@ -28,7 +28,7 @@ namespace FlaxEngine
         /// <summary>
         /// A identity <see cref="Transform" /> with all default values
         /// </summary>
-        public static readonly Transform Identity = new Transform(Vector3.Zero);
+        public static readonly Transform Identity = new(Vector3.Zero);
 
         /// <summary>
         /// Init

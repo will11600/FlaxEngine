@@ -33,8 +33,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// </summary>
         public static NodeArchetype[] Nodes =
         {
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 1,
                 Title = "Array Length",
                 Description = "Gets the length of the array (amount of the items).",
@@ -49,8 +48,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(int), 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 2,
                 Title = "Array Contains",
                 Description = "Returns the true if array contains a given item, otherwise false.",
@@ -68,8 +66,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(bool), 2)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 3,
                 Title = "Array Index Of",
                 Description = "Returns the zero-based index of the item found in the array or -1 if nothing found.",
@@ -87,8 +84,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(int), 2)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 4,
                 Title = "Array Last Index Of",
                 Description = "Returns the zero-based index of the item found in the array or -1 if nothing found (searches from back to front).",
@@ -106,8 +102,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(int), 2)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 5,
                 Title = "Array Clear",
                 Description = "Clears array.",
@@ -122,8 +117,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 6,
                 Title = "Array Remove",
                 Description = "Removes the given item from the array.",
@@ -140,8 +134,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 2)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 7,
                 Title = "Array Remove At",
                 Description = "Removes an item at the given index from the array.",
@@ -158,8 +151,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 2)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 8,
                 Title = "Array Add",
                 Description = "Adds the item to the array (to the end).",
@@ -176,8 +168,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 2)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 9,
                 Title = "Array Insert",
                 Description = "Inserts the item to the array at the given index.",
@@ -196,8 +187,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 10,
                 Title = "Array Get",
                 Description = "Gets the item from the array (at the given zero-based index).",
@@ -215,8 +205,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(object), 2)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 11,
                 Title = "Array Set",
                 Description = "Sets the item in the array (at the given zero-based index).",
@@ -235,8 +224,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 12,
                 Title = "Array Sort",
                 Description = "Sorts the items in the array (ascending).",
@@ -251,8 +239,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 13,
                 Title = "Array Reverse",
                 Description = "Reverses the order of the items in the array.",
@@ -267,8 +254,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 14,
                 Title = "Array Add Unique",
                 Description = "Adds the unique item to the array (to the end). Does nothing it specified item was already added.",
@@ -287,8 +273,7 @@ namespace FlaxEditor.Surface.Archetypes
             },
             // first 100 IDs reserved for arrays
 
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 101,
                 Title = "Dictionary Count",
                 Description = "Gets the size of the dictionary (amount of the items).",
@@ -303,8 +288,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(int), 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 102,
                 Title = "Dictionary Contains Key",
                 Description = "Returns the true if dictionary contains a given key, otherwise false.",
@@ -323,8 +307,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(bool), 3)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 103,
                 Title = "Dictionary Contains Value",
                 Description = "Returns the true if dictionary contains a given value, otherwise false.",
@@ -343,8 +326,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(bool), 3)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 104,
                 Title = "Dictionary Clear",
                 Description = "Clears dictionary.",
@@ -359,8 +341,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 105,
                 Title = "Dictionary Remove",
                 Description = "Removes the given item from the dictionary (by key).",
@@ -378,8 +359,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 106,
                 Title = "Dictionary Set",
                 Description = "Set the item in the dictionary (a pair of key and value). Adds or updates the pair.",
@@ -398,8 +378,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
                 }
             },
-            new NodeArchetype
-            {
+            new() {
                 TypeID = 107,
                 Title = "Dictionary Get",
                 Description = "Gets the item from the dictionary (a pair of key and value).",

@@ -13,7 +13,7 @@ namespace FlaxEngine
         /// <summary>
         /// Random numbers generator.
         /// </summary>
-        public static readonly Random Random = new Random();
+        public static readonly Random Random = new();
 
         /// <summary>
         /// Generates a pseudo-random number from normalized range [0;1].

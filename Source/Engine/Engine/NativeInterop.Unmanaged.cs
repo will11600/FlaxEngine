@@ -187,7 +187,7 @@ namespace FlaxEngine.Interop
 
             *managedClasses = (NativeClassDefinitions*)NativeAlloc(assemblyTypes.Length, Unsafe.SizeOf<NativeClassDefinitions>());
             *managedClassCount = assemblyTypes.Length;
-            Span<NativeClassDefinitions> span = new Span<NativeClassDefinitions>(*managedClasses, assemblyTypes.Length);
+            Span<NativeClassDefinitions> span = new(*managedClasses, assemblyTypes.Length);
             for (int i = 0; i < assemblyTypes.Length; i++)
             {
                 Type type = assemblyTypes[i];
@@ -199,7 +199,7 @@ namespace FlaxEngine.Interop
         [UnmanagedCallersOnly]
         internal static void RegisterManagedClassNativePointers(NativeClassDefinitions** managedClasses, int managedClassCount)
         {
-            Span<NativeClassDefinitions> span = new Span<NativeClassDefinitions>(Unsafe.Read<IntPtr>(managedClasses).ToPointer(), managedClassCount);
+            Span<NativeClassDefinitions> span = new(Unsafe.Read<IntPtr>(managedClasses).ToPointer(), managedClassCount);
             foreach (ref NativeClassDefinitions managedClass in span)
             {
                 TypeHolder typeHolder = Unsafe.As<TypeHolder>(managedClass.typeHandle.Target);
@@ -262,7 +262,7 @@ namespace FlaxEngine.Interop
             NativeFieldDefinitions* arr = (NativeFieldDefinitions*)NativeAlloc(fields.Length, Unsafe.SizeOf<NativeFieldDefinitions>());
             for (int i = 0; i < fields.Length; i++)
             {
-                FieldHolder fieldHolder = new FieldHolder(fields[i], type);
+                FieldHolder fieldHolder = new(fields[i], type);
 
                 ManagedHandle fieldHandle = ManagedHandle.Alloc(fieldHolder);
 #if FLAX_EDITOR
@@ -274,7 +274,7 @@ namespace FlaxEngine.Interop
                     fieldHandleCache.Add(fieldHandle);
                 }
 
-                NativeFieldDefinitions classField = new NativeFieldDefinitions()
+                NativeFieldDefinitions classField = new()
                 {
                     name = NativeAllocStringAnsi(fieldHolder.field.Name),
                     fieldHandle = fieldHandle,
@@ -789,7 +789,7 @@ namespace FlaxEngine.Interop
             MethodHolder methodHolder = Unsafe.As<MethodHolder>(methodHandle.Target);
 
             // Wrap the method call, this is needed to get the object instance from ManagedHandle and to pass the exception back to native side
-            ThunkContext context = new ThunkContext((MethodInfo)methodHolder.method);
+            ThunkContext context = new((MethodInfo)methodHolder.method);
             Delegate methodDelegate = typeof(ThunkContext).GetMethod(nameof(ThunkContext.InvokeThunk)).CreateDelegate<InvokeThunkDelegate>(context);
             IntPtr functionPtr = Marshal.GetFunctionPointerForDelegate(methodDelegate);
 
@@ -903,12 +903,12 @@ namespace FlaxEngine.Interop
 #if FLAX_EDITOR
                 // Load assembly from loaded bytes to prevent file locking in Editor
                 var assemblyBytes = File.ReadAllBytes(assemblyPath);
-                using MemoryStream stream = new MemoryStream(assemblyBytes);
+                using MemoryStream stream = new(assemblyBytes);
                 var pdbPath = Path.ChangeExtension(assemblyPath, "pdb");
                 if (File.Exists(pdbPath))
                 {
                     // Load including debug symbols
-                    using FileStream pdbStream = new FileStream(Path.ChangeExtension(assemblyPath, "pdb"), FileMode.Open);
+                    using FileStream pdbStream = new(Path.ChangeExtension(assemblyPath, "pdb"), FileMode.Open);
                     assembly = scriptingAssemblyLoadContext.LoadFromStream(stream, pdbStream);
                 }
                 else

@@ -23,19 +23,19 @@ namespace FlaxEditor.GUI.Timeline
     {
         private static readonly KeyValuePair<float, string>[] FPSValues =
         {
-            new KeyValuePair<float, string>(12f, "12 fps"),
-            new KeyValuePair<float, string>(15f, "15 fps"),
-            new KeyValuePair<float, string>(23.976f, "23.97 (NTSC)"),
-            new KeyValuePair<float, string>(24f, "24 fps"),
-            new KeyValuePair<float, string>(25f, "25 (PAL)"),
-            new KeyValuePair<float, string>(30f, "30 fps"),
-            new KeyValuePair<float, string>(48f, "48 fps"),
-            new KeyValuePair<float, string>(50f, "50 (PAL)"),
-            new KeyValuePair<float, string>(60f, "60 fps"),
-            new KeyValuePair<float, string>(100f, "100 fps"),
-            new KeyValuePair<float, string>(120f, "120 fps"),
-            new KeyValuePair<float, string>(240f, "240 fps"),
-            new KeyValuePair<float, string>(0, "Custom"),
+            new(12f, "12 fps"),
+            new(15f, "15 fps"),
+            new(23.976f, "23.97 (NTSC)"),
+            new(24f, "24 fps"),
+            new(25f, "25 (PAL)"),
+            new(30f, "30 fps"),
+            new(48f, "48 fps"),
+            new(50f, "50 (PAL)"),
+            new(60f, "60 fps"),
+            new(100f, "100 fps"),
+            new(120f, "120 fps"),
+            new(240f, "240 fps"),
+            new(0, "Custom"),
         };
 
         internal const int FormatVersion = 4;
@@ -200,7 +200,7 @@ namespace FlaxEditor.GUI.Timeline
         /// <summary>
         /// The tracks collection.
         /// </summary>
-        protected readonly List<Track> _tracks = new List<Track>();
+        protected readonly List<Track> _tracks = new();
 
         private SplitPanel _splitter;
         private TimeIntervalsHeader _timeIntervalsHeader;
@@ -447,17 +447,17 @@ namespace FlaxEditor.GUI.Timeline
         /// <summary>
         /// The track archetypes.
         /// </summary>
-        public readonly List<TrackArchetype> TrackArchetypes = new List<TrackArchetype>(32);
+        public readonly List<TrackArchetype> TrackArchetypes = new(32);
 
         /// <summary>
         /// The selected tracks.
         /// </summary>
-        public readonly List<Track> SelectedTracks = new List<Track>();
+        public readonly List<Track> SelectedTracks = new();
 
         /// <summary>
         /// The selected media events.
         /// </summary>
-        public readonly List<Media> SelectedMedia = new List<Media>();
+        public readonly List<Media> SelectedMedia = new();
 
         /// <summary>
         /// Occurs when any collection of the selected objects in the timeline gets changed.
@@ -601,7 +601,7 @@ namespace FlaxEditor.GUI.Timeline
         /// <summary>
         /// The drag handlers pairs of drag helper and the function that creates a track on drag drop.
         /// </summary>
-        public readonly List<DragHandler> DragHandlers = new List<DragHandler>();
+        public readonly List<DragHandler> DragHandlers = new();
 
         /// <summary>
         /// The camera cut thumbnail renderer.

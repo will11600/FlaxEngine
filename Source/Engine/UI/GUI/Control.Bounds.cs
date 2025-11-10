@@ -548,8 +548,7 @@ namespace FlaxEngine.GUI
             //Matrix2x2.Multiply(ref m1, ref m2, out m1);
 
             // Scale and Shear
-            Matrix3x3 m1 = new Matrix3x3
-                (
+            Matrix3x3 m1 = new                (
                 _scale.X,
                 _scale.X * (_shear.Y == 0 ? 0 : (1.0f / Mathf.Tan(Mathf.DegreesToRadians * (90 - Mathf.Clamp(_shear.Y, -89.0f, 89.0f))))),
                 0,

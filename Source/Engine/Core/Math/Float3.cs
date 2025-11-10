@@ -77,67 +77,67 @@ namespace FlaxEngine
         /// <summary>
         /// The X unit <see cref="Float3" /> (1, 0, 0).
         /// </summary>
-        public static readonly Float3 UnitX = new Float3(1.0f, 0.0f, 0.0f);
+        public static readonly Float3 UnitX = new(1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// The Y unit <see cref="Float3" /> (0, 1, 0).
         /// </summary>
-        public static readonly Float3 UnitY = new Float3(0.0f, 1.0f, 0.0f);
+        public static readonly Float3 UnitY = new(0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// The Z unit <see cref="Float3" /> (0, 0, 1).
         /// </summary>
-        public static readonly Float3 UnitZ = new Float3(0.0f, 0.0f, 1.0f);
+        public static readonly Float3 UnitZ = new(0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Float3" /> with all of its components set to one.
         /// </summary>
-        public static readonly Float3 One = new Float3(1.0f, 1.0f, 1.0f);
+        public static readonly Float3 One = new(1.0f, 1.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Float3" /> with all of its components set to half.
         /// </summary>
-        public static readonly Float3 Half = new Float3(0.5f, 0.5f, 0.5f);
+        public static readonly Float3 Half = new(0.5f, 0.5f, 0.5f);
 
         /// <summary>
         /// A unit <see cref="Float3" /> designating up (0, 1, 0).
         /// </summary>
-        public static readonly Float3 Up = new Float3(0.0f, 1.0f, 0.0f);
+        public static readonly Float3 Up = new(0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Float3" /> designating down (0, -1, 0).
         /// </summary>
-        public static readonly Float3 Down = new Float3(0.0f, -1.0f, 0.0f);
+        public static readonly Float3 Down = new(0.0f, -1.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Float3" /> designating left (-1, 0, 0).
         /// </summary>
-        public static readonly Float3 Left = new Float3(-1.0f, 0.0f, 0.0f);
+        public static readonly Float3 Left = new(-1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Float3" /> designating right (1, 0, 0).
         /// </summary>
-        public static readonly Float3 Right = new Float3(1.0f, 0.0f, 0.0f);
+        public static readonly Float3 Right = new(1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Float3" /> designating forward in a left-handed coordinate system (0, 0, 1).
         /// </summary>
-        public static readonly Float3 Forward = new Float3(0.0f, 0.0f, 1.0f);
+        public static readonly Float3 Forward = new(0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// A unit <see cref="Float3" /> designating backward in a left-handed coordinate system (0, 0, -1).
         /// </summary>
-        public static readonly Float3 Backward = new Float3(0.0f, 0.0f, -1.0f);
+        public static readonly Float3 Backward = new(0.0f, 0.0f, -1.0f);
 
         /// <summary>
         /// A <see cref="Float3" /> with all components equal to <see cref="float.MinValue"/>.
         /// </summary>
-        public static readonly Float3 Minimum = new Float3(float.MinValue);
+        public static readonly Float3 Minimum = new(float.MinValue);
 
         /// <summary>
         /// A <see cref="Float3" /> with all components equal to <see cref="float.MaxValue"/>.
         /// </summary>
-        public static readonly Float3 Maximum = new Float3(float.MaxValue);
+        public static readonly Float3 Maximum = new(float.MaxValue);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Float3" /> struct.
@@ -275,12 +275,12 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a vector with values being absolute values of that vector.
         /// </summary>
-        public readonly Float3 Absolute => new Float3(Mathf.Abs(X), Mathf.Abs(Y), Mathf.Abs(Z));
+        public readonly Float3 Absolute => new(Mathf.Abs(X), Mathf.Abs(Y), Mathf.Abs(Z));
 
         /// <summary>
         /// Gets a vector with values being opposite to values of that vector.
         /// </summary>
-        public readonly Float3 Negative => new Float3(-X, -Y, -Z);
+        public readonly Float3 Negative => new(-X, -Y, -Z);
 
         /// <summary>
         /// Gets or sets the component at the specified index.

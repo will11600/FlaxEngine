@@ -11,7 +11,7 @@ namespace FlaxEngine
         /// <summary>
         /// A <see cref="Rectangle"/> which represents an empty space.
         /// </summary>
-        public static readonly Rectangle Empty = new Rectangle(Float2.Zero, Float2.Zero);
+        public static readonly Rectangle Empty = new(Float2.Zero, Float2.Zero);
 
         /// <summary>
         /// Gets or sets X coordinate of the left edge of the rectangle
@@ -77,7 +77,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets position of the upper right corner of the rectangle
         /// </summary>
-        public readonly Float2 UpperRight => new Float2(Location.X + Size.X, Location.Y);
+        public readonly Float2 UpperRight => new(Location.X + Size.X, Location.Y);
 
         /// <summary>
         /// Gets position of the bottom right corner of the rectangle
@@ -87,7 +87,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets position of the bottom left corner of the rectangle
         /// </summary>
-        public readonly Float2 LowerLeft => new Float2(Location.X, Location.Y + Size.Y);
+        public readonly Float2 LowerLeft => new(Location.X, Location.Y + Size.Y);
 
         /// <summary>
         /// Gets position of the upper left corner of the rectangle
@@ -97,7 +97,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets position of the upper right corner of the rectangle
         /// </summary>
-        public readonly Float2 TopRight => new Float2(Location.X + Size.X, Location.Y);
+        public readonly Float2 TopRight => new(Location.X + Size.X, Location.Y);
 
         /// <summary>
         /// Gets position of the bottom right corner of the rectangle
@@ -107,7 +107,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets position of the bottom left corner of the rectangle
         /// </summary>
-        public readonly Float2 BottomLeft => new Float2(Location.X, Location.Y + Size.Y);
+        public readonly Float2 BottomLeft => new(Location.X, Location.Y + Size.Y);
 
         /// <summary>
         /// Gets center position of the rectangle

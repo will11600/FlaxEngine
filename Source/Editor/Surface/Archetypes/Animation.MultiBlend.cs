@@ -24,7 +24,7 @@ namespace FlaxEditor.Surface.Archetypes
         private Float2 _rangeX, _rangeY;
         private Float2 _debugPos = Float2.Minimum;
         private float _debugScale = 1.0f;
-        private readonly List<BlendPoint> _blendPoints = new List<BlendPoint>();
+        private readonly List<BlendPoint> _blendPoints = new();
 
         /// <summary>
         /// Represents single blend point.

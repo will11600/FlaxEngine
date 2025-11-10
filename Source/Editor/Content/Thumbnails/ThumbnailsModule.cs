@@ -21,10 +21,10 @@ namespace FlaxEditor.Content.Thumbnails
         /// </summary>
         public const float MinimumRequiredResourcesQuality = 0.8f;
 
-        private readonly List<PreviewsCache> _cache = new List<PreviewsCache>(4);
+        private readonly List<PreviewsCache> _cache = new(4);
         private readonly string _cacheFolder;
-        private readonly List<ThumbnailRequest> _requests = new List<ThumbnailRequest>(128);
-        private readonly PreviewRoot _guiRoot = new PreviewRoot();
+        private readonly List<ThumbnailRequest> _requests = new(128);
+        private readonly PreviewRoot _guiRoot = new();
         private DateTime _lastFlushTime;
         private RenderTask _task;
         private GPUTexture _output;

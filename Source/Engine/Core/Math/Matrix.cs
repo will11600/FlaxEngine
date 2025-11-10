@@ -70,7 +70,7 @@ namespace FlaxEngine
         /// <summary>
         /// The identity <see cref="Matrix" />.
         /// </summary>
-        public static readonly Matrix Identity = new Matrix
+        public static readonly Matrix Identity = new()
         {
             M11 = 1.0f,
             M22 = 1.0f,
@@ -163,7 +163,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Up
         {
-            readonly get => new Float3(M21, M22, M23);
+            readonly get => new(M21, M22, M23);
             set
             {
                 M21 = value.X;
@@ -177,7 +177,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Down
         {
-            readonly get => new Float3(-M21, -M22, -M23);
+            readonly get => new(-M21, -M22, -M23);
             set
             {
                 M21 = -value.X;
@@ -191,7 +191,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Right
         {
-            readonly get => new Float3(M11, M12, M13);
+            readonly get => new(M11, M12, M13);
             set
             {
                 M11 = value.X;
@@ -205,7 +205,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Left
         {
-            readonly get => new Float3(-M11, -M12, -M13);
+            readonly get => new(-M11, -M12, -M13);
             set
             {
                 M11 = -value.X;
@@ -219,7 +219,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Forward
         {
-            readonly get => new Float3(M31, M32, M33);
+            readonly get => new(M31, M32, M33);
             set
             {
                 M31 = value.X;
@@ -233,7 +233,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Backward
         {
-            readonly get => new Float3(-M31, -M32, -M33);
+            readonly get => new(-M31, -M32, -M33);
             set
             {
                 M31 = -value.X;
@@ -358,7 +358,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Row1
         {
-            readonly get => new Float4(M11, M12, M13, M14);
+            readonly get => new(M11, M12, M13, M14);
             set
             {
                 M11 = value.X;
@@ -373,7 +373,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Row2
         {
-            readonly get => new Float4(M21, M22, M23, M24);
+            readonly get => new(M21, M22, M23, M24);
             set
             {
                 M21 = value.X;
@@ -388,7 +388,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Row3
         {
-            readonly get => new Float4(M31, M32, M33, M34);
+            readonly get => new(M31, M32, M33, M34);
             set
             {
                 M31 = value.X;
@@ -403,7 +403,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Row4
         {
-            readonly get => new Float4(M41, M42, M43, M44);
+            readonly get => new(M41, M42, M43, M44);
             set
             {
                 M41 = value.X;
@@ -418,7 +418,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Column1
         {
-            readonly get => new Float4(M11, M21, M31, M41);
+            readonly get => new(M11, M21, M31, M41);
             set
             {
                 M11 = value.X;
@@ -433,7 +433,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Column2
         {
-            readonly get => new Float4(M12, M22, M32, M42);
+            readonly get => new(M12, M22, M32, M42);
             set
             {
                 M12 = value.X;
@@ -448,7 +448,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Column3
         {
-            readonly get => new Float4(M13, M23, M33, M43);
+            readonly get => new(M13, M23, M33, M43);
             set
             {
                 M13 = value.X;
@@ -463,7 +463,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Column4
         {
-            readonly get => new Float4(M14, M24, M34, M44);
+            readonly get => new(M14, M24, M34, M44);
             set
             {
                 M14 = value.X;
@@ -478,7 +478,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 TranslationVector
         {
-            readonly get => new Float3(M41, M42, M43);
+            readonly get => new(M41, M42, M43);
             set
             {
                 M41 = value.X;
@@ -492,7 +492,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 ScaleVector
         {
-            readonly get => new Float3(M11, M22, M33);
+            readonly get => new(M11, M22, M33);
             set
             {
                 M11 = value.X;

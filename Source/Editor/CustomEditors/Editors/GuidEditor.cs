@@ -32,7 +32,7 @@ namespace FlaxEditor.CustomEditors.Editors
             if (assetReference != null)
             {
                 _picker = layout.Custom<AssetPicker>().CustomControl;
-                ScriptType assetType = new ScriptType();
+                ScriptType assetType = new();
 
                 float height = 48;
                 if (assetReference.UseSmallPicker)

@@ -289,7 +289,7 @@ namespace FlaxEditor.Viewport
         /// </summary>
         public Transform ViewTransform
         {
-            get => new Transform(ViewPosition, ViewOrientation);
+            get => new(ViewPosition, ViewOrientation);
             set
             {
                 ViewPosition = value.Translation;
@@ -330,7 +330,7 @@ namespace FlaxEditor.Viewport
         /// </summary>
         public Ray ViewRay
         {
-            get => new Ray(ViewPosition, ViewDirection);
+            get => new(ViewPosition, ViewDirection);
             set
             {
                 ViewPosition = value.Position;
@@ -381,7 +381,7 @@ namespace FlaxEditor.Viewport
         /// </summary>
         public Float2 YawPitch
         {
-            get => new Float2(_yaw, _pitch);
+            get => new(_yaw, _pitch);
             set
             {
                 Yaw = value.X;
@@ -394,7 +394,7 @@ namespace FlaxEditor.Viewport
         /// </summary>
         public Float3 EulerAngles
         {
-            get => new Float3(_pitch, _yaw, 0);
+            get => new(_pitch, _yaw, 0);
             set
             {
                 Pitch = value.X;
@@ -510,7 +510,7 @@ namespace FlaxEditor.Viewport
         /// <summary>
         /// The input actions collection to processed during user input.
         /// </summary>
-        public InputActionsContainer InputActions = new InputActionsContainer();
+        public InputActionsContainer InputActions = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorViewport"/> class.
@@ -882,7 +882,7 @@ namespace FlaxEditor.Viewport
                         if (button.Tag != null)
                         {
                             int layerIndex = (int)button.Tag;
-                            LayersMask mask = new LayersMask(layerIndex);
+                            LayersMask mask = new(layerIndex);
                             Task.ViewLayersMask ^= mask;
                             button.Icon = (Task.ViewLayersMask & mask) != 0 ? Style.Current.CheckBoxTick : SpriteHandle.Invalid;
                         }
@@ -1986,12 +1986,12 @@ namespace FlaxEditor.Viewport
 
         private readonly CameraViewpoint[] CameraViewpointValues =
         {
-            new CameraViewpoint("Front", new Float3(0, 180, 0)),
-            new CameraViewpoint("Back", new Float3(0, 0, 0)),
-            new CameraViewpoint("Left", new Float3(0, 90, 0)),
-            new CameraViewpoint("Right", new Float3(0, -90, 0)),
-            new CameraViewpoint("Top", new Float3(90, 0, 0)),
-            new CameraViewpoint("Bottom", new Float3(-90, 0, 0))
+            new("Front", new Float3(0, 180, 0)),
+            new("Back", new Float3(0, 0, 0)),
+            new("Left", new Float3(0, 90, 0)),
+            new("Right", new Float3(0, -90, 0)),
+            new("Top", new Float3(90, 0, 0)),
+            new("Bottom", new Float3(-90, 0, 0))
         };
 
         private struct ViewModeOptions
@@ -2026,14 +2026,14 @@ namespace FlaxEditor.Viewport
 
         private static readonly ViewModeOptions[] ViewModeValues =
         {
-            new ViewModeOptions(ViewMode.Default, "Default", Editor.Instance.Options.Options.Input.Default),
-            new ViewModeOptions(ViewMode.Unlit, "Unlit", Editor.Instance.Options.Options.Input.Unlit),
-            new ViewModeOptions(ViewMode.NoPostFx, "No PostFx", Editor.Instance.Options.Options.Input.NoPostFX),
-            new ViewModeOptions(ViewMode.Wireframe, "Wireframe", Editor.Instance.Options.Options.Input.Wireframe),
-            new ViewModeOptions(ViewMode.LightBuffer, "Light Buffer", Editor.Instance.Options.Options.Input.LightBuffer),
-            new ViewModeOptions(ViewMode.Reflections, "Reflections Buffer", Editor.Instance.Options.Options.Input.ReflectionsBuffer),
-            new ViewModeOptions(ViewMode.Depth, "Depth Buffer", Editor.Instance.Options.Options.Input.DepthBuffer),
-            new ViewModeOptions("GBuffer", new[]
+            new(ViewMode.Default, "Default", Editor.Instance.Options.Options.Input.Default),
+            new(ViewMode.Unlit, "Unlit", Editor.Instance.Options.Options.Input.Unlit),
+            new(ViewMode.NoPostFx, "No PostFx", Editor.Instance.Options.Options.Input.NoPostFX),
+            new(ViewMode.Wireframe, "Wireframe", Editor.Instance.Options.Options.Input.Wireframe),
+            new(ViewMode.LightBuffer, "Light Buffer", Editor.Instance.Options.Options.Input.LightBuffer),
+            new(ViewMode.Reflections, "Reflections Buffer", Editor.Instance.Options.Options.Input.ReflectionsBuffer),
+            new(ViewMode.Depth, "Depth Buffer", Editor.Instance.Options.Options.Input.DepthBuffer),
+            new("GBuffer", new[]
             {
                 new ViewModeOptions(ViewMode.Diffuse, "Diffuse"),
                 new ViewModeOptions(ViewMode.Metalness, "Metalness"),
@@ -2046,16 +2046,16 @@ namespace FlaxEditor.Viewport
                 new ViewModeOptions(ViewMode.Normals, "Normals"),
                 new ViewModeOptions(ViewMode.AmbientOcclusion, "Ambient Occlusion"),
             }),
-            new ViewModeOptions(ViewMode.MotionVectors, "Motion Vectors", Editor.Instance.Options.Options.Input.MotionVectors),
-            new ViewModeOptions(ViewMode.LightmapUVsDensity, "Lightmap UVs Density", Editor.Instance.Options.Options.Input.LightmapUVDensity),
-            new ViewModeOptions(ViewMode.VertexColors, "Vertex Colors", Editor.Instance.Options.Options.Input.VertexColors),
-            new ViewModeOptions(ViewMode.PhysicsColliders, "Physics Colliders", Editor.Instance.Options.Options.Input.PhysicsColliders),
-            new ViewModeOptions(ViewMode.LODPreview, "LOD Preview", Editor.Instance.Options.Options.Input.LODPreview),
-            new ViewModeOptions(ViewMode.MaterialComplexity, "Material Complexity", Editor.Instance.Options.Options.Input.MaterialComplexity),
-            new ViewModeOptions(ViewMode.QuadOverdraw, "Quad Overdraw", Editor.Instance.Options.Options.Input.QuadOverdraw),
-            new ViewModeOptions(ViewMode.GlobalSDF, "Global SDF", Editor.Instance.Options.Options.Input.GloablSDF),
-            new ViewModeOptions(ViewMode.GlobalSurfaceAtlas, "Global Surface Atlas", Editor.Instance.Options.Options.Input.GlobalSurfaceAtlas),
-            new ViewModeOptions(ViewMode.GlobalIllumination, "Global Illumination", Editor.Instance.Options.Options.Input.GlobalIllumination),
+            new(ViewMode.MotionVectors, "Motion Vectors", Editor.Instance.Options.Options.Input.MotionVectors),
+            new(ViewMode.LightmapUVsDensity, "Lightmap UVs Density", Editor.Instance.Options.Options.Input.LightmapUVDensity),
+            new(ViewMode.VertexColors, "Vertex Colors", Editor.Instance.Options.Options.Input.VertexColors),
+            new(ViewMode.PhysicsColliders, "Physics Colliders", Editor.Instance.Options.Options.Input.PhysicsColliders),
+            new(ViewMode.LODPreview, "LOD Preview", Editor.Instance.Options.Options.Input.LODPreview),
+            new(ViewMode.MaterialComplexity, "Material Complexity", Editor.Instance.Options.Options.Input.MaterialComplexity),
+            new(ViewMode.QuadOverdraw, "Quad Overdraw", Editor.Instance.Options.Options.Input.QuadOverdraw),
+            new(ViewMode.GlobalSDF, "Global SDF", Editor.Instance.Options.Options.Input.GloablSDF),
+            new(ViewMode.GlobalSurfaceAtlas, "Global Surface Atlas", Editor.Instance.Options.Options.Input.GlobalSurfaceAtlas),
+            new(ViewMode.GlobalIllumination, "Global Illumination", Editor.Instance.Options.Options.Input.GlobalIllumination),
         };
 
         private void WidgetViewModeShowHideClicked(ContextMenuButton button)
@@ -2100,33 +2100,33 @@ namespace FlaxEditor.Viewport
 
         private static readonly ViewFlagOptions[] ViewFlagsValues =
         {
-            new ViewFlagOptions(ViewFlags.AntiAliasing, "Anti Aliasing", Editor.Instance.Options.Options.Input.AntiAliasing),
-            new ViewFlagOptions(ViewFlags.Shadows, "Shadows", Editor.Instance.Options.Options.Input.Shadows),
-            new ViewFlagOptions(ViewFlags.EditorSprites, "Editor Sprites", Editor.Instance.Options.Options.Input.EditorSprites),
-            new ViewFlagOptions(ViewFlags.Reflections, "Reflections", Editor.Instance.Options.Options.Input.Reflections),
-            new ViewFlagOptions(ViewFlags.SSR, "Screen Space Reflections", Editor.Instance.Options.Options.Input.ScreenSpaceReflections),
-            new ViewFlagOptions(ViewFlags.AO, "Ambient Occlusion", Editor.Instance.Options.Options.Input.AmbientOcclusion),
-            new ViewFlagOptions(ViewFlags.GI, "Global Illumination", Editor.Instance.Options.Options.Input.GlobalIlluminationViewFlag),
-            new ViewFlagOptions(ViewFlags.DirectionalLights, "Directional Lights", Editor.Instance.Options.Options.Input.DirectionalLights),
-            new ViewFlagOptions(ViewFlags.PointLights, "Point Lights", Editor.Instance.Options.Options.Input.PointLights),
-            new ViewFlagOptions(ViewFlags.SpotLights, "Spot Lights", Editor.Instance.Options.Options.Input.SpotLights),
-            new ViewFlagOptions(ViewFlags.SkyLights, "Sky Lights", Editor.Instance.Options.Options.Input.SkyLights),
-            new ViewFlagOptions(ViewFlags.Sky, "Sky", Editor.Instance.Options.Options.Input.Sky),
-            new ViewFlagOptions(ViewFlags.Fog, "Fog", Editor.Instance.Options.Options.Input.Fog),
-            new ViewFlagOptions(ViewFlags.SpecularLight, "Specular Light", Editor.Instance.Options.Options.Input.SpecularLight),
-            new ViewFlagOptions(ViewFlags.Decals, "Decals", Editor.Instance.Options.Options.Input.Decals),
-            new ViewFlagOptions(ViewFlags.CustomPostProcess, "Custom Post Process", Editor.Instance.Options.Options.Input.CustomPostProcess),
-            new ViewFlagOptions(ViewFlags.Bloom, "Bloom", Editor.Instance.Options.Options.Input.Bloom),
-            new ViewFlagOptions(ViewFlags.ToneMapping, "Tone Mapping", Editor.Instance.Options.Options.Input.ToneMapping),
-            new ViewFlagOptions(ViewFlags.EyeAdaptation, "Eye Adaptation", Editor.Instance.Options.Options.Input.EyeAdaptation),
-            new ViewFlagOptions(ViewFlags.CameraArtifacts, "Camera Artifacts", Editor.Instance.Options.Options.Input.CameraArtifacts),
-            new ViewFlagOptions(ViewFlags.LensFlares, "Lens Flares", Editor.Instance.Options.Options.Input.LensFlares),
-            new ViewFlagOptions(ViewFlags.DepthOfField, "Depth of Field", Editor.Instance.Options.Options.Input.DepthOfField),
-            new ViewFlagOptions(ViewFlags.MotionBlur, "Motion Blur", Editor.Instance.Options.Options.Input.MotionBlur),
-            new ViewFlagOptions(ViewFlags.ContactShadows, "Contact Shadows", Editor.Instance.Options.Options.Input.ContactShadows),
-            new ViewFlagOptions(ViewFlags.PhysicsDebug, "Physics Debug", Editor.Instance.Options.Options.Input.PhysicsDebug),
-            new ViewFlagOptions(ViewFlags.LightsDebug, "Lights Debug", Editor.Instance.Options.Options.Input.LightsDebug),
-            new ViewFlagOptions(ViewFlags.DebugDraw, "Debug Draw", Editor.Instance.Options.Options.Input.DebugDraw),
+            new(ViewFlags.AntiAliasing, "Anti Aliasing", Editor.Instance.Options.Options.Input.AntiAliasing),
+            new(ViewFlags.Shadows, "Shadows", Editor.Instance.Options.Options.Input.Shadows),
+            new(ViewFlags.EditorSprites, "Editor Sprites", Editor.Instance.Options.Options.Input.EditorSprites),
+            new(ViewFlags.Reflections, "Reflections", Editor.Instance.Options.Options.Input.Reflections),
+            new(ViewFlags.SSR, "Screen Space Reflections", Editor.Instance.Options.Options.Input.ScreenSpaceReflections),
+            new(ViewFlags.AO, "Ambient Occlusion", Editor.Instance.Options.Options.Input.AmbientOcclusion),
+            new(ViewFlags.GI, "Global Illumination", Editor.Instance.Options.Options.Input.GlobalIlluminationViewFlag),
+            new(ViewFlags.DirectionalLights, "Directional Lights", Editor.Instance.Options.Options.Input.DirectionalLights),
+            new(ViewFlags.PointLights, "Point Lights", Editor.Instance.Options.Options.Input.PointLights),
+            new(ViewFlags.SpotLights, "Spot Lights", Editor.Instance.Options.Options.Input.SpotLights),
+            new(ViewFlags.SkyLights, "Sky Lights", Editor.Instance.Options.Options.Input.SkyLights),
+            new(ViewFlags.Sky, "Sky", Editor.Instance.Options.Options.Input.Sky),
+            new(ViewFlags.Fog, "Fog", Editor.Instance.Options.Options.Input.Fog),
+            new(ViewFlags.SpecularLight, "Specular Light", Editor.Instance.Options.Options.Input.SpecularLight),
+            new(ViewFlags.Decals, "Decals", Editor.Instance.Options.Options.Input.Decals),
+            new(ViewFlags.CustomPostProcess, "Custom Post Process", Editor.Instance.Options.Options.Input.CustomPostProcess),
+            new(ViewFlags.Bloom, "Bloom", Editor.Instance.Options.Options.Input.Bloom),
+            new(ViewFlags.ToneMapping, "Tone Mapping", Editor.Instance.Options.Options.Input.ToneMapping),
+            new(ViewFlags.EyeAdaptation, "Eye Adaptation", Editor.Instance.Options.Options.Input.EyeAdaptation),
+            new(ViewFlags.CameraArtifacts, "Camera Artifacts", Editor.Instance.Options.Options.Input.CameraArtifacts),
+            new(ViewFlags.LensFlares, "Lens Flares", Editor.Instance.Options.Options.Input.LensFlares),
+            new(ViewFlags.DepthOfField, "Depth of Field", Editor.Instance.Options.Options.Input.DepthOfField),
+            new(ViewFlags.MotionBlur, "Motion Blur", Editor.Instance.Options.Options.Input.MotionBlur),
+            new(ViewFlags.ContactShadows, "Contact Shadows", Editor.Instance.Options.Options.Input.ContactShadows),
+            new(ViewFlags.PhysicsDebug, "Physics Debug", Editor.Instance.Options.Options.Input.PhysicsDebug),
+            new(ViewFlags.LightsDebug, "Lights Debug", Editor.Instance.Options.Options.Input.LightsDebug),
+            new(ViewFlags.DebugDraw, "Debug Draw", Editor.Instance.Options.Options.Input.DebugDraw),
         };
 
         private void WidgetViewFlagsShowHide(Control cm)
@@ -2155,7 +2155,7 @@ namespace FlaxEditor.Viewport
                 if (e is ContextMenuButton b && b != null && b.Tag != null)
                 {
                     int layerIndex = (int)b.Tag;
-                    LayersMask mask = new LayersMask(layerIndex);
+                    LayersMask mask = new(layerIndex);
                     b.Icon = (layersMask & mask) != 0 ? Style.Current.CheckBoxTick : SpriteHandle.Invalid;
                 }
             }

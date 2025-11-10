@@ -14,17 +14,17 @@ namespace FlaxEditor.CustomEditors.Editors
         /// <summary>
         /// The X axis color.
         /// </summary>
-        public static Color AxisColorX = new Color(1.0f, 0.0f, 0.02745f, 1.0f);
+        public static Color AxisColorX = new(1.0f, 0.0f, 0.02745f, 1.0f);
 
         /// <summary>
         /// The Y axis color.
         /// </summary>
-        public static Color AxisColorY = new Color(0.239215f, 1.0f, 0.047058f, 1.0f);
+        public static Color AxisColorY = new(0.239215f, 1.0f, 0.047058f, 1.0f);
 
         /// <summary>
         /// The Z axis color.
         /// </summary>
-        public static Color AxisColorZ = new Color(0.0f, 0.0235294f, 1.0f, 1.0f);
+        public static Color AxisColorZ = new(0.0f, 0.0235294f, 1.0f, 1.0f);
 
         /// <summary>
         /// The axes colors grey out scale when input field is not focused.

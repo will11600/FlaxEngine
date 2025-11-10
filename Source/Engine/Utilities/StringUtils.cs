@@ -192,7 +192,7 @@ namespace FlaxEngine
 
             string[] components = path.Split('/');
 
-            Stack<string> stack = new Stack<string>();
+            Stack<string> stack = new();
             foreach (var bit in components)
             {
                 if (bit == "..")

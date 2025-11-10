@@ -99,8 +99,8 @@ namespace FlaxEngine.GUI
         private float _scale = 1.0f;
         private float _scaleFactor = 1.0f;
         private float _physicalUnitSize = 1.0f;
-        private Float2 _resolutionMin = new Float2(1f, 1f);
-        private Float2 _resolutionMax = new Float2(7680f, 4320f);
+        private Float2 _resolutionMin = new(1f, 1f);
+        private Float2 _resolutionMax = new(7680f, 4320f);
 
         /// <summary>
         /// Gets the current UI scale. Computed based on the setup when performing layout.
@@ -244,7 +244,7 @@ namespace FlaxEngine.GUI
 #if FLAX_EDITOR
         [EditorOrder(140), EditorDisplay("Canvas Scaler"), VisibleIf(nameof(IsScaleWithResolution))]
 #endif
-        public LinearCurve<float> ResolutionCurve = new LinearCurve<float>(new[]
+        public LinearCurve<float> ResolutionCurve = new(new[]
         {
             new LinearCurve<float>.Keyframe(0f, 0f), // 0p
             new LinearCurve<float>.Keyframe(480f, 0.444f), // 480p
@@ -259,7 +259,7 @@ namespace FlaxEngine.GUI
 #if FLAX_EDITOR
         [EditorOrder(150), EditorDisplay("Canvas Scaler"), VisibleIf(nameof(IsScaleWithDpi))]
 #endif
-        public LinearCurve<float> DpiCurve = new LinearCurve<float>(new[]
+        public LinearCurve<float> DpiCurve = new(new[]
         {
             new LinearCurve<float>.Keyframe(1.0f, 1.0f),
             new LinearCurve<float>.Keyframe(96.0f, 1.0f),
@@ -390,7 +390,7 @@ namespace FlaxEngine.GUI
 
 #if FLAX_EDITOR
         /// <inheritdoc />
-        public override Rectangle EditorBounds => new Rectangle(Float2.Zero, Size / _scale);
+        public override Rectangle EditorBounds => new(Float2.Zero, Size / _scale);
 #endif
 
         /// <inheritdoc />

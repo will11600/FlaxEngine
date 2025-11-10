@@ -28,7 +28,7 @@ namespace FlaxEditor.GUI
         /// <summary>
         /// The items.
         /// </summary>
-        protected List<string> _items = new List<string>();
+        protected List<string> _items = new();
 
         /// <summary>
         /// The item tooltips (optional).
@@ -53,7 +53,7 @@ namespace FlaxEditor.GUI
         /// <summary>
         /// The selected indices.
         /// </summary>
-        protected List<int> _selectedIndices = new List<int>(4);
+        protected List<int> _selectedIndices = new(4);
 
         /// <summary>
         /// Gets or sets the items collection.

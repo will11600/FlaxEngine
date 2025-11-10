@@ -180,8 +180,8 @@ namespace FlaxEngine.Windows.Search
         private Task _task;
         private bool _searchTextExact;
         private string _searchText;
-        private List<TreeNode> _pendingResults = new List<TreeNode>();
-        private SearchSurfaceContext _searchSurfaceContext = new SearchSurfaceContext();
+        private List<TreeNode> _pendingResults = new();
+        private SearchSurfaceContext _searchSurfaceContext = new();
         private VisjectSurfaceContext _visjectSurfaceContext;
         private SurfaceStyle _visjectSurfaceStyle;
 

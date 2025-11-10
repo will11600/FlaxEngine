@@ -27,7 +27,7 @@ namespace FlaxEditor.Surface
     [HideInEditor]
     public class VisualScriptSurface : VisjectSurface
     {
-        private readonly GroupArchetype _methodOverridesGroupArchetype = new GroupArchetype
+        private readonly GroupArchetype _methodOverridesGroupArchetype = new()
         {
             GroupID = 16,
             Name = "Method Overrides",
@@ -43,7 +43,7 @@ namespace FlaxEditor.Surface
             "System.Reflection.",
         };
 
-        private static NodesCache _nodesCache = new NodesCache(IterateNodesCache);
+        private static NodesCache _nodesCache = new(IterateNodesCache);
         private DragActors _dragActors;
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace FlaxEditor.Surface
         /// <summary>
         /// The list of nodes with breakpoints set.
         /// </summary>
-        public readonly List<SurfaceNode> Breakpoints = new List<SurfaceNode>();
+        public readonly List<SurfaceNode> Breakpoints = new();
 
         /// <inheritdoc />
         public VisualScriptSurface(IVisjectSurfaceOwner owner, Action onSave, FlaxEditor.Undo undo)

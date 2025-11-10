@@ -11,7 +11,7 @@ namespace FlaxEditor.Utilities
     /// </summary>
     public sealed class SelectionCache
     {
-        private readonly List<Guid> _objects = new List<Guid>();
+        private readonly List<Guid> _objects = new();
 
         /// <summary>
         /// Caches selection.

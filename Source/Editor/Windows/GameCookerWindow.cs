@@ -39,7 +39,7 @@ namespace FlaxEditor.Windows
             public readonly GameCookerWindow GameCookerWin;
             public readonly PlatformSelector Selector;
 
-            internal readonly Dictionary<PlatformType, Platform> PerPlatformOptions = new Dictionary<PlatformType, Platform>
+            internal readonly Dictionary<PlatformType, Platform> PerPlatformOptions = new()
             {
                 { PlatformType.Windows, new Windows() },
                 { PlatformType.XboxOne, new XboxOne() },
@@ -330,7 +330,7 @@ namespace FlaxEditor.Windows
                         if (avdListTree.Selection.Count == 0)
                             return;
 
-                        CreateProcessSettings processSettings = new CreateProcessSettings
+                        CreateProcessSettings processSettings = new()
                         {
                             FileName = Path.Combine(sdkPath, "emulator", "emulator.exe"),
                             Arguments = $"-avd {avdListTree.Selection[0].Text} {commandsTextBox.Text}",
@@ -454,7 +454,7 @@ namespace FlaxEditor.Windows
                             apkFilesString += $" \"{file}\"";
                         }
 
-                        CreateProcessSettings processSettings = new CreateProcessSettings
+                        CreateProcessSettings processSettings = new()
                         {
                             FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
                             Arguments = $"-s {deviceListTree.Selection[0].Tag} {(apkFiles.Length > 1 ? "install-multiple" : "install")} {apkFilesString}",
@@ -467,7 +467,7 @@ namespace FlaxEditor.Windows
                             var gameSettings = GameSettings.Load();
                             var productName = gameSettings.ProductName.Replace(" ", "").ToLower();
                             var companyName = gameSettings.CompanyName.Replace(" ", "").ToLower();
-                            CreateProcessSettings processSettings1 = new CreateProcessSettings
+                            CreateProcessSettings processSettings1 = new()
                             {
                                 FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
                                 Arguments = $"shell am start -n com.{companyName}.{productName}/com.flaxengine.GameActivity",
@@ -826,7 +826,7 @@ namespace FlaxEditor.Windows
         private int _selectedPresetIndex = -1;
         private int _selectedTargetIndex = -1;
         private CustomEditorPresenter _targetSettings;
-        private readonly Queue<QueueItem> _buildingQueue = new Queue<QueueItem>();
+        private readonly Queue<QueueItem> _buildingQueue = new();
         private string _preBuildAction;
         private string _postBuildAction;
         private BuildPreset[] _data;

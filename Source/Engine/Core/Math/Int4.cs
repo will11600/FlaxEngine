@@ -31,37 +31,37 @@ namespace FlaxEngine
         /// <summary>
         /// The X unit <see cref="Int4" /> (1, 0, 0, 0).
         /// </summary>
-        public static readonly Int4 UnitX = new Int4(1, 0, 0, 0);
+        public static readonly Int4 UnitX = new(1, 0, 0, 0);
 
         /// <summary>
         /// The Y unit <see cref="Int4" /> (0, 1, 0, 0).
         /// </summary>
-        public static readonly Int4 UnitY = new Int4(0, 1, 0, 0);
+        public static readonly Int4 UnitY = new(0, 1, 0, 0);
 
         /// <summary>
         /// The Z unit <see cref="Int4" /> (0, 0, 1, 0).
         /// </summary>
-        public static readonly Int4 UnitZ = new Int4(0, 0, 1, 0);
+        public static readonly Int4 UnitZ = new(0, 0, 1, 0);
 
         /// <summary>
         /// The W unit <see cref="Int4" /> (0, 0, 0, 1).
         /// </summary>
-        public static readonly Int4 UnitW = new Int4(0, 0, 0, 1);
+        public static readonly Int4 UnitW = new(0, 0, 0, 1);
 
         /// <summary>
         /// A <see cref="Int4" /> with all of its components set to one.
         /// </summary>
-        public static readonly Int4 One = new Int4(1, 1, 1, 1);
+        public static readonly Int4 One = new(1, 1, 1, 1);
 
         /// <summary>
         /// A <see cref="Int4" /> with all components equal to <see cref="int.MinValue"/>.
         /// </summary>
-        public static readonly Int4 Minimum = new Int4(int.MinValue);
+        public static readonly Int4 Minimum = new(int.MinValue);
 
         /// <summary>
         /// A <see cref="Int4" /> with all components equal to <see cref="int.MaxValue"/>.
         /// </summary>
-        public static readonly Int4 Maximum = new Int4(int.MaxValue);
+        public static readonly Int4 Maximum = new(int.MaxValue);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Int4" /> struct.

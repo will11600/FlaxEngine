@@ -78,7 +78,7 @@ namespace FlaxEditor.Surface
         /// <summary>
         /// The elements collection.
         /// </summary>
-        public readonly List<ISurfaceNodeElement> Elements = new List<ISurfaceNodeElement>();
+        public readonly List<ISurfaceNodeElement> Elements = new();
 
         /// <summary>
         /// The values (node parameters in layout based on <see cref="NodeArchetype.DefaultValues"/>).
@@ -103,7 +103,7 @@ namespace FlaxEditor.Surface
         /// <summary>
         /// The metadata.
         /// </summary>
-        public readonly SurfaceMeta Meta = new SurfaceMeta();
+        public readonly SurfaceMeta Meta = new();
 
         /// <summary>
         /// Occurs when node values collection gets changed.
@@ -113,7 +113,7 @@ namespace FlaxEditor.Surface
         /// <summary>
         /// The breakpoint on the node.
         /// </summary>
-        public SurfaceBreakpoint Breakpoint = new SurfaceBreakpoint();
+        public SurfaceBreakpoint Breakpoint = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SurfaceNode"/> class.
@@ -452,7 +452,7 @@ namespace FlaxEditor.Surface
             }
         }
 
-        private static readonly List<SurfaceNode> UpdateStack = new List<SurfaceNode>();
+        private static readonly List<SurfaceNode> UpdateStack = new();
 
         /// <summary>
         /// Updates dependant/independent boxes types.
@@ -881,7 +881,7 @@ namespace FlaxEditor.Surface
 
         private string GetTooltip()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.Append(string.IsNullOrEmpty(Archetype.Signature) ? Archetype.Title : Archetype.Signature);
             if (!string.IsNullOrEmpty(Archetype.Description))
                 sb.Append("\n" + Archetype.Description);

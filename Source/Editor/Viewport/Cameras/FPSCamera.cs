@@ -30,7 +30,7 @@ namespace FlaxEditor.Viewport.Cameras
         /// <summary>
         /// The target point location. It's used to orbit around it when user clicks Alt+LMB.
         /// </summary>
-        public Vector3 TargetPoint = new Vector3(-200);
+        public Vector3 TargetPoint = new(-200);
 
         /// <summary>
         /// Sets view.

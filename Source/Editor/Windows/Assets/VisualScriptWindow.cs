@@ -81,8 +81,8 @@ namespace FlaxEditor.Windows.Assets
                 public int BBox;
             }
 
-            private List<BrokenConnection> _connectionsToRestore = new List<BrokenConnection>();
-            private List<BrokenConnection> _connectionsToRestorePrev = new List<BrokenConnection>();
+            private List<BrokenConnection> _connectionsToRestore = new();
+            private List<BrokenConnection> _connectionsToRestorePrev = new();
 
             public IVisjectSurfaceWindow Window;
             public int Index;
@@ -555,7 +555,7 @@ namespace FlaxEditor.Windows.Assets
         private List<KeyValuePair<VisualScript, uint>> _debugStepOutNodesIds;
         private bool _debugBreakNext;
         private ulong _debugBreakNextThreadId;
-        private readonly List<Editor.VisualScriptingDebugFlowInfo> _debugFlows = new List<Editor.VisualScriptingDebugFlowInfo>();
+        private readonly List<Editor.VisualScriptingDebugFlowInfo> _debugFlows = new();
 
         /// <summary>
         /// Gets the Visject Surface.

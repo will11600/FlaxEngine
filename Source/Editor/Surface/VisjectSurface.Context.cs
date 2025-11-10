@@ -11,12 +11,12 @@ namespace FlaxEditor.Surface
     {
         private VisjectSurfaceContext _root;
         private VisjectSurfaceContext _context;
-        private readonly Dictionary<ContextHandle, VisjectSurfaceContext> _contextCache = new Dictionary<ContextHandle, VisjectSurfaceContext>();
+        private readonly Dictionary<ContextHandle, VisjectSurfaceContext> _contextCache = new();
 
         /// <summary>
         /// The surface context stack.
         /// </summary>
-        public readonly Stack<VisjectSurfaceContext> ContextStack = new Stack<VisjectSurfaceContext>(8);
+        public readonly Stack<VisjectSurfaceContext> ContextStack = new(8);
 
         /// <summary>
         /// Gets the root surface context.

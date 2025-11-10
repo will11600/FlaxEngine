@@ -47,11 +47,11 @@ namespace FlaxEditor.Gizmo
         private BoundingBox YAxisBox = new BoundingBox(new Vector3(-AxisThickness), new Vector3(AxisThickness)).MakeOffsetted(AxisOffset * Vector3.UnitY).Merge(AxisLength * Vector3.UnitY);
         private BoundingBox ZAxisBox = new BoundingBox(new Vector3(-AxisThickness), new Vector3(AxisThickness)).MakeOffsetted(AxisOffset * Vector3.UnitZ).Merge(AxisLength * Vector3.UnitZ);
 
-        private BoundingBox XZBox = new BoundingBox(new Vector3(InnerExtend, 0, InnerExtend), new Vector3(OuterExtend, 0, OuterExtend));
-        private BoundingBox XYBox = new BoundingBox(new Vector3(InnerExtend, InnerExtend, 0), new Vector3(OuterExtend, OuterExtend, 0));
-        private BoundingBox YZBox = new BoundingBox(new Vector3(0, InnerExtend, InnerExtend), new Vector3(0, OuterExtend, OuterExtend));
+        private BoundingBox XZBox = new(new Vector3(InnerExtend, 0, InnerExtend), new Vector3(OuterExtend, 0, OuterExtend));
+        private BoundingBox XYBox = new(new Vector3(InnerExtend, InnerExtend, 0), new Vector3(OuterExtend, OuterExtend, 0));
+        private BoundingBox YZBox = new(new Vector3(0, InnerExtend, InnerExtend), new Vector3(0, OuterExtend, OuterExtend));
 
-        private BoundingBox CenterBoxRaw = new BoundingBox(new Vector3(-0.5f * CenterBoxScale), new Vector3(0.5f * CenterBoxScale));
+        private BoundingBox CenterBoxRaw = new(new Vector3(-0.5f * CenterBoxScale), new Vector3(0.5f * CenterBoxScale));
         private OrientedBoundingBox CenterBox => new OrientedBoundingBox(CenterBoxRaw) * _gizmoWorld;
         private const float RotateRadiusRaw = 4.0f;
 

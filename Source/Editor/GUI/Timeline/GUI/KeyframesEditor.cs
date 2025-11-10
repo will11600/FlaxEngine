@@ -578,11 +578,11 @@ namespace FlaxEditor.GUI
         /// <summary>
         /// The keyframes size.
         /// </summary>
-        private static readonly Float2 KeyframesSize = new Float2(7.0f);
+        private static readonly Float2 KeyframesSize = new(7.0f);
 
         private Contents _contents;
         private Panel _mainPanel;
-        private readonly List<KeyframePoint> _points = new List<KeyframePoint>();
+        private readonly List<KeyframePoint> _points = new();
         private bool _refreshAfterEdit;
         private Popup _popup;
         private float? _fps;
@@ -590,7 +590,7 @@ namespace FlaxEditor.GUI
         /// <summary>
         /// The keyframes collection.
         /// </summary>
-        protected readonly List<Keyframe> _keyframes = new List<Keyframe>();
+        protected readonly List<Keyframe> _keyframes = new();
 
         /// <summary>
         /// Occurs when keyframes collection gets changed (keyframe added or removed).

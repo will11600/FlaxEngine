@@ -14,7 +14,7 @@ namespace FlaxEditor.CustomEditors.Elements
         /// <summary>
         /// The custom control.
         /// </summary>
-        public readonly T CustomControl = new T();
+        public readonly T CustomControl = new();
 
         /// <inheritdoc />
         public override ContainerControl ContainerControl => CustomControl;
@@ -30,7 +30,7 @@ namespace FlaxEditor.CustomEditors.Elements
         /// <summary>
         /// The custom control.
         /// </summary>
-        public readonly T CustomControl = new T();
+        public readonly T CustomControl = new();
 
         /// <inheritdoc />
         public override Control Control => CustomControl;

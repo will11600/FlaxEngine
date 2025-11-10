@@ -14,12 +14,12 @@ namespace FlaxEditor.GUI.Docking
         /// <summary>
         /// Array with all created dock windows for that master panel.
         /// </summary>
-        public readonly List<DockWindow> Windows = new List<DockWindow>(32);
+        public readonly List<DockWindow> Windows = new(32);
 
         /// <summary>
         /// Array with all floating windows for that master panel.
         /// </summary>
-        public readonly List<FloatWindowDockPanel> FloatingPanels = new List<FloatWindowDockPanel>(4);
+        public readonly List<FloatWindowDockPanel> FloatingPanels = new(4);
 
         /// <summary>
         /// Gets the visible windows count.

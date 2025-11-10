@@ -83,7 +83,7 @@ namespace FlaxEditor.Surface
         /// <summary>
         /// Gets the actual element position.
         /// </summary>
-        public Float2 ActualPosition => new Float2(Position.X + Constants.NodeMarginX, Position.Y + Constants.NodeMarginY + Constants.NodeHeaderSize);
+        public Float2 ActualPosition => new(Position.X + Constants.NodeMarginX, Position.Y + Constants.NodeMarginY + Constants.NodeHeaderSize);
 
         /// <summary>
         /// Node element archetypes factory object. Helps to build surface nodes archetypes.
@@ -450,7 +450,7 @@ namespace FlaxEditor.Surface
                     throw new ArgumentException();
 
                 FieldInfo[] fields = enumType.GetFields();
-                List<string> values = new List<string>(fields.Length);
+                List<string> values = new(fields.Length);
                 for (int i = 0; i < fields.Length; i++)
                 {
                     var field = fields[i];

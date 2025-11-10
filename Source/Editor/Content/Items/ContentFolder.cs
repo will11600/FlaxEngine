@@ -64,7 +64,7 @@ namespace FlaxEditor.Content
         /// <summary>
         /// The subitems of this folder.
         /// </summary>
-        public readonly List<ContentItem> Children = new List<ContentItem>();
+        public readonly List<ContentItem> Children = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentFolder"/> class.

@@ -19,12 +19,12 @@ namespace FlaxEditor.SceneGraph
         /// <summary>
         /// The custom nodes types. Key = object type, Value = custom graph node type
         /// </summary>
-        public static readonly Dictionary<Type, Type> CustomNodesTypes = new Dictionary<Type, Type>();
+        public static readonly Dictionary<Type, Type> CustomNodesTypes = new();
 
         /// <summary>
         /// The nodes collection where key is ID.
         /// </summary>
-        public static readonly Dictionary<Guid, SceneGraphNode> Nodes = new Dictionary<Guid, SceneGraphNode>();
+        public static readonly Dictionary<Guid, SceneGraphNode> Nodes = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SceneGraphFactory"/> class.

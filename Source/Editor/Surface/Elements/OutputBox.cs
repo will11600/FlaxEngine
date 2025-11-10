@@ -62,8 +62,8 @@ namespace FlaxEditor.Surface.Elements
             }
 
             float connectionOffset = Mathf.Max(0f, DefaultConnectionOffset * (1 - Editor.Instance.Options.Options.Interface.ConnectionCurvature));
-            Float2 offsetStart = new Float2(start.X + connectionOffset, start.Y);
-            Float2 offsetEnd = new Float2(end.X - connectionOffset, end.Y);
+            Float2 offsetStart = new(start.X + connectionOffset, start.Y);
+            Float2 offsetEnd = new(end.X - connectionOffset, end.Y);
 
             // Calculate control points
             CalculateBezierControlPoints(offsetStart, offsetEnd, out var control1, out var control2);
@@ -112,8 +112,8 @@ namespace FlaxEditor.Surface.Elements
         public bool IntersectsConnection(Box targetBox, ref Float2 mousePosition)
         {
             float connectionOffset = Mathf.Max(0f, DefaultConnectionOffset * (1 - Editor.Instance.Options.Options.Interface.ConnectionCurvature));
-            Float2 start = new Float2(ConnectionOrigin.X + connectionOffset, ConnectionOrigin.Y);
-            Float2 end = new Float2(targetBox.ConnectionOrigin.X - connectionOffset, targetBox.ConnectionOrigin.Y);
+            Float2 start = new(ConnectionOrigin.X + connectionOffset, ConnectionOrigin.Y);
+            Float2 end = new(targetBox.ConnectionOrigin.X - connectionOffset, targetBox.ConnectionOrigin.Y);
             return IntersectsConnection(ref start, ref end, ref mousePosition, MouseOverConnectionDistance);
         }
 
@@ -135,8 +135,8 @@ namespace FlaxEditor.Surface.Elements
                 return false;
 
             float connectionOffset = Mathf.Max(0f, DefaultConnectionOffset * (1 - Editor.Instance.Options.Options.Interface.ConnectionCurvature));
-            Float2 offsetStart = new Float2(start.X + connectionOffset, start.Y);
-            Float2 offsetEnd = new Float2(end.X - connectionOffset, end.Y);
+            Float2 offsetStart = new(start.X + connectionOffset, start.Y);
+            Float2 offsetEnd = new(end.X - connectionOffset, end.Y);
 
             float squaredDistance = distance;
             CalculateBezierControlPoints(offsetStart, offsetEnd, out var control1, out var control2);

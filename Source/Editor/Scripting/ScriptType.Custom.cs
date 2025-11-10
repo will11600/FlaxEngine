@@ -86,7 +86,7 @@ namespace FlaxEditor.Scripting
         public bool CanCreateInstance => false;
 
         /// <inheritdoc />
-        public ScriptType BaseType => new ScriptType(typeof(Array));
+        public ScriptType BaseType => new(typeof(Array));
 
         /// <inheritdoc />
         public ContentItem ContentItem => null;

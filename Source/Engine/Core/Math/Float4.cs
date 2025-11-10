@@ -77,42 +77,42 @@ namespace FlaxEngine
         /// <summary>
         /// The X unit <see cref="Float4" /> (1, 0, 0, 0).
         /// </summary>
-        public static readonly Float4 UnitX = new Float4(1.0f, 0.0f, 0.0f, 0.0f);
+        public static readonly Float4 UnitX = new(1.0f, 0.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// The Y unit <see cref="Float4" /> (0, 1, 0, 0).
         /// </summary>
-        public static readonly Float4 UnitY = new Float4(0.0f, 1.0f, 0.0f, 0.0f);
+        public static readonly Float4 UnitY = new(0.0f, 1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// The Z unit <see cref="Float4" /> (0, 0, 1, 0).
         /// </summary>
-        public static readonly Float4 UnitZ = new Float4(0.0f, 0.0f, 1.0f, 0.0f);
+        public static readonly Float4 UnitZ = new(0.0f, 0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// The W unit <see cref="Float4" /> (0, 0, 0, 1).
         /// </summary>
-        public static readonly Float4 UnitW = new Float4(0.0f, 0.0f, 0.0f, 1.0f);
+        public static readonly Float4 UnitW = new(0.0f, 0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Float4" /> with all of its components set to half.
         /// </summary>
-        public static readonly Float4 Half = new Float4(0.5f, 0.5f, 0.5f, 0.5f);
+        public static readonly Float4 Half = new(0.5f, 0.5f, 0.5f, 0.5f);
 
         /// <summary>
         /// A <see cref="Float4" /> with all of its components set to one.
         /// </summary>
-        public static readonly Float4 One = new Float4(1.0f, 1.0f, 1.0f, 1.0f);
+        public static readonly Float4 One = new(1.0f, 1.0f, 1.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Float4" /> with all components equal to <see cref="float.MinValue"/>.
         /// </summary>
-        public static readonly Float4 Minimum = new Float4(float.MinValue);
+        public static readonly Float4 Minimum = new(float.MinValue);
 
         /// <summary>
         /// A <see cref="Float4" /> with all components equal to <see cref="float.MaxValue"/>.
         /// </summary>
-        public static readonly Float4 Maximum = new Float4(float.MaxValue);
+        public static readonly Float4 Maximum = new(float.MaxValue);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Float4" /> struct.
@@ -236,12 +236,12 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a vector with values being absolute values of that vector.
         /// </summary>
-        public readonly Float4 Absolute => new Float4(Mathf.Abs(X), Mathf.Abs(Y), Mathf.Abs(Z), Mathf.Abs(W));
+        public readonly Float4 Absolute => new(Mathf.Abs(X), Mathf.Abs(Y), Mathf.Abs(Z), Mathf.Abs(W));
 
         /// <summary>
         /// Gets a vector with values being opposite to values of that vector.
         /// </summary>
-        public readonly Float4 Negative => new Float4(-X, -Y, -Z, -W);
+        public readonly Float4 Negative => new(-X, -Y, -Z, -W);
 
         /// <summary>
         /// Gets or sets the component at the specified index.

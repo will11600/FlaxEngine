@@ -35,13 +35,13 @@ namespace FlaxEngine.GUI
         /// <summary>
         /// The text.
         /// </summary>
-        protected LocalizedString _text = new LocalizedString();
+        protected LocalizedString _text = new();
 
         private bool _autoWidth;
         private bool _autoHeight;
         private bool _autoFitText;
         private Float2 _textSize;
-        private Float2 _autoFitTextRange = new Float2(0.1f, 100.0f);
+        private Float2 _autoFitTextRange = new(0.1f, 100.0f);
         private Margin _margin;
 
         /// <summary>

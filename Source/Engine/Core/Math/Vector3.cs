@@ -105,67 +105,67 @@ namespace FlaxEngine
         /// <summary>
         /// The X unit <see cref="Vector3" /> (1, 0, 0).
         /// </summary>
-        public static readonly Vector3 UnitX = new Vector3(1.0f, 0.0f, 0.0f);
+        public static readonly Vector3 UnitX = new(1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// The Y unit <see cref="Vector3" /> (0, 1, 0).
         /// </summary>
-        public static readonly Vector3 UnitY = new Vector3(0.0f, 1.0f, 0.0f);
+        public static readonly Vector3 UnitY = new(0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// The Z unit <see cref="Vector3" /> (0, 0, 1).
         /// </summary>
-        public static readonly Vector3 UnitZ = new Vector3(0.0f, 0.0f, 1.0f);
+        public static readonly Vector3 UnitZ = new(0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Vector3" /> with all of its components set to one.
         /// </summary>
-        public static readonly Vector3 One = new Vector3(1.0f, 1.0f, 1.0f);
+        public static readonly Vector3 One = new(1.0f, 1.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Vector3" /> with all of its components set to half.
         /// </summary>
-        public static readonly Vector3 Half = new Vector3(0.5f, 0.5f, 0.5f);
+        public static readonly Vector3 Half = new(0.5f, 0.5f, 0.5f);
 
         /// <summary>
         /// A unit <see cref="Vector3" /> designating up (0, 1, 0).
         /// </summary>
-        public static readonly Vector3 Up = new Vector3(0.0f, 1.0f, 0.0f);
+        public static readonly Vector3 Up = new(0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3" /> designating down (0, -1, 0).
         /// </summary>
-        public static readonly Vector3 Down = new Vector3(0.0f, -1.0f, 0.0f);
+        public static readonly Vector3 Down = new(0.0f, -1.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3" /> designating left (-1, 0, 0).
         /// </summary>
-        public static readonly Vector3 Left = new Vector3(-1.0f, 0.0f, 0.0f);
+        public static readonly Vector3 Left = new(-1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3" /> designating right (1, 0, 0).
         /// </summary>
-        public static readonly Vector3 Right = new Vector3(1.0f, 0.0f, 0.0f);
+        public static readonly Vector3 Right = new(1.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3" /> designating forward in a left-handed coordinate system (0, 0, 1).
         /// </summary>
-        public static readonly Vector3 Forward = new Vector3(0.0f, 0.0f, 1.0f);
+        public static readonly Vector3 Forward = new(0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// A unit <see cref="Vector3" /> designating backward in a left-handed coordinate system (0, 0, -1).
         /// </summary>
-        public static readonly Vector3 Backward = new Vector3(0.0f, 0.0f, -1.0f);
+        public static readonly Vector3 Backward = new(0.0f, 0.0f, -1.0f);
 
         /// <summary>
         /// A <see cref="Vector3" /> with all components equal to <see cref="double.MinValue"/> (or <see cref="float.MinValue"/> if using 32-bit precision).
         /// </summary>
-        public static readonly Vector3 Minimum = new Vector3(float.MinValue);
+        public static readonly Vector3 Minimum = new(float.MinValue);
 
         /// <summary>
         /// A <see cref="Vector3" /> with all components equal to <see cref="double.MaxValue"/> (or <see cref="float.MaxValue"/> if using 32-bit precision).
         /// </summary>
-        public static readonly Vector3 Maximum = new Vector3(float.MaxValue);
+        public static readonly Vector3 Maximum = new(float.MaxValue);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector3" /> struct.
@@ -302,12 +302,12 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a vector with values being absolute values of that vector.
         /// </summary>
-        public readonly Vector3 Absolute => new Vector3(Mathr.Abs(X), Mathr.Abs(Y), Mathr.Abs(Z));
+        public readonly Vector3 Absolute => new(Mathr.Abs(X), Mathr.Abs(Y), Mathr.Abs(Z));
 
         /// <summary>
         /// Gets a vector with values being opposite to values of that vector.
         /// </summary>
-        public readonly Vector3 Negative => new Vector3(-X, -Y, -Z);
+        public readonly Vector3 Negative => new(-X, -Y, -Z);
 
         /// <summary>
         /// Gets or sets the component at the specified index.

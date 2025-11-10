@@ -15,7 +15,7 @@ namespace FlaxEditor.CustomEditors.Dedicated
     [CustomEditor(typeof(RigidBody)), DefaultEditor]
     public class RigidBodyEditor : ActorEditor
     {
-        private readonly List<CheckablePropertyNameLabel> _labels = new List<CheckablePropertyNameLabel>(64);
+        private readonly List<CheckablePropertyNameLabel> _labels = new(64);
         private const int MassOrder = 110;
         private Label _infoLabel;
 

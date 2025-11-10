@@ -285,7 +285,7 @@ namespace FlaxEditor.GUI
         /// <summary>
         /// The keyframes size.
         /// </summary>
-        protected static readonly Float2 KeyframesSize = new Float2(7.0f);
+        protected static readonly Float2 KeyframesSize = new(7.0f);
 
         /// <summary>
         /// The colors for the keyframe points.
@@ -329,7 +329,7 @@ namespace FlaxEditor.GUI
         /// <summary>
         /// The keyframe UI points.
         /// </summary>
-        protected readonly List<KeyframePoint> _points = new List<KeyframePoint>();
+        protected readonly List<KeyframePoint> _points = new();
 
         /// <summary>
         /// The tangents UI points.
@@ -1062,7 +1062,7 @@ namespace FlaxEditor.GUI
         /// <summary>
         /// The keyframes collection.
         /// </summary>
-        protected List<LinearCurve<T>.Keyframe> _keyframes = new List<LinearCurve<T>.Keyframe>();
+        protected List<LinearCurve<T>.Keyframe> _keyframes = new();
 
         /// <summary>
         /// Gets the keyframes collection (read-only).
@@ -1593,7 +1593,7 @@ namespace FlaxEditor.GUI
         /// <summary>
         /// The keyframes collection.
         /// </summary>
-        protected List<BezierCurve<T>.Keyframe> _keyframes = new List<BezierCurve<T>.Keyframe>();
+        protected List<BezierCurve<T>.Keyframe> _keyframes = new();
 
         /// <summary>
         /// Gets the keyframes collection (read-only).

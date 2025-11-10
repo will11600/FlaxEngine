@@ -98,7 +98,7 @@ public class Slider : ContainerControl
     private float _value = 100f;
     private Rectangle _thumbRect;
     private float _thumbCenter;
-    private Float2 _thumbSize = new Float2(16, 16);
+    private Float2 _thumbSize = new(16, 16);
     private bool _isSliding;
     private bool _mouseOverThumb;
 

@@ -15,7 +15,7 @@ namespace FlaxEditor.GUI.Tree
         /// <summary>
         /// The additional controls (eg. added to the header).
         /// </summary>
-        public List<Control> Addons = new List<Control>();
+        public List<Control> Addons = new();
 
         /// <inheritdoc />
         public override void Draw()

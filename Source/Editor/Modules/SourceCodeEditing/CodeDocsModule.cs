@@ -19,9 +19,9 @@ namespace FlaxEditor.Modules.SourceCodeEditing
     /// <seealso cref="FlaxEditor.Modules.EditorModule" />
     public sealed class CodeDocsModule : EditorModule
     {
-        private Dictionary<ScriptType, string> _typeCache = new Dictionary<ScriptType, string>();
-        private Dictionary<ScriptMemberInfo, string> _memberCache = new Dictionary<ScriptMemberInfo, string>();
-        private Dictionary<Assembly, Dictionary<string, string>> _xmlCache = new Dictionary<Assembly, Dictionary<string, string>>();
+        private Dictionary<ScriptType, string> _typeCache = new();
+        private Dictionary<ScriptMemberInfo, string> _memberCache = new();
+        private Dictionary<Assembly, Dictionary<string, string>> _xmlCache = new();
 
         internal CodeDocsModule(Editor editor)
         : base(editor)

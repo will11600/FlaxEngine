@@ -67,7 +67,7 @@ namespace FlaxEngine
         /// <summary>
         /// Identity ray (at zero origin pointing forwards).
         /// </summary>
-        public static readonly Ray Identity = new Ray(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f));
+        public static readonly Ray Identity = new(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ray" /> struct.
@@ -337,8 +337,8 @@ namespace FlaxEngine
         /// <returns>The resulting ray.</returns>
         public static Ray GetPickRay(float x, float y, ref Viewport viewport, ref Matrix vp)
         {
-            Vector3 nearPoint = new Vector3(x, y, 0.0f);
-            Vector3 farPoint = new Vector3(x, y, 1.0f);
+            Vector3 nearPoint = new(x, y, 0.0f);
+            Vector3 farPoint = new(x, y, 1.0f);
 
             nearPoint = Vector3.Unproject(nearPoint, viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinDepth, viewport.MaxDepth, vp);
             farPoint = Vector3.Unproject(farPoint, viewport.X, viewport.Y, viewport.Width, viewport.Height, viewport.MinDepth, viewport.MaxDepth, vp);
