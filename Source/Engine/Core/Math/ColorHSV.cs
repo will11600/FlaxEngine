@@ -54,7 +54,7 @@ namespace FlaxEngine
         /// Converts the color into a three component vector.
         /// </summary>
         /// <returns>A three component vector containing the red, green, and blue components of the color.</returns>
-        public Color ToColor()
+        public readonly Color ToColor()
         {
             float hdiv = H / 60;
             int hi = (int)hdiv;
@@ -114,7 +114,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc/>
-        public bool Equals(ColorHSV other)
+        public readonly bool Equals(ColorHSV other)
         {
             return other.H.Equals(H) && other.S.Equals(S) && other.V.Equals(V) && other.A.Equals(A);
         }
@@ -127,7 +127,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -163,7 +163,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, ToStringFormat, H, S, V, A);
         }

@@ -9,7 +9,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="other">The other object to compare.</param>
         /// <returns><c>true</c> if this object has the same value as <paramref name="other" />; otherwise, <c>false</c> </returns>
-        public bool Equals(FontOptions other)
+        public readonly bool Equals(FontOptions other)
         {
             return Hinting == other.Hinting && Flags == other.Flags;
         }
@@ -21,7 +21,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {

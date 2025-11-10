@@ -138,7 +138,7 @@ namespace FlaxEngine
         /// <value>The bounds.</value>
         public Rectangle Bounds
         {
-            get => new Rectangle(X, Y, Width, Height);
+            readonly get => new Rectangle(X, Y, Width, Height);
             set
             {
                 X = value.X;
@@ -153,7 +153,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 Size
         {
-            get => new Float2(Width, Height);
+            readonly get => new Float2(Width, Height);
             set
             {
                 Width = value.X;
@@ -164,14 +164,14 @@ namespace FlaxEngine
         /// <summary>
         /// Gets the aspect ratio used by the viewport.
         /// </summary>
-        public float AspectRatio => !Mathf.IsZero(Height) ? Width / Height : 0f;
+        public readonly float AspectRatio => !Mathf.IsZero(Height) ? Width / Height : 0f;
 
         /// <summary>
         /// Determines whether the specified <see cref="Viewport"/> is equal to this instance.
         /// </summary>
         /// <param name="other">The <see cref="Viewport"/> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Viewport"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public bool Equals(ref Viewport other)
+        public readonly bool Equals(ref Viewport other)
         {
             return Mathf.NearEqual(X, other.X) &&
                    Mathf.NearEqual(Y, other.Y) &&
@@ -208,7 +208,7 @@ namespace FlaxEngine
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -250,7 +250,7 @@ namespace FlaxEngine
         /// Retrieves a string representation of this object.
         /// </summary>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "{{X:{0} Y:{1} Width:{2} Height:{3} MinDepth:{4} MaxDepth:{5}}}", X, Y, Width, Height, MinDepth, MaxDepth);
         }
@@ -278,7 +278,7 @@ namespace FlaxEngine
         /// <param name="source">The vector to project.</param>
         /// <param name="matrix">A combined WorldViewProjection matrix.</param>
         /// <param name="vector">The projected vector.</param>
-        public void Project(ref Vector3 source, ref Matrix matrix, out Vector3 vector)
+        public readonly void Project(ref Vector3 source, ref Matrix matrix, out Vector3 vector)
         {
             Vector3.Transform(ref source, ref matrix, out vector);
             var w = source.X * matrix.M14 + source.Y * matrix.M24 + source.Z * matrix.M34 + matrix.M44;
@@ -317,7 +317,7 @@ namespace FlaxEngine
         /// <param name="source">The vector to project.</param>
         /// <param name="matrix">An inverted combined WorldViewProjection matrix.</param>
         /// <param name="vector">The unprojected vector.</param>
-        public void Unproject(ref Vector3 source, ref Matrix matrix, out Vector3 vector)
+        public readonly void Unproject(ref Vector3 source, ref Matrix matrix, out Vector3 vector)
         {
             vector.X = (source.X - X) / Width * 2f - 1f;
             vector.Y = -((source.Y - Y) / Height * 2f - 1f);

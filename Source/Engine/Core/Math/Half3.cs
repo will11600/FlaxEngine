@@ -157,7 +157,7 @@ namespace FlaxEngine
         /// <param name="other">Object to make the comparison with.</param>
         /// <returns>
         /// <c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public bool Equals(Half3 other)
+        public readonly bool Equals(Half3 other)
         {
             return (((X == other.X) && (Y == other.Y)) && (Z == other.Z));
         }
@@ -205,7 +205,7 @@ namespace FlaxEngine
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return ((Float3)this).ToString();
         }

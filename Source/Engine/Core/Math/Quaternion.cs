@@ -295,7 +295,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets the conjugated quaternion.
         /// </summary>
-        public Quaternion Conjugated()
+        public readonly Quaternion Conjugated()
         {
             return new Quaternion(-X, -Y, -Z, W);
         }
@@ -322,14 +322,14 @@ namespace FlaxEngine
         /// </summary>
         /// <returns>The length of the quaternion.</returns>
         /// <remarks><see cref="Quaternion.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-        public float Length => (float)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+        public readonly float Length => (float)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
 
         /// <summary>
         /// Calculates the squared length of the quaternion.
         /// </summary>
         /// <returns>The squared length of the quaternion.</returns>
         /// <remarks>This method may be preferred to <see cref="Quaternion.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-        public float LengthSquared => X * X + Y * Y + Z * Z + W * W;
+        public readonly float LengthSquared => X * X + Y * Y + Z * Z + W * W;
 
         /// <summary>
         /// Converts the quaternion into a unit quaternion.
@@ -1621,7 +1621,7 @@ namespace FlaxEngine
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, _formatString, X, Y, Z, W);
         }
@@ -1645,7 +1645,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, _formatString, X, Y, Z, W);
         }
@@ -1669,7 +1669,7 @@ namespace FlaxEngine
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -1712,7 +1712,7 @@ namespace FlaxEngine
         /// <param name="other">The <see cref="Quaternion" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Quaternion" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(ref Quaternion other)
+        public readonly bool Equals(ref Quaternion other)
         {
             return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
         }

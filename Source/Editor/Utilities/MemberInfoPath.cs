@@ -33,7 +33,7 @@ namespace FlaxEditor.Utilities
             /// <summary>
             /// Gets the member type (field or property type).
             /// </summary>
-            public ScriptType Type
+            public readonly ScriptType Type
             {
                 get
                 {
@@ -63,7 +63,7 @@ namespace FlaxEditor.Utilities
             /// </summary>
             /// <param name="instance">The instance.</param>
             /// <returns>The result value.</returns>
-            public object GetValue(object instance)
+            public readonly object GetValue(object instance)
             {
                 object value;
 
@@ -99,7 +99,7 @@ namespace FlaxEditor.Utilities
             /// </summary>
             /// <param name="instance">The instance.</param>
             /// <param name="value">The value.</param>
-            public void SetValue(object instance, object value)
+            public readonly void SetValue(object instance, object value)
             {
                 // Special case for collections
                 if (Index != null)
@@ -127,7 +127,7 @@ namespace FlaxEditor.Utilities
             }
 
             /// <inheritdoc />
-            public override bool Equals(object obj)
+            public override readonly bool Equals(object obj)
             {
                 if (!(obj is Entry))
                 {
@@ -139,7 +139,7 @@ namespace FlaxEditor.Utilities
             }
 
             /// <inheritdoc />
-            public override int GetHashCode()
+            public override readonly int GetHashCode()
             {
                 var hashCode = 2005110182;
                 hashCode = hashCode * -1521134295 + Member.GetHashCode();
@@ -149,7 +149,7 @@ namespace FlaxEditor.Utilities
             }
 
             /// <inheritdoc />
-            public override string ToString()
+            public override readonly string ToString()
             {
                 if (Index != null)
                     return "[" + Index + "]";
@@ -189,7 +189,7 @@ namespace FlaxEditor.Utilities
         /// <summary>
         /// Gets the members path string.
         /// </summary>
-        public string Path
+        public readonly string Path
         {
             get
             {
@@ -207,7 +207,7 @@ namespace FlaxEditor.Utilities
         /// </summary>
         /// <param name="instance">The instance. Also contains the result instance for the last member.</param>
         /// <returns>The last member info.</returns>
-        public Entry GetLastMember(ref object instance)
+        public readonly Entry GetLastMember(ref object instance)
         {
             Entry finalMember = _stack[0];
             for (int i = 1; i < _stack.Length; i++)

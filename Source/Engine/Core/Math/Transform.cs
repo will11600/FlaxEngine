@@ -94,32 +94,32 @@ namespace FlaxEngine
         /// <summary>
         /// Gets the forward vector.
         /// </summary>
-        public Float3 Forward => Float3.Transform(Float3.Forward, Orientation);
+        public readonly Float3 Forward => Float3.Transform(Float3.Forward, Orientation);
 
         /// <summary>
         /// Gets the backward vector.
         /// </summary>
-        public Float3 Backward => Float3.Transform(Float3.Backward, Orientation);
+        public readonly Float3 Backward => Float3.Transform(Float3.Backward, Orientation);
 
         /// <summary>
         /// Gets the up vector.
         /// </summary>
-        public Float3 Up => Float3.Transform(Float3.Up, Orientation);
+        public readonly Float3 Up => Float3.Transform(Float3.Up, Orientation);
 
         /// <summary>
         /// Gets the down vector.
         /// </summary>
-        public Float3 Down => Float3.Transform(Float3.Down, Orientation);
+        public readonly Float3 Down => Float3.Transform(Float3.Down, Orientation);
 
         /// <summary>
         /// Gets the left vector.
         /// </summary>
-        public Float3 Left => Float3.Transform(Float3.Left, Orientation);
+        public readonly Float3 Left => Float3.Transform(Float3.Left, Orientation);
 
         /// <summary>
         /// Gets the right vector.
         /// </summary>
-        public Float3 Right => Float3.Transform(Float3.Right, Orientation);
+        public readonly Float3 Right => Float3.Transform(Float3.Right, Orientation);
 
         /// <summary>
         /// Gets rotation matrix (from Orientation).
@@ -290,7 +290,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="points">Local space points</param>
         /// <param name="result">World space points</param>
-        public void LocalToWorld(Vector3[] points, Vector3[] result)
+        public readonly void LocalToWorld(Vector3[] points, Vector3[] result)
         {
             for (int i = 0; i < points.Length; i++)
             {
@@ -618,7 +618,7 @@ namespace FlaxEngine
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, _formatString, Translation, Orientation, Scale);
         }
@@ -640,7 +640,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, _formatString, Translation, Orientation, Scale);
         }
@@ -703,7 +703,7 @@ namespace FlaxEngine
         /// <param name="other">The <see cref="Transform" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Transform" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(ref Transform other)
+        public readonly bool Equals(ref Transform other)
         {
             return Translation == other.Translation && Orientation == other.Orientation && Scale == other.Scale;
         }

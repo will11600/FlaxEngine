@@ -126,27 +126,27 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a value indicting whether this vector is zero
         /// </summary>
-        public bool IsZero => X == 0 && Y == 0 && Z == 0;
+        public readonly bool IsZero => X == 0 && Y == 0 && Z == 0;
 
         /// <summary>
         /// Gets a minimum component value
         /// </summary>
-        public int MinValue => Mathf.Min(X, Mathf.Min(Y, Z));
+        public readonly int MinValue => Mathf.Min(X, Mathf.Min(Y, Z));
 
         /// <summary>
         /// Gets a maximum component value
         /// </summary>
-        public int MaxValue => Mathf.Max(X, Mathf.Max(Y, Z));
+        public readonly int MaxValue => Mathf.Max(X, Mathf.Max(Y, Z));
 
         /// <summary>
         /// Gets an arithmetic average value of all vector components.
         /// </summary>
-        public float AvgValue => (X + Y + Z) * (1.0f / 3.0f);
+        public readonly float AvgValue => (X + Y + Z) * (1.0f / 3.0f);
 
         /// <summary>
         /// Gets a sum of the component values.
         /// </summary>
-        public int ValuesSum => X + Y + Z;
+        public readonly int ValuesSum => X + Y + Z;
 
         /// <summary>
         /// Gets or sets the component at the specified index.
@@ -157,7 +157,7 @@ namespace FlaxEngine
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0, 2].</exception>
         public int this[int index]
         {
-            get
+            readonly get
             {
                 switch (index)
                 {
@@ -191,20 +191,20 @@ namespace FlaxEngine
         /// </summary>
         /// <returns>The length of the vector.</returns>
         /// <remarks><see cref="Int3.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-        public float Length => (float)Math.Sqrt(X * X + Y * Y + Z * Z);
+        public readonly float Length => (float)Math.Sqrt(X * X + Y * Y + Z * Z);
 
         /// <summary>
         /// Calculates the squared length of the vector.
         /// </summary>
         /// <returns>The squared length of the vector.</returns>
         /// <remarks>This method may be preferred to <see cref="Int3.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-        public int LengthSquared => X * X + Y * Y + Z * Z;
+        public readonly int LengthSquared => X * X + Y * Y + Z * Z;
 
         /// <summary>
         /// Creates an array containing the elements of the vector.
         /// </summary>
         /// <returns>A three-element array containing the components of the vector.</returns>
-        public int[] ToArray()
+        public readonly int[] ToArray()
         {
             return new[] { X, Y, Z };
         }
@@ -968,7 +968,7 @@ namespace FlaxEngine
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, _formatString, X, Y, Z);
         }
@@ -990,7 +990,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, _formatString, X, Y, Z);
         }
@@ -1012,7 +1012,7 @@ namespace FlaxEngine
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -1029,7 +1029,7 @@ namespace FlaxEngine
         /// <param name="other">The <see cref="Int3" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Int3" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(ref Int3 other)
+        public readonly bool Equals(ref Int3 other)
         {
             return other.X == X && other.Y == Y && other.Z == Z;
         }

@@ -528,7 +528,7 @@ namespace FlaxEngine
             }
 
             /// <inheritdoc />
-            public int CompareTo(object obj)
+            public readonly int CompareTo(object obj)
             {
                 if (obj is Keyframe other)
                     return Time > other.Time ? 1 : 0;
@@ -536,13 +536,13 @@ namespace FlaxEngine
             }
 
             /// <inheritdoc />
-            public int CompareTo(Keyframe other)
+            public readonly int CompareTo(Keyframe other)
             {
                 return Time > other.Time ? 1 : 0;
             }
 
             /// <inheritdoc />
-            public override string ToString()
+            public override readonly string ToString()
             {
                 return Value?.ToString() ?? string.Empty;
             }
@@ -835,7 +835,7 @@ namespace FlaxEngine
             }
 
             /// <inheritdoc />
-            public int CompareTo(object obj)
+            public readonly int CompareTo(object obj)
             {
                 if (obj is Keyframe other)
                     return Time > other.Time ? 1 : 0;
@@ -843,13 +843,13 @@ namespace FlaxEngine
             }
 
             /// <inheritdoc />
-            public int CompareTo(Keyframe other)
+            public readonly int CompareTo(Keyframe other)
             {
                 return Time > other.Time ? 1 : 0;
             }
 
             /// <inheritdoc />
-            public override string ToString()
+            public override readonly string ToString()
             {
                 return Value?.ToString() ?? string.Empty;
             }

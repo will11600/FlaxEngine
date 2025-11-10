@@ -12,15 +12,15 @@ namespace FlaxEngine.Tools
     {
         partial struct Options
         {
-            private bool ShowGeometry => Type == ModelType.Model || Type == ModelType.SkinnedModel || Type == ModelType.Prefab;
-            private bool ShowModel => Type == ModelType.Model || Type == ModelType.Prefab;
-            private bool ShowSkinnedModel => Type == ModelType.SkinnedModel || Type == ModelType.Prefab;
-            private bool ShowAnimation => Type == ModelType.Animation || Type == ModelType.Prefab;
+            private readonly bool ShowGeometry => Type == ModelType.Model || Type == ModelType.SkinnedModel || Type == ModelType.Prefab;
+            private readonly bool ShowModel => Type == ModelType.Model || Type == ModelType.Prefab;
+            private readonly bool ShowSkinnedModel => Type == ModelType.SkinnedModel || Type == ModelType.Prefab;
+            private readonly bool ShowAnimation => Type == ModelType.Animation || Type == ModelType.Prefab;
             private bool ShowRootMotion => ShowAnimation && RootMotion != RootMotionMode.None;
             private bool ShowSmoothingNormalsAngle => ShowGeometry && CalculateNormals;
             private bool ShowSmoothingTangentsAngle => ShowGeometry && CalculateTangents;
             private bool ShowFramesRange => ShowAnimation && Duration == AnimationDuration.Custom;
-            private bool ShowSplitting => Type != ModelType.Prefab;
+            private readonly bool ShowSplitting => Type != ModelType.Prefab;
         }
     }
 }

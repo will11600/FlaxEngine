@@ -218,7 +218,7 @@ namespace FlaxEditor.CustomEditors.Editors
             public bool[] InversionList;
             public int LabelIndex;
 
-            public bool GetValue(object instance)
+            public readonly bool GetValue(object instance)
             {
                 bool value = true;
 

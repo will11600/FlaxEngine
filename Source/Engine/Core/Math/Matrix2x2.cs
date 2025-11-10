@@ -103,7 +103,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 Row1
         {
-            get => new Float2(M11, M12);
+            readonly get => new Float2(M11, M12);
             set
             {
                 M11 = value.X;
@@ -116,7 +116,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 Row2
         {
-            get => new Float2(M21, M22);
+            readonly get => new Float2(M21, M22);
             set
             {
                 M21 = value.X;
@@ -129,7 +129,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 Column1
         {
-            get => new Float2(M11, M21);
+            readonly get => new Float2(M11, M21);
             set
             {
                 M11 = value.X;
@@ -142,7 +142,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 Column2
         {
-            get => new Float2(M12, M22);
+            readonly get => new Float2(M12, M22);
             set
             {
                 M12 = value.X;
@@ -155,7 +155,7 @@ namespace FlaxEngine
         /// </summary>
         public Float2 ScaleVector
         {
-            get => new Float2(M11, M22);
+            readonly get => new Float2(M11, M22);
             set
             {
                 M11 = value.X;
@@ -177,7 +177,7 @@ namespace FlaxEngine
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
         public float this[int index]
         {
-            get
+            readonly get
             {
                 switch (index)
                 {
@@ -241,7 +241,7 @@ namespace FlaxEngine
         /// Calculates the determinant of the Matrix2x2.
         /// </summary>
         /// <returns>The determinant of the Matrix2x2.</returns>
-        public float Determinant()
+        public readonly float Determinant()
         {
             return M11 * M22 - M12 * M21;
         }
@@ -250,7 +250,7 @@ namespace FlaxEngine
         /// Calculates inverse of the determinant of the Matrix2x2.
         /// </summary>
         /// <returns>The inverse determinant of the Matrix2x2.</returns>
-        public float InverseDeterminant()
+        public readonly float InverseDeterminant()
         {
             float det = M11 * M22 - M12 * M21;
             Assertions.Assert.IsFalse(Mathf.IsZero(det));
@@ -261,7 +261,7 @@ namespace FlaxEngine
         /// Creates an array containing the elements of the Matrix2x2.
         /// </summary>
         /// <returns>A 4-element array containing the components of the Matrix2x2.</returns>
-        public float[] ToArray()
+        public readonly float[] ToArray()
         {
             return new[] { M11, M12, M21, M22 };
         }
@@ -420,7 +420,7 @@ namespace FlaxEngine
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, FormatString, M11, M12, M21, M22);
         }
@@ -442,7 +442,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, FormatString, M11.ToString(formatProvider), M12.ToString(formatProvider), M21.ToString(formatProvider), M22.ToString(formatProvider));
         }
@@ -464,7 +464,7 @@ namespace FlaxEngine
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. </returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -481,7 +481,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="other">The <see cref="Matrix2x2"/> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Matrix2x2"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public bool Equals(ref Matrix2x2 other)
+        public readonly bool Equals(ref Matrix2x2 other)
         {
             return M11 == other.M11 && M12 == other.M12 && M21 == other.M21 && M22 == other.M22;
         }

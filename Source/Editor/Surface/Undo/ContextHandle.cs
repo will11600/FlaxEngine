@@ -74,7 +74,7 @@ namespace FlaxEditor.Surface.Undo
         /// </summary>
         /// <param name="surface">The Surface.</param>
         /// <returns>The restored context.</returns>
-        public VisjectSurfaceContext Get(VisjectSurface surface)
+        public readonly VisjectSurfaceContext Get(VisjectSurface surface)
         {
             var context = surface.RootContext;
             var count = _path?.Length ?? 0;
@@ -98,7 +98,7 @@ namespace FlaxEditor.Surface.Undo
         }
 
         /// <inheritdoc />
-        public bool Equals(ContextHandle other)
+        public readonly bool Equals(ContextHandle other)
         {
             return JsonSerializer.ValueEquals(_path, other._path);
         }
@@ -110,7 +110,7 @@ namespace FlaxEditor.Surface.Undo
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             int hash = 17;
             if (_path != null)
@@ -128,7 +128,7 @@ namespace FlaxEditor.Surface.Undo
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             var sb = new StringBuilder();
             if (_path == null)

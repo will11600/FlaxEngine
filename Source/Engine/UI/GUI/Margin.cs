@@ -53,22 +53,22 @@ namespace FlaxEngine.GUI
         /// <summary>
         /// Gets the margin's location (Left, Top).
         /// </summary>
-        public Float2 Location => new Float2(Left, Top);
+        public readonly Float2 Location => new Float2(Left, Top);
 
         /// <summary>
         /// Gets the margin's total size. Cumulative margin size (Left + Right, Top + Bottom).
         /// </summary>
-        public Float2 Size => new Float2(Left + Right, Top + Bottom);
+        public readonly Float2 Size => new Float2(Left + Right, Top + Bottom);
 
         /// <summary>
         /// Gets the width (left + right).
         /// </summary>
-        public float Width => Left + Right;
+        public readonly float Width => Left + Right;
 
         /// <summary>
         /// Gets the height (top + bottom).
         /// </summary>
-        public float Height => Top + Bottom;
+        public readonly float Height => Top + Bottom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Margin"/> struct.
@@ -97,13 +97,13 @@ namespace FlaxEngine.GUI
         /// <summary>
         /// Gets a value indicting whether this margin is zero.
         /// </summary>
-        public bool IsZero => Mathf.IsZero(Left) && Mathf.IsZero(Right) && Mathf.IsZero(Top) && Mathf.IsZero(Bottom);
+        public readonly bool IsZero => Mathf.IsZero(Left) && Mathf.IsZero(Right) && Mathf.IsZero(Top) && Mathf.IsZero(Bottom);
 
         /// <summary>
         /// Shrinks the rectangle by this margin.
         /// </summary>
         /// <param name="rect">The rectangle.</param>
-        public void ShrinkRectangle(ref Rectangle rect)
+        public readonly void ShrinkRectangle(ref Rectangle rect)
         {
             rect.Location.X += Left;
             rect.Location.Y += Top;
@@ -115,7 +115,7 @@ namespace FlaxEngine.GUI
         /// Expands the rectangle by this margin.
         /// </summary>
         /// <param name="rect">The rectangle.</param>
-        public void ExpandRectangle(ref Rectangle rect)
+        public readonly void ExpandRectangle(ref Rectangle rect)
         {
             rect.Location.X -= Left;
             rect.Location.Y -= Top;
@@ -173,7 +173,7 @@ namespace FlaxEngine.GUI
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "Left:{0} Right:{1} Top:{2} Bottom:{3}", Left, Right, Top, Bottom);
         }
@@ -200,7 +200,7 @@ namespace FlaxEngine.GUI
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, _formatString,
                                  Left,
@@ -232,7 +232,7 @@ namespace FlaxEngine.GUI
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -249,7 +249,7 @@ namespace FlaxEngine.GUI
         /// </summary>
         /// <param name="other">The <see cref="Margin" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Margin" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public bool Equals(ref Margin other)
+        public readonly bool Equals(ref Margin other)
         {
             return Mathf.NearEqual(other.Left, Left) &&
                    Mathf.NearEqual(other.Right, Right) &&

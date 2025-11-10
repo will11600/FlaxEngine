@@ -28,7 +28,7 @@ namespace FlaxEngine
 {
     partial struct TextureGroup
     {
-        internal bool IsAnisotropic => SamplerFilter == GPUSamplerFilter.Anisotropic;
+        internal readonly bool IsAnisotropic => SamplerFilter == GPUSamplerFilter.Anisotropic;
     }
 }
 

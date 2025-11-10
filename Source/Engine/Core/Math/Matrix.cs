@@ -163,7 +163,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Up
         {
-            get => new Float3(M21, M22, M23);
+            readonly get => new Float3(M21, M22, M23);
             set
             {
                 M21 = value.X;
@@ -177,7 +177,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Down
         {
-            get => new Float3(-M21, -M22, -M23);
+            readonly get => new Float3(-M21, -M22, -M23);
             set
             {
                 M21 = -value.X;
@@ -191,7 +191,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Right
         {
-            get => new Float3(M11, M12, M13);
+            readonly get => new Float3(M11, M12, M13);
             set
             {
                 M11 = value.X;
@@ -205,7 +205,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Left
         {
-            get => new Float3(-M11, -M12, -M13);
+            readonly get => new Float3(-M11, -M12, -M13);
             set
             {
                 M11 = -value.X;
@@ -219,7 +219,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Forward
         {
-            get => new Float3(M31, M32, M33);
+            readonly get => new Float3(M31, M32, M33);
             set
             {
                 M31 = value.X;
@@ -233,7 +233,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Backward
         {
-            get => new Float3(-M31, -M32, -M33);
+            readonly get => new Float3(-M31, -M32, -M33);
             set
             {
                 M31 = -value.X;
@@ -359,7 +359,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Row1
         {
-            get => new Float4(M11, M12, M13, M14);
+            readonly get => new Float4(M11, M12, M13, M14);
             set
             {
                 M11 = value.X;
@@ -374,7 +374,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Row2
         {
-            get => new Float4(M21, M22, M23, M24);
+            readonly get => new Float4(M21, M22, M23, M24);
             set
             {
                 M21 = value.X;
@@ -389,7 +389,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Row3
         {
-            get => new Float4(M31, M32, M33, M34);
+            readonly get => new Float4(M31, M32, M33, M34);
             set
             {
                 M31 = value.X;
@@ -404,7 +404,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Row4
         {
-            get => new Float4(M41, M42, M43, M44);
+            readonly get => new Float4(M41, M42, M43, M44);
             set
             {
                 M41 = value.X;
@@ -419,7 +419,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Column1
         {
-            get => new Float4(M11, M21, M31, M41);
+            readonly get => new Float4(M11, M21, M31, M41);
             set
             {
                 M11 = value.X;
@@ -434,7 +434,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Column2
         {
-            get => new Float4(M12, M22, M32, M42);
+            readonly get => new Float4(M12, M22, M32, M42);
             set
             {
                 M12 = value.X;
@@ -449,7 +449,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Column3
         {
-            get => new Float4(M13, M23, M33, M43);
+            readonly get => new Float4(M13, M23, M33, M43);
             set
             {
                 M13 = value.X;
@@ -464,7 +464,7 @@ namespace FlaxEngine
         /// </summary>
         public Float4 Column4
         {
-            get => new Float4(M14, M24, M34, M44);
+            readonly get => new Float4(M14, M24, M34, M44);
             set
             {
                 M14 = value.X;
@@ -479,7 +479,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 TranslationVector
         {
-            get => new Float3(M41, M42, M43);
+            readonly get => new Float3(M41, M42, M43);
             set
             {
                 M41 = value.X;
@@ -493,7 +493,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 ScaleVector
         {
-            get => new Float3(M11, M22, M33);
+            readonly get => new Float3(M11, M22, M33);
             set
             {
                 M11 = value.X;
@@ -515,7 +515,7 @@ namespace FlaxEngine
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0, 15].</exception>
         public float this[int index]
         {
-            get
+            readonly get
             {
                 switch (index)
                 {
@@ -628,7 +628,7 @@ namespace FlaxEngine
         /// Calculates the determinant of the matrix.
         /// </summary>
         /// <returns>The determinant of the matrix.</returns>
-        public float Determinant()
+        public readonly float Determinant()
         {
             float temp1 = M33 * M44 - M34 * M43;
             float temp2 = M32 * M44 - M34 * M42;
@@ -960,7 +960,7 @@ namespace FlaxEngine
         /// Creates an array containing the elements of the matrix.
         /// </summary>
         /// <returns>A sixteen-element array containing the components of the matrix.</returns>
-        public float[] ToArray()
+        public readonly float[] ToArray()
         {
             return new[]
             {
@@ -3146,7 +3146,7 @@ namespace FlaxEngine
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "[M11:{0} M12:{1} M13:{2} M14:{3}] [M21:{4} M22:{5} M23:{6} M24:{7}] [M31:{8} M32:{9} M33:{10} M34:{11}] [M41:{12} M42:{13} M43:{14} M44:{15}]",
                                  M11, M12, M13, M14, M21, M22, M23, M24, M31, M32, M33, M34, M41, M42, M43, M44);
@@ -3174,7 +3174,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, "[M11:{0} M12:{1} M13:{2} M14:{3}] [M21:{4} M22:{5} M23:{6} M24:{7}] [M31:{8} M32:{9} M33:{10} M34:{11}] [M41:{12} M42:{13} M43:{14} M44:{15}]",
                                  M11.ToString(formatProvider), M12.ToString(formatProvider), M13.ToString(formatProvider), M14.ToString(formatProvider),
@@ -3205,7 +3205,7 @@ namespace FlaxEngine
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -3234,7 +3234,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="other">The <see cref="Matrix" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Matrix" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public bool Equals(ref Matrix other)
+        public readonly bool Equals(ref Matrix other)
         {
             return other.M11 == M11 &&
                    other.M12 == M12 &&
