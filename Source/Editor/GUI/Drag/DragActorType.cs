@@ -62,8 +62,7 @@ namespace FlaxEditor.GUI.Drag
         /// <returns>The data</returns>
         public static DragData GetDragData(Type item)
         {
-            if (item == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(item);
             return new DragDataText(DragPrefix + item.FullName);
         }
 

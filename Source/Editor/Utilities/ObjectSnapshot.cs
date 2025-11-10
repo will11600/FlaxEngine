@@ -225,8 +225,7 @@ namespace FlaxEditor.Utilities
         /// <returns>The object snapshot.</returns>
         public static ObjectSnapshot CaptureSnapshot(object obj)
         {
-            if (obj == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(obj);
 
             var type = TypeUtils.GetObjectType(obj);
             var members = GetMembers(obj, type, out var values);
@@ -246,8 +245,7 @@ namespace FlaxEditor.Utilities
         /// <returns>The collection of modified properties.</returns>
         public List<MemberComparison> Compare(object obj)
         {
-            if (obj == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(obj);
             if (ObjectType != TypeUtils.GetObjectType(obj))
                 throw new ArgumentException("Given object must be the same type as captured object.");
 

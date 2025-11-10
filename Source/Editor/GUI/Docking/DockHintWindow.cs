@@ -173,8 +173,7 @@ namespace FlaxEditor.GUI.Docking
         /// <returns>The dock hint window object.</returns>
         public static DockHintWindow Create(FloatWindowDockPanel toMove)
         {
-            if (toMove == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(toMove);
 
             return new DockHintWindow(toMove);
         }
@@ -186,8 +185,7 @@ namespace FlaxEditor.GUI.Docking
         /// <returns>The dock hint window object.</returns>
         public static DockHintWindow Create(DockWindow toMove)
         {
-            if (toMove == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(toMove);
 
             // Show floating
             toMove.ShowFloating();

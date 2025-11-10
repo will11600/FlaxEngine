@@ -304,8 +304,7 @@ namespace FlaxEngine
         /// </exception>
         public Matrix(float[] values)
         {
-            if (values == null)
-                throw new ArgumentNullException(nameof(values));
+            ArgumentNullException.ThrowIfNull(values);
             if (values.Length != 16)
                 throw new ArgumentOutOfRangeException(nameof(values), "There must be sixteen and only sixteen input values for Matrix.");
 

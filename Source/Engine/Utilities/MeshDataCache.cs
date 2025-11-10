@@ -57,8 +57,7 @@ namespace FlaxEngine.Utilities
         /// <returns>True if has valid data to access, otherwise false if it's during downloading.</returns>
         public bool RequestMeshData(ModelBase model)
         {
-            if (model == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(model);
             if (_model != model)
             {
                 // Mode changes so release previous cache

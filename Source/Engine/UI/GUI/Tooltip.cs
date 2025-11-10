@@ -55,8 +55,7 @@ namespace FlaxEngine.GUI
         /// <param name="targetArea">Tooltip target area of interest.</param>
         public void Show(Control target, Float2 location, Rectangle targetArea)
         {
-            if (target == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(target);
 
             // Ensure to be closed
             Hide();

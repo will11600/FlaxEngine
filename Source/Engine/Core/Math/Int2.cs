@@ -103,8 +103,7 @@ namespace FlaxEngine
         /// </exception>
         public Int2(int[] values)
         {
-            if (values == null)
-                throw new ArgumentNullException(nameof(values));
+            ArgumentNullException.ThrowIfNull(values);
             if (values.Length != 2)
                 throw new ArgumentOutOfRangeException(nameof(values), "There must be two and only two input values for Int2.");
             X = values[0];

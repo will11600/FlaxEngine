@@ -141,8 +141,7 @@ namespace FlaxEditor.GUI
             get => _selectedIndices;
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException();
+                ArgumentNullException.ThrowIfNull(value);
                 if (!SupportMultiSelect && value.Count > 1)
                     throw new InvalidOperationException();
                 for (int i = 0; i < value.Count; i++)

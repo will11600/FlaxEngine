@@ -20,8 +20,7 @@ namespace FlaxEditor.Surface.Undo
 
         public EditNodeValuesAction(SurfaceNode node, object[] before, bool graphEdited)
         {
-            if (before == null)
-                throw new ArgumentNullException(nameof(before));
+            ArgumentNullException.ThrowIfNull(before);
             if (node?.Values == null)
                 throw new ArgumentNullException(nameof(node));
             _resize = before.Length != node.Values.Length;

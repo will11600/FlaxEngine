@@ -56,8 +56,7 @@ namespace FlaxEditor.States
         /// <param name="scene">The scene to unload.</param>
         public void UnloadScene(Scene scene)
         {
-            if (scene == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(scene);
 
             // Clear request
             _scenesToLoad.Clear();
@@ -75,8 +74,7 @@ namespace FlaxEditor.States
         /// <param name="scenes">The scenes to unload.</param>
         public void UnloadScene(IEnumerable<Scene> scenes)
         {
-            if (scenes == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(scenes);
             if (!scenes.Any())
                 return;
 

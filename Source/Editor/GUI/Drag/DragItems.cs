@@ -62,8 +62,7 @@ namespace FlaxEditor.GUI.Drag
         /// <returns>The data.</returns>
         public static DragData GetDragData(string path)
         {
-            if (path == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(path);
 
             return new DragDataText(DragPrefix + path);
         }
@@ -75,8 +74,7 @@ namespace FlaxEditor.GUI.Drag
         /// <returns>The data.</returns>
         public static DragDataText GetDragData(ContentItem item)
         {
-            if (item == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(item);
 
             return new DragDataText(DragPrefix + item.Path);
         }
@@ -88,8 +86,7 @@ namespace FlaxEditor.GUI.Drag
         /// <returns>The data.</returns>
         public static DragData GetDragData(IEnumerable<ContentItem> items)
         {
-            if (items == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(items);
 
             string text = DragPrefix;
             foreach (var item in items)

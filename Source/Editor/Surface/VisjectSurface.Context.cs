@@ -96,8 +96,7 @@ namespace FlaxEditor.Surface
         /// <param name="context">The context.</param>
         public void OpenContext(ISurfaceContext context)
         {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
+            ArgumentNullException.ThrowIfNull(context);
             if (_context != null && _context.Context == context)
                 return;
 
@@ -163,8 +162,7 @@ namespace FlaxEditor.Surface
                 return;
 
             // Validate input
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
+            ArgumentNullException.ThrowIfNull(context);
 
             // Removing root requires to close every context
             if (RootContext != null && context == RootContext.Context)
@@ -193,8 +191,7 @@ namespace FlaxEditor.Surface
         /// <param name="context">The target context.</param>
         public void ChangeContext(ISurfaceContext context)
         {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
+            ArgumentNullException.ThrowIfNull(context);
             if (_context == null)
             {
                 OpenContext(context);

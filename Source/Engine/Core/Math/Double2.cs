@@ -168,8 +168,7 @@ namespace FlaxEngine
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values" /> contains more or less than two elements.</exception>
         public Double2(double[] values)
         {
-            if (values == null)
-                throw new ArgumentNullException(nameof(values));
+            ArgumentNullException.ThrowIfNull(values);
             if (values.Length != 2)
                 throw new ArgumentOutOfRangeException(nameof(values), "There must be two and only two input values for Double2.");
             X = values[0];

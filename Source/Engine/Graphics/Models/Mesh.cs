@@ -124,10 +124,8 @@ namespace FlaxEngine
         {
             if (!ParentModel.IsVirtual)
                 throw new InvalidOperationException("Only virtual models can be updated at runtime.");
-            if (vertices == null)
-                throw new ArgumentNullException(nameof(vertices));
-            if (triangles == null)
-                throw new ArgumentNullException(nameof(triangles));
+            ArgumentNullException.ThrowIfNull(vertices);
+            ArgumentNullException.ThrowIfNull(triangles);
             if (triangles.Length == 0 || triangles.Length % 3 != 0)
                 throw new ArgumentOutOfRangeException(nameof(triangles));
             if (normals != null && normals.Length != vertices.Length)
@@ -160,10 +158,8 @@ namespace FlaxEngine
         {
             if (!ParentModel.IsVirtual)
                 throw new InvalidOperationException("Only virtual models can be updated at runtime.");
-            if (vertices == null)
-                throw new ArgumentNullException(nameof(vertices));
-            if (triangles == null)
-                throw new ArgumentNullException(nameof(triangles));
+            ArgumentNullException.ThrowIfNull(vertices);
+            ArgumentNullException.ThrowIfNull(triangles);
             if (triangles.Count == 0 || triangles.Count % 3 != 0)
                 throw new ArgumentOutOfRangeException(nameof(triangles));
             if (normals != null && normals.Count != vertices.Count)
@@ -196,10 +192,8 @@ namespace FlaxEngine
         {
             if (!ParentModel.IsVirtual)
                 throw new InvalidOperationException("Only virtual models can be updated at runtime.");
-            if (vertices == null)
-                throw new ArgumentNullException(nameof(vertices));
-            if (triangles == null)
-                throw new ArgumentNullException(nameof(triangles));
+            ArgumentNullException.ThrowIfNull(vertices);
+            ArgumentNullException.ThrowIfNull(triangles);
             if (triangles.Length == 0 || triangles.Length % 3 != 0)
                 throw new ArgumentOutOfRangeException(nameof(triangles));
             if (normals != null && normals.Length != vertices.Length)
@@ -232,10 +226,8 @@ namespace FlaxEngine
         {
             if (!ParentModel.IsVirtual)
                 throw new InvalidOperationException("Only virtual models can be updated at runtime.");
-            if (vertices == null)
-                throw new ArgumentNullException(nameof(vertices));
-            if (triangles == null)
-                throw new ArgumentNullException(nameof(triangles));
+            ArgumentNullException.ThrowIfNull(vertices);
+            ArgumentNullException.ThrowIfNull(triangles);
             if (triangles.Count == 0 || triangles.Count % 3 != 0)
                 throw new ArgumentOutOfRangeException(nameof(triangles));
             if (normals != null && normals.Count != vertices.Count)
@@ -268,10 +260,8 @@ namespace FlaxEngine
         {
             if (!ParentModel.IsVirtual)
                 throw new InvalidOperationException("Only virtual models can be updated at runtime.");
-            if (vertices == null)
-                throw new ArgumentNullException(nameof(vertices));
-            if (triangles == null)
-                throw new ArgumentNullException(nameof(triangles));
+            ArgumentNullException.ThrowIfNull(vertices);
+            ArgumentNullException.ThrowIfNull(triangles);
             if (triangles.Length == 0 || triangles.Length % 3 != 0)
                 throw new ArgumentOutOfRangeException(nameof(triangles));
             if (normals != null && normals.Length != vertices.Length)
@@ -304,10 +294,8 @@ namespace FlaxEngine
         {
             if (!ParentModel.IsVirtual)
                 throw new InvalidOperationException("Only virtual models can be updated at runtime.");
-            if (vertices == null)
-                throw new ArgumentNullException(nameof(vertices));
-            if (triangles == null)
-                throw new ArgumentNullException(nameof(triangles));
+            ArgumentNullException.ThrowIfNull(vertices);
+            ArgumentNullException.ThrowIfNull(triangles);
             if (triangles.Count == 0 || triangles.Count % 3 != 0)
                 throw new ArgumentOutOfRangeException(nameof(triangles));
             if (normals != null && normals.Count != vertices.Count)

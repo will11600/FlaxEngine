@@ -365,8 +365,7 @@ namespace FlaxEditor.CustomEditors
         /// <param name="instanceValues">The parent values.</param>
         public virtual void Refresh(ValueContainer instanceValues)
         {
-            if (instanceValues == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(instanceValues);
             if (instanceValues.Count != Count)
                 throw new ArgumentException();
 
@@ -381,8 +380,7 @@ namespace FlaxEditor.CustomEditors
         /// <param name="value">The value.</param>
         public virtual void Set(ValueContainer instanceValues, object value)
         {
-            if (instanceValues == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(instanceValues);
             if (instanceValues.Count != Count)
                 throw new ArgumentException();
 
@@ -429,8 +427,7 @@ namespace FlaxEditor.CustomEditors
         /// <param name="instanceValues">The parent values.</param>
         public virtual void Set(ValueContainer instanceValues)
         {
-            if (instanceValues == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(instanceValues);
             if (instanceValues.Count != Count)
                 throw new ArgumentException();
 

@@ -88,8 +88,7 @@ namespace FlaxEngine
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values"/> contains more or less than four elements.</exception>
         public Matrix2x2(float[] values)
         {
-            if (values == null)
-                throw new ArgumentNullException(nameof(values));
+            ArgumentNullException.ThrowIfNull(values);
             if (values.Length != 4)
                 throw new ArgumentOutOfRangeException(nameof(values), "There must be sixteen and only four input values for Matrix2x2.");
             M11 = values[0];

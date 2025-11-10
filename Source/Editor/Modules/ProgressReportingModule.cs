@@ -94,8 +94,7 @@ namespace FlaxEditor.Modules
         /// <param name="handler">The handler.</param>
         public void RegisterHandler(ProgressHandler handler)
         {
-            if (handler == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(handler);
 
             _handlers.Add(handler);
 
@@ -111,8 +110,7 @@ namespace FlaxEditor.Modules
         /// <param name="handler">The handler.</param>
         public void UnregisterHandler(ProgressHandler handler)
         {
-            if (handler == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(handler);
 
             if (_handlers.Remove(handler) == false)
                 throw new InvalidOperationException("Cannot unregister not registered handler");

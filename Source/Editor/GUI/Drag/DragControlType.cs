@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FlaxEditor.SceneGraph;
 using FlaxEditor.Scripting;
@@ -60,8 +60,7 @@ public class DragControlType<U> : DragHelper<ScriptType, U> where U : DragEventA
     /// <returns>The data</returns>
     public static DragData GetDragData(Type item)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
         return new DragDataText(DragPrefix + item.FullName);
     }
 

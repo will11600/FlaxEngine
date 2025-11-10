@@ -90,10 +90,8 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If <paramref name="destination"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
         public static void AddRange<T>(this ICollection<T> destination, IEnumerable<T> collection)
         {
-            if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
+            ArgumentNullException.ThrowIfNull(destination);
+            ArgumentNullException.ThrowIfNull(collection);
             foreach (var item in collection)
             {
                 destination.Add(item);
@@ -109,10 +107,8 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If <paramref name="queue"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
         public static void EnqueueRange<T>(this Queue<T> queue, IEnumerable<T> collection)
         {
-            if (queue == null)
-                throw new ArgumentNullException(nameof(queue));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
+            ArgumentNullException.ThrowIfNull(queue);
+            ArgumentNullException.ThrowIfNull(collection);
             foreach (var item in collection)
             {
                 queue.Enqueue(item);
@@ -128,10 +124,8 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If <paramref name="stack"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
         public static void PushRange<T>(this Stack<T> stack, IEnumerable<T> collection)
         {
-            if (stack == null)
-                throw new ArgumentNullException(nameof(stack));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
+            ArgumentNullException.ThrowIfNull(stack);
+            ArgumentNullException.ThrowIfNull(collection);
             foreach (var item in collection)
             {
                 stack.Push(item);
@@ -147,10 +141,8 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentException"><paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
+            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(action);
             foreach (var item in source)
             {
                 action(item);
@@ -168,10 +160,8 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If the collection is null.</exception>
         public static T Choose<T>(this Random random, IList<T> collection)
         {
-            if (random == null)
-                throw new ArgumentNullException(nameof(random));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
+            ArgumentNullException.ThrowIfNull(random);
+            ArgumentNullException.ThrowIfNull(collection);
             return collection[random.Next(collection.Count)];
         }
 
@@ -186,10 +176,8 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If the collection is null.</exception>
         public static T Choose<T>(this Random random, params T[] collection)
         {
-            if (random == null)
-                throw new ArgumentNullException(nameof(random));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
+            ArgumentNullException.ThrowIfNull(random);
+            ArgumentNullException.ThrowIfNull(collection);
             return collection[random.Next(collection.Length)];
         }
 
@@ -203,15 +191,9 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If the random collection is null.</exception>
         public static void Shuffle<T>(this Random random, IList<T> collection)
         {
-            if (random == null)
-            {
-                throw new ArgumentNullException(nameof(random));
-            }
+            ArgumentNullException.ThrowIfNull(random);
 
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
+            ArgumentNullException.ThrowIfNull(collection);
 
             int n = collection.Count;
             while (n > 1)

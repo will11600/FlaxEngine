@@ -155,8 +155,7 @@ namespace FlaxEditor.GUI
         /// <param name="formatMode">The formatting mode.</param>
         public EnumComboBox(Type type, BuildEntriesDelegate customBuildEntriesDelegate = null, EnumDisplayAttribute.FormatMode formatMode = EnumDisplayAttribute.FormatMode.Default)
         {
-            if (type == null)
-                throw new ArgumentNullException(nameof(type));
+            ArgumentNullException.ThrowIfNull(type);
             if (!type.IsEnum)
                 throw new ArgumentException(string.Format("Invalid enum type {0}.", type.FullName));
             _enumType = type;

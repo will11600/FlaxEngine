@@ -41,8 +41,7 @@ namespace FlaxEngine
         /// <returns>True if failed, otherwise false.</returns>
         public unsafe bool SetupPatchHeightMap(ref Int2 patchCoord, float[] heightMap, byte[] holesMask = null, bool forceUseVirtualStorage = false)
         {
-            if (heightMap == null)
-                throw new ArgumentNullException(nameof(heightMap));
+            ArgumentNullException.ThrowIfNull(heightMap);
 
             fixed (float* heightMapPtr = heightMap)
             {
@@ -63,8 +62,7 @@ namespace FlaxEngine
         /// <returns>True if failed, otherwise false.</returns>
         public unsafe bool SetupPatchSplatMap(ref Int2 patchCoord, int index, Color32[] splatMap, bool forceUseVirtualStorage = false)
         {
-            if (splatMap == null)
-                throw new ArgumentNullException(nameof(splatMap));
+            ArgumentNullException.ThrowIfNull(splatMap);
 
             fixed (Color32* splatMapPtr = splatMap)
             {

@@ -50,8 +50,7 @@ namespace FlaxEditor.Surface.Undo
         /// <param name="child">The child context provider.</param>
         public ContextHandle(ISurfaceContext child)
         {
-            if (child == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(child);
             VisjectSurfaceContext parent = child.ParentContext;
             VisjectSurfaceContext context = parent;
             int count = 1;

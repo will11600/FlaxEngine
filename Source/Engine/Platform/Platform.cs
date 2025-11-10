@@ -23,8 +23,7 @@ namespace FlaxEngine
         [Unmanaged]
         public static unsafe int WriteSocket(NetworkSocket socket, byte[] data)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
+            ArgumentNullException.ThrowIfNull(data);
             fixed (byte* ptr = data)
                 return Internal_WriteSocket(ref socket, ptr, (uint)data.Length, null);
         }
@@ -39,8 +38,7 @@ namespace FlaxEngine
         [Unmanaged]
         public static unsafe int WriteSocket(NetworkSocket socket, byte[] data, NetworkEndPoint endPoint)
         {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
+            ArgumentNullException.ThrowIfNull(data);
             fixed (byte* ptr = data)
                 return Internal_WriteSocket(ref socket, ptr, (uint)data.Length, &endPoint);
         }
@@ -54,8 +52,7 @@ namespace FlaxEngine
         [Unmanaged]
         public static unsafe int ReadSocket(NetworkSocket socket, byte[] buffer)
         {
-            if (buffer == null)
-                throw new ArgumentNullException(nameof(buffer));
+            ArgumentNullException.ThrowIfNull(buffer);
             fixed (byte* ptr = buffer)
                 return Internal_ReadSocket(ref socket, ptr, (uint)buffer.Length, null);
         }
@@ -70,8 +67,7 @@ namespace FlaxEngine
         [Unmanaged]
         public static unsafe int ReadSocket(NetworkSocket socket, byte[] buffer, NetworkEndPoint endPoint)
         {
-            if (buffer == null)
-                throw new ArgumentNullException(nameof(buffer));
+            ArgumentNullException.ThrowIfNull(buffer);
             fixed (byte* ptr = buffer)
                 return Internal_ReadSocket(ref socket, ptr, (uint)buffer.Length, &endPoint);
         }

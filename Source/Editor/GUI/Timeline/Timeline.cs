@@ -1501,8 +1501,7 @@ namespace FlaxEditor.GUI.Timeline
         /// <param name="withUndo">True if use undo/redo action for track removing.</param>
         public void Delete(Track track, bool withUndo = true)
         {
-            if (track == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(track);
             var tracks = new List<Track>(4);
             GetTracks(track, tracks);
             if (withUndo && Undo != null && Undo.Enabled)
@@ -1546,8 +1545,7 @@ namespace FlaxEditor.GUI.Timeline
         /// <param name="withUndo">True if use undo/redo action for media removing.</param>
         public void Delete(Media media, bool withUndo = true)
         {
-            if (media == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(media);
             var track = media.Track;
             if (track == null)
                 throw new InvalidOperationException();

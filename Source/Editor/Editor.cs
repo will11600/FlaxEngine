@@ -975,8 +975,7 @@ namespace FlaxEditor
         /// <returns>True if saving failed, otherwise false.</returns>
         public static bool SaveJsonAsset(string outputPath, object obj)
         {
-            if (obj == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(obj);
             string str = JsonSerializer.Serialize(obj);
             return Internal_SaveJsonAsset(outputPath, str, obj.GetType().FullName);
         }
@@ -996,8 +995,7 @@ namespace FlaxEditor
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException(nameof(path));
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
             if (type == CollisionDataType.None)
                 throw new ArgumentException(nameof(type));
 
@@ -1036,8 +1034,7 @@ namespace FlaxEditor
 
         private static string GetShaderAssetSourceCode(Asset asset)
         {
-            if (asset == null)
-                throw new ArgumentNullException(nameof(asset));
+            ArgumentNullException.ThrowIfNull(asset);
             if (asset.WaitForLoaded())
                 throw new Exception("Failed to load asset.");
             var source = Internal_GetShaderAssetSourceCode(FlaxEngine.Object.GetUnmanagedPtr(asset));

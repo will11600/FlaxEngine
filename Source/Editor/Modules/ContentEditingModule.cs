@@ -27,8 +27,7 @@ namespace FlaxEditor.Modules
         /// <returns>Opened window or null if cannot open item.</returns>
         public EditorWindow Open(Asset asset, bool disableAutoShow = false)
         {
-            if (asset == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(asset);
             var item = Editor.ContentDatabase.FindAsset(asset.ID);
             return item != null ? Open(item) : null;
         }
@@ -41,8 +40,7 @@ namespace FlaxEditor.Modules
         /// <returns>Opened window or null if cannot open item.</returns>
         public EditorWindow Open(ContentItem item, bool disableAutoShow = false)
         {
-            if (item == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(item);
 
             // Check if any window is already editing this item
             var window = Editor.Windows.FindEditor(item);

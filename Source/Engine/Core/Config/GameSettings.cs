@@ -569,8 +569,7 @@ namespace FlaxEditor.Content.Settings
         /// <returns>True if failed otherwise false.</returns>
         public static bool SetCustomSettings(string key, JsonAsset customSettingsAsset)
         {
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
+            ArgumentNullException.ThrowIfNull(key);
 
             var gameSettings = Load();
 

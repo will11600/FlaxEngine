@@ -143,8 +143,7 @@ namespace FlaxEditor.Windows.Profiler
         /// <param name="mode">The mode.</param>
         public void AddMode(ProfilerMode mode)
         {
-            if (mode == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(mode);
             mode.Init();
             _tabs.AddTab(mode);
             mode.SelectedSampleChanged += ModeOnSelectedSampleChanged;

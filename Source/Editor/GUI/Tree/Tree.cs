@@ -140,8 +140,7 @@ namespace FlaxEditor.GUI.Tree
         /// <param name="node">Node to select.</param>
         public void Select(TreeNode node)
         {
-            if (node == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(node);
 
             // Check if won't change
             if (Selection.Count == 1 && SelectedNode == node)
@@ -169,8 +168,7 @@ namespace FlaxEditor.GUI.Tree
         /// <param name="nodes">Nodes to select.</param>
         public void Select(List<TreeNode> nodes)
         {
-            if (nodes == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(nodes);
 
             // Check if won't change
             if (Selection.Count == nodes.Count && Selection.SequenceEqual(nodes))
