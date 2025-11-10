@@ -24,7 +24,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="layerIndex">Index of the layer (zero-based).</param>
         /// <returns><c>true</c> if the specified layer is set; otherwise, <c>false</c>.</returns>
-        public bool HasLayer(int layerIndex)
+        public readonly bool HasLayer(int layerIndex)
         {
             return (Mask & (1 << layerIndex)) != 0;
         }
@@ -158,13 +158,13 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return Mask.GetHashCode();
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return Mask.ToString();
         }
@@ -174,7 +174,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="other">The other value to compare.</param>
         /// <returns>True if both values are equal, otherwise false.</returns>
-        public bool Equals(LayersMask other)
+        public readonly bool Equals(LayersMask other)
         {
             return Mask == other.Mask;
         }
@@ -186,7 +186,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public int CompareTo(object obj)
+        public readonly int CompareTo(object obj)
         {
             if (obj is LayersMask other)
                 return Mask.CompareTo(other.Mask);
@@ -194,7 +194,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public int CompareTo(LayersMask other)
+        public readonly int CompareTo(LayersMask other)
         {
             return Mask.CompareTo(other.Mask);
         }

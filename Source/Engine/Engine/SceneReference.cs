@@ -70,19 +70,19 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public int CompareTo(Guid other)
+        public readonly int CompareTo(Guid other)
         {
             return ID.CompareTo(other);
         }
 
         /// <inheritdoc />
-        public int CompareTo(SceneReference other)
+        public readonly int CompareTo(SceneReference other)
         {
             return ID.CompareTo(other.ID);
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             if (obj is Guid id)
                 return ID == id;
@@ -92,13 +92,13 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return ID.GetHashCode();
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return ID.ToString();
         }

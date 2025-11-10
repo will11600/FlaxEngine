@@ -88,12 +88,12 @@ namespace FlaxEngine.Interop
                     handle = ManagedHandle.ToIntPtr(managed, GCHandleType.Weak);
             }
 
-            public IntPtr ToUnmanaged()
+            public readonly IntPtr ToUnmanaged()
             {
                 return handle;
             }
 
-            public void Free()
+            public readonly void Free()
             {
                 managedArray?.FreePooled();
             }
@@ -259,14 +259,14 @@ namespace FlaxEngine.Interop
                     (handle, managedArray) = ManagedArray.WrapPooledArray(managed);
             }
 
-            public IntPtr ToUnmanaged()
+            public readonly IntPtr ToUnmanaged()
             {
                 if (managedArray == null)
                     return IntPtr.Zero;
                 return ManagedHandle.ToIntPtr(handle);
             }
 
-            public void Free()
+            public readonly void Free()
             {
                 if (managedArray == null)
                     return;
@@ -332,7 +332,7 @@ namespace FlaxEngine.Interop
                 }
             }
 
-            public IntPtr ToUnmanaged()
+            public readonly IntPtr ToUnmanaged()
             {
                 return ManagedHandle.ToIntPtr(handle);
             }
@@ -438,7 +438,7 @@ namespace FlaxEngine.Interop
                 return managed;
             }
 
-            public void Free() => DictionaryMarshaller<T, U>.Free(unmanaged);
+            public readonly void Free() => DictionaryMarshaller<T, U>.Free(unmanaged);
         }
 
         public static Dictionary<T, U> ConvertToManaged(IntPtr unmanaged) => unmanaged != IntPtr.Zero ? Unsafe.As<Dictionary<T, U>>(ManagedHandle.FromIntPtr(unmanaged).Target) : null;
@@ -547,13 +547,13 @@ namespace FlaxEngine.Interop
                 (managedHandle, managedArray) = ManagedArray.AllocatePooledArray<TUnmanagedElement>(managed.Length);
             }
 
-            public ReadOnlySpan<T> GetManagedValuesSource() => sourceArray;
+            public readonly ReadOnlySpan<T> GetManagedValuesSource() => sourceArray;
 
-            public Span<TUnmanagedElement> GetUnmanagedValuesDestination() => managedArray != null ? managedArray.ToSpan<TUnmanagedElement>() : Span<TUnmanagedElement>.Empty;
+            public readonly Span<TUnmanagedElement> GetUnmanagedValuesDestination() => managedArray != null ? managedArray.ToSpan<TUnmanagedElement>() : Span<TUnmanagedElement>.Empty;
 
-            public TUnmanagedElement* ToUnmanaged() => (TUnmanagedElement*)ManagedHandle.ToIntPtr(managedHandle);
+            public readonly TUnmanagedElement* ToUnmanaged() => (TUnmanagedElement*)ManagedHandle.ToIntPtr(managedHandle);
 
-            public void Free() => managedArray?.FreePooled();
+            public readonly void Free() => managedArray?.FreePooled();
         }
 
 #if FLAX_EDITOR
@@ -573,16 +573,16 @@ namespace FlaxEngine.Interop
                 (handle, managedArray) = ManagedArray.AllocatePooledArray<TUnmanagedElement>(managed.Length);
             }
 
-            public ReadOnlySpan<T> GetManagedValuesSource() => sourceArray;
+            public readonly ReadOnlySpan<T> GetManagedValuesSource() => sourceArray;
 
-            public Span<TUnmanagedElement> GetUnmanagedValuesDestination()
+            public readonly Span<TUnmanagedElement> GetUnmanagedValuesDestination()
             {
                 if (managedArray == null)
                     return Span<TUnmanagedElement>.Empty;
                 return managedArray.ToSpan<TUnmanagedElement>();
             }
 
-            public TUnmanagedElement* ToUnmanaged() => (TUnmanagedElement*)ManagedHandle.ToIntPtr(handle);
+            public readonly TUnmanagedElement* ToUnmanaged() => (TUnmanagedElement*)ManagedHandle.ToIntPtr(handle);
 
             public void FromUnmanaged(TUnmanagedElement* unmanaged)
             {
@@ -597,16 +597,16 @@ namespace FlaxEngine.Interop
                 }
             }
 
-            public ReadOnlySpan<TUnmanagedElement> GetUnmanagedValuesSource(int numElements)
+            public readonly ReadOnlySpan<TUnmanagedElement> GetUnmanagedValuesSource(int numElements)
             {
                 if (managedArray == null)
                     return ReadOnlySpan<TUnmanagedElement>.Empty;
                 return managedArray.ToSpan<TUnmanagedElement>();
             }
 
-            public Span<T> GetManagedValuesDestination(int numElements) => sourceArray;
+            public readonly Span<T> GetManagedValuesDestination(int numElements) => sourceArray;
 
-            public T[] ToManaged() => sourceArray;
+            public readonly T[] ToManaged() => sourceArray;
 
             public void Free()
             {
@@ -721,7 +721,7 @@ namespace FlaxEngine.Interop
                 return managed;
             }
 
-            public void Free() => ManagedString.Free(unmanaged);
+            public readonly void Free() => ManagedString.Free(unmanaged);
         }
 
         public static string ConvertToManaged(IntPtr unmanaged) => ManagedString.ToManaged(unmanaged);

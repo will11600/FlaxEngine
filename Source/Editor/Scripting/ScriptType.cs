@@ -349,7 +349,7 @@ namespace FlaxEditor.Scripting
             /// Formats the parameters to the string representation for UI.
             /// </summary>
             /// <param name="sb">The output String Builder to write to.</param>
-            public void ToString(StringBuilder sb)
+            public readonly void ToString(StringBuilder sb)
             {
                 if (IsOut)
                     sb.Append("out ");

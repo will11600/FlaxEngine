@@ -79,7 +79,7 @@ namespace FlaxEngine
         [NoSerialize]
         public Vector3 Size
         {
-            get => Maximum - Minimum;
+            readonly get => Maximum - Minimum;
             set
             {
                 var center = Center;
@@ -95,7 +95,7 @@ namespace FlaxEngine
         [NoSerialize]
         public Vector3 Center
         {
-            get => Minimum + (Maximum - Minimum) * 0.5f;
+            readonly get => Minimum + (Maximum - Minimum) * 0.5f;
             set
             {
                 var sizeHalf = Size * 0.5f;
@@ -130,7 +130,7 @@ namespace FlaxEngine
         /// Retrieves the eight corners of the bounding box.
         /// </summary>
         /// <returns>An array of points representing the eight corners of the bounding box.</returns>
-        public void GetCorners(Vector3[] corners)
+        public readonly void GetCorners(Vector3[] corners)
         {
             corners[0] = new Vector3(Minimum.X, Maximum.Y, Maximum.Z);
             corners[1] = new Vector3(Maximum.X, Maximum.Y, Maximum.Z);
@@ -675,7 +675,7 @@ namespace FlaxEngine
         /// <param name="other">The <see cref="Vector4" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Vector4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(ref BoundingBox other)
+        public readonly bool Equals(ref BoundingBox other)
         {
             return Minimum == other.Minimum && Maximum == other.Maximum;
         }

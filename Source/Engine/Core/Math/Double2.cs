@@ -178,42 +178,42 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a value indicting whether this instance is normalized.
         /// </summary>
-        public bool IsNormalized => Mathd.Abs((X * X + Y * Y) - 1.0f) < 1e-4f;
+        public readonly bool IsNormalized => Mathd.Abs((X * X + Y * Y) - 1.0f) < 1e-4f;
 
         /// <summary>
         /// Gets a value indicting whether this vector is zero
         /// </summary>
-        public bool IsZero => Mathd.IsZero(X) && Mathd.IsZero(Y);
+        public readonly bool IsZero => Mathd.IsZero(X) && Mathd.IsZero(Y);
 
         /// <summary>
         /// Gets a minimum component value
         /// </summary>
-        public double MinValue => Mathd.Min(X, Y);
+        public readonly double MinValue => Mathd.Min(X, Y);
 
         /// <summary>
         /// Gets a maximum component value
         /// </summary>
-        public double MaxValue => Mathd.Max(X, Y);
+        public readonly double MaxValue => Mathd.Max(X, Y);
 
         /// <summary>
         /// Gets an arithmetic average value of all vector components.
         /// </summary>
-        public double AvgValue => (X + Y) * (1.0 / 2.0);
+        public readonly double AvgValue => (X + Y) * (1.0 / 2.0);
 
         /// <summary>
         /// Gets a sum of the component values.
         /// </summary>
-        public double ValuesSum => X + Y;
+        public readonly double ValuesSum => X + Y;
 
         /// <summary>
         /// Gets a vector with values being absolute values of that vector.
         /// </summary>
-        public Double2 Absolute => new Double2(Mathd.Abs(X), Mathd.Abs(Y));
+        public readonly Double2 Absolute => new Double2(Mathd.Abs(X), Mathd.Abs(Y));
 
         /// <summary>
         /// Gets a vector with values being opposite to values of that vector.
         /// </summary>
-        public Double2 Negative => new Double2(-X, -Y);
+        public readonly Double2 Negative => new Double2(-X, -Y);
 
         /// <summary>
         /// Gets or sets the component at the specified index.
@@ -224,7 +224,7 @@ namespace FlaxEngine
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0,1].</exception>
         public double this[int index]
         {
-            get
+            readonly get
             {
                 switch (index)
                 {
@@ -253,14 +253,14 @@ namespace FlaxEngine
         /// </summary>
         /// <returns>The length of the vector.</returns>
         /// <remarks><see cref="Double2.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-        public double Length => Math.Sqrt(X * X + Y * Y);
+        public readonly double Length => Math.Sqrt(X * X + Y * Y);
 
         /// <summary>
         /// Calculates the squared length of the vector.
         /// </summary>
         /// <returns>The squared length of the vector.</returns>
         /// <remarks>This method may be preferred to <see cref="Double2.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-        public double LengthSquared => X * X + Y * Y;
+        public readonly double LengthSquared => X * X + Y * Y;
 
         /// <summary>
         /// Converts the vector into a unit vector.
@@ -279,7 +279,7 @@ namespace FlaxEngine
         /// <summary>
         /// Creates an array containing the elements of the vector.
         /// </summary>
-        public double[] ToArray()
+        public readonly double[] ToArray()
         {
             return new[] { X, Y };
         }
@@ -1522,7 +1522,7 @@ namespace FlaxEngine
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "X:{0} Y:{1}", X, Y);
         }
@@ -1544,7 +1544,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, _formatString, X, Y);
         }
@@ -1565,7 +1565,7 @@ namespace FlaxEngine
         /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -1579,7 +1579,7 @@ namespace FlaxEngine
         /// <param name="other">The <see cref="Double2" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Double2" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(ref Double2 other)
+        public readonly bool Equals(ref Double2 other)
         {
             return X == other.X && Y == other.Y;
         }

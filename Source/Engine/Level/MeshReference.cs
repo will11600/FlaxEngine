@@ -10,7 +10,7 @@ namespace FlaxEngine
         partial struct MeshReference : ICustomValueEquals
         {
             /// <inheritdoc />
-            public bool ValueEquals(object other)
+            public readonly bool ValueEquals(object other)
             {
                 var o = (MeshReference)other;
                 return JsonSerializer.ValueEquals(Actor, o.Actor) &&

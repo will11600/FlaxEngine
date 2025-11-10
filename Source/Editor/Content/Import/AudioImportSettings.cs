@@ -12,7 +12,7 @@ namespace FlaxEngine.Tools
     {
         partial struct Options
         {
-            private bool ShowBtiDepth => Format != AudioFormat.Vorbis;
+            private readonly bool ShowBtiDepth => Format != AudioFormat.Vorbis;
         }
     }
 }

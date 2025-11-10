@@ -41,17 +41,17 @@ namespace FlaxEngine
         /// <summary>
         /// Gets the number elements in the buffer.
         /// </summary>
-        public uint ElementsCount => Stride > 0 ? Size / Stride : 0;
+        public readonly uint ElementsCount => Stride > 0 ? Size / Stride : 0;
 
         /// <summary>
         /// Gets a value indicating whether this instance is a shader resource.
         /// </summary>
-        public bool IsShaderResource => (Flags & GPUBufferFlags.ShaderResource) != 0;
+        public readonly bool IsShaderResource => (Flags & GPUBufferFlags.ShaderResource) != 0;
 
         /// <summary>
         /// Gets a value indicating whether this instance is a unordered access.
         /// </summary>
-        public bool IsUnorderedAccess => (Flags & GPUBufferFlags.UnorderedAccess) != 0;
+        public readonly bool IsUnorderedAccess => (Flags & GPUBufferFlags.UnorderedAccess) != 0;
 
         /// <summary>
         /// Clears description.
@@ -355,7 +355,7 @@ namespace FlaxEngine
         /// Gets the staging upload (CPU write) description for this instance.
         /// </summary>
         /// <returns>A staging buffer description</returns>
-        public GPUBufferDescription ToStagingUpload()
+        public readonly GPUBufferDescription ToStagingUpload()
         {
             var desc = this;
             desc.Usage = GPUResourceUsage.StagingUpload;
@@ -368,7 +368,7 @@ namespace FlaxEngine
         /// Gets the staging readback (CPU read) description for this instance.
         /// </summary>
         /// <returns>A staging buffer description</returns>
-        public GPUBufferDescription ToStagingReadback()
+        public readonly GPUBufferDescription ToStagingReadback()
         {
             var desc = this;
             desc.Usage = GPUResourceUsage.StagingReadback;
@@ -381,7 +381,7 @@ namespace FlaxEngine
         /// Gets the staging (CPU read/write) description for this instance.
         /// </summary>
         /// <returns>A staging buffer description</returns>
-        public GPUBufferDescription ToStaging()
+        public readonly GPUBufferDescription ToStaging()
         {
             var desc = this;
             desc.Usage = GPUResourceUsage.Staging;
@@ -391,7 +391,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public bool Equals(GPUBufferDescription other)
+        public readonly bool Equals(GPUBufferDescription other)
         {
             return Size == other.Size &&
                    Stride == other.Stride &&
@@ -409,7 +409,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -446,13 +446,13 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format("{0}, {1}, offset {2}, {3}, slot {3}", Type, Format, Offset, PerInstance != 0 ? "per-instance" : "per-vertex", Slot);
         }
 
         /// <inheritdoc />
-        public bool Equals(VertexElement other)
+        public readonly bool Equals(VertexElement other)
         {
             return Type == other.Type &&
                    Slot == other.Slot &&
@@ -468,7 +468,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {

@@ -101,12 +101,12 @@ namespace FlaxEngine
         /// <summary>
         /// The first collider (this instance). It may be null if this actor is not the <see cref="Collider"/> (eg. <see cref="Terrain"/>).
         /// </summary>
-        public Collider ThisCollider => ThisActor as Collider;
+        public readonly Collider ThisCollider => ThisActor as Collider;
 
         /// <summary>
         /// The second collider (other instance). It may be null if this actor is not the <see cref="Collider"/> (eg. <see cref="Terrain"/>).
         /// </summary>
-        public Collider OtherCollider => OtherActor as Collider;
+        public readonly Collider OtherCollider => OtherActor as Collider;
 
         /// <inheritdoc />
         IEnumerator<ContactPoint> IEnumerable<ContactPoint>.GetEnumerator()

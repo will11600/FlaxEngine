@@ -19,6 +19,6 @@ namespace FlaxEngine
         /// <summary>
         /// Whether or not to show the TAA settings.
         /// </summary>
-        public bool ShowTAASettings => (Mode == AntialiasingMode.TemporalAntialiasing);
+        public readonly bool ShowTAASettings => (Mode == AntialiasingMode.TemporalAntialiasing);
     }
 }

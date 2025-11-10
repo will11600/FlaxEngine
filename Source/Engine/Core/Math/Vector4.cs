@@ -257,47 +257,47 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a value indicting whether this instance is normalized.
         /// </summary>
-        public bool IsNormalized => Mathr.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
+        public readonly bool IsNormalized => Mathr.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
 
         /// <summary>
         /// Gets a value indicting whether this vector is zero
         /// </summary>
-        public bool IsZero => Mathr.IsZero(X) && Mathr.IsZero(Y) && Mathr.IsZero(Z) && Mathr.IsZero(W);
+        public readonly bool IsZero => Mathr.IsZero(X) && Mathr.IsZero(Y) && Mathr.IsZero(Z) && Mathr.IsZero(W);
 
         /// <summary>
         /// Gets a value indicting whether this vector is one
         /// </summary>
-        public bool IsOne => Mathr.IsOne(X) && Mathr.IsOne(Y) && Mathr.IsOne(Z) && Mathr.IsOne(W);
+        public readonly bool IsOne => Mathr.IsOne(X) && Mathr.IsOne(Y) && Mathr.IsOne(Z) && Mathr.IsOne(W);
 
         /// <summary>
         /// Gets a minimum component value
         /// </summary>
-        public Real MinValue => Mathr.Min(X, Mathr.Min(Y, Mathr.Min(Z, W)));
+        public readonly Real MinValue => Mathr.Min(X, Mathr.Min(Y, Mathr.Min(Z, W)));
 
         /// <summary>
         /// Gets a maximum component value
         /// </summary>
-        public Real MaxValue => Mathr.Max(X, Mathr.Max(Y, Mathr.Max(Z, W)));
+        public readonly Real MaxValue => Mathr.Max(X, Mathr.Max(Y, Mathr.Max(Z, W)));
 
         /// <summary>
         /// Gets an arithmetic average value of all vector components.
         /// </summary>
-        public Real AvgValue => (X + Y + Z + W) * (1.0f / 4.0f);
+        public readonly Real AvgValue => (X + Y + Z + W) * (1.0f / 4.0f);
 
         /// <summary>
         /// Gets a sum of the component values.
         /// </summary>
-        public Real ValuesSum => X + Y + Z + W;
+        public readonly Real ValuesSum => X + Y + Z + W;
 
         /// <summary>
         /// Gets a vector with values being absolute values of that vector.
         /// </summary>
-        public Vector4 Absolute => new Vector4(Mathr.Abs(X), Mathr.Abs(Y), Mathr.Abs(Z), Mathr.Abs(W));
+        public readonly Vector4 Absolute => new Vector4(Mathr.Abs(X), Mathr.Abs(Y), Mathr.Abs(Z), Mathr.Abs(W));
 
         /// <summary>
         /// Gets a vector with values being opposite to values of that vector.
         /// </summary>
-        public Vector4 Negative => new Vector4(-X, -Y, -Z, -W);
+        public readonly Vector4 Negative => new Vector4(-X, -Y, -Z, -W);
 
         /// <summary>
         /// Gets or sets the component at the specified index.
@@ -308,7 +308,7 @@ namespace FlaxEngine
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0,3].</exception>
         public Real this[int index]
         {
-            get
+            readonly get
             {
                 switch (index)
                 {
@@ -345,14 +345,14 @@ namespace FlaxEngine
         /// </summary>
         /// <returns>The length of the vector.</returns>
         /// <remarks><see cref="Vector4.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-        public Real Length => (Real)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+        public readonly Real Length => (Real)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
 
         /// <summary>
         /// Calculates the squared length of the vector.
         /// </summary>
         /// <returns>The squared length of the vector.</returns>
         /// <remarks>This method may be preferred to <see cref="Vector4.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-        public Real LengthSquared => X * X + Y * Y + Z * Z + W * W;
+        public readonly Real LengthSquared => X * X + Y * Y + Z * Z + W * W;
 
         /// <summary>
         /// Converts the vector into a unit vector.
@@ -374,7 +374,7 @@ namespace FlaxEngine
         /// Creates an array containing the elements of the vector.
         /// </summary>
         /// <returns>A four-element array containing the components of the vector.</returns>
-        public Real[] ToArray()
+        public readonly Real[] ToArray()
         {
             return new[] { X, Y, Z, W };
         }
@@ -1430,7 +1430,7 @@ namespace FlaxEngine
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, _formatString, X, Y, Z, W);
         }
@@ -1452,7 +1452,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, _formatString, X, Y, Z, W);
         }
@@ -1473,7 +1473,7 @@ namespace FlaxEngine
         /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -1490,7 +1490,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="other">The <see cref="Vector4" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Vector4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public bool Equals(ref Vector4 other)
+        public readonly bool Equals(ref Vector4 other)
         {
             return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
         }

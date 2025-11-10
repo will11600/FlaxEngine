@@ -48,27 +48,27 @@ namespace FlaxEngine
         /// <summary>
         /// Gets or sets the raw 32 bit value used to back this vector.
         /// </summary>
-        public uint RawValue => rawValue;
+        public readonly uint RawValue => rawValue;
 
         /// <summary>
         /// Gets the R component.
         /// </summary>
-        public float R => (rawValue & 0x3FF) / 1023.0f;
+        public readonly float R => (rawValue & 0x3FF) / 1023.0f;
 
         /// <summary>
         /// Gets the G component.
         /// </summary>
-        public float G => ((rawValue >> 10) & 0x3FF) / 1023.0f;
+        public readonly float G => ((rawValue >> 10) & 0x3FF) / 1023.0f;
 
         /// <summary>
         /// Gets the B component.
         /// </summary>
-        public float B => ((rawValue >> 20) & 0x3FF) / 1023.0f;
+        public readonly float B => ((rawValue >> 20) & 0x3FF) / 1023.0f;
 
         /// <summary>
         /// Gets the A component.
         /// </summary>
-        public float A => (rawValue >> 30) / 3.0f;
+        public readonly float A => (rawValue >> 30) / 3.0f;
 
         /// <summary>
         /// Performs an explicit conversion from <see cref = "T:FlaxEngine.Float4" /> to <see cref = "T:FlaxEngine.FloatR10G10B10A2" />.
@@ -125,7 +125,7 @@ namespace FlaxEngine
         /// Returns the hash code for this instance.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return rawValue.GetHashCode();
         }
@@ -146,7 +146,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name = "other">Object to make the comparison with.</param>
         /// <returns><c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public bool Equals(FloatR10G10B10A2 other)
+        public readonly bool Equals(FloatR10G10B10A2 other)
         {
             return other.rawValue == rawValue;
         }
@@ -156,7 +156,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="obj">Object to make the comparison with.</param>
         /// <returns><c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             return obj is FloatR10G10B10A2 other && rawValue == other.rawValue;
         }
@@ -183,7 +183,7 @@ namespace FlaxEngine
         /// Unpacks vector to Float3.
         /// </summary>
         /// <returns>Float3 value</returns>
-        public Float3 ToFloat3()
+        public readonly Float3 ToFloat3()
         {
             Float3 vectorOut;
 
@@ -201,7 +201,7 @@ namespace FlaxEngine
         /// Unpacks vector to Float4.
         /// </summary>
         /// <returns>Float4 value</returns>
-        public Float4 ToFloat4()
+        public readonly Float4 ToFloat4()
         {
             Float4 vectorOut;
 

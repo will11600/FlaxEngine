@@ -45,7 +45,7 @@ namespace FlaxEngine
         /// Gets the typed UI control object owned by the referenced <see cref="FlaxEngine.UIControl"/> actor.
         /// </summary>
         [HideInEditor]
-        public T Control
+        public readonly T Control
         {
             get
             {
@@ -62,7 +62,7 @@ namespace FlaxEngine
         /// <inheritdoc />
         public UIControl UIControl
         {
-            get => _uiControl;
+            readonly get => _uiControl;
             set
             {
                 var control = value?.Control;
@@ -82,7 +82,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public Type ControlType => typeof(T);
+        public readonly Type ControlType => typeof(T);
 
         /// <inheritdoc />
         public void Load(UIControl value)
@@ -91,19 +91,19 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return _uiControl?.ToString() ?? "null";
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return _uiControl?.GetHashCode() ?? 0;
         }
 
         /// <inheritdoc />
-        public int CompareTo(object obj)
+        public readonly int CompareTo(object obj)
         {
             if (obj is IControlReference other)
                 return Json.JsonSerializer.SceneObjectEquals(_uiControl, other.UIControl) ? 0 : 1;
@@ -111,19 +111,19 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public int CompareTo(ControlReference<T> other)
+        public readonly int CompareTo(ControlReference<T> other)
         {
             return Json.JsonSerializer.SceneObjectEquals(_uiControl, other._uiControl) ? 0 : 1;
         }
 
         /// <inheritdoc />
-        public bool Equals(ControlReference<T> other)
+        public readonly bool Equals(ControlReference<T> other)
         {
             return Json.JsonSerializer.SceneObjectEquals(_uiControl, other._uiControl);
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             return obj is ControlReference<T> other && Json.JsonSerializer.SceneObjectEquals(_uiControl, other._uiControl);
         }

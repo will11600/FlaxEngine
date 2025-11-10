@@ -117,7 +117,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets or sets the raw 16 bit value used to back this half-float.
         /// </summary>
-        public ushort RawValue => rawValue;
+        public readonly ushort RawValue => rawValue;
 
         /// <summary>
         /// Converts an array of half precision values into full precision values.
@@ -191,7 +191,7 @@ namespace FlaxEngine
         /// Converts the value of the object to its equivalent string representation.
         /// </summary>
         /// <returns>The string representation of the value of this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             float num = this;
             return num.ToString(CultureInfo.CurrentCulture);
@@ -201,7 +201,7 @@ namespace FlaxEngine
         /// Returns the hash code for this instance.
         /// </summary>
         /// <returns>A 32-bit signed integer hash code.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             ushort num = rawValue;
             return (((num * 3) / 2) ^ num);
@@ -223,7 +223,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name = "other">Object to make the comparison with.</param>
         /// <returns><c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public bool Equals(Half other)
+        public readonly bool Equals(Half other)
         {
             return other.rawValue == rawValue;
         }
@@ -233,7 +233,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name = "obj">Object to make the comparison with.</param>
         /// <returns><c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             if (obj == null)
             {

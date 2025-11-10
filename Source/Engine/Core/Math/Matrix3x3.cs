@@ -206,7 +206,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Row1
         {
-            get => new Float3(M11, M12, M13);
+            readonly get => new Float3(M11, M12, M13);
             set
             {
                 M11 = value.X;
@@ -220,7 +220,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Row2
         {
-            get => new Float3(M21, M22, M23);
+            readonly get => new Float3(M21, M22, M23);
             set
             {
                 M21 = value.X;
@@ -234,7 +234,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Row3
         {
-            get => new Float3(M31, M32, M33);
+            readonly get => new Float3(M31, M32, M33);
             set
             {
                 M31 = value.X;
@@ -248,7 +248,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Column1
         {
-            get => new Float3(M11, M21, M31);
+            readonly get => new Float3(M11, M21, M31);
             set
             {
                 M11 = value.X;
@@ -262,7 +262,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Column2
         {
-            get => new Float3(M12, M22, M32);
+            readonly get => new Float3(M12, M22, M32);
             set
             {
                 M12 = value.X;
@@ -276,7 +276,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 Column3
         {
-            get => new Float3(M13, M23, M33);
+            readonly get => new Float3(M13, M23, M33);
             set
             {
                 M13 = value.X;
@@ -290,7 +290,7 @@ namespace FlaxEngine
         /// </summary>
         public Float3 ScaleVector
         {
-            get => new Float3(M11, M22, M33);
+            readonly get => new Float3(M11, M22, M33);
             set
             {
                 M11 = value.X;
@@ -313,7 +313,7 @@ namespace FlaxEngine
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 15].</exception>
         public float this[int index]
         {
-            get
+            readonly get
             {
                 switch (index)
                 {
@@ -400,7 +400,7 @@ namespace FlaxEngine
         /// Calculates the determinant of the Matrix3x3.
         /// </summary>
         /// <returns>The determinant of the Matrix3x3.</returns>
-        public float Determinant()
+        public readonly float Determinant()
         {
             return M11 * M22 * M33 + M12 * M23 * M31 + M13 * M21 * M32 - M13 * M22 * M31 - M12 * M21 * M33 - M11 * M23 * M32;
         }
@@ -658,7 +658,7 @@ namespace FlaxEngine
         /// Creates an array containing the elements of the Matrix3x3.
         /// </summary>
         /// <returns>A 9-element array containing the components of the Matrix3x3.</returns>
-        public float[] ToArray()
+        public readonly float[] ToArray()
         {
             return new[]
             {
@@ -2047,7 +2047,7 @@ namespace FlaxEngine
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "[M11:{0} M12:{1} M13:{2}] [M21:{3} M22:{4} M23:{5}] [M31:{6} M32:{7} M33:{8}]", M11, M12, M13, M21, M22, M23, M31, M32, M33);
         }
@@ -2072,7 +2072,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, "[M11:{0} M12:{1} M13:{2}] [M21:{3} M22:{4} M23:{5}] [M31:{6} M32:{7} M33:{8}]",
                                  M11.ToString(formatProvider), M12.ToString(formatProvider), M13.ToString(formatProvider),
@@ -2100,7 +2100,7 @@ namespace FlaxEngine
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -2122,7 +2122,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="other">The <see cref="Matrix3x3"/> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Matrix3x3"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public bool Equals(ref Matrix3x3 other)
+        public readonly bool Equals(ref Matrix3x3 other)
         {
             return  M11 == other.M11 &&
                     M12 == other.M12 &&

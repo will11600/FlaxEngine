@@ -75,7 +75,7 @@ namespace FlaxEngine
         /// <param name="knowledge">The knowledge container to access.</param>
         /// <param name="value">The value to set.</param>
         /// <returns>True if set value, otherwise false.</returns>
-        public bool Set(BehaviorKnowledge knowledge, object value)
+        public readonly bool Set(BehaviorKnowledge knowledge, object value)
         {
             return knowledge != null && knowledge.Set(Path, value);
         }
@@ -85,7 +85,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="knowledge">The knowledge container to access.</param>
         /// <returns>The output value or null (if cannot read it - eg. missing goal or no blackboard entry of that name).</returns>
-        public object Get(BehaviorKnowledge knowledge)
+        public readonly object Get(BehaviorKnowledge knowledge)
         {
             object value = null;
             if (knowledge != null)
@@ -99,20 +99,20 @@ namespace FlaxEngine
         /// <param name="knowledge">The knowledge container to access.</param>
         /// <param name="value">The output value.</param>
         /// <returns>True if got value, otherwise false.</returns>
-        public bool TryGet(BehaviorKnowledge knowledge, out object value)
+        public readonly bool TryGet(BehaviorKnowledge knowledge, out object value)
         {
             value = null;
             return knowledge != null && knowledge.Get(Path, out value);
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return Path;
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return Path?.GetHashCode() ?? 0;
         }
@@ -126,7 +126,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public int CompareTo(BehaviorKnowledgeSelectorAny other)
+        public readonly int CompareTo(BehaviorKnowledgeSelectorAny other)
         {
             return string.Compare(Path, other.Path, StringComparison.Ordinal);
         }
@@ -189,7 +189,7 @@ namespace FlaxEngine
         /// <param name="knowledge">The knowledge container to access.</param>
         /// <param name="value">The value to set.</param>
         /// <returns>True if set value value, otherwise false.</returns>
-        public bool Set(BehaviorKnowledge knowledge, T value)
+        public readonly bool Set(BehaviorKnowledge knowledge, T value)
         {
             return knowledge != null && knowledge.Set(Path, value);
         }
@@ -199,7 +199,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="knowledge">The knowledge container to access.</param>
         /// <returns>The output value or null (if cannot read it - eg. missing goal or no blackboard entry of that name).</returns>
-        public T Get(BehaviorKnowledge knowledge)
+        public readonly T Get(BehaviorKnowledge knowledge)
         {
             if (knowledge != null && knowledge.Get(Path, out var value))
                 return Utilities.VariantUtils.Cast<T>(value);
@@ -212,7 +212,7 @@ namespace FlaxEngine
         /// <param name="knowledge">The knowledge container to access.</param>
         /// <param name="value">The output value.</param>
         /// <returns>True if got value, otherwise false.</returns>
-        public bool TryGet(BehaviorKnowledge knowledge, out T value)
+        public readonly bool TryGet(BehaviorKnowledge knowledge, out T value)
         {
             value = default;
             object tmp = null;
@@ -223,13 +223,13 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return Path;
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return Path?.GetHashCode() ?? 0;
         }
@@ -245,13 +245,13 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public int CompareTo(BehaviorKnowledgeSelectorAny other)
+        public readonly int CompareTo(BehaviorKnowledgeSelectorAny other)
         {
             return string.Compare(Path, other.Path, StringComparison.Ordinal);
         }
 
         /// <inheritdoc />
-        public int CompareTo(BehaviorKnowledgeSelector<T> other)
+        public readonly int CompareTo(BehaviorKnowledgeSelector<T> other)
         {
             return string.Compare(Path, other.Path, StringComparison.Ordinal);
         }

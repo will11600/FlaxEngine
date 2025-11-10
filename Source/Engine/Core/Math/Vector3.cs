@@ -255,12 +255,12 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a value indicting whether this instance is normalized.
         /// </summary>
-        public bool IsNormalized => Mathr.Abs((X * X + Y * Y + Z * Z) - 1.0f) < 1e-4f;
+        public readonly bool IsNormalized => Mathr.Abs((X * X + Y * Y + Z * Z) - 1.0f) < 1e-4f;
 
         /// <summary>
         /// Gets the normalized vector. Returned vector has length equal 1.
         /// </summary>
-        public Vector3 Normalized
+        public readonly Vector3 Normalized
         {
             get
             {
@@ -273,42 +273,42 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a value indicting whether this vector is zero
         /// </summary>
-        public bool IsZero => Mathr.IsZero(X) && Mathr.IsZero(Y) && Mathr.IsZero(Z);
+        public readonly bool IsZero => Mathr.IsZero(X) && Mathr.IsZero(Y) && Mathr.IsZero(Z);
 
         /// <summary>
         /// Gets a value indicting whether this vector is one
         /// </summary>
-        public bool IsOne => Mathr.IsOne(X) && Mathr.IsOne(Y) && Mathr.IsOne(Z);
+        public readonly bool IsOne => Mathr.IsOne(X) && Mathr.IsOne(Y) && Mathr.IsOne(Z);
 
         /// <summary>
         /// Gets a minimum component value
         /// </summary>
-        public Real MinValue => Mathr.Min(X, Mathr.Min(Y, Z));
+        public readonly Real MinValue => Mathr.Min(X, Mathr.Min(Y, Z));
 
         /// <summary>
         /// Gets a maximum component value
         /// </summary>
-        public Real MaxValue => Mathr.Max(X, Mathr.Max(Y, Z));
+        public readonly Real MaxValue => Mathr.Max(X, Mathr.Max(Y, Z));
 
         /// <summary>
         /// Gets an arithmetic average value of all vector components.
         /// </summary>
-        public Real AvgValue => (X + Y + Z) * (1.0f / 3.0f);
+        public readonly Real AvgValue => (X + Y + Z) * (1.0f / 3.0f);
 
         /// <summary>
         /// Gets a sum of the component values.
         /// </summary>
-        public Real ValuesSum => X + Y + Z;
+        public readonly Real ValuesSum => X + Y + Z;
 
         /// <summary>
         /// Gets a vector with values being absolute values of that vector.
         /// </summary>
-        public Vector3 Absolute => new Vector3(Mathr.Abs(X), Mathr.Abs(Y), Mathr.Abs(Z));
+        public readonly Vector3 Absolute => new Vector3(Mathr.Abs(X), Mathr.Abs(Y), Mathr.Abs(Z));
 
         /// <summary>
         /// Gets a vector with values being opposite to values of that vector.
         /// </summary>
-        public Vector3 Negative => new Vector3(-X, -Y, -Z);
+        public readonly Vector3 Negative => new Vector3(-X, -Y, -Z);
 
         /// <summary>
         /// Gets or sets the component at the specified index.
@@ -319,7 +319,7 @@ namespace FlaxEngine
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0, 2].</exception>
         public Real this[int index]
         {
-            get
+            readonly get
             {
                 switch (index)
                 {
@@ -352,14 +352,14 @@ namespace FlaxEngine
         /// </summary>
         /// <returns>The length of the vector.</returns>
         /// <remarks><see cref="Vector3.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-        public Real Length => (Real)Math.Sqrt(X * X + Y * Y + Z * Z);
+        public readonly Real Length => (Real)Math.Sqrt(X * X + Y * Y + Z * Z);
 
         /// <summary>
         /// Calculates the squared length of the vector.
         /// </summary>
         /// <returns>The squared length of the vector.</returns>
         /// <remarks>This method may be preferred to <see cref="Vector3.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-        public Real LengthSquared => X * X + Y * Y + Z * Z;
+        public readonly Real LengthSquared => X * X + Y * Y + Z * Z;
 
         /// <summary>
         /// Converts the vector into a unit vector.
@@ -380,7 +380,7 @@ namespace FlaxEngine
         /// Creates an array containing the elements of the vector.
         /// </summary>
         /// <returns>A three-element array containing the components of the vector.</returns>
-        public Real[] ToArray()
+        public readonly Real[] ToArray()
         {
             return new[] { X, Y, Z };
         }
@@ -2078,7 +2078,7 @@ namespace FlaxEngine
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, _formatString, X, Y, Z);
         }
@@ -2100,7 +2100,7 @@ namespace FlaxEngine
         /// </summary>
         /// <param name="formatProvider">The format provider.</param>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public string ToString(IFormatProvider formatProvider)
+        public readonly string ToString(IFormatProvider formatProvider)
         {
             return string.Format(formatProvider, _formatString, X, Y, Z);
         }
@@ -2121,7 +2121,7 @@ namespace FlaxEngine
         /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -2138,7 +2138,7 @@ namespace FlaxEngine
         /// <param name="other">The <see cref="Vector3" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Vector3" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(ref Vector3 other)
+        public readonly bool Equals(ref Vector3 other)
         {
             return X == other.X && Y == other.Y && Z == other.Z;
         }

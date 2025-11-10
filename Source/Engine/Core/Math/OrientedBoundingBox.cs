@@ -230,7 +230,7 @@ namespace FlaxEngine
         /// The size of the <see cref="OrientedBoundingBox" /> if no scaling is applied to the transformation matrix.
         /// </summary>
         /// <remarks>The property will return the actual size even if the scaling is applied using Scale method, but if the scaling is applied to transformation matrix, use GetSize Function instead.</remarks>
-        public Vector3 Size => Extents * 2;
+        public readonly Vector3 Size => Extents * 2;
 
         /// <summary>
         /// Returns the size of the <see cref="OrientedBoundingBox" /> taking into consideration the scaling applied to the transformation matrix.
@@ -260,7 +260,7 @@ namespace FlaxEngine
         /// <summary>
         /// Returns the center of the <see cref="OrientedBoundingBox" />.
         /// </summary>
-        public Vector3 Center => Transformation.Translation;
+        public readonly Vector3 Center => Transformation.Translation;
 
         /// <summary>
         /// Determines whether a <see cref="OrientedBoundingBox" /> contains a point.
@@ -394,7 +394,7 @@ namespace FlaxEngine
         /// <param name="value">The <see cref="Vector4" /> to compare with this instance.</param>
         /// <returns><c>true</c> if the specified <see cref="Vector4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(ref OrientedBoundingBox value)
+        public readonly bool Equals(ref OrientedBoundingBox value)
         {
             return Extents == value.Extents && Transformation == value.Transformation;
         }

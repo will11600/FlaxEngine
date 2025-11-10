@@ -7,6 +7,6 @@ namespace FlaxEngine
         /// <summary>
         /// Gets the length of the audio data (in seconds).
         /// </summary>
-        public float Length => (float)NumSamples / (float)Mathf.Max(1U, SampleRate * NumChannels);
+        public readonly float Length => (float)NumSamples / (float)Mathf.Max(1U, SampleRate * NumChannels);
     }
 }
