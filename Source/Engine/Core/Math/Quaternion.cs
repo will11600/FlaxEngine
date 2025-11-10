@@ -67,7 +67,7 @@ namespace FlaxEngine
         /// <summary>
         /// The size of the <see cref="Quaternion" /> type, in bytes.
         /// </summary>
-        public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Quaternion));
+        public static readonly unsafe int SizeInBytes = sizeof(Quaternion);
 
         /// <summary>
         /// A <see cref="Quaternion" /> with all of its components set to zero.
@@ -77,12 +77,12 @@ namespace FlaxEngine
         /// <summary>
         /// A <see cref="Quaternion" /> with all of its components set to one.
         /// </summary>
-        public static readonly Quaternion One = new Quaternion(1.0f, 1.0f, 1.0f, 1.0f);
+        public static readonly Quaternion One = new(1.0f, 1.0f, 1.0f, 1.0f);
 
         /// <summary>
         /// The identity <see cref="Quaternion" /> (0, 0, 0, 1).
         /// </summary>
-        public static readonly Quaternion Identity = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+        public static readonly Quaternion Identity = new(0.0f, 0.0f, 0.0f, 1.0f);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Quaternion" /> struct.
@@ -102,10 +102,10 @@ namespace FlaxEngine
         /// <param name="value">A vector containing the values with which to initialize the components.</param>
         public Quaternion(Vector4 value)
         {
-            X = (float)value.X;
-            Y = (float)value.Y;
-            Z = (float)value.Z;
-            W = (float)value.W;
+            X = value.X;
+            Y = value.Y;
+            Z = value.Z;
+            W = value.W;
         }
 
         /// <summary>
@@ -144,10 +144,8 @@ namespace FlaxEngine
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values" /> contains more or less than four elements.</exception>
         public Quaternion(float[] values)
         {
-            if (values == null)
-                throw new ArgumentNullException(nameof(values));
-            if (values.Length != 4)
-                throw new ArgumentOutOfRangeException(nameof(values), "There must be four and only four input values for Quaternion.");
+            ArgumentNullException.ThrowIfNull(values);
+            ArgumentOutOfRangeException.ThrowIfNotEqual(values.Length, 4, nameof(values));
 
             X = values[0];
             Y = values[1];
@@ -163,48 +161,47 @@ namespace FlaxEngine
         /// <summary>
         /// Gets a value indicting whether this instance is normalized.
         /// </summary>
-        public bool IsNormalized => Mathf.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
+        public readonly bool IsNormalized => Mathf.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
 
         /// <summary>
         /// Gets the euler angle (pitch, yaw, roll) in degrees.
         /// </summary>
-        public Float3 EulerAngles
+        public readonly Float3 EulerAngles
         {
             get
             {
+                const float SingularityThreshold = 0.499995f;
+
                 Float3 result;
                 float sqw = W * W;
                 float sqx = X * X;
                 float sqy = Y * Y;
                 float sqz = Z * Z;
                 float unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
-                float test = X * W - Y * Z;
 
-                if (test > 0.499995f * unit)
+                switch (X * W - Y * Z)
                 {
                     // singularity at north pole
-
-                    // yaw pitch roll
-                    result.Y = 2.0f * Mathf.Atan2(Y, X);
-                    result.X = Mathf.PiOverTwo;
-                    result.Z = 0;
-                }
-                else if (test < -0.499995f * unit)
-                {
+                    case float test when test > +SingularityThreshold * unit:
+                        // yaw pitch roll
+                        result.Y = 2.0f * Mathf.Atan2(Y, X);
+                        result.X = Mathf.PiOverTwo;
+                        result.Z = 0.0f;
+                        break;
                     // singularity at south pole
-
-                    // yaw pitch roll
-                    result.Y = -2.0f * Mathf.Atan2(Y, X);
-                    result.X = -Mathf.PiOverTwo;
-                    result.Z = 0;
-                }
-                else
-                {
-                    // yaw pitch roll
-                    var q = new Quaternion(W, Z, X, Y);
-                    result.Y = Mathf.Atan2(2.0f * q.X * q.W + 2.0f * q.Y * q.Z, 1 - 2.0f * (q.Z * q.Z + q.W * q.W));
-                    result.X = Mathf.Asin(2.0f * (q.X * q.Z - q.W * q.Y));
-                    result.Z = Mathf.Atan2(2.0f * q.X * q.Y + 2.0f * q.Z * q.W, 1 - 2.0f * (q.Y * q.Y + q.Z * q.Z));
+                    case float test when test < -SingularityThreshold * unit:
+                        // yaw pitch roll
+                        result.Y = -2.0f * Mathf.Atan2(Y, X);
+                        result.X = -Mathf.PiOverTwo;
+                        result.Z = 0.0f;
+                        break;
+                    default:
+                        // yaw pitch roll
+                        var q = new Quaternion(W, Z, X, Y);
+                        result.Y = Mathf.Atan2(2.0f * q.X * q.W + 2.0f * q.Y * q.Z, 1 - 2.0f * (q.Z * q.Z + q.W * q.W));
+                        result.X = Mathf.Asin(2.0f * (q.X * q.Z - q.W * q.Y));
+                        result.Z = Mathf.Atan2(2.0f * q.X * q.Y + 2.0f * q.Z * q.W, 1 - 2.0f * (q.Y * q.Y + q.Z * q.Z));
+                        break;
                 }
 
                 result *= Mathf.RadiansToDegrees;
@@ -215,7 +212,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets the angle of the quaternion.
         /// </summary>
-        public float Angle
+        public readonly float Angle
         {
             get
             {
@@ -229,7 +226,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets the axis components of the quaternion.
         /// </summary>
-        public Float3 Axis
+        public readonly Float3 Axis
         {
             get
             {
@@ -250,34 +247,31 @@ namespace FlaxEngine
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0, 3].</exception>
         public float this[int index]
         {
-            get
+            readonly get => index switch
             {
-                switch (index)
-                {
-                case 0: return X;
-                case 1: return Y;
-                case 2: return Z;
-                case 3: return W;
-                }
-                throw new ArgumentOutOfRangeException(nameof(index), "Indices for Quaternion run from 0 to 3, inclusive.");
-            }
+                0 => X,
+                1 => Y,
+                2 => Z,
+                3 => W,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Quaternion run from 0 to 3, inclusive.")
+            };
             set
             {
                 switch (index)
                 {
-                case 0:
-                    X = value;
-                    break;
-                case 1:
-                    Y = value;
-                    break;
-                case 2:
-                    Z = value;
-                    break;
-                case 3:
-                    W = value;
-                    break;
-                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Quaternion run from 0 to 3, inclusive.");
+                    case 0:
+                        X = value;
+                        break;
+                    case 1:
+                        Y = value;
+                        break;
+                    case 2:
+                        Z = value;
+                        break;
+                    case 3:
+                        W = value;
+                        break;
+                    default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Quaternion run from 0 to 3, inclusive.");
                 }
             }
         }
@@ -351,16 +345,7 @@ namespace FlaxEngine
         /// Creates an array containing the elements of the quaternion.
         /// </summary>
         /// <returns>A four-element array containing the components of the quaternion.</returns>
-        public float[] ToArray()
-        {
-            return new[]
-            {
-                X,
-                Y,
-                Z,
-                W
-            };
-        }
+        public readonly float[] ToArray() => [X, Y, Z, W];
 
         /// <summary>
         /// Adds two quaternions.
@@ -684,20 +669,23 @@ namespace FlaxEngine
         {
             float inverse = 1.0f - amount;
 
-            if (Dot(start, end) >= 0.0f)
+            result = Dot(start, end) switch
             {
-                result.X = inverse * start.X + amount * end.X;
-                result.Y = inverse * start.Y + amount * end.Y;
-                result.Z = inverse * start.Z + amount * end.Z;
-                result.W = inverse * start.W + amount * end.W;
-            }
-            else
-            {
-                result.X = inverse * start.X - amount * end.X;
-                result.Y = inverse * start.Y - amount * end.Y;
-                result.Z = inverse * start.Z - amount * end.Z;
-                result.W = inverse * start.W - amount * end.W;
-            }
+                >= 0.0f => new Quaternion()
+                {
+                    X = inverse * start.X + amount * end.X,
+                    Y = inverse * start.Y + amount * end.Y,
+                    Z = inverse * start.Z + amount * end.Z,
+                    W = inverse * start.W + amount * end.W
+                },
+                _ => new Quaternion()
+                {
+                    X = inverse * start.X - amount * end.X,
+                    Y = inverse * start.Y - amount * end.Y,
+                    Z = inverse * start.Z - amount * end.Z,
+                    W = inverse * start.W - amount * end.W
+                }
+            };
 
             result.Normalize();
         }
@@ -1672,13 +1660,8 @@ namespace FlaxEngine
         public override int GetHashCode()
         {
             unchecked
-            {
-                int hashCode = X.GetHashCode();
-                hashCode = (hashCode * 397) ^ Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ Z.GetHashCode();
-                hashCode = (hashCode * 397) ^ W.GetHashCode();
-                return hashCode;
-            }
+        {
+            return HashCode.Combine(X, Y, Z, W);
         }
 
         /// <summary>
