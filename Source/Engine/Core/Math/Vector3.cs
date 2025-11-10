@@ -245,8 +245,7 @@ namespace FlaxEngine
         public Vector3(Real[] values)
         {
             ArgumentNullException.ThrowIfNull(values);
-            if (values.Length != 3)
-                throw new ArgumentOutOfRangeException(nameof(values), "There must be three and only three input values for Vector3.");
+            ArgumentOutOfRangeException.ThrowIfNotEqual(values.Length, 3, nameof(values));
             X = values[0];
             Y = values[1];
             Z = values[2];

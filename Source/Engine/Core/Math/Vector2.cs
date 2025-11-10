@@ -197,8 +197,7 @@ namespace FlaxEngine
         public Vector2(Real[] values)
         {
             ArgumentNullException.ThrowIfNull(values);
-            if (values.Length != 2)
-                throw new ArgumentOutOfRangeException(nameof(values), "There must be two and only two input values for Vector2.");
+            ArgumentOutOfRangeException.ThrowIfNotEqual(values.Length, 2, nameof(values));
             X = values[0];
             Y = values[1];
         }

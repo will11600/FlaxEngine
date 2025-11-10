@@ -145,9 +145,7 @@ namespace FlaxEngine
         public Quaternion(float[] values)
         {
             ArgumentNullException.ThrowIfNull(values);
-            if (values.Length != 4)
-                throw new ArgumentOutOfRangeException(nameof(values), "There must be four and only four input values for Quaternion.");
-
+            ArgumentOutOfRangeException.ThrowIfNotEqual(values.Length, 4, nameof(values));
             X = values[0];
             Y = values[1];
             Z = values[2];
