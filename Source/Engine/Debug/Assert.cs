@@ -360,12 +360,7 @@ namespace FlaxEngine.Assertions
         public static string GetEqualityMessage(object actual, object expected, bool expectEqual)
         {
             string str = string.Format("Values are {0}equal.", new object[] { !expectEqual ? string.Empty : "not " });
-            object[] objArray =
-            {
-                actual,
-                expected,
-                null
-            };
+            object[] objArray = [actual, expected, null];
             objArray[2] = !expectEqual ? "!=" : "==";
             return GetMessage(str, string.Format("{0} {2} {1}", objArray));
         }

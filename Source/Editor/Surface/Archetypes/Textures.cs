@@ -91,7 +91,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
+        [
             new() {
                 TypeID = 1,
                 Title = "Texture",
@@ -99,12 +99,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Two dimensional texture object",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(140, 120),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Guid.Empty
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UVs", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(FlaxEngine.Object), 6),
                     NodeElementArchetype.Factory.Output(1, "Color", typeof(Float4), 1),
@@ -113,25 +113,25 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(4, "B", typeof(float), 4),
                     NodeElementArchetype.Factory.Output(5, "A", typeof(float), 5),
                     NodeElementArchetype.Factory.Asset(0, 20, 0, typeof(Texture))
-                }
+                ]
             },
             new() {
                 TypeID = 2,
                 Title = "Texcoords",
-                AlternativeTitles = new string[] { "UV", "UVs" },
+                AlternativeTitles = ["UV", "UVs"],
                 Description = "Texture coordinates",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 30),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0u
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Text(0, 1, "Channel:"),
                     NodeElementArchetype.Factory.UnsignedInteger(50, 0, 0, -1, 0, 3),
                     NodeElementArchetype.Factory.Output(0, "UVs", typeof(Float2), 0)
-                }
+                ]
             },
             new() {
                 TypeID = 3,
@@ -140,12 +140,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Set of 6 textures arranged in a cube",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(140, 120),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Guid.Empty
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UVs", true, typeof(Float3), 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(FlaxEngine.Object), 6),
                     NodeElementArchetype.Factory.Output(1, "Color", typeof(Float4), 1),
@@ -154,7 +154,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(4, "B", typeof(float), 4),
                     NodeElementArchetype.Factory.Output(5, "A", typeof(float), 5),
                     NodeElementArchetype.Factory.Asset(0, 20, 0, typeof(CubeTexture))
-                }
+                ]
             },
             new() {
                 TypeID = 4,
@@ -163,12 +163,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Two dimensional texture object sampled as a normal map",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(140, 120),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Guid.Empty
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UVs", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(FlaxEngine.Object), 6),
                     NodeElementArchetype.Factory.Output(1, "Vector", typeof(Float3), 1),
@@ -176,7 +176,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(3, "Y", typeof(float), 3),
                     NodeElementArchetype.Factory.Output(4, "Z", typeof(float), 4),
                     NodeElementArchetype.Factory.Asset(0, 20, 0, typeof(Texture))
-                }
+                ]
             },
             new() {
                 TypeID = 5,
@@ -184,15 +184,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Parallax occlusion mapping",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(260, 120),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.05f,
                     8.0f,
                     20.0f,
                     0
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UVs", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Input(1, "Scale", true, typeof(float), 1, 0),
                     NodeElementArchetype.Factory.Input(2, "Min Steps", true, typeof(float), 2, 1),
@@ -200,14 +200,14 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(4, "Heightmap Texture", true, typeof(FlaxEngine.Object), 4),
                     NodeElementArchetype.Factory.Output(0, "Parallax UVs", typeof(Float2), 5),
                     NodeElementArchetype.Factory.Text(Surface.Constants.BoxSize + 4, 5 * Surface.Constants.LayoutOffsetY, "Channel"),
-                    NodeElementArchetype.Factory.ComboBox(70, 5 * Surface.Constants.LayoutOffsetY, 50, 3, new[]
-                    {
+                    NodeElementArchetype.Factory.ComboBox(70, 5 * Surface.Constants.LayoutOffsetY, 50, 3,
+                    [
                         "R",
                         "G",
                         "B",
                         "A",
-                    })
-                }
+                    ])
+                ]
             },
             new() {
                 TypeID = 6,
@@ -215,12 +215,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Graphics pipeline textures lookup node",
                 Flags = NodeFlags.MaterialGraph | NodeFlags.ParticleEmitterGraph,
                 Size = new Float2(170, 120),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     (int)MaterialSceneTextures.SceneColor
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UVs", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(FlaxEngine.Object), 6),
                     NodeElementArchetype.Factory.Output(1, "Color", typeof(Float4), 1),
@@ -229,7 +229,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(4, "B", typeof(float), 4),
                     NodeElementArchetype.Factory.Output(5, "A", typeof(float), 5),
                     NodeElementArchetype.Factory.ComboBox(0, Surface.Constants.LayoutOffsetY, 120, 0, typeof(MaterialSceneTextures))
-                }
+                ]
             },
             new() {
                 TypeID = 7,
@@ -237,8 +237,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Scene color texture lookup node",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(140, 120),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UVs", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(FlaxEngine.Object), 6),
                     NodeElementArchetype.Factory.Output(1, "Color", typeof(Float4), 1),
@@ -246,7 +246,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(3, "G", typeof(float), 3),
                     NodeElementArchetype.Factory.Output(4, "B", typeof(float), 4),
                     NodeElementArchetype.Factory.Output(5, "A", typeof(float), 5)
-                }
+                ]
             },
             new() {
                 TypeID = 8,
@@ -254,12 +254,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Scene depth buffer texture lookup node",
                 Flags = NodeFlags.MaterialGraph | NodeFlags.ParticleEmitterGraph,
                 Size = new Float2(140, 60),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UVs", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(FlaxEngine.Object), 6),
                     NodeElementArchetype.Factory.Output(1, "Depth", typeof(float), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 9,
@@ -269,14 +269,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(160, 110),
                 ConnectionsHints = ConnectionsHint.Vector,
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0,
                     -1.0f,
                     0,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Texture", true, typeof(FlaxEngine.Object), 0),
                     NodeElementArchetype.Factory.Input(1, "UVs", true, null, 1),
                     NodeElementArchetype.Factory.Input(2, "Level", true, typeof(float), 2, 1),
@@ -284,7 +284,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(0, "Color", typeof(Float4), 4),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 4, "Sampler"),
                     NodeElementArchetype.Factory.ComboBox(50, Surface.Constants.LayoutOffsetY * 4, 100, 0, typeof(CommonSamplerType))
-                }
+                ]
             },
             new() {
                 TypeID = 10,
@@ -292,22 +292,22 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Texture sheet animation",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(160, 110),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.0f,
                     new Float2(4, 4),
                     false,
                     false
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UVs", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Input(1, "Frame", true, typeof(float), 1, 0),
                     NodeElementArchetype.Factory.Input(2, "Frames X&Y", true, typeof(Float2), 2, 1),
                     NodeElementArchetype.Factory.Input(3, "Invert X", true, typeof(bool), 3, 2),
                     NodeElementArchetype.Factory.Input(4, "Invert Y", true, typeof(bool), 4, 3),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float2), 5),
-                }
+                ]
             },
             new() {
                 TypeID = 11,
@@ -315,15 +315,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Two dimensional texture object",
                 Flags = NodeFlags.ParticleEmitterGraph,
                 Size = new Float2(140, 80),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Guid.Empty
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(FlaxEngine.Object), 0),
                     NodeElementArchetype.Factory.Asset(0, 0, 0, typeof(Texture))
-                }
+                ]
             },
             /*new NodeArchetype
             {
@@ -349,12 +349,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.ParticleEmitterGraph,
                 Size = new Float2(160, 60),
                 ConnectionsHints = ConnectionsHint.Vector,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float4), 0),
                     NodeElementArchetype.Factory.Input(0, "Texture", true, typeof(FlaxEngine.Object), 1),
                     NodeElementArchetype.Factory.Input(1, "Location", true, null, 2),
-                }
+                ]
             },
             new() {
                 TypeID = 14,
@@ -362,13 +362,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Samples the Global SDF to get the distance to the closest surface (in world-space). Requires models SDF to be generated and checking `Enable Global SDF` in Graphics Settings.",
                 Flags = NodeFlags.MaterialGraph | NodeFlags.ParticleEmitterGraph,
                 Size = new Float2(200, 40),
-                DefaultValues = new object[] { 0 },
-                Elements = new[]
-                {
+                DefaultValues = [0],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Distance", typeof(float), 0),
                     NodeElementArchetype.Factory.Input(0, "World Position", true, typeof(Float3), 1),
                     NodeElementArchetype.Factory.Input(1, "Start Cascade", true, typeof(int), 2, 0),
-                }
+                ]
             },
             new() {
                 TypeID = 15,
@@ -376,14 +376,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Samples the Global SDF to get the gradient and distance to the closest surface (in world-space). Normalize gradient to get SDF surface normal vector. Requires models SDF to be generated and checking `Enable Global SDF` in Graphics Settings.",
                 Flags = NodeFlags.MaterialGraph | NodeFlags.ParticleEmitterGraph,
                 Size = new Float2(260, 40),
-                DefaultValues = new object[] { 0 },
-                Elements = new[]
-                {
+                DefaultValues = [0],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Gradient", typeof(Float3), 0),
                     NodeElementArchetype.Factory.Output(1, "Distance", typeof(float), 2),
                     NodeElementArchetype.Factory.Input(0, "World Position", true, typeof(Float3), 1),
                     NodeElementArchetype.Factory.Input(1, "Start Cascade", true, typeof(int), 3, 0),
-                }
+                ]
             },
             new() {
                 TypeID = 16,
@@ -391,16 +391,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Projects a texture using world-space coordinates with triplanar mapping.",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(280, 100),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Float3.One, // Scale
                     1.0f, // Blend
                     Float2.Zero, // Offset
                     2, // Sampler
                     false, // Local
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Texture", true, typeof(FlaxEngine.Object), 0),
                     NodeElementArchetype.Factory.Input(1, "Scale", true, typeof(Float3), 1, 0),
                     NodeElementArchetype.Factory.Input(2, "Blend", true, typeof(float), 2, 1),
@@ -410,7 +410,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(50, Surface.Constants.LayoutOffsetY * 4 - 1, 100, 3, typeof(CommonSamplerType)),
                     NodeElementArchetype.Factory.Text(155, Surface.Constants.LayoutOffsetY * 4, "Local"),
                     NodeElementArchetype.Factory.Bool(190, Surface.Constants.LayoutOffsetY * 4, 4),
-                }
+                ]
             },
             new() {
                 TypeID = 17,
@@ -420,33 +420,33 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(240, 110),
                 ConnectionsHints = ConnectionsHint.Vector,
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     2,
                     -1.0f,
                     0,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Texture", true, typeof(FlaxEngine.Object), 0),
                     NodeElementArchetype.Factory.Input(1, "UVs", true, null, 1),
                     NodeElementArchetype.Factory.Input(2, "Offset", true, typeof(Float2), 3),
                     NodeElementArchetype.Factory.Output(0, "Color", typeof(Float4), 4),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 4, "Sampler"),
                     NodeElementArchetype.Factory.ComboBox(50, Surface.Constants.LayoutOffsetY * 4, 100, 0, typeof(CommonSamplerType))
-                }
+                ]
             },
             new() {
                 TypeID = 18,
                 Title = "Lightmap UV",
-                AlternativeTitles = new string[] { "Lightmap TexCoord" }, 
+                AlternativeTitles = ["Lightmap TexCoord"], 
                 Description = "Lightmap UVs",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(110, 20),
-                Elements = new []
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "UVs", typeof(Float2), 0)
-                }
+                ]
             },
             new() {
                 TypeID = 23,
@@ -454,16 +454,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Projects a normal map texture using world-space coordinates with triplanar mapping.",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(280, 100),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Float3.One, // Scale
                     1.0f, // Blend
                     Float2.Zero, // Offset
                     2, // Sampler
                     false, // Local
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Texture", true, typeof(FlaxEngine.Object), 0),
                     NodeElementArchetype.Factory.Input(1, "Scale", true, typeof(Float3), 1, 0),
                     NodeElementArchetype.Factory.Input(2, "Blend", true, typeof(float), 2, 1),
@@ -473,7 +473,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(50, Surface.Constants.LayoutOffsetY * 4 - 1, 100, 3, typeof(CommonSamplerType)),
                     NodeElementArchetype.Factory.Text(155, Surface.Constants.LayoutOffsetY * 4, "Local"),
                     NodeElementArchetype.Factory.Bool(190, Surface.Constants.LayoutOffsetY * 4, 4),
-                }
+                ]
             },
             new() {
                 TypeID = 24,
@@ -481,12 +481,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Gets the size of the texture (in pixels). If texture is during streaming, then returns size of the highest resident mip.",
                 Flags = NodeFlags.ParticleEmitterGraph,
                 Size = new Float2(160, 20),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Texture", true, typeof(FlaxEngine.Object), 0),
                     NodeElementArchetype.Factory.Output(0, "Size", typeof(Float3), 1),
-                }
+                ]
             },
-        };
+        ];
     }
 }

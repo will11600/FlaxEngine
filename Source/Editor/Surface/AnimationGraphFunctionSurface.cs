@@ -15,7 +15,7 @@ namespace FlaxEditor.Surface
     public class AnimationGraphFunctionSurface : AnimGraphSurface, Function.IFunctionSurface
     {
         private static readonly Type[] AnimationGraphFunctionTypes =
-        {
+        [
             typeof(bool),
             typeof(int),
             typeof(float),
@@ -26,7 +26,7 @@ namespace FlaxEditor.Surface
             typeof(Vector3),
             typeof(Vector4),
             typeof(void),
-        };
+        ];
 
         /// <inheritdoc />
         public AnimationGraphFunctionSurface(IVisjectSurfaceOwner owner, Action onSave, FlaxEditor.Undo undo)

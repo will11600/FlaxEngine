@@ -217,7 +217,7 @@ namespace FlaxEditor.Surface
                     return;
                 }
                 if (model.Nodes == null)
-                    model.Nodes = new DataModelNode[0];
+                    model.Nodes = [];
 
                 // Build the nodes IDs mapping (need to generate new IDs for the pasted nodes and preserve the internal connections)
                 var idsMapping = new Dictionary<uint, uint>();

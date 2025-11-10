@@ -83,27 +83,27 @@ namespace FlaxEditor.Surface
                         }
                     }
 
-                    node = Context.SpawnNode(5, (ushort)(isNormalMap ? 4 : 1), args.SurfaceLocation, new object[] { assetItem.ID });
+                    node = Context.SpawnNode(5, (ushort)(isNormalMap ? 4 : 1), args.SurfaceLocation, [assetItem.ID]);
                 }
                 else if (assetItem.IsOfType<CubeTexture>())
                 {
-                    node = Context.SpawnNode(5, 3, args.SurfaceLocation, new object[] { assetItem.ID });
+                    node = Context.SpawnNode(5, 3, args.SurfaceLocation, [assetItem.ID]);
                 }
                 else if (assetItem.IsOfType<MaterialBase>())
                 {
-                    node = Context.SpawnNode(8, 1, args.SurfaceLocation, new object[] { assetItem.ID });
+                    node = Context.SpawnNode(8, 1, args.SurfaceLocation, [assetItem.ID]);
                 }
                 else if (assetItem.IsOfType<MaterialFunction>())
                 {
-                    node = Context.SpawnNode(1, 24, args.SurfaceLocation, new object[] { assetItem.ID });
+                    node = Context.SpawnNode(1, 24, args.SurfaceLocation, [assetItem.ID]);
                 }
                 else if (assetItem.IsOfType<GameplayGlobals>())
                 {
-                    node = Context.SpawnNode(7, 16, args.SurfaceLocation, new object[]
-                    {
+                    node = Context.SpawnNode(7, 16, args.SurfaceLocation,
+                    [
                         assetItem.ID,
                         string.Empty,
-                    });
+                    ]);
                 }
 
                 if (node != null)

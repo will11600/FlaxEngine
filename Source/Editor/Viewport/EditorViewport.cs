@@ -1985,14 +1985,14 @@ namespace FlaxEditor.Viewport
         }
 
         private readonly CameraViewpoint[] CameraViewpointValues =
-        {
+        [
             new("Front", new Float3(0, 180, 0)),
             new("Back", new Float3(0, 0, 0)),
             new("Left", new Float3(0, 90, 0)),
             new("Right", new Float3(0, -90, 0)),
             new("Top", new Float3(90, 0, 0)),
             new("Bottom", new Float3(-90, 0, 0))
-        };
+        ];
 
         private struct ViewModeOptions
         {
@@ -2025,7 +2025,7 @@ namespace FlaxEditor.Viewport
         }
 
         private static readonly ViewModeOptions[] ViewModeValues =
-        {
+        [
             new(ViewMode.Default, "Default", Editor.Instance.Options.Options.Input.Default),
             new(ViewMode.Unlit, "Unlit", Editor.Instance.Options.Options.Input.Unlit),
             new(ViewMode.NoPostFx, "No PostFx", Editor.Instance.Options.Options.Input.NoPostFX),
@@ -2033,8 +2033,8 @@ namespace FlaxEditor.Viewport
             new(ViewMode.LightBuffer, "Light Buffer", Editor.Instance.Options.Options.Input.LightBuffer),
             new(ViewMode.Reflections, "Reflections Buffer", Editor.Instance.Options.Options.Input.ReflectionsBuffer),
             new(ViewMode.Depth, "Depth Buffer", Editor.Instance.Options.Options.Input.DepthBuffer),
-            new("GBuffer", new[]
-            {
+            new("GBuffer",
+            [
                 new ViewModeOptions(ViewMode.Diffuse, "Diffuse"),
                 new ViewModeOptions(ViewMode.Metalness, "Metalness"),
                 new ViewModeOptions(ViewMode.Roughness, "Roughness"),
@@ -2045,7 +2045,7 @@ namespace FlaxEditor.Viewport
                 new ViewModeOptions(ViewMode.Emissive, "Emissive Light"),
                 new ViewModeOptions(ViewMode.Normals, "Normals"),
                 new ViewModeOptions(ViewMode.AmbientOcclusion, "Ambient Occlusion"),
-            }),
+            ]),
             new(ViewMode.MotionVectors, "Motion Vectors", Editor.Instance.Options.Options.Input.MotionVectors),
             new(ViewMode.LightmapUVsDensity, "Lightmap UVs Density", Editor.Instance.Options.Options.Input.LightmapUVDensity),
             new(ViewMode.VertexColors, "Vertex Colors", Editor.Instance.Options.Options.Input.VertexColors),
@@ -2056,7 +2056,7 @@ namespace FlaxEditor.Viewport
             new(ViewMode.GlobalSDF, "Global SDF", Editor.Instance.Options.Options.Input.GloablSDF),
             new(ViewMode.GlobalSurfaceAtlas, "Global Surface Atlas", Editor.Instance.Options.Options.Input.GlobalSurfaceAtlas),
             new(ViewMode.GlobalIllumination, "Global Illumination", Editor.Instance.Options.Options.Input.GlobalIllumination),
-        };
+        ];
 
         private void WidgetViewModeShowHideClicked(ContextMenuButton button)
         {
@@ -2099,7 +2099,7 @@ namespace FlaxEditor.Viewport
         }
 
         private static readonly ViewFlagOptions[] ViewFlagsValues =
-        {
+        [
             new(ViewFlags.AntiAliasing, "Anti Aliasing", Editor.Instance.Options.Options.Input.AntiAliasing),
             new(ViewFlags.Shadows, "Shadows", Editor.Instance.Options.Options.Input.Shadows),
             new(ViewFlags.EditorSprites, "Editor Sprites", Editor.Instance.Options.Options.Input.EditorSprites),
@@ -2127,7 +2127,7 @@ namespace FlaxEditor.Viewport
             new(ViewFlags.PhysicsDebug, "Physics Debug", Editor.Instance.Options.Options.Input.PhysicsDebug),
             new(ViewFlags.LightsDebug, "Lights Debug", Editor.Instance.Options.Options.Input.LightsDebug),
             new(ViewFlags.DebugDraw, "Debug Draw", Editor.Instance.Options.Options.Input.DebugDraw),
-        };
+        ];
 
         private void WidgetViewFlagsShowHide(Control cm)
         {

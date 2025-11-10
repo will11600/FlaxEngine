@@ -335,7 +335,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
+        [
             // Packing
             new() {
                 TypeID = 20,
@@ -343,17 +343,17 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Pack components to Float2",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(150, 40),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.0f,
                     0.0f
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Value", typeof(Float2), 0),
                     NodeElementArchetype.Factory.Input(0, "X", true, typeof(float), 1, 0),
                     NodeElementArchetype.Factory.Input(1, "Y", true, typeof(float), 2, 1),
-                }
+                ]
             },
             new() {
                 TypeID = 21,
@@ -361,19 +361,19 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Pack components to Float3",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(150, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.0f,
                     0.0f,
                     0.0f
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Value", typeof(Float3), 0),
                     NodeElementArchetype.Factory.Input(0, "X", true, typeof(float), 1, 0),
                     NodeElementArchetype.Factory.Input(1, "Y", true, typeof(float), 2, 1),
                     NodeElementArchetype.Factory.Input(2, "Z", true, typeof(float), 3, 2),
-                }
+                ]
             },
             new() {
                 TypeID = 22,
@@ -381,21 +381,21 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Pack components to Float4",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(150, 80),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.0f,
                     0.0f,
                     0.0f,
                     0.0f
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Value", typeof(Float4), 0),
                     NodeElementArchetype.Factory.Input(0, "X", true, typeof(float), 1, 0),
                     NodeElementArchetype.Factory.Input(1, "Y", true, typeof(float), 2, 1),
                     NodeElementArchetype.Factory.Input(2, "Z", true, typeof(float), 3, 2),
                     NodeElementArchetype.Factory.Input(3, "W", true, typeof(float), 4, 3),
-                }
+                ]
             },
             new() {
                 TypeID = 23,
@@ -403,19 +403,19 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Pack components to Rotation",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(150, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.0f,
                     0.0f,
                     0.0f
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Value", typeof(Quaternion), 0),
                     NodeElementArchetype.Factory.Input(0, "Pitch", true, typeof(float), 1, 0),
                     NodeElementArchetype.Factory.Input(1, "Yaw", true, typeof(float), 2, 1),
                     NodeElementArchetype.Factory.Input(2, "Roll", true, typeof(float), 3, 2),
-                }
+                ]
             },
             new() {
                 TypeID = 24,
@@ -423,13 +423,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Pack components to Transform",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(150, 80),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Value", typeof(Transform), 0),
                     NodeElementArchetype.Factory.Input(0, "Translation", true, typeof(Vector3), 1),
                     NodeElementArchetype.Factory.Input(1, "Orientation", true, typeof(Quaternion), 2),
                     NodeElementArchetype.Factory.Input(2, "Scale", true, typeof(Float3), 3),
-                }
+                ]
             },
             new() {
                 TypeID = 25,
@@ -437,12 +437,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Pack components to BoundingBox",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(150, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Value", typeof(BoundingBox), 0),
                     NodeElementArchetype.Factory.Input(0, "Minimum", true, typeof(Vector3), 1),
                     NodeElementArchetype.Factory.Input(1, "Maximum", true, typeof(Vector3), 2),
-                }
+                ]
             },
             new() {
                 TypeID = 26,
@@ -454,15 +454,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Makes the structure data to from the components.",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI,
                 Size = new Float2(180, 20),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Typename
                     Utils.GetEmptyArray<byte>(), // Cached structure layout data
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 0),
-                }
+                ]
             },
             // When adding more nodes here update logic in VisualScriptSurface to match the Pack/Unpack node archetypes indices
 
@@ -473,12 +473,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Unpack components from Float2",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(150, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Output(0, "X", typeof(float), 1),
                     NodeElementArchetype.Factory.Output(1, "Y", typeof(float), 2)
-                }
+                ]
             },
             new() {
                 TypeID = 31,
@@ -486,13 +486,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Unpack components from Float3",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(150, 60),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, typeof(Float3), 0),
                     NodeElementArchetype.Factory.Output(0, "X", typeof(float), 1),
                     NodeElementArchetype.Factory.Output(1, "Y", typeof(float), 2),
                     NodeElementArchetype.Factory.Output(2, "Z", typeof(float), 3)
-                }
+                ]
             },
             new() {
                 TypeID = 32,
@@ -500,14 +500,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Unpack components from Float4",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(150, 80),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, typeof(Float4), 0),
                     NodeElementArchetype.Factory.Output(0, "X", typeof(float), 1),
                     NodeElementArchetype.Factory.Output(1, "Y", typeof(float), 2),
                     NodeElementArchetype.Factory.Output(2, "Z", typeof(float), 3),
                     NodeElementArchetype.Factory.Output(3, "W", typeof(float), 4)
-                }
+                ]
             },
             new() {
                 TypeID = 33,
@@ -515,13 +515,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Unpack components from Rotation",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(170, 60),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, typeof(Quaternion), 0),
                     NodeElementArchetype.Factory.Output(0, "Pitch", typeof(float), 1),
                     NodeElementArchetype.Factory.Output(1, "Yaw", typeof(float), 2),
                     NodeElementArchetype.Factory.Output(2, "Roll", typeof(float), 3)
-                }
+                ]
             },
             new() {
                 TypeID = 34,
@@ -529,13 +529,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Unpack components from Transform",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(170, 60),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, typeof(Transform), 0),
                     NodeElementArchetype.Factory.Output(0, "Translation", typeof(Vector3), 1),
                     NodeElementArchetype.Factory.Output(1, "Orientation", typeof(Quaternion), 2),
                     NodeElementArchetype.Factory.Output(2, "Scale", typeof(Float3), 3)
-                }
+                ]
             },
             new() {
                 TypeID = 35,
@@ -543,12 +543,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Unpack components from BoundingBox",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(170, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, typeof(BoundingBox), 0),
                     NodeElementArchetype.Factory.Output(0, "Minimum", typeof(Vector3), 1),
                     NodeElementArchetype.Factory.Output(1, "Maximum", typeof(Vector3), 2),
-                }
+                ]
             },
             new() {
                 TypeID = 36,
@@ -560,15 +560,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Breaks the structure data to allow extracting components from it.",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI,
                 Size = new Float2(180, 20),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Typename
                     Utils.GetEmptyArray<byte>(), // Cached structure layout data
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, null, 0),
-                }
+                ]
             },
 
             // Mask X,Y,Z,W
@@ -579,11 +579,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 ConnectionsHints = ConnectionsHint.Vector,
                 Size = new Float2(110, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "X", typeof(float), 1)
-                }
+                ]
             },
             new() {
                 TypeID = 41,
@@ -592,11 +592,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 ConnectionsHints = ConnectionsHint.Vector,
                 Size = new Float2(110, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "Y", typeof(float), 1)
-                }
+                ]
             },
             new() {
                 TypeID = 42,
@@ -605,11 +605,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 ConnectionsHints = ConnectionsHint.Vector,
                 Size = new Float2(110, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "Z", typeof(float), 1)
-                }
+                ]
             },
             new() {
                 TypeID = 43,
@@ -618,11 +618,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 ConnectionsHints = ConnectionsHint.Vector,
                 Size = new Float2(110, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "W", typeof(float), 1)
-                }
+                ]
             },
 
             // Mask XY, YZ, XZ,...
@@ -633,11 +633,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 ConnectionsHints = ConnectionsHint.Vector,
                 Size = new Float2(110, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "XY", typeof(Float2), 1)
-                }
+                ]
             },
             new() {
                 TypeID = 45,
@@ -646,11 +646,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 ConnectionsHints = ConnectionsHint.Vector,
                 Size = new Float2(110, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "XZ", typeof(Float2), 1)
-                }
+                ]
             },
             new() {
                 TypeID = 46,
@@ -659,11 +659,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 ConnectionsHints = ConnectionsHint.Vector,
                 Size = new Float2(110, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "YZ", typeof(Float2), 1)
-                }
+                ]
             },
             new() {
                 TypeID = 47,
@@ -672,11 +672,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 ConnectionsHints = ConnectionsHint.Vector,
                 Size = new Float2(110, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "ZW", typeof(Float2), 1)
-                }
+                ]
             },
 
             // Mask XYZ
@@ -687,11 +687,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 ConnectionsHints = ConnectionsHint.Vector,
                 Size = new Float2(110, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 1)
-                }
+                ]
             },
 
             new() {
@@ -702,13 +702,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 ConnectionsHints = ConnectionsHint.Numeric,
                 Size = new Float2(140, 50),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, null, 0),
                     NodeElementArchetype.Factory.Input(1, string.Empty, true, null, 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float4), 2)
-                }
+                ]
             },
-        };
+        ];
     }
 }

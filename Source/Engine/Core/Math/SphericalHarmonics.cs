@@ -114,7 +114,7 @@ namespace FlaxEngine
         /// Base coefficients for SH.
         /// </summary>
         public static readonly float[] BaseCoefficients =
-        {
+        [
             (float)(1.0 / (2.0 * SqrtPi)),
 
             (float)(-Math.Sqrt(3.0 / Pi4)),
@@ -144,7 +144,7 @@ namespace FlaxEngine
             3 * (float)Math.Sqrt(5 / Pi64),
             -3 * (float)Math.Sqrt(70 / Pi64),
             3 * (float)Math.Sqrt(35 / (4 * Pi64)),
-        };
+        ];
 
         internal SphericalHarmonics()
         {

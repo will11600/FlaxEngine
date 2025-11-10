@@ -262,7 +262,7 @@ namespace FlaxEngine
         /// <returns>A 4-element array containing the components of the Matrix2x2.</returns>
         public readonly float[] ToArray()
         {
-            return new[] { M11, M12, M21, M22 };
+            return [M11, M12, M21, M22];
         }
 
         /// <summary>

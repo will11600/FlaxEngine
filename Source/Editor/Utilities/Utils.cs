@@ -44,14 +44,14 @@ namespace FlaxEditor.Utilities
         private static readonly Regex IncNameRegex2 = new("\\((\\d+)\\)$");
 
         private static readonly string[] MemorySizePostfixes =
-        {
+        [
             "B",
             "kB",
             "MB",
             "GB",
             "TB",
             "PB"
-        };
+        ];
 
         /// <summary>
         /// The name of the Flax Engine C# assembly name.
@@ -230,25 +230,25 @@ namespace FlaxEditor.Utilities
         /// The colors for the keyframes used by the curve editor.
         /// </summary>
         internal static readonly Color[] CurveKeyframesColors =
-        {
+        [
             Color.OrangeRed,
             Color.ForestGreen,
             Color.CornflowerBlue,
             Color.White,
-        };
+        ];
 
         /// <summary>
         /// The time/value axes tick steps for editors with timeline.
         /// </summary>
         internal static readonly double[] CurveTickSteps =
-        {
+        [
             0.0000001, 0.0000005, 0.000001, 0.000005, 0.00001,
             0.00005, 0.0001, 0.0005, 0.001, 0.005,
             0.01, 0.05, 0.1, 0.5, 1,
             5, 10, 50, 100, 500,
             1000, 5000, 10000, 50000, 100000,
             500000, 1000000, 5000000, 10000000, 100000000
-        };
+        ];
 
         internal delegate void DrawCurveTick(decimal tick, double step, float strength);
 
@@ -333,7 +333,7 @@ namespace FlaxEditor.Utilities
         public static bool HasInvalidPathChar(string path)
         {
             char[] illegalChars =
-            {
+            [
                 '?',
                 '\\',
                 '/',
@@ -374,7 +374,7 @@ namespace FlaxEditor.Utilities
                 '\u001D',
                 '\u001E',
                 '\u001F'
-            };
+            ];
             return path.IndexOfAny(illegalChars) != -1;
         }
 

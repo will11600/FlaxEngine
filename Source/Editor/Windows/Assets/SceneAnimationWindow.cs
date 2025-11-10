@@ -76,12 +76,12 @@ namespace FlaxEditor.Windows.Assets
         {
             public override DisplayStyle Style => DisplayStyle.InlineIntoParent;
 
-            protected override OptionType[] Options => new[]
-            {
+            protected override OptionType[] Options =>
+            [
                 new OptionType("Image (.png)", typeof(VideoOutputPng)),
                 new OptionType("Image (.bmp)", typeof(VideoOutputBmp)),
                 new OptionType("Image (.jpg)", typeof(VideoOutputJpg)),
-            };
+            ];
 
             protected override string TypeComboBoxName => "Video Output Type";
         }

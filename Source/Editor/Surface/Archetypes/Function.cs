@@ -699,7 +699,7 @@ namespace FlaxEditor.Surface.Archetypes
                 var impulseBox = GetBox(0);
                 var method = GetMethod();
                 _parameters = null;
-                var node = Context.SpawnNode(16, 5, UpperRight + new Float2(40, 0), new object[] { method.ValueType.TypeName });
+                var node = Context.SpawnNode(16, 5, UpperRight + new Float2(40, 0), [method.ValueType.TypeName]);
                 if (node != null && !impulseBox.HasAnyConnection)
                     impulseBox.Connect(node.GetBox(0));
             }
@@ -710,8 +710,8 @@ namespace FlaxEditor.Surface.Archetypes
                 var method = GetMethod();
                 _parameters = null;
                 var parametersCount = method.ParametersCount;
-                var node = Context.SpawnNode(16, 4, UpperRight + new Float2(40, 0), new object[]
-                {
+                var node = Context.SpawnNode(16, 4, UpperRight + new Float2(40, 0),
+                [
                     method.DeclaringType.TypeName, // Script typename
                     method.Name, // Method name
                     parametersCount, // Method parameters count
@@ -723,7 +723,7 @@ namespace FlaxEditor.Surface.Archetypes
                     null,null,null,null,null,null,null,null,null,null,
                     null,null,null,null,null,null,null,
                     // @formatter:on
-                });
+                ]);
                 if (node != null && !impulseBox.HasAnyConnection)
                 {
                     impulseBox.Connect(node.GetBox(0));
@@ -1639,7 +1639,7 @@ namespace FlaxEditor.Surface.Archetypes
             private void OnAddReturnNode()
             {
                 var impulseBox = GetBox(0);
-                var node = Context.SpawnNode(16, 5, UpperRight + new Float2(40, 0), new object[] { _signature.ReturnType.TypeName });
+                var node = Context.SpawnNode(16, 5, UpperRight + new Float2(40, 0), [_signature.ReturnType.TypeName]);
                 if (node != null && !impulseBox.HasAnyConnection)
                     impulseBox.Connect(node.GetBox(0));
             }
@@ -2438,7 +2438,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
+        [
             new() {
                 TypeID = 1,
                 Create = (id, context, arch, groupArch) => new FunctionInputNode(id, context, arch, groupArch),
@@ -2446,16 +2446,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "The graph function input data",
                 Flags = NodeFlags.MaterialGraph | NodeFlags.ParticleEmitterGraph | NodeFlags.AnimGraph | NodeFlags.NoSpawnViaPaste,
                 Size = new Float2(240, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     typeof(float).FullName,
                     "Input",
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 0),
                     NodeElementArchetype.Factory.Input(1.5f, "Default Value", true, typeof(float), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 2,
@@ -2464,15 +2464,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "The graph function output data",
                 Flags = NodeFlags.MaterialGraph | NodeFlags.ParticleEmitterGraph | NodeFlags.AnimGraph | NodeFlags.NoSpawnViaPaste,
                 Size = new Float2(240, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     typeof(float).FullName,
                     "Output",
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(float), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 3,
@@ -2484,12 +2484,12 @@ namespace FlaxEditor.Surface.Archetypes
                 IsInputCompatible = MethodOverrideNode.IsInputCompatible,
                 IsOutputCompatible = MethodOverrideNode.IsOutputCompatible,
                 Size = new Float2(240, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Overriden method name
                     0, // Overriden method parameters count
                     Utils.GetEmptyArray<byte>(), // Cached function signature data
-                },
+                ],
             },
             new() {
                 TypeID = 4,
@@ -2499,8 +2499,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Title = string.Empty,
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.NoSpawnViaGUI,
                 Size = new Float2(240, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Script typename
                     string.Empty, // Method name
                     0, // Method parameters count
@@ -2513,7 +2513,7 @@ namespace FlaxEditor.Surface.Archetypes
                     null,null,null,null,null,null,null,null,null,null,
                     null,null,null,null,null,null,null,
                     // @formatter:on
-                },
+                ],
             },
             new() {
                 TypeID = 5,
@@ -2521,15 +2521,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Title = "Return",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.NoSpawnViaGUI,
                 Size = new Float2(100, 40),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Value TypeName
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(1, "Result", true, null, 1),
-                },
+                ],
             },
             new() {
                 TypeID = 6,
@@ -2540,10 +2540,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Adds a new function to the script",
                 Flags = NodeFlags.VisualScriptGraph,
                 Size = new Float2(240, 20),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Utils.GetEmptyArray<byte>(), // Function signature data
-                },
+                ],
             },
             new() {
                 TypeID = 7,
@@ -2553,13 +2553,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Title = string.Empty,
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.NoSpawnViaGUI,
                 Size = new Float2(240, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Script typename
                     string.Empty, // Field name
                     string.Empty, // Field typename
                     false, // Is Static
-                },
+                ],
             },
             new() {
                 TypeID = 8,
@@ -2569,14 +2569,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Title = string.Empty,
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.NoSpawnViaGUI,
                 Size = new Float2(240, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Script typename
                     string.Empty, // Field name
                     string.Empty, // Field typename
                     false, // Is Static
                     null, // Default value
-                },
+                ],
             },
             new() {
                 TypeID = 9,
@@ -2586,20 +2586,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Title = string.Empty,
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.NoSpawnViaGUI,
                 Size = new Float2(260, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Event type
                     string.Empty, // Event name
                     (uint)0, // Handler function nodeId
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(2, "Instance", true, typeof(object), 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 2, true),
                     NodeElementArchetype.Factory.Text(2, 20, "Handler function:"),
                     NodeElementArchetype.Factory.ComboBox(100, 20, 140),
-                }
+                ]
             },
             new() {
                 TypeID = 10,
@@ -2609,21 +2609,21 @@ namespace FlaxEditor.Surface.Archetypes
                 Title = string.Empty,
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.NoSpawnViaGUI,
                 Size = new Float2(260, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Event type
                     string.Empty, // Event name
                     (uint)0, // Handler function nodeId
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(2, "Instance", true, typeof(object), 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 2, true),
                     NodeElementArchetype.Factory.Text(2, 20, "Handler function:"),
                     NodeElementArchetype.Factory.ComboBox(100, 20, 140),
-                }
+                ]
             },
-        };
+        ];
     }
 }

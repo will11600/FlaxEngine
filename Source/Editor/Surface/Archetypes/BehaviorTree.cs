@@ -386,11 +386,11 @@ namespace FlaxEditor.Surface.Archetypes
                 var nodeType = (ScriptType)button.Tag;
 
                 // Spawn decorator
-                var decorator = Context.SpawnNode(19, 3, Location, new object[]
-                {
+                var decorator = Context.SpawnNode(19, 3, Location,
+                [
                     nodeType.TypeName,
                     Utils.GetEmptyArray<byte>(),
-                });
+                ]);
 
                 // Add decorator to the node
                 var decorators = Decorators;
@@ -871,51 +871,51 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
+        [
             new() {
                 TypeID = 1, // Task Node
                 Create = Node.Create,
                 Flags = NodeFlags.BehaviorTreeGraph | NodeFlags.NoSpawnViaGUI,
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Type Name
                     Utils.GetEmptyArray<byte>(), // Instance Data
                     null, // List of Decorator Nodes IDs
-                },
+                ],
                 Size = new Float2(100, 0),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, ScriptType.Void, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, ScriptType.Void, 1),
-                }
+                ]
             },
             new() {
                 TypeID = 2, // Root Node
                 Create = Node.Create,
                 Flags = NodeFlags.BehaviorTreeGraph | NodeFlags.NoSpawnViaGUI,
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     typeof(BehaviorTreeRootNode).FullName, // Root node
                     Utils.GetEmptyArray<byte>(), // Instance Data
-                },
+                ],
                 Size = new Float2(100, 0),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, ScriptType.Void, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, ScriptType.Void, 1),
-                }
+                ]
             },
             new() {
                 TypeID = 3, // Decorator Node
                 Create = Decorator.Create,
                 Flags = NodeFlags.BehaviorTreeGraph | NodeFlags.NoSpawnViaGUI | NodeFlags.NoMove,
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty, // Type Name
                     Utils.GetEmptyArray<byte>(), // Instance Data
-                },
+                ],
                 Size = new Float2(100, 0),
             },
-        };
+        ];
     }
 }

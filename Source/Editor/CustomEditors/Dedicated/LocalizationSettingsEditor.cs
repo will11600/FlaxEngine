@@ -424,12 +424,12 @@ namespace FlaxEditor.CustomEditors.Dedicated
                 if (table.Locale == "en")
                 {
                     foreach (var e in newKeys)
-                        entries[e.Key] = new[] { e.Value };
+                        entries[e.Key] = [e.Value];
                 }
                 else
                 {
                     foreach (var e in newKeys)
-                        entries[e.Key] = new[] { string.Empty };
+                        entries[e.Key] = [string.Empty];
                 }
                 table.Entries = entries;
                 table.Save();

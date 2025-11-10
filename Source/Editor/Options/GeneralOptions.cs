@@ -119,13 +119,13 @@ namespace FlaxEditor.Options
         /// </summary>
         [EditorDisplay("General"), EditorOrder(200), ExpandGroups, Tooltip("The sequence of actions to perform when using Build Scenes button. Can be used to configure this as button (eg. compile code or just update navmesh).")]
         public BuildAction[] BuildActions { get; set; } =
-        {
+        [
             BuildAction.CSG,
             BuildAction.EnvProbes,
             BuildAction.StaticLighting,
             BuildAction.EnvProbes,
             BuildAction.NavMesh,
-        };
+        ];
 
         /// <summary>
         /// Gets or sets a value indicating whether perform automatic scripts reload on main window focus.

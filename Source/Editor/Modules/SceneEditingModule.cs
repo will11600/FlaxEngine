@@ -385,7 +385,7 @@ namespace FlaxEditor.Modules
 
             SelectionDeleteBegin?.Invoke();
 
-            actionList[0] = new SelectionChangeAction(Selection.ToArray(), new SceneGraphNode[0], OnSelectionUndo);
+            actionList[0] = new SelectionChangeAction(Selection.ToArray(), [], OnSelectionUndo);
             actionList[0].Do();
 
             actionList[1] = new DeleteActorsAction(oldNode.BuildAllNodes().Where(x => x.CanDelete).ToList());
@@ -429,7 +429,7 @@ namespace FlaxEditor.Modules
             actionList[1].Do();
             actionList[2] = new DeleteActorsAction(actorNode.BuildAllNodes().Where(x => x.CanDelete).ToList(), true);
 
-            actionList[3] = new SelectionChangeAction(new SceneGraphNode[0], new SceneGraphNode[] { actorNode }, OnSelectionUndo);
+            actionList[3] = new SelectionChangeAction([], [actorNode], OnSelectionUndo);
             actionList[3].Do();
 
             Undo.AddAction(new MultiUndoAction(actionList, "Convert actor"));
@@ -453,7 +453,7 @@ namespace FlaxEditor.Modules
             SelectionDeleteBegin?.Invoke();
 
             // Change selection
-            var action1 = new SelectionChangeAction(Selection.ToArray(), new SceneGraphNode[0], OnSelectionUndo);
+            var action1 = new SelectionChangeAction(Selection.ToArray(), [], OnSelectionUndo);
 
             // Delete objects
             var action2 = new DeleteActorsAction(objects);

@@ -176,7 +176,7 @@ namespace FlaxEditor
         /// <summary>
         /// The project references.
         /// </summary>
-        public Reference[] References = new Reference[0];
+        public Reference[] References = [];
 
         /// <summary>
         /// The default scene asset identifier to open on project startup.

@@ -504,7 +504,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
+        [
             new() {
                 TypeID = 1,
                 Create = (id, context, arch, groupArch) => new SurfaceNodeMaterial(id, context, arch, groupArch),
@@ -512,8 +512,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Main material node",
                 Flags = NodeFlags.MaterialGraph | NodeFlags.NoRemove | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste | NodeFlags.NoCloseButton,
                 Size = new Float2(150, 300),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "", true, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(1, "Color", true, typeof(Float3), 1),
                     NodeElementArchetype.Factory.Input(2, "Mask", true, typeof(float), 2),
@@ -529,7 +529,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(12, "Tessellation Multiplier", true, typeof(float), 12),
                     NodeElementArchetype.Factory.Input(13, "World Displacement", true, typeof(Float3), 13),
                     NodeElementArchetype.Factory.Input(14, "Subsurface Color", true, typeof(Float3), 14),
-                }
+                ]
             },
             new() {
                 TypeID = 2,
@@ -537,10 +537,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Absolute world space position",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 3,
@@ -548,12 +548,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "View properties",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 60),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Position", typeof(Float3), 0),
                     NodeElementArchetype.Factory.Output(1, "Direction", typeof(Float3), 1),
                     NodeElementArchetype.Factory.Output(2, "Far Plane", typeof(float), 2),
-                }
+                ]
             },
             new() {
                 TypeID = 4,
@@ -561,10 +561,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "World space normal vector",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Normal", typeof(Float3), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 5,
@@ -572,10 +572,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Calculates camera vector",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Vector", typeof(Float3), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 6,
@@ -583,14 +583,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Gathers screen position or texcoord",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(160, 40),
-                DefaultValues = new object[] { false },
-                Elements = new[]
-                {
+                DefaultValues = [false],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Position", typeof(Float2), 0),
                     NodeElementArchetype.Factory.Output(1, "Texcoord", typeof(Float2), 1),
                     NodeElementArchetype.Factory.Bool(0, 0, 0),
                     NodeElementArchetype.Factory.Text(20, 0, "Main View"),
-                }
+                ]
             },
             new() {
                 TypeID = 7,
@@ -598,14 +598,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Gathers screen size",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(160, 40),
-                DefaultValues = new object[] { false },
-                Elements = new[]
-                {
+                DefaultValues = [false],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Size", typeof(Float2), 0),
                     NodeElementArchetype.Factory.Output(1, "Inv Size", typeof(Float2), 1),
                     NodeElementArchetype.Factory.Bool(0, 0, 0),
                     NodeElementArchetype.Factory.Text(20, 0, "Main View"),
-                }
+                ]
             },
             new() {
                 TypeID = 8,
@@ -614,13 +614,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Custom HLSL shader code expression",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(300, 200),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     "// Here you can add HLSL code\nOutput0 = Input0;",
                     new Float2(300, 200),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Input0", true, typeof(Float4), 0),
                     NodeElementArchetype.Factory.Input(1, "Input1", true, typeof(Float4), 1),
                     NodeElementArchetype.Factory.Input(2, "Input2", true, typeof(Float4), 2),
@@ -634,7 +634,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Output(1, "Output1", typeof(Float4), 9),
                     NodeElementArchetype.Factory.Output(2, "Output2", typeof(Float4), 10),
                     NodeElementArchetype.Factory.Output(3, "Output3", typeof(Float4), 11),
-                }
+                ]
             },
             new() {
                 TypeID = 9,
@@ -642,10 +642,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Absolute world space object position",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 10,
@@ -653,10 +653,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Scalar value with surface side sign. 1 for normal facing, -1 for inverted",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "", typeof(float), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 11,
@@ -664,17 +664,17 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Creates a gradient of 0 near the camera to white at fade length. Useful for preventing particles from camera clipping.",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(200, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     200.0f,
                     24.0f
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Fade Length", true, typeof(float), 0, 0),
                     NodeElementArchetype.Factory.Input(1, "Fade Offset", true, typeof(float), 1, 1),
                     NodeElementArchetype.Factory.Output(0, "Result", typeof(float), 2),
-                }
+                ]
             },
             new() {
                 TypeID = 12,
@@ -682,10 +682,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Per vertex color",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Color", typeof(Float4), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 13,
@@ -693,10 +693,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Per vertex local position (before skinning)",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(230, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 14,
@@ -704,10 +704,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Per vertex local normal (before skinning)",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(230, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 15,
@@ -715,10 +715,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Current pixel/vertex linear distance to the camera",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(100, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 16,
@@ -726,10 +726,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "World space tangent vector",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(160, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Tangent", typeof(Float3), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 17,
@@ -737,10 +737,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "World space bitangent vector",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(160, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Bitangent", typeof(Float3), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 18,
@@ -748,10 +748,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "World space camera location",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(160, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 19,
@@ -759,10 +759,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Per object instance random value (normalized to range 0-1)",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(200, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "", typeof(float), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 20,
@@ -770,11 +770,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Helper node used to pass data from Vertex Shader to Pixel Shader",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(220, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Vertex Shader", true, typeof(Float4), 0),
                     NodeElementArchetype.Factory.Output(0, "Pixel Shader", typeof(Float4), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 21,
@@ -782,10 +782,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Scalar terrain visibility mask used mostly for creating holes in terrain",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(200, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "", typeof(float), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 22,
@@ -793,15 +793,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Terrain layer weight mask used for blending terrain layers",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(200, 30),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.ComboBox(0, 0, 175.0f, 0, LayersAndTagsSettings.GetCurrentTerrainLayers()),
                     NodeElementArchetype.Factory.Output(0, "", typeof(float), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 23,
@@ -809,15 +809,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Creates a gradient of 0 near the scene depth geometry. Useful for preventing particles from clipping with geometry (use it for soft particles).",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(200, 40),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     10.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Fade Distance", true, typeof(float), 0, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 24,
@@ -826,14 +826,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Calls material function",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(220, 120),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Guid.Empty,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Asset(0, 0, 0, typeof(MaterialFunction)),
-                }
+                ]
             },
             new() {
                 TypeID = 25,
@@ -841,10 +841,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Absolute world space object size",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 0),
-                }
+                ]
             },
             new() {
                 TypeID = 26,
@@ -853,12 +853,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(170, 40),
                 ConnectionsHints = ConnectionsHint.Vector,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Base Normal", true, typeof(Float3), 0),
                     NodeElementArchetype.Factory.Input(1, "Additional Normal", true, typeof(Float3), 1),
                     NodeElementArchetype.Factory.Output(0, "Result", typeof(Float3), 2)
-                }
+                ]
             },
             new() {
                 TypeID = 27,
@@ -866,13 +866,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Rotates UV coordinates according to a scalar angle (in radians, 0-2PI)",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 55),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UV", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Input(1, "Center", true, typeof(Float2), 1),
                     NodeElementArchetype.Factory.Input(2, "Rotation Angle", true, typeof(float), 2),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float2), 3),
-                }
+                ]
             },
             new() {
                 TypeID = 28,
@@ -881,26 +881,26 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 100),
                 ConnectionsHints = ConnectionsHint.Vector,
-                IndependentBoxes = new[]
-                {
+                IndependentBoxes =
+                [
                     0,
                     1
-                },
-                DefaultValues = new object[]
-                {
+                ],
+                DefaultValues =
+                [
                     0.3f,
                     0.5f,
                     false
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "A", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "B", true, null, 1),
                     NodeElementArchetype.Factory.Input(2, "Radius", true, typeof(float), 2, 0),
                     NodeElementArchetype.Factory.Input(3, "Hardness", true, typeof(float), 3, 1),
                     NodeElementArchetype.Factory.Input(4, "Invert", true, typeof(bool), 4, 2),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 5),
-                }
+                ]
             },
             new() {
                 TypeID = 29,
@@ -908,18 +908,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Takes UVs and applies tiling and offset",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(175, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Float2.One,
                     Float2.Zero
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UV", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Input(1, "Tiling", true, typeof(Float2), 1, 0),
                     NodeElementArchetype.Factory.Input(2, "Offset", true, typeof(Float2), 2, 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float2), 3),
-                }
+                ]
             },
             new() {
                 TypeID = 30,
@@ -928,13 +928,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(90, 25),
                 ConnectionsHints = ConnectionsHint.Numeric,
-                IndependentBoxes = new[] { 0 },
-                DependentBoxes = new[] { 1 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1),
-                }
+                ]
             },
             new() {
                 TypeID = 31,
@@ -943,13 +943,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(90, 25),
                 ConnectionsHints = ConnectionsHint.Numeric,
-                IndependentBoxes = new[] { 0 },
-                DependentBoxes = new[] { 1 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1),
-                }
+                ]
             },
             new() {
                 TypeID = 32,
@@ -958,12 +958,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(90, 25),
                 ConnectionsHints = ConnectionsHint.Numeric,
-                IndependentBoxes = new[] { 0 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 33,
@@ -972,12 +972,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(90, 25),
                 ConnectionsHints = ConnectionsHint.Numeric,
-                IndependentBoxes = new[] { 0 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(bool), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 34,
@@ -986,12 +986,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(90, 25),
                 ConnectionsHints = ConnectionsHint.Numeric,
-                IndependentBoxes = new[] { 0 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(bool), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 35,
@@ -999,15 +999,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Simulates black body radiation via a given temperature in kelvin",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(120, 25),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Temp", true, typeof(float), 0, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 36,
@@ -1015,15 +1015,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Converts a HSV value to linear RGB [X = 0/360, Y = 0/1, Z = 0/1]",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(160, 25),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     new Float3(240, 1, 1),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "HSV", true, typeof(Float3), 0, 0),
                     NodeElementArchetype.Factory.Output(0, "RGB", typeof(Float3), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 37,
@@ -1031,15 +1031,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Converts a linear RGB value to HSV [X = 0/360, Y = 0/1, Z = 0/1]",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(160, 25),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     new Float3(0, 1, 0),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "RGB", true, typeof(Float3), 0, 0),
                     NodeElementArchetype.Factory.Output(0, "HSV", typeof(Float3), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 38,
@@ -1048,20 +1048,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Custom global HLSL shader code expression (placed before material shader code). Can contain includes to shader utilities or declare functions to reuse later.",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(300, 240),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     "// Here you can add HLSL code\nfloat4 GetCustomColor()\n{\n\treturn float4(1, 0, 0, 1);\n}",
                     true,
                     (int)MaterialTemplateInputsMapping.Utilities,
                     new Float2(300, 240),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Bool(0, 0, 1),
                     NodeElementArchetype.Factory.Text(20, 0, "Enabled"),
                     NodeElementArchetype.Factory.Text(0, 20, "Location"),
                     NodeElementArchetype.Factory.Enum(50, 20, 120, 2, typeof(MaterialTemplateInputsMapping)),
-                }
+                ]
             },
             new() {
                 TypeID = 39,
@@ -1069,11 +1069,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "The size of the view. The draw rectangle size in GUI materials.",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Size", typeof(Float2), 0),
                     NodeElementArchetype.Factory.Output(1, "Inv Size", typeof(Float2), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 40,
@@ -1082,16 +1082,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 40),
                 ConnectionsHints = ConnectionsHint.Vector,
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     new Float2(0.5f, 0.5f),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "UV", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Input(1, "Rectangle", true, typeof(Float2), 1, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 2),
-                }
+                ]
             },
             new() {
                 TypeID = 41,
@@ -1100,13 +1100,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 20),
                 ConnectionsHints = ConnectionsHint.Numeric,
-                IndependentBoxes = new[] { 0 },
-                DependentBoxes = new[] { 1 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1),
-                }
+                ]
             },
             new() {
                 TypeID = 42,
@@ -1115,16 +1115,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(150, 40),
                 ConnectionsHints = ConnectionsHint.Vector,
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.5f
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, typeof(float), 0),
                     NodeElementArchetype.Factory.Input(1, "Gradient", true, typeof(float), 1, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 2),
-                }
+                ]
             },
             new() {
                 TypeID = 43,
@@ -1282,20 +1282,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Blends two colors using various blend modes. Passes base alpha through.",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(180, 80),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     BlendMode.Normal, // Default blend mode
                     1.0f,            // Default blend amount
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(1, "Base Color", true, typeof(Float4), 0),
                     NodeElementArchetype.Factory.Input(2, "Blend Color", true, typeof(Float4), 1),
                     NodeElementArchetype.Factory.Input(3, "Intensity", true, typeof(float), 2, 1),
                     NodeElementArchetype.Factory.Enum(0, 0, 120, 0, typeof(BlendMode)), // Blend mode selector
                     NodeElementArchetype.Factory.Output(0, "Result", typeof(Float4), 3),
-                }
+                ]
             },
-        };
+        ];
     }
 }

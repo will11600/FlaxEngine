@@ -596,7 +596,7 @@ namespace FlaxEditor.GUI
 
         private void EditAllKeyframes(Control control, Float2 pos)
         {
-            _popup = new Popup(this, new object[] { GetAllKeyframesEditingProxy() }, null, 400.0f);
+            _popup = new Popup(this, [GetAllKeyframesEditingProxy()], null, 400.0f);
             _popup.Show(control, pos);
         }
 

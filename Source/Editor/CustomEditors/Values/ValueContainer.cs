@@ -153,7 +153,7 @@ namespace FlaxEditor.CustomEditors
             get
             {
                 if (Count == 1)
-                    return new[] { TypeUtils.GetObjectType(this[0]) };
+                    return [TypeUtils.GetObjectType(this[0])];
                 return ConvertAll(TypeUtils.GetObjectType).Distinct().ToArray();
             }
         }

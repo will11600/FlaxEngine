@@ -22,7 +22,7 @@ namespace FlaxEditor.GUI.Timeline
     public partial class Timeline : ContainerControl, IKeyframesEditorContext
     {
         private static readonly KeyValuePair<float, string>[] FPSValues =
-        {
+        [
             new(12f, "12 fps"),
             new(15f, "15 fps"),
             new(23.976f, "23.97 (NTSC)"),
@@ -36,7 +36,7 @@ namespace FlaxEditor.GUI.Timeline
             new(120f, "120 fps"),
             new(240f, "240 fps"),
             new(0, "Custom"),
-        };
+        ];
 
         internal const int FormatVersion = 4;
 

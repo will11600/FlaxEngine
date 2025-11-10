@@ -443,7 +443,7 @@ namespace FlaxEditor.Viewport
         }
 
         internal static readonly float[] TranslateSnapValues =
-        {
+        [
             0.1f,
             0.5f,
             1.0f,
@@ -451,10 +451,10 @@ namespace FlaxEditor.Viewport
             10.0f,
             100.0f,
             1000.0f,
-        };
+        ];
 
         internal static readonly float[] RotateSnapValues =
-        {
+        [
             1.0f,
             5.0f,
             10.0f,
@@ -463,10 +463,10 @@ namespace FlaxEditor.Viewport
             45.0f,
             60.0f,
             90.0f,
-        };
+        ];
 
         internal static readonly float[] ScaleSnapValues =
-        {
+        [
             0.05f,
             0.1f,
             0.25f,
@@ -476,6 +476,6 @@ namespace FlaxEditor.Viewport
             4.0f,
             6.0f,
             8.0f,
-        };
+        ];
     }
 }

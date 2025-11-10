@@ -1364,7 +1364,7 @@ namespace FlaxEngine.Interop
                 {
                     if (genericParamTypes.Count != 0)
                         invokerType = invokerType.MakeGenericType(genericParamTypes.ToArray());
-                    delegInvoke = invokerType.GetMethod(nameof(Invoker.InvokerStaticNoRet0.CreateDelegate), BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { method });
+                    delegInvoke = invokerType.GetMethod(nameof(Invoker.InvokerStaticNoRet0.CreateDelegate), BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, [method]);
                     invokeDelegate = invokerType.GetMethod(nameof(Invoker.InvokerStaticNoRet0.MarshalAndInvoke), BindingFlags.Static | BindingFlags.NonPublic).CreateDelegate<Invoker.MarshalAndInvokeDelegate>();
                 }
             }
@@ -1756,11 +1756,11 @@ namespace FlaxEngine.Interop
                         .GetMethod("MakeNewCustomDelegate", BindingFlags.NonPublic | BindingFlags.Static).CreateDelegate<Func<Type[], Type>>();
 
                 // Create dummy delegates to force the dynamic Snippets assembly to be loaded in correcet ALCs
-                MakeNewCustomDelegateFunc(new[] { typeof(void) });
+                MakeNewCustomDelegateFunc([typeof(void)]);
                 {
                     // Ensure the new delegate is placed in the collectible ALC
                     using var ctx = scriptingAssemblyLoadContext.EnterContextualReflection();
-                    MakeNewCustomDelegateFuncCollectible(new[] { typeof(void) });
+                    MakeNewCustomDelegateFuncCollectible([typeof(void)]);
                 }
 #endif
             }
@@ -1832,7 +1832,7 @@ namespace FlaxEngine.Interop
                     if (genericParamTypes.Count != 0)
                         invokerType = invokerType.MakeGenericType(genericParamTypes.ToArray());
                     methodDelegate = invokerType.GetMethod(nameof(Invoker.InvokerStaticNoRet0.InvokeThunk), BindingFlags.Static | BindingFlags.NonPublic).CreateDelegate<Invoker.InvokeThunkDelegate>();
-                    methodDelegateContext = invokerType.GetMethod(nameof(Invoker.InvokerStaticNoRet0.CreateInvokerDelegate), BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { method });
+                    methodDelegateContext = invokerType.GetMethod(nameof(Invoker.InvokerStaticNoRet0.CreateInvokerDelegate), BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, [method]);
                 }
 
                 if (methodDelegate != null)

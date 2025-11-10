@@ -36,12 +36,12 @@ namespace FlaxEditor.Surface
         };
 
         private static readonly string[] _blacklistedTypeNames =
-        {
+        [
             "Newtonsoft.Json.",
             "System.Array",
             "System.Linq.Expressions.",
             "System.Reflection.",
-        };
+        ];
 
         private static NodesCache _nodesCache = new(IterateNodesCache);
         private DragActors _dragActors;
@@ -582,18 +582,18 @@ namespace FlaxEditor.Surface
 
                 if (assetItem.IsOfType<GameplayGlobals>())
                 {
-                    node = Context.SpawnNode(7, 16, args.SurfaceLocation, new object[]
-                    {
+                    node = Context.SpawnNode(7, 16, args.SurfaceLocation,
+                    [
                         assetItem.ID,
                         string.Empty,
-                    });
+                    ]);
                 }
                 else if (assetItem.IsOfType<Asset>())
                 {
-                    node = Context.SpawnNode(7, 18, args.SurfaceLocation, new object[]
-                    {
+                    node = Context.SpawnNode(7, 18, args.SurfaceLocation,
+                    [
                         assetItem.ID,
-                    });
+                    ]);
                 }
 
                 if (node != null)
@@ -619,10 +619,10 @@ namespace FlaxEditor.Surface
                 for (int i = 0; i < _dragActors.Objects.Count; i++)
                 {
                     var actorNode = _dragActors.Objects[i];
-                    var node = Context.SpawnNode(7, 21, args.SurfaceLocation, new object[]
-                    {
+                    var node = Context.SpawnNode(7, 21, args.SurfaceLocation,
+                    [
                         actorNode.ID
-                    });
+                    ]);
                     args.SurfaceLocation.X += node.Width + 10;
                 }
                 DragHandlers.OnDragDrop(args);

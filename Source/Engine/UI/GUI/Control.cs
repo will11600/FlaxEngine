@@ -25,7 +25,7 @@ namespace FlaxEngine.GUI
         }
 
         private static readonly AnchorPresetData[] AnchorPresetsData =
-        {
+        [
             new(AnchorPresets.TopLeft, new Float2(0, 0), new Float2(0, 0)),
             new(AnchorPresets.TopCenter, new Float2(0.5f, 0), new Float2(0.5f, 0)),
             new(AnchorPresets.TopRight, new Float2(1, 0), new Float2(1, 0)),
@@ -47,7 +47,7 @@ namespace FlaxEngine.GUI
             new(AnchorPresets.VerticalStretchRight, new Float2(1, 0), new Float2(1, 1)),
 
             new(AnchorPresets.StretchAll, new Float2(0, 0), new Float2(1, 1)),
-        };
+        ];
 
         private ContainerControl _parent;
         private RootControl _root;

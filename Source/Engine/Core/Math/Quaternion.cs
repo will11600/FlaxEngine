@@ -350,13 +350,7 @@ namespace FlaxEngine
         /// <returns>A four-element array containing the components of the quaternion.</returns>
         public float[] ToArray()
         {
-            return new[]
-            {
-                X,
-                Y,
-                Z,
-                W
-            };
+            return [X, Y, Z, W];
         }
 
         /// <summary>

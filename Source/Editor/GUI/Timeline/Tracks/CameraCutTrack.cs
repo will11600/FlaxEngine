@@ -314,7 +314,7 @@ namespace FlaxEditor.GUI.Timeline.Tracks
         {
             base.OnDurationFramesChanged();
 
-            UpdateThumbnails(new[] { 1, 2 });
+            UpdateThumbnails([1, 2]);
         }
 
         /// <inheritdoc />
@@ -580,15 +580,15 @@ namespace FlaxEditor.GUI.Timeline.Tracks
                     Height = atlasSize,
                     ArraySize = 1,
                     Format = atlasFormat,
-                    Mips = new[]
-                    {
+                    Mips =
+                    [
                         new TextureBase.InitData.MipData
                         {
                             Data = data,
                             RowPitch = data.Length / atlasSize,
                             SlicePitch = data.Length
                         },
-                    },
+                    ],
                 };
                 spriteAtlas.Init(ref initData);
 

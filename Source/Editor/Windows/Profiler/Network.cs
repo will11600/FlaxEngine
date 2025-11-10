@@ -266,8 +266,8 @@ namespace FlaxEditor.Windows.Profiler
             var textColor = style.Foreground;
             var table = new Table
             {
-                Columns = new[]
-                {
+                Columns =
+                [
                     new ColumnDefinition
                     {
                         UseExpandCollapseMode = true,
@@ -302,15 +302,15 @@ namespace FlaxEditor.Windows.Profiler
                         TitleBackgroundColor = headerColor,
                         TitleColor = textColor,
                     },
-                },
-                Splits = new[]
-                {
+                ],
+                Splits =
+                [
                     0.40f,
                     0.15f,
                     0.15f,
                     0.15f,
                     0.15f,
-                },
+                ],
                 Parent = parent,
             };
             return table;

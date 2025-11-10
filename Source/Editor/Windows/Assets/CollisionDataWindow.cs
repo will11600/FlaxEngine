@@ -271,7 +271,7 @@ namespace FlaxEditor.Windows.Assets
             if (_collisionWiresModel == null)
             {
                 _collisionWiresModel = FlaxEngine.Content.CreateVirtualAsset<Model>();
-                _collisionWiresModel.SetupLODs(new[] { 1 });
+                _collisionWiresModel.SetupLODs([1]);
             }
             Editor.Internal_GetCollisionWires(FlaxEngine.Object.GetUnmanagedPtr(Asset), out var triangles, out var indices, out var triangleCount, out var indicesCount);
             if (triangles != null && indices != null)

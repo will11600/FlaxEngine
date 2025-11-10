@@ -706,7 +706,7 @@ namespace FlaxEditor.GUI
             var offset = timeOffset ?? 0.0f;
             try
             {
-                var lines = data.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                var lines = data.Split(["\r\n", "\r", "\n"], StringSplitOptions.RemoveEmptyEntries);
                 if (lines.Length < 4)
                     return;
                 var type = TypeUtils.GetManagedType(lines[0]);

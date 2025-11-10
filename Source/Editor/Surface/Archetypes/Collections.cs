@@ -32,75 +32,75 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
+        [
             new() {
                 TypeID = 1,
                 Title = "Array Length",
                 Description = "Gets the length of the array (amount of the items).",
-                AlternativeTitles = new[] { "Count" },
+                AlternativeTitles = ["Count"],
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(150, 20),
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(int), 1)
-                }
+                ]
             },
             new() {
                 TypeID = 2,
                 Title = "Array Contains",
                 Description = "Returns the true if array contains a given item, otherwise false.",
-                AlternativeTitles = new[] { "Contains" },
+                AlternativeTitles = ["Contains"],
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(150, 40),
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
                 DependentBoxFilter = GetArrayItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Item", true, typeof(object), 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(bool), 2)
-                }
+                ]
             },
             new() {
                 TypeID = 3,
                 Title = "Array Index Of",
                 Description = "Returns the zero-based index of the item found in the array or -1 if nothing found.",
-                AlternativeTitles = new[] { "IndexOf", "Find" },
+                AlternativeTitles = ["IndexOf", "Find"],
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(170, 40),
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
                 DependentBoxFilter = GetArrayItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Item", true, typeof(object), 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(int), 2)
-                }
+                ]
             },
             new() {
                 TypeID = 4,
                 Title = "Array Last Index Of",
                 Description = "Returns the zero-based index of the item found in the array or -1 if nothing found (searches from back to front).",
-                AlternativeTitles = new[] { "LastIndexOf", "FindLast" },
+                AlternativeTitles = ["LastIndexOf", "FindLast"],
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(170, 40),
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
                 DependentBoxFilter = GetArrayItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Item", true, typeof(object), 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(int), 2)
-                }
+                ]
             },
             new() {
                 TypeID = 5,
@@ -109,13 +109,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(150, 20),
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1)
-                }
+                ]
             },
             new() {
                 TypeID = 6,
@@ -124,15 +124,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(150, 40),
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1, 2 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1, 2],
                 DependentBoxFilter = GetArrayItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Item", true, typeof(object), 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 2)
-                }
+                ]
             },
             new() {
                 TypeID = 7,
@@ -140,16 +140,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Removes an item at the given index from the array.",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(170, 40),
-                DefaultValues = new object[] { 0 },
+                DefaultValues = [0],
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 2 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                DependentBoxes = [2],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Index", true, typeof(int), 1, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 2)
-                }
+                ]
             },
             new() {
                 TypeID = 8,
@@ -158,15 +158,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(150, 40),
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1, 2 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1, 2],
                 DependentBoxFilter = GetArrayItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Item", true, typeof(object), 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 2)
-                }
+                ]
             },
             new() {
                 TypeID = 9,
@@ -174,18 +174,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Inserts the item to the array at the given index.",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(150, 60),
-                DefaultValues = new object[] { 0 },
+                DefaultValues = [0],
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1, 3 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1, 3],
                 DependentBoxFilter = GetArrayItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Item", true, typeof(object), 1),
                     NodeElementArchetype.Factory.Input(2, "Index", true, typeof(int), 2, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
-                }
+                ]
             },
             new() {
                 TypeID = 10,
@@ -193,17 +193,17 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Gets the item from the array (at the given zero-based index).",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(150, 40),
-                DefaultValues = new object[] { 0 },
+                DefaultValues = [0],
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 2 },
+                IndependentBoxes = [0],
+                DependentBoxes = [2],
                 DependentBoxFilter = GetArrayItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Index", true, typeof(int), 1, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(object), 2)
-                }
+                ]
             },
             new() {
                 TypeID = 11,
@@ -211,18 +211,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Sets the item in the array (at the given zero-based index).",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(150, 60),
-                DefaultValues = new object[] { 0 },
+                DefaultValues = [0],
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 2, 3 },
+                IndependentBoxes = [0],
+                DependentBoxes = [2, 3],
                 DependentBoxFilter = GetArrayItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Index", true, typeof(int), 1, 0),
                     NodeElementArchetype.Factory.Input(2, "Item", true, typeof(object), 2),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
-                }
+                ]
             },
             new() {
                 TypeID = 12,
@@ -231,13 +231,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(150, 20),
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1)
-                }
+                ]
             },
             new() {
                 TypeID = 13,
@@ -246,13 +246,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(150, 20),
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1)
-                }
+                ]
             },
             new() {
                 TypeID = 14,
@@ -261,15 +261,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(170, 40),
                 ConnectionsHints = ConnectionsHint.Array,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1, 2 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1, 2],
                 DependentBoxFilter = GetArrayItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Array", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Item", true, typeof(object), 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 2)
-                }
+                ]
             },
             // first 100 IDs reserved for arrays
 
@@ -277,54 +277,54 @@ namespace FlaxEditor.Surface.Archetypes
                 TypeID = 101,
                 Title = "Dictionary Count",
                 Description = "Gets the size of the dictionary (amount of the items).",
-                AlternativeTitles = new[] { "size" },
+                AlternativeTitles = ["size"],
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(180, 20),
                 ConnectionsHints = ConnectionsHint.Dictionary,
-                IndependentBoxes = new int[] { 0 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Dictionary", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(int), 1)
-                }
+                ]
             },
             new() {
                 TypeID = 102,
                 Title = "Dictionary Contains Key",
                 Description = "Returns the true if dictionary contains a given key, otherwise false.",
-                AlternativeTitles = new[] { "Contains" },
+                AlternativeTitles = ["Contains"],
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(240, 40),
-                DefaultValues = new object[] { 0 },
+                DefaultValues = [0],
                 ConnectionsHints = ConnectionsHint.Dictionary,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
                 DependentBoxFilter = GetDictionaryItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Dictionary", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Key", true, typeof(object), 1, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(bool), 3)
-                }
+                ]
             },
             new() {
                 TypeID = 103,
                 Title = "Dictionary Contains Value",
                 Description = "Returns the true if dictionary contains a given value, otherwise false.",
-                AlternativeTitles = new[] { "Contains" },
+                AlternativeTitles = ["Contains"],
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(240, 40),
-                DefaultValues = new object[] { 0 },
+                DefaultValues = [0],
                 ConnectionsHints = ConnectionsHint.Dictionary,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 2 },
+                IndependentBoxes = [0],
+                DependentBoxes = [2],
                 DependentBoxFilter = GetDictionaryItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Dictionary", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Value", true, typeof(object), 2, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(bool), 3)
-                }
+                ]
             },
             new() {
                 TypeID = 104,
@@ -333,13 +333,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(180, 20),
                 ConnectionsHints = ConnectionsHint.Dictionary,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Dictionary", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1)
-                }
+                ]
             },
             new() {
                 TypeID = 105,
@@ -347,17 +347,17 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Removes the given item from the dictionary (by key).",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(180, 40),
-                DefaultValues = new object[] { 0 },
+                DefaultValues = [0],
                 ConnectionsHints = ConnectionsHint.Dictionary,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1, 3 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1, 3],
                 DependentBoxFilter = GetDictionaryItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Dictionary", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Key", true, typeof(object), 1, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
-                }
+                ]
             },
             new() {
                 TypeID = 106,
@@ -365,18 +365,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Set the item in the dictionary (a pair of key and value). Adds or updates the pair.",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(180, 60),
-                DefaultValues = new object[] { 0, 0 },
+                DefaultValues = [0, 0],
                 ConnectionsHints = ConnectionsHint.Dictionary,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1, 2, 3 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1, 2, 3],
                 DependentBoxFilter = GetDictionaryItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Dictionary", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Key", true, typeof(object), 1, 0),
                     NodeElementArchetype.Factory.Input(2, "Value", true, typeof(object), 2, 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
-                }
+                ]
             },
             new() {
                 TypeID = 107,
@@ -384,19 +384,19 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Gets the item from the dictionary (a pair of key and value).",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(180, 40),
-                DefaultValues = new object[] { 0 },
+                DefaultValues = [0],
                 ConnectionsHints = ConnectionsHint.Dictionary,
-                IndependentBoxes = new int[] { 0 },
-                DependentBoxes = new int[] { 1, 3 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1, 3],
                 DependentBoxFilter = GetDictionaryItemType,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Dictionary", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Key", true, typeof(object), 1, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(object), 3)
-                }
+                ]
             },
             // second 100 IDs reserved for dictionaries
-        };
+        ];
     }
 }

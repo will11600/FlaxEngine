@@ -20,7 +20,7 @@ public class RequireScriptAttribute : Attribute
     /// <param name="type">The required type.</param>
     public RequireScriptAttribute(Type type)
     {
-        RequiredTypes = new[] { type };
+        RequiredTypes = [type];
     }
 
     /// <summary>

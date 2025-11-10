@@ -110,7 +110,7 @@ namespace FlaxEditor.Utilities
             // Full match
             if (string.Equals(filter, text, StringComparison.CurrentCultureIgnoreCase))
             {
-                matches = new[] { new Range(0, filter.Length) };
+                matches = [new Range(0, filter.Length)];
                 return true;
             }
 

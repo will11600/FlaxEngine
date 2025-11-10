@@ -19,7 +19,7 @@ namespace FlaxEditor.SceneGraph.Actors
     public class BoxVolumeNode : ActorNode
     {
         private static readonly Int3[] BoxTrianglesIndicesCache =
-        {
+        [
             new(3, 1, 2),
             new(3, 0, 1),
             new(7, 0, 3),
@@ -32,7 +32,7 @@ namespace FlaxEditor.SceneGraph.Actors
             new(1, 4, 5),
             new(7, 2, 6),
             new(7, 3, 2),
-        };
+        ];
 
         /// <summary>
         /// Sub actor node used to edit volume.

@@ -354,7 +354,7 @@ namespace FlaxEngine
         /// <returns>A three-element array containing the components of the vector.</returns>
         public readonly float[] ToArray()
         {
-            return new[] { X, Y, Z };
+            return [X, Y, Z];
         }
 
         /// <summary>

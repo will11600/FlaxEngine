@@ -61,7 +61,7 @@ internal class ControlReferenceEditor : CustomEditor
                 if (typeof(Control).IsAssignableFrom(genericType))
                 {
                     Type t = typeof(ControlReference<>);
-                    Type tw = t.MakeGenericType(new Type[] { genericType });
+                    Type tw = t.MakeGenericType([genericType]);
                     var instance = Activator.CreateInstance(tw);
                     ((IControlReference)instance).UIControl = (UIControl)_element.CustomControl.Value;
                     SetValue(instance);

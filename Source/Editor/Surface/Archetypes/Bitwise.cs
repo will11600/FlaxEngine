@@ -20,11 +20,11 @@ namespace FlaxEditor.Surface.Archetypes
                 AlternativeTitles = altTitles,
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(140, 20),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "A", true, typeof(int), 0),
                     NodeElementArchetype.Factory.Output(0, "Result", typeof(int), 1)
-                }
+                ]
             };
         }
 
@@ -38,17 +38,17 @@ namespace FlaxEditor.Surface.Archetypes
                 AlternativeTitles = altTitles,
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(140, 40),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0,
                     0,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "A", true, typeof(int), 0, 0),
                     NodeElementArchetype.Factory.Input(1, "B", true, typeof(int), 1, 1),
                     NodeElementArchetype.Factory.Output(0, "Result", typeof(int), 2)
-                }
+                ]
             };
         }
 
@@ -56,11 +56,11 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
-            Op1(1, "Bitwise NOT", "Negates the value using bitwise operation", new[] { "!", "~" }),
-            Op2(2, "Bitwise AND", "Performs a bitwise conjunction on two values", new[] { "&" }),
-            Op2(3, "Bitwise OR", "Performs a bitwise disjunction on two values", new[] { "|" }),
-            Op2(4, "Bitwise XOR", "Performs a bitwise exclusive disjunction on two values", new[] { "^" }),
-        };
+        [
+            Op1(1, "Bitwise NOT", "Negates the value using bitwise operation", ["!", "~"]),
+            Op2(2, "Bitwise AND", "Performs a bitwise conjunction on two values", ["&"]),
+            Op2(3, "Bitwise OR", "Performs a bitwise disjunction on two values", ["|"]),
+            Op2(4, "Bitwise XOR", "Performs a bitwise exclusive disjunction on two values", ["^"]),
+        ];
     }
 }

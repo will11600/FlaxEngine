@@ -25,22 +25,22 @@ namespace FlaxEditor.Surface.Archetypes
                 AlternativeTitles = altTitles,
                 ConnectionsHints = ConnectionsHint.Value,
                 Size = new Float2(100, 40),
-                IndependentBoxes = new[]
-                {
+                IndependentBoxes =
+                [
                     0,
                     1
-                },
-                DefaultValues = new object[]
-                {
+                ],
+                DefaultValues =
+                [
                     0.0f,
                     0.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, null, 0, 0),
                     NodeElementArchetype.Factory.Input(1, string.Empty, true, null, 1, 1),
                     NodeElementArchetype.Factory.Output(0, title, typeof(bool), 2)
-                }
+                ]
             };
         }
 
@@ -170,42 +170,42 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
-            Op(1, "==", "Determines whether two values are equal", new[] { "equals" }),
-            Op(2, "!=", "Determines whether two values are not equal", new[] { "not equals" }),
-            Op(3, ">", "Determines whether the first value is greater than the other", new[] { "greater than", "larger than", "bigger than" }),
-            Op(4, "<", "Determines whether the first value is less than the other", new[] { "less than", "smaller than" }),
-            Op(5, "<=", "Determines whether the first value is less or equal to the other", new[] { "less equals than", "smaller equals than" }),
-            Op(6, ">=", "Determines whether the first value is greater or equal to the other", new[] { "greater equals than", "larger equals than", "bigger equals than" }),
+        [
+            Op(1, "==", "Determines whether two values are equal", ["equals"]),
+            Op(2, "!=", "Determines whether two values are not equal", ["not equals"]),
+            Op(3, ">", "Determines whether the first value is greater than the other", ["greater than", "larger than", "bigger than"]),
+            Op(4, "<", "Determines whether the first value is less than the other", ["less than", "smaller than"]),
+            Op(5, "<=", "Determines whether the first value is less or equal to the other", ["less equals than", "smaller equals than"]),
+            Op(6, ">=", "Determines whether the first value is greater or equal to the other", ["greater equals than", "larger equals than", "bigger equals than"]),
             new() {
                 TypeID = 7,
                 Title = "Switch On Bool",
-                AlternativeTitles = new[] { "if", "switch" },
+                AlternativeTitles = ["if", "switch"],
                 Description = "Returns one of the input values based on the condition value",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(160, 60),
                 ConnectionsHints = ConnectionsHint.Value,
-                IndependentBoxes = new[]
-                {
+                IndependentBoxes =
+                [
                     1,
                     2,
-                },
-                DependentBoxes = new[]
-                {
+                ],
+                DependentBoxes =
+                [
                     3,
-                },
-                DefaultValues = new object[]
-                {
+                ],
+                DefaultValues =
+                [
                     0.0f,
                     0.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Condition", true, typeof(bool), 0),
                     NodeElementArchetype.Factory.Input(1, "False", true, null, 1, 0),
                     NodeElementArchetype.Factory.Input(2, "True", true, null, 2, 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
-                }
+                ]
             },
             new() {
                 TypeID = 8,
@@ -214,14 +214,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Returns one of the input values based on the enum value",
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(160, 60),
-                DefaultValues = new object[] { Utils.GetEmptyArray<byte>() },
+                DefaultValues = [Utils.GetEmptyArray<byte>()],
                 ConnectionsHints = ConnectionsHint.Enum,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 1),
-                }
+                ]
             },
-        };
+        ];
     }
 }

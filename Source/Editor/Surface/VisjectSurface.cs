@@ -406,8 +406,8 @@ namespace FlaxEditor.Surface
             RootContext.Modified += OnRootContextModified;
 
             // Setup input actions
-            InputActions = new InputActionsContainer(new[]
-            {
+            InputActions = new InputActionsContainer(
+            [
                 new InputActionsContainer.Binding(options => options.Delete, Delete),
                 new InputActionsContainer.Binding(options => options.SelectAll, SelectAll),
                 new InputActionsContainer.Binding(options => options.DeselectAll, DeselectAll),
@@ -425,7 +425,7 @@ namespace FlaxEditor.Surface
                 new InputActionsContainer.Binding(options => options.NodesAlignRight, () => { AlignNodes(SelectedNodes, NodeAlignmentType.Right); }),
                 new InputActionsContainer.Binding(options => options.NodesDistributeHorizontal, () => {  DistributeNodes(SelectedNodes, false); }),
                 new InputActionsContainer.Binding(options => options.NodesDistributeVertical, () => {  DistributeNodes(SelectedNodes, true); }),
-            });
+            ]);
 
             Context.ControlSpawned += OnSurfaceControlSpawned;
             Context.ControlDeleted += OnSurfaceControlDeleted;

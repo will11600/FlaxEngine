@@ -188,7 +188,7 @@ namespace FlaxEngine
         /// <returns>A two-element array containing the components of the vector.</returns>
         public readonly int[] ToArray()
         {
-            return new[] { X, Y };
+            return [X, Y];
         }
 
         /// <summary>

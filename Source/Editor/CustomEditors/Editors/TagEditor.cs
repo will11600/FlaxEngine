@@ -141,7 +141,7 @@ namespace FlaxEditor.CustomEditors.Editors
                 UncheckAll(node.ParentTree, node);
                 var value = c.Checked ? (Tag)node.Tag : Tag.Default;
                 pickerData.SetValue?.Invoke(value);
-                pickerData.SetValues?.Invoke(new[] { value });
+                pickerData.SetValues?.Invoke([value]);
             }
             else
             {

@@ -76,16 +76,8 @@ namespace FlaxEngine.GUI
         {
             AutoFocus = false;
             SlotPadding = new Margin(slotPadding);
-            _cellsH = new[]
-            {
-                0.5f,
-                0.5f
-            };
-            _cellsV = new[]
-            {
-                0.5f,
-                0.5f
-            };
+            _cellsH = [0.5f, 0.5f];
+            _cellsV = [0.5f, 0.5f];
         }
 
         /// <inheritdoc />

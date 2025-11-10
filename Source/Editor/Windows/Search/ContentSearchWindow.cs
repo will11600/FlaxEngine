@@ -453,7 +453,7 @@ namespace FlaxEngine.Windows.Search
             {
             case SearchLocations.CurrentAsset:
                 if (TargetWindow is AssetEditorWindow assetEditorWindow)
-                    assets = new[] { assetEditorWindow.Item.ID };
+                    assets = [assetEditorWindow.Item.ID];
                 break;
             case SearchLocations.AllOpenedAssets:
                 assets = new Guid[Editor.Windows.Windows.Count];

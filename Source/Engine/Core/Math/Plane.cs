@@ -192,7 +192,7 @@ namespace FlaxEngine
         /// <returns>A four-element array containing the components of the plane.</returns>
         public readonly Real[] ToArray()
         {
-            return new[] { Normal.X, Normal.Y, Normal.Z, D };
+            return [Normal.X, Normal.Y, Normal.Z, D];
         }
 
         /// <summary>

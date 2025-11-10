@@ -242,9 +242,9 @@ namespace FlaxEditor.CustomEditors.Editors
                 var table = locale.First();
                 var entries = table.Entries;
                 if (table.Locale == defaultLocale)
-                    entries[newKey] = new[] { newValue };
+                    entries[newKey] = [newValue];
                 else
-                    entries[newKey] = new[] { string.Empty };
+                    entries[newKey] = [string.Empty];
                 table.Entries = entries;
                 table.Save();
             }

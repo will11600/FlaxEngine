@@ -151,7 +151,7 @@ namespace FlaxEditor.Surface
                     nodes[i].Location = newLocation;
 
                     if (Undo != null)
-                        undoActions.Add(new MoveNodesAction(Context, new[] { nodes[i].ID }, locationDelta));
+                        undoActions.Add(new MoveNodesAction(Context, [nodes[i].ID], locationDelta));
                 }
             }
 
@@ -208,7 +208,7 @@ namespace FlaxEditor.Surface
                         nodeB.Location += delta;
 
                         if (Undo != null)
-                            undoActions.Add(new MoveNodesAction(Context, new[] { nodeB.ID }, delta));
+                            undoActions.Add(new MoveNodesAction(Context, [nodeB.ID], delta));
                     }
                 }
             }
@@ -378,7 +378,7 @@ namespace FlaxEditor.Surface
                 nodes[i].Location = newLocation;
 
                 if(Undo != null)
-                    undoActions.Add(new MoveNodesAction(Context, new[] { nodes[i].ID }, locationDelta));
+                    undoActions.Add(new MoveNodesAction(Context, [nodes[i].ID], locationDelta));
             }
 
             MarkAsEdited(false);
@@ -430,7 +430,7 @@ namespace FlaxEditor.Surface
                     position += nodes[i].Height + padding;
 
                     if (Undo != null)
-                        undoActions.Add(new MoveNodesAction(Context, new[] { nodes[i].ID }, locationDelta));
+                        undoActions.Add(new MoveNodesAction(Context, [nodes[i].ID], locationDelta));
                 }
             }
             else
@@ -452,7 +452,7 @@ namespace FlaxEditor.Surface
                     position += nodes[i].Width + padding;
 
                     if (Undo != null)
-                        undoActions.Add(new MoveNodesAction(Context, new[] { nodes[i].ID }, locationDelta));
+                        undoActions.Add(new MoveNodesAction(Context, [nodes[i].ID], locationDelta));
                 }
             }
 

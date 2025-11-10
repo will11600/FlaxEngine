@@ -73,12 +73,12 @@ namespace FlaxEngine.Utilities
         /// <returns>Array with all lines</returns>
         public static string[] GetLines(this string str, bool removeEmptyLines = false)
         {
-            return str.Split(new[]
-            {
+            return str.Split(
+            [
                 "\r\n",
                 "\r",
                 "\n"
-            }, removeEmptyLines ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None);
+            ], removeEmptyLines ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None);
         }
 
         /// <summary>

@@ -227,7 +227,7 @@ namespace FlaxEditor.Actions
                         Editor.LogError($"Missing method {state.CreateMethodName} from type {state.TypeName} for scene graph node undo state restore.");
                         continue;
                     }
-                    var node = method.Invoke(null, new object[] { state });
+                    var node = method.Invoke(null, [state]);
                     if (node == null)
                     {
                         Editor.LogError($"Failed to restore scene graph node state via method {state.CreateMethodName} from type {state.TypeName}.");

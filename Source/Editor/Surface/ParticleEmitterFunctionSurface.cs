@@ -15,7 +15,7 @@ namespace FlaxEditor.Surface
     public class ParticleEmitterFunctionSurface : ParticleEmitterSurface, Function.IFunctionSurface
     {
         private static readonly Type[] ParticleEmitterFunctionTypes =
-        {
+        [
             typeof(bool),
             typeof(int),
             typeof(float),
@@ -26,7 +26,7 @@ namespace FlaxEditor.Surface
             typeof(Vector3),
             typeof(Vector4),
             typeof(FlaxEngine.Object),
-        };
+        ];
 
         /// <inheritdoc />
         public ParticleEmitterFunctionSurface(IVisjectSurfaceOwner owner, Action onSave, FlaxEditor.Undo undo)

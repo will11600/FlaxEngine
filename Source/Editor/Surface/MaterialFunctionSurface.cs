@@ -15,7 +15,7 @@ namespace FlaxEditor.Surface
     public class MaterialFunctionSurface : MaterialSurface, Function.IFunctionSurface
     {
         private static readonly Type[] MaterialFunctionTypes =
-        {
+        [
             typeof(bool),
             typeof(int),
             typeof(float),
@@ -27,7 +27,7 @@ namespace FlaxEditor.Surface
             typeof(Vector4),
             typeof(FlaxEngine.Object),
             typeof(void),
-        };
+        ];
 
         /// <inheritdoc />
         public MaterialFunctionSurface(IVisjectSurfaceOwner owner, Action onSave, FlaxEditor.Undo undo)

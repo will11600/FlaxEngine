@@ -192,8 +192,8 @@ namespace FlaxEditor.Content.GUI
         public ContentView()
         {
             // Setup input actions
-            InputActions = new InputActionsContainer(new[]
-            {
+            InputActions = new InputActionsContainer(
+            [
                 new InputActionsContainer.Binding(options => options.Delete, () =>
                 {
                     if (HasSelection)
@@ -219,7 +219,7 @@ namespace FlaxEditor.Content.GUI
                         UpdateContentItemCut(false);
                 }),
                 new InputActionsContainer.Binding(options => options.Duplicate, Duplicate),
-            });
+            ]);
         }
 
         /// <summary>

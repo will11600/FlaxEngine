@@ -47,11 +47,11 @@ namespace FlaxEditor.Utilities
         }
 
         private static readonly Type[] AttributesIgnoreList =
-        {
+        [
             typeof(NonSerializedAttribute),
             typeof(NoSerializeAttribute),
             typeof(NoUndoAttribute),
-        };
+        ];
 
         private static void GetEntries(MemberInfoPath.Entry member, Stack<MemberInfoPath.Entry> membersPath, List<TypeEntry> result, List<object> values, Stack<object> refStack, ScriptType memberType, object memberValue)
         {

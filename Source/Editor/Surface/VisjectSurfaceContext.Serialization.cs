@@ -55,7 +55,7 @@ namespace FlaxEditor.Surface
             Description = ":(",
             Flags = NodeFlags.AllGraphs,
             Size = new Float2(200, 70),
-            Elements = new NodeElementArchetype[0],
+            Elements = [],
             DefaultValues = new object[32],
         }, new GroupArchetype
         {

@@ -244,14 +244,14 @@ namespace FlaxEngine.GUI
 #if FLAX_EDITOR
         [EditorOrder(140), EditorDisplay("Canvas Scaler"), VisibleIf(nameof(IsScaleWithResolution))]
 #endif
-        public LinearCurve<float> ResolutionCurve = new(new[]
-        {
+        public LinearCurve<float> ResolutionCurve = new(
+        [
             new LinearCurve<float>.Keyframe(0f, 0f), // 0p
             new LinearCurve<float>.Keyframe(480f, 0.444f), // 480p
             new LinearCurve<float>.Keyframe(720f, 0.666f), // 720p
             new LinearCurve<float>.Keyframe(1080f, 1.0f), // 1080p
             new LinearCurve<float>.Keyframe(8640f, 8.0f), // 8640p
-        });
+        ]);
 
         /// <summary>
         /// The UI Canvas scaling curve based on screen DPI (key is DPI, value is scale factor). Used only in ScaleWithDpi mode.
@@ -259,13 +259,13 @@ namespace FlaxEngine.GUI
 #if FLAX_EDITOR
         [EditorOrder(150), EditorDisplay("Canvas Scaler"), VisibleIf(nameof(IsScaleWithDpi))]
 #endif
-        public LinearCurve<float> DpiCurve = new(new[]
-        {
+        public LinearCurve<float> DpiCurve = new(
+        [
             new LinearCurve<float>.Keyframe(1.0f, 1.0f),
             new LinearCurve<float>.Keyframe(96.0f, 1.0f),
             new LinearCurve<float>.Keyframe(200.0f, 2.0f),
             new LinearCurve<float>.Keyframe(400.0f, 4.0f),
-        });
+        ]);
 
 #if FLAX_EDITOR
         private bool IsConstantPhysicalSize => _scalingMode == ScalingMode.ConstantPhysicalSize;

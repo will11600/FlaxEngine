@@ -564,9 +564,9 @@ namespace FlaxEditor.Surface
     public class ParametersEditor : CustomEditor
     {
         private static readonly Attribute[] DefaultAttributes =
-        {
+        [
             //new LimitAttribute(float.MinValue, float.MaxValue, 0.1f),
-        };
+        ];
 
         /// <summary>
         /// True if show only public properties, otherwise will display all properties.

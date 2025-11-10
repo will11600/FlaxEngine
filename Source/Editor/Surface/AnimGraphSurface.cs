@@ -36,12 +36,12 @@ namespace FlaxEditor.Surface
                         Title = "State",
                         Description = "The animation states machine state node",
                         Flags = NodeFlags.AnimGraph,
-                        DefaultValues = new object[]
-                        {
+                        DefaultValues =
+                        [
                             "State",
                             Utils.GetEmptyArray<byte>(),
                             Utils.GetEmptyArray<byte>(),
-                        },
+                        ],
                         Size = new Float2(100, 0),
                     },
                     new NodeArchetype
@@ -52,10 +52,10 @@ namespace FlaxEditor.Surface
                         Description = "The generic animation states machine state with source transitions from any other state",
                         Flags = NodeFlags.AnimGraph,
                         Size = new Float2(100, 0),
-                        DefaultValues = new object[]
-                        {
+                        DefaultValues =
+                        [
                             Utils.GetEmptyArray<byte>(),
-                        },
+                        ],
                     },
                 }
             }
@@ -75,14 +75,14 @@ namespace FlaxEditor.Surface
                     Description = "The animation state machine transition source state animation data information",
                     Flags = NodeFlags.AnimGraph,
                     Size = new Float2(270, 110),
-                    Elements = new[]
-                    {
+                    Elements =
+                    [
                         NodeElementArchetype.Factory.Output(0, "Length", typeof(float), 0),
                         NodeElementArchetype.Factory.Output(1, "Time", typeof(float), 1),
                         NodeElementArchetype.Factory.Output(2, "Normalized Time", typeof(float), 2),
                         NodeElementArchetype.Factory.Output(3, "Remaining Time", typeof(float), 3),
                         NodeElementArchetype.Factory.Output(4, "Remaining Normalized Time", typeof(float), 4),
-                    }
+                    ]
                 },
             }
         };
@@ -368,33 +368,33 @@ namespace FlaxEditor.Surface
 
                 if (assetItem.IsOfType<FlaxEngine.Animation>())
                 {
-                    node = Context.SpawnNode(9, 2, args.SurfaceLocation, new object[]
-                    {
+                    node = Context.SpawnNode(9, 2, args.SurfaceLocation,
+                    [
                         assetItem.ID,
                         1.0f,
                         true,
                         0.0f,
-                    });
+                    ]);
                 }
                 else if (assetItem.IsOfType<SkeletonMask>())
                 {
-                    node = Context.SpawnNode(9, 11, args.SurfaceLocation, new object[]
-                    {
+                    node = Context.SpawnNode(9, 11, args.SurfaceLocation,
+                    [
                         0.0f,
                         assetItem.ID,
-                    });
+                    ]);
                 }
                 else if (assetItem.IsOfType<AnimationGraphFunction>())
                 {
-                    node = Context.SpawnNode(9, 24, args.SurfaceLocation, new object[] { assetItem.ID, });
+                    node = Context.SpawnNode(9, 24, args.SurfaceLocation, [assetItem.ID,]);
                 }
                 else if (assetItem.IsOfType<GameplayGlobals>())
                 {
-                    node = Context.SpawnNode(7, 16, args.SurfaceLocation, new object[]
-                    {
+                    node = Context.SpawnNode(7, 16, args.SurfaceLocation,
+                    [
                         assetItem.ID,
                         string.Empty,
-                    });
+                    ]);
                 }
 
                 if (node != null)

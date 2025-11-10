@@ -233,14 +233,14 @@ namespace FlaxEditor.Surface.Archetypes
             };
 
             private readonly NodeElementArchetype[] _normalMapParameterElements =
-            {
+            [
                 NodeElementArchetype.Factory.Input(1, "UVs", true, typeof(Float2), 0, -1),
                 NodeElementArchetype.Factory.Output(1, "", typeof(FlaxEngine.Object), 6),
                 NodeElementArchetype.Factory.Output(2, "Vector", typeof(Float3), 1),
                 NodeElementArchetype.Factory.Output(3, "X", typeof(float), 2),
                 NodeElementArchetype.Factory.Output(4, "Y", typeof(float), 3),
                 NodeElementArchetype.Factory.Output(5, "Z", typeof(float), 4),
-            };
+            ];
 
             /// <summary>
             /// True if use special node layout for normal maps.
@@ -271,10 +271,10 @@ namespace FlaxEditor.Surface.Archetypes
                         return elements;
                     }
 
-                    return new[]
-                    {
+                    return
+                    [
                         NodeElementArchetype.Factory.Output(0, string.Empty, selected.Type, 0),
-                    };
+                    ];
                 }
                 return null;
             }
@@ -860,11 +860,11 @@ namespace FlaxEditor.Surface.Archetypes
                 var selectedID = selected?.ID ?? Guid.Empty;
                 if (selectedID != (Guid)Values[0])
                 {
-                    SetValues(new[]
-                    {
+                    SetValues(
+                    [
                         selectedID,
                         selected != null ? TypeUtils.GetDefaultValue(selected.Type) : null,
-                    });
+                    ]);
                     UpdateUI();
                 }
             }
@@ -1019,7 +1019,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
+        [
             new() {
                 TypeID = 1,
                 Create = (id, context, arch, groupArch) => new SurfaceNodeParamsGet(id, context, arch, groupArch),
@@ -1029,14 +1029,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Parameter value getter",
                 Flags = NodeFlags.MaterialGraph | NodeFlags.AnimGraph,
                 Size = new Float2(140, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Guid.Empty
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.ComboBox(2, 0, 116)
-                }
+                ]
             },
             new() {
                 TypeID = 2,
@@ -1047,14 +1047,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Parameter value getter",
                 Flags = NodeFlags.ParticleEmitterGraph,
                 Size = new Float2(140, 60),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Guid.Empty
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.ComboBox(2, 0, 116)
-                }
+                ]
             },
             new() {
                 TypeID = 3,
@@ -1065,14 +1065,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Parameter value getter",
                 Flags = NodeFlags.VisualScriptGraph,
                 Size = new Float2(140, 20),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Guid.Empty
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.ComboBox(2, 0, 116)
-                }
+                ]
             },
             new() {
                 TypeID = 4,
@@ -1083,19 +1083,19 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Parameter value setter",
                 Flags = NodeFlags.VisualScriptGraph,
                 Size = new Float2(140, 40),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Guid.Empty,
                     null
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, false, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(1, string.Empty, true, ScriptType.Null, 1, 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 2, true),
                     NodeElementArchetype.Factory.ComboBox(2 + 20, 0, 116)
-                }
+                ]
             },
-        };
+        ];
     }
 }

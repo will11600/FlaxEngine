@@ -299,7 +299,7 @@ namespace FlaxEngine
         /// </summary>
         public readonly float[] ToArray()
         {
-            return new[] { X, Y };
+            return [X, Y];
         }
 
         /// <summary>

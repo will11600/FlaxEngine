@@ -33,7 +33,7 @@ namespace FlaxEditor.GUI
             var data = Clipboard.Text;
             if (string.IsNullOrEmpty(data))
                 return;
-            var datas = data.Split(new[] { CopyPrefix }, StringSplitOptions.RemoveEmptyEntries);
+            var datas = data.Split([CopyPrefix], StringSplitOptions.RemoveEmptyEntries);
             if (datas.Length == 0)
                 return;
             if (editor.KeyframesEditorContext != null)

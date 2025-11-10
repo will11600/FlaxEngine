@@ -611,8 +611,8 @@ namespace FlaxEditor.Windows.Assets
             SurfaceUtils.PerformCommonSetup(this, _toolstrip, _surface, out _saveButton, out _undoButton, out _redoButton);
             _toolstrip.AddSeparator();
             _toolstrip.AddButton(editor.Icons.Docs64, () => Platform.OpenUrl(Utilities.Constants.DocsUrl + "manual/scripting/visual/index.html")).LinkTooltip("See documentation to learn more");
-            _debugToolstripControls = new[]
-            {
+            _debugToolstripControls =
+            [
                 _toolstrip.AddSeparator(),
                 _toolstrip.AddButton(editor.Icons.Play64, OnDebuggerContinue).LinkTooltip("Continue", ref inputOptions.DebuggerContinue),
                 _toolstrip.AddButton(editor.Icons.Search64, OnDebuggerNavigateToCurrentNode).LinkTooltip("Navigate to the current stack trace node"),
@@ -620,7 +620,7 @@ namespace FlaxEditor.Windows.Assets
                 _toolstrip.AddButton(editor.Icons.Down64, OnDebuggerStepInto).LinkTooltip("Step Into", ref inputOptions.DebuggerStepInto),
                 _toolstrip.AddButton(editor.Icons.Up64, OnDebuggerStepOut).LinkTooltip("Step Out", ref inputOptions.DebuggerStepOut),
                 _toolstrip.AddButton(editor.Icons.Stop64, OnDebuggerStop).LinkTooltip("Stop debugging"),
-            };
+            ];
             foreach (var control in _debugToolstripControls)
                 control.Visible = false;
 

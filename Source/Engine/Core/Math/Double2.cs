@@ -281,7 +281,7 @@ namespace FlaxEngine
         /// </summary>
         public readonly double[] ToArray()
         {
-            return new[] { X, Y };
+            return [X, Y];
         }
 
         /// <summary>

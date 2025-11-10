@@ -1044,8 +1044,8 @@ namespace FlaxEditor.Windows
             presets[count] = new BuildPreset
             {
                 Name = "Preset " + (count + 1),
-                Targets = new[]
-                {
+                Targets =
+                [
                     new BuildTarget
                     {
                         Name = "Windows 64bit",
@@ -1053,7 +1053,7 @@ namespace FlaxEditor.Windows
                         Platform = BuildPlatform.Windows64,
                         Mode = BuildConfiguration.Development,
                     },
-                }
+                ]
             };
             _data = presets;
 

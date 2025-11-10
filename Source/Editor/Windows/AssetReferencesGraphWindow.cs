@@ -93,7 +93,7 @@ namespace FlaxEditor.Windows
         }
 
         private static readonly NodeArchetype[] GraphNodes =
-        {
+        [
             new() {
                 TypeID = 1,
                 Title = "Asset",
@@ -101,7 +101,7 @@ namespace FlaxEditor.Windows
                 Flags = NodeFlags.AllGraphs | NodeFlags.NoRemove | NodeFlags.NoSpawnViaGUI | NodeFlags.NoCloseButton,
                 Size = new Float2(150, 200),
             },
-        };
+        ];
 
         private static readonly List<GroupArchetype> GraphGroups = new()
         {

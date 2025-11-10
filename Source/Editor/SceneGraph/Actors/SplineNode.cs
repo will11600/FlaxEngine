@@ -565,7 +565,7 @@ namespace FlaxEditor.SceneGraph.Actors
             Spline[] splines;
             var sceneContext = Root.SceneContext;
             if (sceneContext is Windows.Assets.PrefabWindow prefabWindow)
-                splines = new Spline[0]; // TODO: add GetActors or similar utility to SceneContext and use Level.GetActors<Spline>(..) with specific root actor
+                splines = []; // TODO: add GetActors or similar utility to SceneContext and use Level.GetActors<Spline>(..) with specific root actor
             else
                 splines = Level.GetActors<Spline>(true);
             var result = new List<Spline>();

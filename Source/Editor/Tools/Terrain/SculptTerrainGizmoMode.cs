@@ -78,18 +78,18 @@ namespace FlaxEditor.Tools.Terrain
         }
 
         private readonly Mode[] _modes =
-        {
+        [
             new SculptMode(),
             new SmoothMode(),
             new FlattenMode(),
             new NoiseMode(),
             new HolesMode(),
-        };
+        ];
 
         private readonly Brush[] _brushes =
-        {
+        [
             new CircleBrush(),
-        };
+        ];
 
         private ModeTypes _modeType = ModeTypes.Sculpt;
         private BrushTypes _brushType = BrushTypes.CircleBrush;

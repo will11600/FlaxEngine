@@ -81,8 +81,8 @@ namespace FlaxEditor.Windows.Profiler
             var textColor = style.Foreground;
             _table = new Table
             {
-                Columns = new[]
-                {
+                Columns =
+                [
                     new ColumnDefinition
                     {
                         UseExpandCollapseMode = true,
@@ -105,15 +105,15 @@ namespace FlaxEditor.Windows.Profiler
                         FormatValue = v => Utilities.Utils.FormatBytesCount((ulong)v),
                         TitleColor = textColor,
                     },
-                },
+                ],
                 Parent = layout,
             };
-            _table.Splits = new[]
-            {
+            _table.Splits =
+            [
                 0.6f,
                 0.2f,
                 0.2f,
-            };
+            ];
         }
 
         /// <inheritdoc />
@@ -235,8 +235,8 @@ namespace FlaxEditor.Windows.Profiler
             if (_tableRowsCache == null)
                 _tableRowsCache = new List<ClickableRow>();
             if (_resourceTypesNames == null)
-                _resourceTypesNames = new string[(int)GPUResourceType.MAX]
-                {
+                _resourceTypesNames =
+                [
                     "Render Target",
                     "Texture",
                     "Cube Texture",
@@ -247,7 +247,7 @@ namespace FlaxEditor.Windows.Profiler
                     "Descriptor",
                     "Query",
                     "Sampler",
-                };
+                ];
             UpdateTable();
         }
 

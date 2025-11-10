@@ -14,8 +14,8 @@ namespace FlaxEditor.CustomEditors.Editors
     public sealed class IBrushEditor : ObjectSwitcherEditor
     {
         /// <inheritdoc />
-        protected override OptionType[] Options => new[]
-        {
+        protected override OptionType[] Options =>
+        [
             new OptionType("null", null),
             new OptionType("Texture", typeof(TextureBrush)),
             new OptionType("Sprite", typeof(SpriteBrush)),
@@ -27,6 +27,6 @@ namespace FlaxEditor.CustomEditors.Editors
             new OptionType("Sprite 9-Slicing", typeof(Sprite9SlicingBrush)),
             new OptionType("Video", typeof(VideoBrush)),
             new OptionType("UI Brush", typeof(UIBrush)),
-        };
+        ];
     }
 }

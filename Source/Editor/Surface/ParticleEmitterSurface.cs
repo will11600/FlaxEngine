@@ -126,23 +126,23 @@ namespace FlaxEditor.Surface
 
                 if (assetItem.IsOfType<Texture>())
                 {
-                    node = Context.SpawnNode(5, 11, args.SurfaceLocation, new object[] { assetItem.ID });
+                    node = Context.SpawnNode(5, 11, args.SurfaceLocation, [assetItem.ID]);
                 }
                 else if (assetItem.IsOfType<CubeTexture>())
                 {
-                    node = Context.SpawnNode(5, 12, args.SurfaceLocation, new object[] { assetItem.ID });
+                    node = Context.SpawnNode(5, 12, args.SurfaceLocation, [assetItem.ID]);
                 }
                 else if (assetItem.IsOfType<ParticleEmitterFunction>())
                 {
-                    node = Context.SpawnNode(14, 300, args.SurfaceLocation, new object[] { assetItem.ID });
+                    node = Context.SpawnNode(14, 300, args.SurfaceLocation, [assetItem.ID]);
                 }
                 else if (assetItem.IsOfType<GameplayGlobals>())
                 {
-                    node = Context.SpawnNode(7, 16, args.SurfaceLocation, new object[]
-                    {
+                    node = Context.SpawnNode(7, 16, args.SurfaceLocation,
+                    [
                         assetItem.ID,
                         string.Empty,
-                    });
+                    ]);
                 }
 
                 if (node != null)

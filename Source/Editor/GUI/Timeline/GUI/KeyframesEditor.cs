@@ -1035,7 +1035,7 @@ namespace FlaxEditor.GUI
 
         private void EditAllKeyframes(Control control, Float2 pos)
         {
-            _popup = new Popup(this, new object[] { new AllKeyframesProxy { Editor = this, Keyframes = _keyframes.ToArray(), } }, null, 400.0f);
+            _popup = new Popup(this, [new AllKeyframesProxy { Editor = this, Keyframes = _keyframes.ToArray(), }], null, 400.0f);
             _popup.Show(control, pos);
         }
 
@@ -1408,7 +1408,7 @@ namespace FlaxEditor.GUI
             var eps = FPS.HasValue ? 0.5f / FPS.Value : Mathf.Epsilon;
             try
             {
-                var lines = data.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                var lines = data.Split(["\r\n", "\r", "\n"], StringSplitOptions.RemoveEmptyEntries);
                 if (lines.Length < 3 || lines.Length % 2 == 0)
                     return;
                 var type = TypeUtils.GetManagedType(lines[0]);

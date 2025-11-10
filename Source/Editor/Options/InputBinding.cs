@@ -404,15 +404,8 @@ namespace FlaxEditor.Options
             var gridControl = grid.CustomControl;
             gridControl.ClipChildren = false;
             gridControl.Height = TextBox.DefaultHeight;
-            gridControl.RowFill = new[]
-            {
-                1.0f,
-            };
-            gridControl.ColumnFill = new[]
-            {
-                0.9f,
-                0.1f
-            };
+            gridControl.RowFill = [1.0f];
+            gridControl.ColumnFill = [0.9f, 0.1f];
 
             _element = grid.Custom<InputBindingBox>();
             SetText();

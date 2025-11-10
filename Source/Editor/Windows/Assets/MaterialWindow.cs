@@ -25,7 +25,7 @@ namespace FlaxEditor.Windows.Assets
     public sealed class MaterialWindow : VisjectSurfaceWindow<Material, MaterialSurface, MaterialPreview>, ISearchWindow
     {
         private readonly ScriptType[] _newParameterTypes =
-        {
+        [
             new(typeof(float)),
             new(typeof(Texture)),
             new(typeof(NormalMap)),
@@ -42,7 +42,7 @@ namespace FlaxEditor.Windows.Assets
             new(typeof(Vector4)),
             new(typeof(Color)),
             new(typeof(Matrix)),
-        };
+        ];
 
         /// <summary>
         /// The material properties proxy object.

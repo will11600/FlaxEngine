@@ -79,14 +79,14 @@ namespace FlaxEditor.Tools.Terrain
         }
 
         private readonly Mode[] _modes =
-        {
+        [
             new SingleLayerMode(),
-        };
+        ];
 
         private readonly Brush[] _brushes =
-        {
+        [
             new CircleBrush(),
-        };
+        ];
 
         private ModeTypes _modeType = ModeTypes.SingleLayer;
         private BrushTypes _brushType = BrushTypes.CircleBrush;

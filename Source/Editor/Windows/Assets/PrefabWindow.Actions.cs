@@ -321,7 +321,7 @@ namespace FlaxEditor.Windows.Assets
                 return;
 
             // Change selection
-            var action1 = new SelectionChangeAction(Selection.ToArray(), new SceneGraphNode[0], OnSelectionUndo);
+            var action1 = new SelectionChangeAction(Selection.ToArray(), [], OnSelectionUndo);
 
             // Delete objects
             var action2 = new CustomDeleteActorsAction(objects);

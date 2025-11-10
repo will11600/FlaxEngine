@@ -19,22 +19,22 @@ namespace FlaxEditor.Viewport.Previews
     public class MaterialPreview : AssetPreview, IVisjectSurfaceOwner
     {
         private static readonly string[] Models =
-        {
+        [
             "Sphere",
             "Cube",
             "Plane",
             "Cylinder",
             "Cone"
-        };
+        ];
 
         private static readonly Transform[] Transforms =
-        {
+        [
             new(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
             new(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
             new(Vector3.Zero, Quaternion.Identity, new Vector3(0.45f)),
             new(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
             new(Vector3.Zero, Quaternion.RotationY(Mathf.Pi), new Vector3(0.45f)),
-        };
+        ];
 
         private StaticModel _previewModel;
         private Decal _decal;

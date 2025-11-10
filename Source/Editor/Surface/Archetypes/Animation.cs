@@ -365,7 +365,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
+        [
             new() {
                 TypeID = 1,
                 Create = (id, context, arch, groupArch) => new Output(id, context, arch, groupArch),
@@ -373,16 +373,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Main animation graph output node",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoRemove | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste | NodeFlags.NoCloseButton,
                 Size = new Float2(200, 100),
-                DefaultValues = new object[]
-                {
-                    (int)RootMotionMode.NoExtraction,
-                },
-                Elements = new[]
-                {
+                DefaultValues = [(int)RootMotionMode.NoExtraction],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Animation", true, typeof(void), 0),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY, "Root Motion:"),
                     NodeElementArchetype.Factory.ComboBox(80, Surface.Constants.LayoutOffsetY, 100, 0, typeof(RootMotionMode))
-                }
+                ]
             },
             new() {
                 TypeID = 2,
@@ -391,15 +388,9 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Animation sampling",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(230, 160),
-                DefaultValues = new object[]
-                {
-                    Guid.Empty,
-                    1.0f,
-                    true,
-                    0.0f,
-                },
-                Elements = new[]
-                {
+                DefaultValues =[Guid.Empty,1.0f,true,0.0f],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "", typeof(void), 0),
                     NodeElementArchetype.Factory.Output(1, "Normalized Time", typeof(float), 1),
                     NodeElementArchetype.Factory.Output(2, "Time", typeof(float), 2),
@@ -410,7 +401,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(2, "Start Position", true, typeof(float), 7, 3),
                     NodeElementArchetype.Factory.Input(3, "Animation Asset", true, typeof(FlaxEngine.Animation), 8),
                     NodeElementArchetype.Factory.Asset(0, Surface.Constants.LayoutOffsetY * 4, 0, typeof(FlaxEngine.Animation)),
-                }
+                ]
             },
             new() {
                 // [Deprecated on 13.05.2020, expires on 13.05.2021]
@@ -419,13 +410,9 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Transforms the skeleton bone",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste,
                 Size = new Float2(270, 130),
-                DefaultValues = new object[]
-                {
-                    0,
-                    (int)BoneTransformMode.Add,
-                },
-                Elements = new[]
-                {
+                DefaultValues =[0, (int)BoneTransformMode.Add],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Translation", true, typeof(Vector3), 2),
@@ -435,7 +422,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(40, Surface.Constants.LayoutOffsetY * 5, 120, 1, typeof(BoneTransformMode)),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 4, "Bone:"),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Mode:"),
-                }
+                ]
             },
             new() {
                 // [Deprecated on 13.05.2020, expires on 13.05.2021]
@@ -444,13 +431,9 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Transforms the skeleton bone",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste,
                 Size = new Float2(270, 130),
-                DefaultValues = new object[]
-                {
-                    0,
-                    (int)BoneTransformMode.Add,
-                },
-                Elements = new[]
-                {
+                DefaultValues =[0, (int)BoneTransformMode.Add],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Translation", true, typeof(Vector3), 2),
@@ -460,7 +443,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(40, Surface.Constants.LayoutOffsetY * 5, 120, 1, typeof(BoneTransformMode)),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 4, "Bone:"),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Mode:"),
-                }
+                ]
             },
             new() {
                 // [Deprecated on 15.05.2020, expires on 15.05.2021]
@@ -469,11 +452,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Transforms the skeleton bones from local into model space",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste,
                 Size = new Float2(150, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
-                }
+                ]
             },
             new() {
                 // [Deprecated on 15.05.2020, expires on 15.05.2021]
@@ -482,11 +465,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Transforms the skeleton bones from model into local space",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste,
                 Size = new Float2(150, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
-                }
+                ]
             },
             new() {
                 // [Deprecated on 13.05.2020, expires on 13.05.2021]
@@ -495,16 +478,9 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Copies the skeleton bone transformation data (in local space)",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste,
                 Size = new Float2(260, 140),
-                DefaultValues = new object[]
-                {
-                    0,
-                    1,
-                    true,
-                    true,
-                    true,
-                },
-                Elements = new[]
-                {
+                DefaultValues =[0, 1, true, true, true],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                     NodeElementArchetype.Factory.SkeletonBoneIndexSelect(100, Surface.Constants.LayoutOffsetY * 1, 120, 0),
@@ -517,7 +493,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 3, "Copy Translation:"),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 4, "Copy Rotation:"),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Copy Scale:"),
-                }
+                ]
             },
             new() {
                 // [Deprecated on 13.05.2020, expires on 13.05.2021]
@@ -526,17 +502,17 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Samples the skeleton bone transformation (in model space)",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste,
                 Size = new Float2(250, 40),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 0),
                     NodeElementArchetype.Factory.SkeletonBoneIndexSelect(40, Surface.Constants.LayoutOffsetY * 1, 120, 0),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 1, "Bone:"),
                     NodeElementArchetype.Factory.Output(0, "Transform", typeof(Transform), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 9,
@@ -544,17 +520,17 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Blend animation poses",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(170, 80),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, "Pose A", true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Pose B", true, typeof(void), 2),
                     NodeElementArchetype.Factory.Input(2, "Alpha", true, typeof(float), 3, 0),
-                }
+                ]
             },
             new() {
                 TypeID = 10,
@@ -570,17 +546,14 @@ namespace FlaxEditor.Surface.Archetypes
                 "\nYou need to place animations in this order to get correct results.",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(170, 80),
-                DefaultValues = new object[]
-                {
-                    0.0f,
-                },
-                Elements = new[]
-                {
+                DefaultValues = [0.0f],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, "Base Pose", true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Blend Pose", true, typeof(void), 2),
                     NodeElementArchetype.Factory.Input(2, "Blend Alpha", true, typeof(float), 3, 0),
-                }
+                ]
             },
             new() {
                 TypeID = 11,
@@ -589,20 +562,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Create = (id, context, arch, groupArch) => new SkeletonMaskSample(id, context, arch, groupArch),
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(180, 140),
-                DefaultValues = new object[]
-                {
-                    0.0f,
-                    Guid.Empty,
-                },
-                Elements = new[]
-                {
+                DefaultValues =[0.0f, Guid.Empty],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, "Pose A", true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Pose B", true, typeof(void), 2),
                     NodeElementArchetype.Factory.Input(2, "Alpha", true, typeof(float), 3, 0),
                     NodeElementArchetype.Factory.Input(3, "Skeleton Mask Asset", true, typeof(SkeletonMask), 4),
                     NodeElementArchetype.Factory.Asset(0, Surface.Constants.LayoutOffsetY * 4, 1, typeof(SkeletonMask)),
-                }
+                ]
             },
             new() {
                 TypeID = 12,
@@ -611,8 +580,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Animation blending in 1D",
                 Flags = NodeFlags.AnimGraph | NodeFlags.VariableValuesSize,
                 Size = new Float2(420, 300),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     // Node data
                     new Float4(0, 100.0f, 0, 0),
                     1.0f,
@@ -621,9 +590,9 @@ namespace FlaxEditor.Surface.Archetypes
 
                     // Per blend sample data
                     new Float4(0, 0, 0, 1.0f), Guid.Empty,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     // Output
                     NodeElementArchetype.Factory.Output(0, "", typeof(void), 0),
 
@@ -637,7 +606,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(30, 3 * Surface.Constants.LayoutOffsetY + 2, "(min:                   max:                   )"),
                     NodeElementArchetype.Factory.Vector_X(60, 3 * Surface.Constants.LayoutOffsetY + 2, 0),
                     NodeElementArchetype.Factory.Vector_Y(145, 3 * Surface.Constants.LayoutOffsetY + 2, 0),
-                }
+                ]
             },
             new() {
                 TypeID = 13,
@@ -646,8 +615,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Animation blending in 2D",
                 Flags = NodeFlags.AnimGraph | NodeFlags.VariableValuesSize,
                 Size = new Float2(420, 620),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     // Node data
                     new Float4(0, 100.0f, 0, 100.0f),
                     1.0f,
@@ -656,9 +625,9 @@ namespace FlaxEditor.Surface.Archetypes
 
                     // Per blend sample data
                     new Float4(0, 0, 0, 1.0f), Guid.Empty,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     // Output
                     NodeElementArchetype.Factory.Output(0, "", typeof(void), 0),
 
@@ -678,7 +647,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(30, 4 * Surface.Constants.LayoutOffsetY + 2, "(min:                   max:                   )"),
                     NodeElementArchetype.Factory.Vector_Z(60, 4 * Surface.Constants.LayoutOffsetY + 2, 0),
                     NodeElementArchetype.Factory.Vector_W(145, 4 * Surface.Constants.LayoutOffsetY + 2, 0),
-                }
+                ]
             },
             new() {
                 TypeID = 14,
@@ -687,15 +656,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Select animation pose to pass by index (with blending)",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(200, 200),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0,
                     0.2f,
                     8,
                     (int)AlphaBlendMode.HermiteCubic,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "", typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, "Pose Index", true, typeof(int), 1, 0),
                     NodeElementArchetype.Factory.Input(1, "Blend Duration", true, typeof(float), 2, 1),
@@ -710,7 +679,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(8, "Pose 5", true, typeof(void), 8),
                     NodeElementArchetype.Factory.Input(9, "Pose 6", true, typeof(void), 9),
                     NodeElementArchetype.Factory.Input(10, "Pose 7", true, typeof(void), 10),
-                }
+                ]
             },
             new() {
                 TypeID = 15,
@@ -718,12 +687,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Gets the computed root motion from the pose",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(180, 60),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Translation", typeof(Float3), 0),
                     NodeElementArchetype.Factory.Output(1, "Rotation", typeof(Quaternion), 1),
                     NodeElementArchetype.Factory.Input(0, "Pose", true, typeof(void), 2),
-                }
+                ]
             },
             new() {
                 TypeID = 16,
@@ -731,13 +700,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Overrides the root motion of the pose",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(180, 60),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "", typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, "Pose", true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Translation", true, typeof(Vector3), 2),
                     NodeElementArchetype.Factory.Input(2, "Rotation", true, typeof(Quaternion), 3),
-                }
+                ]
             },
             new() {
                 TypeID = 17,
@@ -745,13 +714,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Applies the custom root motion transformation the root motion of the pose",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(180, 60),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "", typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, "Pose", true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Translation", true, typeof(Vector3), 2),
                     NodeElementArchetype.Factory.Input(2, "Rotation", true, typeof(Quaternion), 3),
-                }
+                ]
             },
             new() {
                 TypeID = 18,
@@ -760,18 +729,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "The animation states machine output node",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(270, 100),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     "Locomotion",
                     Utils.GetEmptyArray<byte>(),
                     3,
                     true,
                     true,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "", typeof(void), 0)
-                }
+                ]
             },
             new() {
                 TypeID = 19,
@@ -780,10 +749,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "The animation states machine entry node",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoRemove | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste | NodeFlags.NoCloseButton,
                 Size = new Float2(100, 0),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     -1,
-                },
+                ],
             },
             new() {
                 TypeID = 20,
@@ -792,12 +761,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "The animation states machine state node",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI,
                 Size = new Float2(100, 0),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     "State",
                     Utils.GetEmptyArray<byte>(),
                     Utils.GetEmptyArray<byte>(),
-                },
+                ],
             },
             new() {
                 TypeID = 21,
@@ -805,10 +774,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "The animation states machine state output node",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoRemove | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste | NodeFlags.NoCloseButton,
                 Size = new Float2(120, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Pose", true, typeof(void), 0)
-                }
+                ]
             },
             new() {
                 TypeID = 22,
@@ -816,10 +785,10 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "The animation states machine transition rule output node",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoRemove | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste | NodeFlags.NoCloseButton,
                 Size = new Float2(150, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Can Start Transition", true, typeof(bool), 0)
-                }
+                ]
             },
             new() {
                 TypeID = 23,
@@ -827,14 +796,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "The animation state machine transition source state animation data information",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste,
                 Size = new Float2(270, 110),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Length", typeof(float), 0),
                     NodeElementArchetype.Factory.Output(1, "Time", typeof(float), 1),
                     NodeElementArchetype.Factory.Output(2, "Normalized Time", typeof(float), 2),
                     NodeElementArchetype.Factory.Output(3, "Remaining Time", typeof(float), 3),
                     NodeElementArchetype.Factory.Output(4, "Remaining Normalized Time", typeof(float), 4),
-                }
+                ]
             },
             new() {
                 TypeID = 24,
@@ -843,14 +812,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Calls animation graph function",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(240, 120),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     Guid.Empty,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Asset(0, 0, 0, typeof(AnimationGraphFunction)),
-                }
+                ]
             },
             new() {
                 TypeID = 25,
@@ -858,13 +827,9 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Transforms the skeleton node",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(280, 130),
-                DefaultValues = new object[]
-                {
-                    string.Empty,
-                    (int)BoneTransformMode.Add,
-                },
-                Elements = new[]
-                {
+                DefaultValues =[string.Empty, (int)BoneTransformMode.Add],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Translation", true, typeof(Vector3), 2),
@@ -874,7 +839,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(40, Surface.Constants.LayoutOffsetY * 5, 120, 1, typeof(BoneTransformMode)),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 4, "Node:"),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Mode:"),
-                }
+                ]
             },
             new() {
                 TypeID = 26,
@@ -882,13 +847,9 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Transforms the skeleton node",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(280, 130),
-                DefaultValues = new object[]
-                {
-                    string.Empty,
-                    (int)BoneTransformMode.Add,
-                },
-                Elements = new[]
-                {
+                DefaultValues =[string.Empty,(int)BoneTransformMode.Add],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Translation", true, typeof(Vector3), 2),
@@ -898,7 +859,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.ComboBox(40, Surface.Constants.LayoutOffsetY * 5, 120, 1, typeof(BoneTransformMode)),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 4, "Node:"),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Mode:"),
-                }
+                ]
             },
             new() {
                 TypeID = 27,
@@ -906,16 +867,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Copies the skeleton node transformation data (in local space)",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(260, 140),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty,
                     string.Empty,
                     true,
                     true,
                     true,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                     NodeElementArchetype.Factory.SkeletonNodeNameSelect(100, Surface.Constants.LayoutOffsetY * 1, 120, 0),
@@ -928,7 +889,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 3, "Copy Translation:"),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 4, "Copy Rotation:"),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 5, "Copy Scale:"),
-                }
+                ]
             },
             new() {
                 TypeID = 28,
@@ -936,17 +897,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Samples the skeleton node transformation (in model space)",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(324, 40),
-                DefaultValues = new object[]
-                {
-                    string.Empty,
-                },
-                Elements = new[]
-                {
+                DefaultValues = [string.Empty],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 0),
                     NodeElementArchetype.Factory.SkeletonNodeNameSelect(40, Surface.Constants.LayoutOffsetY * 1, 160, 0),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 1, "Node:"),
                     NodeElementArchetype.Factory.Output(0, "Transform", typeof(Transform), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 29,
@@ -954,20 +912,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Rotates a node so it aims at a target.",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(250, 80),
-                DefaultValues = new object[]
-                {
-                    string.Empty,
-                    1.0f,
-                },
-                Elements = new[]
-                {
+                DefaultValues =[string.Empty, 1.0f],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Target", true, typeof(Vector3), 2),
                     NodeElementArchetype.Factory.Input(2, "Weight", true, typeof(float), 3, 1),
                     NodeElementArchetype.Factory.SkeletonNodeNameSelect(40, Surface.Constants.LayoutOffsetY * 3, 160, 0),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 3, "Node:"),
-                }
+                ]
             },
             new() {
                 TypeID = 30,
@@ -975,17 +929,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Samples the skeleton node transformation (in local space)",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(316, 40),
-                DefaultValues = new object[]
-                {
-                    string.Empty,
-                },
-                Elements = new[]
-                {
+                DefaultValues = [string.Empty],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 0),
                     NodeElementArchetype.Factory.SkeletonNodeNameSelect(40, Surface.Constants.LayoutOffsetY * 1, 120, 0),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 1, "Node:"),
                     NodeElementArchetype.Factory.Output(0, "Transform", typeof(Transform), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 31,
@@ -993,15 +944,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Performs inverse kinematic on a three nodes chain.",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(250, 140),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     string.Empty,
                     1.0f,
                     false,
                     1.5f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                     NodeElementArchetype.Factory.Input(1, "Target", true, typeof(Vector3), 2),
@@ -1011,7 +962,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(5, "Max Stretch Scale", true, typeof(float), 6, 3),
                     NodeElementArchetype.Factory.SkeletonNodeNameSelect(40, Surface.Constants.LayoutOffsetY * 6, 120, 0),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 6, "Node:"),
-                }
+                ]
             },
             new() {
                 TypeID = 32,
@@ -1019,17 +970,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Plays the animation from code with blending (eg. hit reaction).",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(200, 40),
-                DefaultValues = new object[]
-                {
-                    "Default",
-                },
-                Elements = new[]
-                {
+                DefaultValues = ["Default"],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 0),
                     NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(void), 1),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY, "Slot:"),
                     NodeElementArchetype.Factory.TextBox(30, Surface.Constants.LayoutOffsetY, 140, TextBox.DefaultHeight, 0, false),
-                }
+                ]
             },
             new() {
                 TypeID = 33,
@@ -1037,11 +985,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Caches custom data per-instance and allow sampling it. Can be used to randomize animation play offset to offer randomization for crowds reusing the same graph.",
                 Flags = NodeFlags.AnimGraph,
                 Size = new Float2(240, 20),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Output(0, "Get", typeof(Float4), 0),
                     NodeElementArchetype.Factory.Input(0, "Init", true, typeof(Float4), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 34,
@@ -1050,11 +998,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "The generic animation states machine state with source transitions from any other state",
                 Flags = NodeFlags.AnimGraph | NodeFlags.NoSpawnViaGUI | NodeFlags.NoSpawnViaPaste,
                 Size = new Float2(100, 0),
-                DefaultValues = new object[]
-                {
-                    Utils.GetEmptyArray<byte>(),
-                },
+                DefaultValues = [Utils.GetEmptyArray<byte>()],
             },
-        };
+        ];
     }
 }

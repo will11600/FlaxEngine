@@ -367,9 +367,9 @@ namespace FlaxEditor.CustomEditors.Editors
                             {
                                 var methodParameters = method.GetParameters();
                                 if (methodParameters.Length == 1 && methodParameters[0].ParameterType == typeof(ScriptType))
-                                    _element.CustomControl.CheckValid += type => { return (bool)method.Invoke(ParentEditor.Values[0], new object[] { type }); };
+                                    _element.CustomControl.CheckValid += type => { return (bool)method.Invoke(ParentEditor.Values[0], [type]); };
                                 else if (methodParameters.Length == 1 && methodParameters[0].ParameterType == typeof(Type))
-                                    _element.CustomControl.CheckValid += type => { return type.Type != null && (bool)method.Invoke(ParentEditor.Values[0], new object[] { type.Type }); };
+                                    _element.CustomControl.CheckValid += type => { return type.Type != null && (bool)method.Invoke(ParentEditor.Values[0], [type.Type]); };
                                 else
                                     Editor.LogError(string.Format("Unknown method '{0}' to use for type picker filter check function (object type: {1}). It must contain a single parameter of type System.Type.", typeReference.CheckMethod, parentType.FullName));
                             }

@@ -28,10 +28,10 @@ namespace FlaxEditor.Gizmo
             }
 
             private static readonly uint[] _triangles =
-            {
+            [
                 0, 2, 1, // Face front
                 1, 3, 0,
-            };
+            ];
 
             private GPUBuffer[] _vbs = new GPUBuffer[1];
             private GPUBuffer _vertexBuffer;

@@ -17,13 +17,13 @@ namespace FlaxEditor.Content.Settings
         internal const string SwitchPlatformSettingsTypename = "FlaxEditor.Content.Settings.SwitchPlatformSettings";
 #if FLAX_EDITOR
         internal static string[] OptionalPlatformSettings =
-        {
+        [
             PS4PlatformSettingsTypename,
             PS5PlatformSettingsTypename,
             XboxOnePlatformSettingsTypename,
             XboxScarlettPlatformSettingsTypename,
             SwitchPlatformSettingsTypename,
-        };
+        ];
 #endif
 
         /// <summary>

@@ -507,7 +507,7 @@ namespace FlaxEngine
         /// <returns>A four-element array containing the components of the color.</returns>
         public readonly float[] ToArray()
         {
-            return new[] { R, G, B, A };
+            return [R, G, B, A];
         }
 
         /// <summary>
@@ -529,44 +529,38 @@ namespace FlaxEngine
         }
 
         static readonly int[][] RGBSwizzle =
-        {
-            new[]
-            {
+        [
+            [
                 0,
                 3,
                 1
-            },
-            new[]
-            {
+            ],
+            [
                 2,
                 0,
                 1
-            },
-            new[]
-            {
+            ],
+            [
                 1,
                 0,
                 3
-            },
-            new[]
-            {
+            ],
+            [
                 1,
                 2,
                 0
-            },
-            new[]
-            {
+            ],
+            [
                 3,
                 1,
                 0
-            },
-            new[]
-            {
+            ],
+            [
                 0,
                 1,
                 2
-            },
-        };
+            ],
+        ];
 
         /// <summary>
         /// Creates RGB color from Hue[0-360], Saturation[0-1] and Value[0-1].
@@ -583,12 +577,12 @@ namespace FlaxEngine
             float hDiv60Fraction = hDiv60 - hDiv60Floor;
 
             float[] rgbValues =
-            {
+            [
                 value,
                 value * (1.0f - saturation),
                 value * (1.0f - (hDiv60Fraction * saturation)),
                 value * (1.0f - ((1.0f - hDiv60Fraction) * saturation)),
-            };
+            ];
 
             int swizzleIndex = ((int)hDiv60Floor) % 6;
 

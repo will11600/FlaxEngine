@@ -23,7 +23,7 @@ namespace FlaxEngine.GUI
         /// The text separators (used for words skipping).
         /// </summary>
         protected static readonly char[] Separators =
-        {
+        [
             ' ',
             '.',
             ',',
@@ -40,7 +40,7 @@ namespace FlaxEngine.GUI
             '\\',
             '>',
             '<',
-        };
+        ];
 
         /// <summary>
         /// Default height of the text box

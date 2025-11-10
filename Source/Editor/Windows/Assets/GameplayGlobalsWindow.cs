@@ -233,7 +233,7 @@ namespace FlaxEditor.Windows.Assets
             private ComboBox _addParamType;
 
             private static readonly Type[] AllowedTypes =
-            {
+            [
                 typeof(float),
                 typeof(bool),
                 typeof(int),
@@ -251,7 +251,7 @@ namespace FlaxEditor.Windows.Assets
                 typeof(Rectangle),
                 typeof(Matrix),
                 typeof(string),
-            };
+            ];
 
             public override void Initialize(LayoutElementsContainer layout)
             {

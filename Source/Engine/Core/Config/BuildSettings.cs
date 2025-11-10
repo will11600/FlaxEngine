@@ -13,11 +13,11 @@ namespace FlaxEditor.Content.Settings
         /// </summary>
         [EditorOrder(5000), EditorDisplay("Presets", EditorDisplayAttribute.InlineStyle), Tooltip("Build presets configuration")]
         public BuildPreset[] Presets =
-        {
+        [
             new() {
                 Name = "Development",
-                Targets = new[]
-                {
+                Targets =
+                [
                     new BuildTarget
                     {
                         Name = "Windows",
@@ -25,12 +25,12 @@ namespace FlaxEditor.Content.Settings
                         Platform = BuildPlatform.Windows64,
                         Mode = BuildConfiguration.Development,
                     },
-                }
+                ]
             },
             new() {
                 Name = "Release",
-                Targets = new[]
-                {
+                Targets =
+                [
                     new BuildTarget
                     {
                         Name = "Windows",
@@ -38,9 +38,9 @@ namespace FlaxEditor.Content.Settings
                         Platform = BuildPlatform.Windows64,
                         Mode = BuildConfiguration.Release,
                     },
-                }
+                ]
             },
-        };
+        ];
 
         /// <summary>
         /// Gets the preset of the given name (ignore case search) or returns null if cannot find it.

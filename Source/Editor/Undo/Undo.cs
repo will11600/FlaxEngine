@@ -160,15 +160,15 @@ namespace FlaxEditor
                 // Batch with a custom action if provided
                 if (customActionBefore != null && customActionAfter != null)
                 {
-                    action = new MultiUndoAction(new[] { customActionBefore, action, customActionAfter });
+                    action = new MultiUndoAction([customActionBefore, action, customActionAfter]);
                 }
                 else if (customActionBefore != null)
                 {
-                    action = new MultiUndoAction(new[] { customActionBefore, action });
+                    action = new MultiUndoAction([customActionBefore, action]);
                 }
                 else if (customActionAfter != null)
                 {
-                    action = new MultiUndoAction(new[] { action, customActionAfter });
+                    action = new MultiUndoAction([action, customActionAfter]);
                 }
 
                 UndoOperationsStack.Push(action);
@@ -255,15 +255,15 @@ namespace FlaxEditor
                 // Batch with a custom action if provided
                 if (customActionBefore != null && customActionAfter != null)
                 {
-                    action = new MultiUndoAction(new[] { customActionBefore, action, customActionAfter });
+                    action = new MultiUndoAction([customActionBefore, action, customActionAfter]);
                 }
                 else if (customActionBefore != null)
                 {
-                    action = new MultiUndoAction(new[] { customActionBefore, action });
+                    action = new MultiUndoAction([customActionBefore, action]);
                 }
                 else if (customActionAfter != null)
                 {
-                    action = new MultiUndoAction(new[] { action, customActionAfter });
+                    action = new MultiUndoAction([action, customActionAfter]);
                 }
 
                 UndoOperationsStack.Push(action);

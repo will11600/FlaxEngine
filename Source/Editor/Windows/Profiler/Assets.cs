@@ -80,8 +80,8 @@ namespace FlaxEditor.Windows.Profiler
             var textColor = style.Foreground;
             _table = new Table
             {
-                Columns = new[]
-                {
+                Columns =
+                [
                     new ColumnDefinition
                     {
                         UseExpandCollapseMode = true,
@@ -110,16 +110,10 @@ namespace FlaxEditor.Windows.Profiler
                         TitleColor = textColor,
                         FormatValue = v => Utilities.Utils.FormatBytesCount((ulong)v),
                     },
-                },
+                ],
                 Parent = layout,
             };
-            _table.Splits = new[]
-            {
-                0.6f,
-                0.2f,
-                0.08f,
-                0.12f,
-            };
+            _table.Splits = [0.6f, 0.2f, 0.08f, 0.12f];
         }
 
         /// <inheritdoc />

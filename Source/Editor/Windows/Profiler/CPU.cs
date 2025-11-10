@@ -106,8 +106,8 @@ namespace FlaxEditor.Windows.Profiler
             var textColor = style.Foreground;
             _table = new Table
             {
-                Columns = new[]
-                {
+                Columns =
+                [
                     new ColumnDefinition
                     {
                         UseExpandCollapseMode = true,
@@ -151,18 +151,18 @@ namespace FlaxEditor.Windows.Profiler
                         FormatValue = FormatCellBytes,
                         TitleColor = textColor,
                     },
-                },
+                ],
                 Parent = layout,
             };
-            _table.Splits = new[]
-            {
+            _table.Splits =
+            [
                 0.5f,
                 0.1f,
                 0.1f,
                 0.1f,
                 0.1f,
                 0.1f,
-            };
+            ];
         }
 
         private string FormatCellPercentage(object x)

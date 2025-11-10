@@ -48,12 +48,12 @@ namespace FlaxEditor.Surface.Archetypes
         public class ParticleModuleNode : SurfaceNode
         {
             private static readonly Color[] Colors =
-            {
+            [
                 Color.ForestGreen,
                 Color.GreenYellow,
                 Color.Violet,
                 Color.Firebrick,
-            };
+            ];
 
             private CheckBox _enabled;
             private Rectangle _arrangeButtonRect;
@@ -475,16 +475,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = description,
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 1 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)moduleType,
                     defaultValue,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, string.Empty, true, type, 0, 2),
-                },
+                ],
             };
         }
 
@@ -492,7 +492,7 @@ namespace FlaxEditor.Surface.Archetypes
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
+        [
             // Spawn Modules
             new() {
                 TypeID = 100,
@@ -501,16 +501,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Emits constant amount of particles per second, depending of the rate property",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Spawn,
                     10.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Rate", true, typeof(float), 0, 2),
-                },
+                ],
             },
             new() {
                 TypeID = 101,
@@ -519,16 +519,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Emits a given amount of particles on start",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Spawn,
                     10.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Count", true, typeof(float), 0, 2),
-                },
+                ],
             },
             new() {
                 TypeID = 102,
@@ -537,18 +537,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Emits particles in periods of time",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, Surface.Constants.LayoutOffsetY * 2),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Spawn,
                     10.0f,
                     2.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Count", true, typeof(float), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Delay", true, typeof(float), 1, 3),
-                },
+                ],
             },
             new() {
                 TypeID = 103,
@@ -557,18 +557,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Emits random amount of particles in random periods of time (customizable ranges)",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, Surface.Constants.LayoutOffsetY * 2),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Spawn,
                     new Float2(5.0f, 10.0f),
                     new Float2(1.0f, 2.0f),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Count (min, max)", true, typeof(Float2), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Delay (min, max)", true, typeof(Float2), 1, 3),
-                },
+                ],
             },
 
             // Initialize
@@ -579,20 +579,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Sets the particle attribute value",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 2 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     "Color",
                     (int)Particles.ValueTypes.Float4,
                     Color.White,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.ComboBox(0, -10.0f, 80, 3, typeof(Particles.ValueTypes)),
                     NodeElementArchetype.Factory.TextBox(90, -10.0f, 120, TextBox.DefaultHeight, 2, false),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, string.Empty, true, null, 0, 4),
-                },
+                ],
             },
             new() {
                 TypeID = 201,
@@ -601,18 +601,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Orientates the sprite particles in the space",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 2 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     (int)ParticleSpriteFacingMode.FaceCameraPosition,
                     Float3.Forward,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.ComboBox(0, -10.0f, 160, 2, typeof(ParticleSpriteFacingMode)),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Custom Vector", true, typeof(Float3), 0, 3),
-                },
+                ],
             },
             new() {
                 TypeID = 202,
@@ -621,20 +621,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on surface of the sphere",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Float3.Zero,
                     1000.0f,
                     360.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Radius", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Arc", true, typeof(float), 2, 4),
-                },
+                ],
             },
             new() {
                 TypeID = 203,
@@ -643,18 +643,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on plane",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 2 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Float3.Zero,
                     new Float2(1000.0f, 1000.0f),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Size", true, typeof(Float2), 1, 3),
-                },
+                ],
             },
             new() {
                 TypeID = 204,
@@ -663,20 +663,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on arc of the circle",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Float3.Zero,
                     1000.0f,
                     360.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Radius", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Arc", true, typeof(float), 2, 4),
-                },
+                ],
             },
             new() {
                 TypeID = 205,
@@ -685,20 +685,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on surface of the disc",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Float3.Zero,
                     1000.0f,
                     360.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Radius", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Arc", true, typeof(float), 2, 4),
-                },
+                ],
             },
             new() {
                 TypeID = 206,
@@ -707,18 +707,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on top of the axis-aligned box surface",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Float3.Zero,
                     new Float3(1000.0f),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Size", true, typeof(Float3), 1, 3),
-                },
+                ],
             },
             new() {
                 TypeID = 207,
@@ -727,18 +727,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles inside the axis-aligned box volume",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Float3.Zero,
                     new Float3(1000.0f),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Size", true, typeof(Float3), 1, 3),
-                },
+                ],
             },
             new() {
                 TypeID = 208,
@@ -747,22 +747,22 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on the cylinder sides",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 4 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Float3.Zero,
                     500.0f,
                     2000.0f,
                     360.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Radius", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Height", true, typeof(float), 2, 4),
                     NodeElementArchetype.Factory.Input(-0.5f + 3.0f, "Arc", true, typeof(float), 3, 5),
-                },
+                ],
             },
             new() {
                 TypeID = 209,
@@ -771,18 +771,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on the line",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 2 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     new Float3(-500.0f, 0, 0),
                     new Float3(500.0f, 0, 0),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Start", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "End", true, typeof(Float3), 1, 3),
-                },
+                ],
             },
             new() {
                 TypeID = 210,
@@ -791,22 +791,22 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on a surface of the torus",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 4 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Float3.Zero,
                     500.0f,
                     200.0f,
                     360.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Radius", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Thickness", true, typeof(float), 2, 4),
                     NodeElementArchetype.Factory.Input(-0.5f + 3.0f, "Arc", true, typeof(float), 3, 5),
-                },
+                ],
             },
             new() {
                 TypeID = 211,
@@ -815,20 +815,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles inside of the sphere",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Float3.Zero,
                     1000.0f,
                     360.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Radius", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Arc", true, typeof(float), 2, 4),
-                },
+                ],
             },
             new() {
                 TypeID = 212,
@@ -837,19 +837,19 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on top of the scene objects using depth buffer",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     new Float2(0.0f, 1.0f),
                     10.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "UV", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Depth Cull Range", true, typeof(Float2), 1, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Depth Offset", true, typeof(float), 2, 3),
-                },
+                ],
             },
             new() {
                 TypeID = 213,
@@ -858,16 +858,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Orientates the model particles in the space",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 1 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     (int)ParticleModelFacingMode.FaceCameraPosition,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.ComboBox(0, -10.0f, 160, 2, typeof(ParticleModelFacingMode)),
-                },
+                ],
             },
             new() {
                 TypeID = 214,
@@ -876,20 +876,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on rotating spiral",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Float3.Zero,
                     360.0f, // Rotation Speed
                     200.0f, // Velocity Scale
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Rotation Speed", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Velocity Scale", true, typeof(float), 2, 4),
-                },
+                ],
             },
             new() {
                 TypeID = 215,
@@ -898,11 +898,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Places the particles on Global SDF surface (uses current particle position to snap it to SDF)",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 0 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
-                },
+                ],
             },
             new() {
                 TypeID = 216,
@@ -911,16 +911,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Rotate the shape.",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 1 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Initialize,
                     Quaternion.Identity,
-                },
-                Elements = new []
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Rotation", true, typeof(Quaternion), 0, 2),
-                }
+                ]
             },
             GetParticleAttribute(ModuleType.Initialize, 250, "Set Position", "Sets the particle position", typeof(Float3), Float3.Zero),
             GetParticleAttribute(ModuleType.Initialize, 251, "Set Lifetime", "Sets the particle lifetime (in seconds)", typeof(float), 10.0f),
@@ -945,11 +945,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Increases particle age every frame, based on delta time",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 0),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
-                },
+                ],
             },
             new() {
                 TypeID = 301,
@@ -958,16 +958,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Applies the gravity force to particle velocity",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     new Float3(0, -981.0f, 0),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Force", true, typeof(Float3), 0, 2),
-                },
+                ],
             },
             new() {
                 TypeID = 302,
@@ -976,20 +976,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Sets the particle attribute value",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 2 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     "Color",
                     (int)Particles.ValueTypes.Float4,
                     Color.White,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.ComboBox(0, -10.0f, 80, 3, typeof(Particles.ValueTypes)),
                     NodeElementArchetype.Factory.TextBox(90, -10.0f, 120, TextBox.DefaultHeight, 2, false),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, string.Empty, true, null, 0, 4),
-                },
+                ],
             },
             new() {
                 TypeID = 303,
@@ -998,18 +998,18 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Orientates the sprite particles in the space",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 2 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     (int)ParticleSpriteFacingMode.FaceCameraPosition,
                     Float3.Forward,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.ComboBox(0, -10.0f, 160, 2, typeof(ParticleSpriteFacingMode)),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Custom Vector", true, typeof(Float3), 0, 3),
-                },
+                ],
             },
             new() {
                 TypeID = 304,
@@ -1018,16 +1018,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Applies the force vector to particle velocity",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     new Float3(100.0f, 0, 0),
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Force", true, typeof(Float3), 0, 2),
-                },
+                ],
             },
             new() {
                 TypeID = 305,
@@ -1036,8 +1036,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Applies the force vector to particles to conform around sphere",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 6 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     Float3.Zero,
@@ -1046,16 +1046,16 @@ namespace FlaxEditor.Surface.Archetypes
                     2000.0f,
                     1.0f,
                     5000.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Sphere Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Sphere Radius", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Attraction Speed", true, typeof(float), 2, 4),
                     NodeElementArchetype.Factory.Input(-0.5f + 3.0f, "Attraction Force", true, typeof(float), 3, 5),
                     NodeElementArchetype.Factory.Input(-0.5f + 4.0f, "Stick Distance", true, typeof(float), 4, 6),
                     NodeElementArchetype.Factory.Input(-0.5f + 5.0f, "Stick Force", true, typeof(float), 5, 7),
-                },
+                ],
             },
             new() {
                 TypeID = 306,
@@ -1064,21 +1064,21 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Kills particles that enter/leave the sphere",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     Float3.Zero,
                     100.0f,
                     false,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Sphere Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Sphere Radius", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Text(20.0f, (-0.5f + 2.0f) * Surface.Constants.LayoutOffsetY, "Invert"),
                     NodeElementArchetype.Factory.Bool(0, (-0.5f + 2.0f) * Surface.Constants.LayoutOffsetY, 4),
-                },
+                ],
             },
             new() {
                 TypeID = 307,
@@ -1087,21 +1087,21 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Kills particles that enter/leave the axis-aligned box",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     Float3.Zero,
                     new Float3(100.0f),
                     false,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Box Center", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Box Size", true, typeof(Float3), 1, 3),
                     NodeElementArchetype.Factory.Text(20.0f, (-0.5f + 2.0f) * Surface.Constants.LayoutOffsetY, "Invert"),
                     NodeElementArchetype.Factory.Bool(0, (-0.5f + 2.0f) * Surface.Constants.LayoutOffsetY, 4),
-                },
+                ],
             },
             new() {
                 TypeID = 308,
@@ -1110,15 +1110,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Kills particles based on a custom boolean rule",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 1 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Kill", true, typeof(bool), 0),
-                },
+                ],
             },
             new() {
                 TypeID = 309,
@@ -1127,16 +1127,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Orientates the model particles in the space",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 1 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     (int)ParticleModelFacingMode.FaceCameraPosition,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.ComboBox(0, -10.0f, 160, 2, typeof(ParticleModelFacingMode)),
-                },
+                ],
             },
             new() {
                 TypeID = 330,
@@ -1145,8 +1145,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Collides particles with the plane",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 8 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     false, // Invert
@@ -1157,9 +1157,9 @@ namespace FlaxEditor.Surface.Archetypes
                     0.0f, // Lifetime Loss
                     Float3.Zero, // Plane Position
                     Float3.Up, // Plane Normal
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Text(20.0f, -0.5f * Surface.Constants.LayoutOffsetY, "Invert"),
                     NodeElementArchetype.Factory.Bool(0, -0.5f * Surface.Constants.LayoutOffsetY, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1, "Radius", true, typeof(float), 0, 3),
@@ -1170,7 +1170,7 @@ namespace FlaxEditor.Surface.Archetypes
 
                     NodeElementArchetype.Factory.Input(-0.5f + 6, "Plane Position", true, typeof(Float3), 5, 8),
                     NodeElementArchetype.Factory.Input(-0.5f + 7, "Plane Normal", true, typeof(Float3), 6, 9),
-                },
+                ],
             },
             new() {
                 TypeID = 310,
@@ -1179,19 +1179,19 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Applies the linear drag force to particle velocity",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 2 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     0.2f, // Drag
                     false, // Use Sprite Size
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Drag", true, typeof(float), 0, 2),
                     NodeElementArchetype.Factory.Bool(0.0f, 0.5f * Surface.Constants.LayoutOffsetY, 3),
                     NodeElementArchetype.Factory.Text(20.0f, 0.5f * Surface.Constants.LayoutOffsetY, "Use Sprite Size"),
-                },
+                ],
             },
             new() {
                 TypeID = 311,
@@ -1200,8 +1200,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Applies the noise-based turbulence force field to particle velocity",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 7 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     Float3.Zero, // Force Field Position
@@ -1210,16 +1210,16 @@ namespace FlaxEditor.Surface.Archetypes
                     0.4f, // Roughness
                     10.0f, // Intensity
                     3, // Octaves Count
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f + 0, "Force Field Position", true, typeof(Float3), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1, "Force Field Rotation", true, typeof(Float3), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2, "Force Field Scale", true, typeof(Float3), 2, 4),
                     NodeElementArchetype.Factory.Input(-0.5f + 3, "Roughness", true, typeof(float), 3, 5),
                     NodeElementArchetype.Factory.Input(-0.5f + 4, "Intensity", true, typeof(float), 4, 6),
                     NodeElementArchetype.Factory.Input(-0.5f + 5, "Octaves Count", true, typeof(int), 5, 7),
-                },
+                ],
             },
             new() {
                 TypeID = 331,
@@ -1228,8 +1228,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Collides particles with the sphere",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 8 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     false, // Invert
@@ -1240,9 +1240,9 @@ namespace FlaxEditor.Surface.Archetypes
                     0.0f, // Lifetime Loss
                     Float3.Zero, // Sphere Position
                     100.0f, // Sphere Radius
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Text(20.0f, -0.5f * Surface.Constants.LayoutOffsetY, "Invert"),
                     NodeElementArchetype.Factory.Bool(0, -0.5f * Surface.Constants.LayoutOffsetY, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1, "Radius", true, typeof(float), 0, 3),
@@ -1253,7 +1253,7 @@ namespace FlaxEditor.Surface.Archetypes
 
                     NodeElementArchetype.Factory.Input(-0.5f + 6, "Sphere Position", true, typeof(Float3), 5, 8),
                     NodeElementArchetype.Factory.Input(-0.5f + 7, "Sphere Radius", true, typeof(float), 6, 9),
-                },
+                ],
             },
             new() {
                 TypeID = 332,
@@ -1262,8 +1262,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Collides particles with the box",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 8 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     false, // Invert
@@ -1274,9 +1274,9 @@ namespace FlaxEditor.Surface.Archetypes
                     0.0f, // Lifetime Loss
                     Float3.Zero, // Box Position
                     new Float3(100.0f), // Box Size
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Text(20.0f, -0.5f * Surface.Constants.LayoutOffsetY, "Invert"),
                     NodeElementArchetype.Factory.Bool(0, -0.5f * Surface.Constants.LayoutOffsetY, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1, "Radius", true, typeof(float), 0, 3),
@@ -1287,7 +1287,7 @@ namespace FlaxEditor.Surface.Archetypes
 
                     NodeElementArchetype.Factory.Input(-0.5f + 6, "Box Position", true, typeof(Float3), 5, 8),
                     NodeElementArchetype.Factory.Input(-0.5f + 7, "Box Size", true, typeof(Float3), 6, 9),
-                },
+                ],
             },
             new() {
                 TypeID = 333,
@@ -1296,8 +1296,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Collides particles with the cylinder",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 9 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     false, // Invert
@@ -1309,9 +1309,9 @@ namespace FlaxEditor.Surface.Archetypes
                     Float3.Zero, // Cylinder Position
                     100.0f, // Cylinder Height
                     50.0f, // Cylinder Radius
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Text(20.0f, -0.5f * Surface.Constants.LayoutOffsetY, "Invert"),
                     NodeElementArchetype.Factory.Bool(0, -0.5f * Surface.Constants.LayoutOffsetY, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1, "Radius", true, typeof(float), 0, 3),
@@ -1323,7 +1323,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(-0.5f + 6, "Cylinder Position", true, typeof(Float3), 5, 8),
                     NodeElementArchetype.Factory.Input(-0.5f + 7, "Cylinder Height", true, typeof(float), 6, 9),
                     NodeElementArchetype.Factory.Input(-0.5f + 8, "Cylinder Radius", true, typeof(float), 7, 10),
-                },
+                ],
             },
             new() {
                 TypeID = 334,
@@ -1332,8 +1332,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Collides particles with the scene objects using depth buffer",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 7 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     false, // Invert
@@ -1343,9 +1343,9 @@ namespace FlaxEditor.Surface.Archetypes
                     0.0f, // Friction
                     0.0f, // Lifetime Loss
                     10.0f, // Surface Thickness
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f + 1, "Radius", true, typeof(float), 0, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2, "Roughness", true, typeof(float), 1, 4),
                     NodeElementArchetype.Factory.Input(-0.5f + 3, "Elasticity", true, typeof(float), 2, 5),
@@ -1353,7 +1353,7 @@ namespace FlaxEditor.Surface.Archetypes
                     NodeElementArchetype.Factory.Input(-0.5f + 5, "Lifetime Loss", true, typeof(float), 4, 7),
 
                     NodeElementArchetype.Factory.Input(-0.5f + 0, "Surface Thickness", true, typeof(float), 5, 8),
-                },
+                ],
             },
             new() {
                 TypeID = 335,
@@ -1362,22 +1362,22 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Applies the force vector to particles to conform around Global SDF",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 4 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     5.0f,
                     2000.0f,
                     1.0f,
                     5000.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f, "Attraction Speed", true, typeof(float), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Attraction Force", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Stick Distance", true, typeof(float), 2, 4),
                     NodeElementArchetype.Factory.Input(-0.5f + 3.0f, "Stick Force", true, typeof(float), 3, 5),
-                },
+                ],
             },
             new() {
                 TypeID = 336,
@@ -1386,8 +1386,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Collides particles with the scene Global SDF",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 5 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Update,
                     false, // Invert
@@ -1396,15 +1396,15 @@ namespace FlaxEditor.Surface.Archetypes
                     0.1f, // Elasticity
                     0.0f, // Friction
                     0.0f, // Lifetime Loss
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f + 0, "Radius", true, typeof(float), 0, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 1, "Roughness", true, typeof(float), 1, 4),
                     NodeElementArchetype.Factory.Input(-0.5f + 2, "Elasticity", true, typeof(float), 2, 5),
                     NodeElementArchetype.Factory.Input(-0.5f + 3, "Friction", true, typeof(float), 3, 6),
                     NodeElementArchetype.Factory.Input(-0.5f + 4, "Lifetime Loss", true, typeof(float), 4, 7),
-                },
+                ],
             },
             GetParticleAttribute(ModuleType.Update, 350, "Set Position", "Sets the particle position", typeof(Float3), Float3.Zero),
             GetParticleAttribute(ModuleType.Update, 351, "Set Lifetime", "Sets the particle lifetime (in seconds)", typeof(float), 10.0f),
@@ -1429,15 +1429,15 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Draws quad-shaped sprite for every particle",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 100),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Render,
                     Guid.Empty, // Material
                     (int)(DrawPass.Forward | DrawPass.Distortion), // Draw Modes
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     // Material
                     NodeElementArchetype.Factory.Text(0, -10, "Material", 80.0f, 16.0f, "The material used for sprites rendering (quads). It must have Domain set to Particle."),
                     NodeElementArchetype.Factory.Asset(100.0f, -10, 2, typeof(MaterialBase)),
@@ -1445,7 +1445,7 @@ namespace FlaxEditor.Surface.Archetypes
                     // Draw Modes
                     NodeElementArchetype.Factory.Text(0, -10 + 70, "Draw Modes:", 40),
                     NodeElementArchetype.Factory.Enum(100.0f, -10 + 70, 140, 3, typeof(DrawPass)),
-                },
+                ],
             },
             new() {
                 TypeID = 401,
@@ -1454,20 +1454,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Renders the lights at the particles positions",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 3 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Render,
                     Color.White, // Color
                     1000.0f, // Brightness
                     8.0f, // Fall Off Exponent
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(-0.5f + 0, "Color", true, typeof(Float4), 0, 2),
                     NodeElementArchetype.Factory.Input(-0.5f + 1, "Radius", true, typeof(float), 1, 3),
                     NodeElementArchetype.Factory.Input(-0.5f + 2, "Fall Off Exponent", true, typeof(float), 2, 4),
-                },
+                ],
             },
             new() {
                 TypeID = 402,
@@ -1476,19 +1476,19 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Sorts the particles for the rendering",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 2 * Surface.Constants.LayoutOffsetY),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Render,
                     (int)ParticleSortMode.ViewDistance, // Sort Mode
                     "Age", // Custom Attribute
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Text(0, -10.0f, "Mode:", 40),
                     NodeElementArchetype.Factory.ComboBox(40, -10.0f, 140, 2, typeof(ParticleSortMode)),
                     NodeElementArchetype.Factory.TextBox(185, -10.0f, 100, TextBox.DefaultHeight, 3, false),
-                },
+                ],
             },
             new() {
                 TypeID = 403,
@@ -1497,16 +1497,16 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Draws model for every particle",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 180),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Render,
                     Guid.Empty, // Model
                     Guid.Empty, // Material
                     (int)(DrawPass.Forward | DrawPass.Distortion), // Draw Modes
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     // Model
                     NodeElementArchetype.Factory.Text(0, -10, "Model", 80.0f, 16.0f, "model material used for rendering."),
                     NodeElementArchetype.Factory.Asset(100.0f, -10, 2, typeof(Model)),
@@ -1518,7 +1518,7 @@ namespace FlaxEditor.Surface.Archetypes
                     // Draw Modes
                     NodeElementArchetype.Factory.Text(0, -10 + 140, "Draw Modes:", 40),
                     NodeElementArchetype.Factory.Enum(100.0f, -10 + 140, 140, 4, typeof(DrawPass)),
-                },
+                ],
             },
             new() {
                 TypeID = 404,
@@ -1527,8 +1527,8 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Draws a ribbon connecting all particles in order by particle age.",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 170),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Render,
                     Guid.Empty, // Material
@@ -1536,9 +1536,9 @@ namespace FlaxEditor.Surface.Archetypes
                     Float2.One, // UV Scale
                     Float2.Zero, // UV Offset
                     (int)(DrawPass.Forward | DrawPass.Distortion), // Draw Modes
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     // Material
                     NodeElementArchetype.Factory.Text(0, -10, "Material", 80.0f, 16.0f, "The material used for ribbons rendering. It must have Domain set to Particle."),
                     NodeElementArchetype.Factory.Asset(80, -10, 2, typeof(MaterialBase)),
@@ -1556,7 +1556,7 @@ namespace FlaxEditor.Surface.Archetypes
                     // Draw Modes
                     NodeElementArchetype.Factory.Text(0, 6.0f * Surface.Constants.LayoutOffsetY, "Draw Modes:", 40),
                     NodeElementArchetype.Factory.Enum(100.0f, 6.0f * Surface.Constants.LayoutOffsetY, 140, 6, typeof(DrawPass)),
-                },
+                ],
             },
             new() {
                 TypeID = 405,
@@ -1565,19 +1565,19 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Draws the particle into the volumetric fog (material color, opacity and emission are used for local fog properties).",
                 Flags = DefaultModuleFlags,
                 Size = new Float2(200, 70),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     true,
                     (int)ModuleType.Render,
                     Guid.Empty, // Material
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     // Material
                     NodeElementArchetype.Factory.Text(0, -10, "Material", 80.0f, 16.0f, "The material used for volumetric fog rendering. It must have Domain set to Particle."),
                     NodeElementArchetype.Factory.Asset(80, -10, 2, typeof(MaterialBase)),
-                },
+                ],
             },
-        };
+        ];
     }
 }

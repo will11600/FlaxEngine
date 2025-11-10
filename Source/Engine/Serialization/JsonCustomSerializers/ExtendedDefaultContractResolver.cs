@@ -13,18 +13,9 @@ namespace FlaxEngine.Json.JsonCustomSerializers
     {
         private readonly Type _flaxType = typeof(Object);
 
-        private readonly Type[] AttributesIgnoreList =
-        {
-            typeof(NonSerializedAttribute),
-            typeof(NoSerializeAttribute)
-        };
+        private readonly Type[] AttributesIgnoreList = [typeof(NonSerializedAttribute), typeof(NoSerializeAttribute)];
 
-        private readonly Type[] AttributesIgnoreListManaged =
-        {
-            typeof(UnmanagedAttribute),
-            typeof(NonSerializedAttribute),
-            typeof(NoSerializeAttribute)
-        };
+        private readonly Type[] AttributesIgnoreListManaged = [typeof(UnmanagedAttribute), typeof(NonSerializedAttribute), typeof(NoSerializeAttribute)];
 
         private readonly Type[] _attributesIgnoreList;
 

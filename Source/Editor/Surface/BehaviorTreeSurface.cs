@@ -172,12 +172,12 @@ namespace FlaxEditor.Surface
                     var instance = new BehaviorTreeSubTreeNode();
                     instance.Name = Utilities.Utils.GetPropertyNameUI(assetItem.ShortName);
                     instance.Tree = (BehaviorTree)assetItem.LoadAsync();
-                    node = Context.SpawnNode(19, 1, args.SurfaceLocation, new object[]
-                    {
+                    node = Context.SpawnNode(19, 1, args.SurfaceLocation,
+                    [
                         typeof(BehaviorTreeSubTreeNode).FullName,
                         FlaxEngine.Json.JsonSerializer.SaveToBytes(instance),
                         null,
-                    });
+                    ]);
                     FlaxEngine.Object.Destroy(instance);
                 }
 

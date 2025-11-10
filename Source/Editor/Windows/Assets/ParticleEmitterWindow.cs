@@ -27,7 +27,7 @@ namespace FlaxEditor.Windows.Assets
     public sealed class ParticleEmitterWindow : VisjectSurfaceWindow<ParticleEmitter, ParticleEmitterSurface, ParticleEmitterPreview>, ISearchWindow
     {
         private readonly ScriptType[] _newParameterTypes =
-        {
+        [
             new(typeof(float)),
             new(typeof(Texture)),
             new(typeof(CubeTexture)),
@@ -45,7 +45,7 @@ namespace FlaxEditor.Windows.Assets
             new(typeof(Quaternion)),
             new(typeof(Transform)),
             new(typeof(Matrix)),
-        };
+        ];
 
         /// <summary>
         /// The properties proxy object.

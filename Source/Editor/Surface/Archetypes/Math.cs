@@ -29,13 +29,13 @@ namespace FlaxEditor.Surface.Archetypes
                 Size = new Float2(110, 20),
                 DefaultType = new ScriptType(type),
                 ConnectionsHints = hints,
-                IndependentBoxes = new[] { 0 },
-                DependentBoxes = new[] { 1 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "A", true, type, 0),
                     NodeElementArchetype.Factory.Output(0, "Result", type, 1)
-                }
+                ]
             };
         }
 
@@ -56,40 +56,40 @@ namespace FlaxEditor.Surface.Archetypes
                 Size = new Float2(150, 40),
                 DefaultType = new ScriptType(inputType),
                 ConnectionsHints = hints,
-                IndependentBoxes = new[] { 0, 1 },
-                DependentBoxes = isOutputDependant ? new[] { 2 } : null,
-                DefaultValues = defaultValues ?? new object[]
-                {
+                IndependentBoxes = [0, 1],
+                DependentBoxes = isOutputDependant ? [2] : null,
+                DefaultValues = defaultValues ??
+                [
                     0.0f,
                     0.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "A", true, inputType, 0, 0),
                     NodeElementArchetype.Factory.Input(1, "B", true, inputType, 1, 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, outputType, 2)
-                }
+                ]
             };
         }
 
         private static readonly string[] VectorTransformSpaces =
-        {
+        [
             "World",
             "Tangent",
             "View",
             "Local",
-        };
+        ];
 
         /// <summary>
         /// The nodes for that group.
         /// </summary>
         public static NodeArchetype[] Nodes =
-        {
-            Op2(1, "Add", "Result is sum A and B", new[] { "+" }),
-            Op2(2, "Subtract", "Result is difference A and B", new[] { "-" }),
-            Op2(3, "Multiply", "Result is A times B", new[] { "*" }, defaultValues: new object[] { 1.0f, 1.0f }),
-            Op2(4, "Modulo", "Result is remainder A from A divided by B B", new[] { "%" }),
-            Op2(5, "Divide", "Result is A divided by B", new[] { "/" }, defaultValues: new object[] { 1.0f, 1.0f }),
+        [
+            Op2(1, "Add", "Result is sum A and B", ["+"]),
+            Op2(2, "Subtract", "Result is difference A and B", ["-"]),
+            Op2(3, "Multiply", "Result is A times B", ["*"], defaultValues: [1.0f, 1.0f]),
+            Op2(4, "Modulo", "Result is remainder A from A divided by B B", ["%"]),
+            Op2(5, "Divide", "Result is A divided by B", ["/"], defaultValues: [1.0f, 1.0f]),
             Op1(7, "Absolute", "Result is absolute value of A"),
             Op1(8, "Ceil", "Returns the smallest integer value greater than or equal to A"),
             Op1(9, "Cosine", "Returns cosine of A"),
@@ -97,34 +97,34 @@ namespace FlaxEditor.Surface.Archetypes
             new() {
                 TypeID = 11,
                 Title = "Length",
-                AlternativeTitles = new[] { "Magnitude", "Mag" },
+                AlternativeTitles = ["Magnitude", "Mag"],
                 Description = "Returns the length of A vector",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(110, 20),
                 ConnectionsHints = ConnectionsHint.Vector,
-                IndependentBoxes = new[] { 0 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "A", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 1)
-                }
+                ]
             },
             Op1(12, "Normalize", "Returns normalized A vector", ConnectionsHint.Vector),
             Op1(13, "Round", "Rounds A to the nearest integer"),
             Op1(14, "Saturate", "Clamps A to the range [0, 1]"),
             Op1(15, "Sine", "Returns sine of A"),
-            Op1(16, "Sqrt", "Returns square root of A", new[] { "Square Root", "Square", "Root" }),
+            Op1(16, "Sqrt", "Returns square root of A", ["Square Root", "Square", "Root"]),
             Op1(17, "Tangent", "Returns tangent of A"),
             Op2(18, "Cross", "Returns the cross product of A and B", ConnectionsHint.None, typeof(Float3)),
-            Op2(19, "Distance", "Returns a distance scalar between A and B", new[] { "Magnitude", "Mag", "Length" }, ConnectionsHint.Vector, null, typeof(float), false),
+            Op2(19, "Distance", "Returns a distance scalar between A and B", ["Magnitude", "Mag", "Length"], ConnectionsHint.Vector, null, typeof(float), false),
             Op2(20, "Dot", "Returns the dot product of A and B", ConnectionsHint.Vector, null, typeof(float), false),
             Op2(21, "Max", "Selects the greater of A and B"),
             Op2(22, "Min", "Selects the lesser of A and B"),
-            Op2(23, "Power", "Returns A raised to the specified at B power", new[]
-            {
+            Op2(23, "Power", "Returns A raised to the specified at B power",
+            [
                 "^",
                 "**"
-            }),
+            ]),
             //
             new() {
                 TypeID = 24,
@@ -133,20 +133,20 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(140, 60),
                 ConnectionsHints = ConnectionsHint.Numeric,
-                IndependentBoxes = new[] { 0 },
-                DependentBoxes = new[] { 1, 2, 3 },
-                DefaultValues = new object[]
-                {
+                IndependentBoxes = [0],
+                DependentBoxes = [1, 2, 3],
+                DefaultValues =
+                [
                     0.0f,
                     0.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Input", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Min", true, null, 1, 0),
                     NodeElementArchetype.Factory.Input(2, "Max", true, null, 2, 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
-                }
+                ]
             },
             new() {
                 TypeID = 25,
@@ -155,21 +155,21 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(150, 60),
                 ConnectionsHints = ConnectionsHint.Numeric,
-                IndependentBoxes = new[] { 0, 1 },
-                DependentBoxes = new[] { 3 },
-                DefaultValues = new object[]
-                {
+                IndependentBoxes = [0, 1],
+                DependentBoxes = [3],
+                DefaultValues =
+                [
                     0.0f,
                     1.0f,
                     0.5f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "A", true, null, 0, 0),
                     NodeElementArchetype.Factory.Input(1, "B", true, null, 1, 1),
                     NodeElementArchetype.Factory.Input(2, "Alpha", true, typeof(float), 2, 2),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
-                }
+                ]
             },
             new() {
                 TypeID = 26,
@@ -178,17 +178,17 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(110, 40),
                 ConnectionsHints = ConnectionsHint.Vector,
-                IndependentBoxes = new[] { 0, 1 },
-                DependentBoxes = new[] { 2 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0, 1],
+                DependentBoxes = [2],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Vector", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Normal", true, null, 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 2)
-                }
+                ]
             },
             //
-            Op1(27, "Negate", "Returns opposite value", new[] { "Invert" }),
+            Op1(27, "Negate", "Returns opposite value", ["Invert"]),
             Op1(28, "One Minus", "Returns 1 - value"),
             //
             new() {
@@ -197,11 +197,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Derives the Z component of a tangent space normal given the X and Y components and outputs the resulting three-channel tangent space normal",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(170, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "XY", true, typeof(Float2), 0),
                     NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 1)
-                }
+                ]
             },
             new() {
                 TypeID = 30,
@@ -209,42 +209,42 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Transform vector from source space to destination space",
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(170, 40),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     (int)TransformCoordinateSystem.World,
                     (int)TransformCoordinateSystem.Tangent,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Input", true, typeof(Float3), 0),
                     NodeElementArchetype.Factory.Output(0, "Output", typeof(Float3), 1),
                     NodeElementArchetype.Factory.ComboBox(0, 22, 70, 0, VectorTransformSpaces),
                     NodeElementArchetype.Factory.ComboBox(100, 22, 70, 1, VectorTransformSpaces),
-                }
+                ]
             },
             new() {
                 TypeID = 31,
                 Title = "Mad",
-                AlternativeTitles = new[] { "Multiply", "Add", "*+" },
+                AlternativeTitles = ["Multiply", "Add", "*+"],
                 Description = "Performs value multiplication and addition at once",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(160, 60),
                 ConnectionsHints = ConnectionsHint.Numeric,
-                IndependentBoxes = new[] { 0, 1, 2 },
-                DependentBoxes = new[] { 3 },
+                IndependentBoxes = [0, 1, 2],
+                DependentBoxes = [3],
                 SortScore = -1, // Lower sort score to not go above Multiply node
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     1.0f,
                     0.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "Multiply", true, null, 1, 0),
                     NodeElementArchetype.Factory.Input(2, "Add", true, null, 2, 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
-                }
+                ]
             },
             new() {
                 TypeID = 32,
@@ -252,11 +252,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Gets the largest component mask from the input vector",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(220, 30),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, typeof(Float3), 0),
                     NodeElementArchetype.Factory.Output(0, "Mask", typeof(Float3), 1)
-                }
+                ]
             },
             Op1(33, "Asin", "Returns arcus sine of A"),
             Op1(34, "Acos", "Returns arcus cosinus of A"),
@@ -267,23 +267,23 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Adds a constant to input and scales it",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(200, 60),
-                IndependentBoxes = new[] { 0 },
-                DependentBoxes = new[] { 1 },
+                IndependentBoxes = [0],
+                DependentBoxes = [1],
                 ConnectionsHints = ConnectionsHint.Numeric,
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.0f,
                     1.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Input", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "Output", null, 1),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 1, "Bias"),
                     NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 2, "Scale"),
                     NodeElementArchetype.Factory.Float(40, Surface.Constants.LayoutOffsetY * 1, 0),
                     NodeElementArchetype.Factory.Float(40, Surface.Constants.LayoutOffsetY * 2, 1),
-                }
+                ]
             },
             new() {
                 TypeID = 37,
@@ -291,14 +291,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Rotates given vector using the rotation axis, a point on the axis, and the angle to rotate",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(200, 80),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Normalized Rotation Axis", true, typeof(Float3), 0),
                     NodeElementArchetype.Factory.Input(1, "Rotation Angle", true, typeof(float), 1),
                     NodeElementArchetype.Factory.Input(2, "Pivot Point", true, typeof(Float3), 2),
                     NodeElementArchetype.Factory.Input(3, "Position", true, typeof(Float3), 3),
                     NodeElementArchetype.Factory.Output(0, "", typeof(Float3), 4),
-                }
+                ]
             },
             Op1(38, "Trunc", "Truncates a floating-point value to the integer component"),
             Op1(39, "Frac", "Returns fractional part of the value"),
@@ -310,21 +310,21 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Determines if two values are nearly equal within a given epsilon",
                 Flags = NodeFlags.AnimGraph | NodeFlags.ParticleEmitterGraph,
                 Size = new Float2(200, 80),
-                IndependentBoxes = new[] { 0, 1, },
+                IndependentBoxes = [0, 1,],
                 ConnectionsHints = ConnectionsHint.Numeric,
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     0.0f,
                     0.0f,
                     0.0001f
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "A", true, null, 0, 0),
                     NodeElementArchetype.Factory.Input(1, "B", true, null, 1, 1),
                     NodeElementArchetype.Factory.Input(2, "Epsilon", true, typeof(float), 2, 2),
                     NodeElementArchetype.Factory.Output(0, "", typeof(bool), 3),
-                }
+                ]
             },
             Op1(43, "Degrees", "Converts the specified value from radians to degrees."),
             Op1(44, "Radians", "Converts the specified value from degrees to radians."),
@@ -335,11 +335,11 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(120, 20),
                 ConnectionsHints = ConnectionsHint.Enum,
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "", true, null, 0),
                     NodeElementArchetype.Factory.Output(0, "", typeof(ulong), 1),
-                }
+                ]
             },
             new() {
                 TypeID = 46,
@@ -348,14 +348,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(120, 40),
                 ConnectionsHints = ConnectionsHint.Enum,
-                IndependentBoxes = new[] { 0, 1 },
-                DependentBoxes = new[] { 2 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0, 1],
+                DependentBoxes = [2],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "A", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "B", true, null, 1),
                     NodeElementArchetype.Factory.Output(0, "A & B", null, 2),
-                }
+                ]
             },
             new() {
                 TypeID = 47,
@@ -364,14 +364,14 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.VisualScriptGraph | NodeFlags.AnimGraph,
                 Size = new Float2(120, 40),
                 ConnectionsHints = ConnectionsHint.Enum,
-                IndependentBoxes = new[] { 0, 1 },
-                DependentBoxes = new[] { 2 },
-                Elements = new[]
-                {
+                IndependentBoxes = [0, 1],
+                DependentBoxes = [2],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "A", true, null, 0),
                     NodeElementArchetype.Factory.Input(1, "B", true, null, 1),
                     NodeElementArchetype.Factory.Output(0, "A | B", null, 2),
-                }
+                ]
             },
             new() {
                 TypeID = 48,
@@ -379,21 +379,21 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Remaps a value from one range to another, so for example having 25 in a range of 0 to 100 being remapped to 0 to 1 would return 0.25",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(175, 75),
-                DefaultValues = new object[]
-                {
+                DefaultValues =
+                [
                     25.0f,
                     new Float2(0.0f, 100.0f),
                     new Float2(0.0f, 1.0f),
                     false
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Value", true, typeof(float), 0, 0),
                     NodeElementArchetype.Factory.Input(1, "In Range", true, typeof(Float2), 1, 1),
                     NodeElementArchetype.Factory.Input(2, "Out Range", true, typeof(Float2), 2, 2),
                     NodeElementArchetype.Factory.Input(3, "Clamp", true, typeof(bool), 3, 3),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 4),
-                }
+                ]
             },
             new() {
                 TypeID = 49,
@@ -401,12 +401,12 @@ namespace FlaxEditor.Surface.Archetypes
                 Description = "Rotates given vector using the Quaternion",
                 Flags = NodeFlags.AllGraphs,
                 Size = new Float2(200, 40),
-                Elements = new[]
-                {
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Quaternion", true, typeof(Quaternion), 0),
                     NodeElementArchetype.Factory.Input(1, "Vector", true, typeof(Float3), 1),
                     NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 2),
-                }
+                ]
             },
             new() {
                 TypeID = 50,
@@ -415,23 +415,23 @@ namespace FlaxEditor.Surface.Archetypes
                 Flags = NodeFlags.MaterialGraph,
                 Size = new Float2(200, 60),
                 ConnectionsHints = ConnectionsHint.Numeric,
-                IndependentBoxes = new[] { 0, 1, 2 },
-                DependentBoxes = new[] { 3 },
-                DefaultValues = new object[]
-                {
+                IndependentBoxes = [0, 1, 2],
+                DependentBoxes = [3],
+                DefaultValues =
+                [
                     0.0f,
                     1.0f,
                     0.0f,
-                },
-                Elements = new[]
-                {
+                ],
+                Elements =
+                [
                     NodeElementArchetype.Factory.Input(0, "Min", true, null, 0, 0),
                     NodeElementArchetype.Factory.Input(1, "Max", true, null, 1, 1),
                     NodeElementArchetype.Factory.Input(2, "Value", true, null, 2, 2),
                     NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
-                },
+                ],
             },
             Op2(51, "Step", "Compares two values, returning 0 or 1 based on which value is greater."),
-        };
+        ];
     }
 }

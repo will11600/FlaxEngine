@@ -83,7 +83,7 @@ namespace FlaxEngine.Utilities
             _html = html;
             _pos = 0;
             _attributes = new Dictionary<string, string>();
-            _newLineChars = new[] { '\0', '\r', '\n' }; // [0] is modified by ParseAttributeValue
+            _newLineChars = ['\0', '\r', '\n']; // [0] is modified by ParseAttributeValue
         }
 
         /// <summary>

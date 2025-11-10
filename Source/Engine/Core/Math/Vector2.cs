@@ -321,7 +321,7 @@ namespace FlaxEngine
         /// </summary>
         public readonly Real[] ToArray()
         {
-            return new[] { X, Y };
+            return [X, Y];
         }
 
         /// <summary>

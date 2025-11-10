@@ -18,7 +18,7 @@ namespace FlaxEditor.Windows.Profiler
         public class Event : ContainerControl
         {
             private static readonly Color[] Colors =
-            {
+            [
                 new(0.8f, 0.894117653f, 0.709803939f, 1f),
                 new(0.1254902f, 0.698039234f, 0.6666667f, 1f),
                 new(0.4831376f, 0.6211768f, 0.0219608f, 1f),
@@ -37,7 +37,7 @@ namespace FlaxEditor.Windows.Profiler
                 new(0.9411765f, 0.5019608f, 0.5019608f, 1f),
                 new(0.6627451f, 0.6627451f, 0.6627451f, 1f),
                 new(0.545098066f, 0f, 0.545098066f, 1f),
-            };
+            ];
 
             private Color _color;
             private string _name;
