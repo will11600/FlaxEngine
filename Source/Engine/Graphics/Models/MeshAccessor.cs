@@ -568,7 +568,7 @@ public class MeshAccessor
     /// <returns>Mesh data stream (might be invalid if data is not provided).</returns>
     public Stream Index()
     {
-        Span<byte> data = new Span<byte>();
+        Span<byte> data = new();
         PixelFormat format = PixelFormat.Unknown;
         int stride = 0;
         var ib = _data[(int)MeshBufferType.Index];
@@ -588,7 +588,7 @@ public class MeshAccessor
     /// <returns>Mesh data stream (might be invalid if attribute is not provided).</returns>
     public Stream Attribute(VertexElement.Types attribute)
     {
-        Span<byte> data = new Span<byte>();
+        Span<byte> data = new();
         PixelFormat format = PixelFormat.Unknown;
         int stride = 0;
         for (int vbIndex = 0; vbIndex < 3 && format == PixelFormat.Unknown; vbIndex++)

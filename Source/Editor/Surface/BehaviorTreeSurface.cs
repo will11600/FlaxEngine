@@ -18,7 +18,7 @@ namespace FlaxEditor.Surface;
 [HideInEditor]
 public class BehaviorTreeSurface : VisjectSurface
 {
-    private static NodesCache _nodesCache = new NodesCache(IterateNodesCache);
+    private static NodesCache _nodesCache = new(IterateNodesCache);
 
     /// <inheritdoc />
     public BehaviorTreeSurface(IVisjectSurfaceOwner owner, Action onSave, FlaxEditor.Undo undo)

@@ -494,7 +494,7 @@ public partial class SceneTreeWindow : SceneEditorWindow
             // Drag assets
             if (_dragAssets != null && _dragAssets.HasValidDrag)
             {
-                List<SceneGraphNode> graphNodes = new List<SceneGraphNode>();
+                List<SceneGraphNode> graphNodes = new();
                 for (int i = 0; i < _dragAssets.Objects.Count; i++)
                 {
                     var item = _dragAssets.Objects[i];
@@ -558,7 +558,7 @@ public partial class SceneTreeWindow : SceneEditorWindow
             // Drag script item
             else if (_dragScriptItems != null && _dragScriptItems.HasValidDrag)
             {
-                List<SceneGraphNode> graphNodes = new List<SceneGraphNode>();
+                List<SceneGraphNode> graphNodes = new();
                 for (int i = 0; i < _dragScriptItems.Objects.Count; i++)
                 {
                     var item = _dragScriptItems.Objects[i];

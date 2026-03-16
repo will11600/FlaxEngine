@@ -31,32 +31,32 @@ partial struct Int3 : IEquatable<Int3>, IFormattable, Json.ICustomValueEquals
     /// <summary>
     /// The X unit <see cref="Int3" /> (1, 0, 0).
     /// </summary>
-    public static readonly Int3 UnitX = new Int3(1, 0, 0);
+    public static readonly Int3 UnitX = new(1, 0, 0);
 
     /// <summary>
     /// The Y unit <see cref="Int3" /> (0, 1, 0).
     /// </summary>
-    public static readonly Int3 UnitY = new Int3(0, 1, 0);
+    public static readonly Int3 UnitY = new(0, 1, 0);
 
     /// <summary>
     /// The Z unit <see cref="Int3" /> (0, 0, 1).
     /// </summary>
-    public static readonly Int3 UnitZ = new Int3(0, 0, 1);
+    public static readonly Int3 UnitZ = new(0, 0, 1);
 
     /// <summary>
     /// A <see cref="Int3" /> with all of its components set to one.
     /// </summary>
-    public static readonly Int3 One = new Int3(1, 1, 1);
+    public static readonly Int3 One = new(1, 1, 1);
 
     /// <summary>
     /// A <see cref="Int3" /> with all components equal to <see cref="int.MinValue"/>.
     /// </summary>
-    public static readonly Int3 Minimum = new Int3(int.MinValue);
+    public static readonly Int3 Minimum = new(int.MinValue);
 
     /// <summary>
     /// A <see cref="Int3" /> with all components equal to <see cref="int.MaxValue"/>.
     /// </summary>
-    public static readonly Int3 Maximum = new Int3(int.MaxValue);
+    public static readonly Int3 Maximum = new(int.MaxValue);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Int3" /> struct.

@@ -33,7 +33,7 @@ public class Undo : IDisposable
     /// <summary>
     /// Stack of undo actions for future disposal.
     /// </summary>
-    private readonly OrderedDictionary<object, IUndoInternal> _snapshots = new OrderedDictionary<object, IUndoInternal>();
+    private readonly OrderedDictionary<object, IUndoInternal> _snapshots = new();
 
     /// <summary>
     /// Gets the undo operations stack.

@@ -96,8 +96,8 @@ public class ParticleEmitterProxy : BinaryAssetProxy
             Editor.LogError("Failed to load base particle emitter.");
         }
 
-        ParticleSystemPreview tempPreview = new ParticleSystemPreview(false);
-        ParticleSystemTimeline timeline = new ParticleSystemTimeline(tempPreview);
+        ParticleSystemPreview tempPreview = new(false);
+        ParticleSystemTimeline timeline = new(tempPreview);
         timeline.Load(particleSystem);
 
         var track = (ParticleEmitterTrack)timeline.NewTrack(ParticleEmitterTrack.GetArchetype());

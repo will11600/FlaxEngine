@@ -12,7 +12,7 @@ namespace FlaxEngine.GUI;
 public class TilesPanel : ContainerControl
 {
     private Margin _tileMargin;
-    private Float2 _tileSize = new Float2(64);
+    private Float2 _tileSize = new(64);
     private bool _autoResize = false;
 
     /// <summary>

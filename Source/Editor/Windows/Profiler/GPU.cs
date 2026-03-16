@@ -201,7 +201,7 @@ internal sealed unsafe class GPU : ProfilerMode
 
         double scale = 100.0;
         float width = (float)(e.Time * scale);
-        string name = new string(e.Name);
+        string name = new(e.Name);
 
         Timeline.Event control;
         if (_timelineEventsCache.Count != 0)
@@ -343,7 +343,7 @@ internal sealed unsafe class GPU : ProfilerMode
         for (int i = 0; i < data.Length; i++)
         {
             var e = data[i];
-            string name = new string(e.Name);
+            string name = new(e.Name);
 
             Row row;
             if (_tableRowsCache.Count != 0)

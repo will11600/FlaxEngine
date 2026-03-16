@@ -14,7 +14,7 @@ public class VerticalPanelElement : LayoutElementsContainer
     /// <summary>
     /// The panel.
     /// </summary>
-    public readonly VerticalPanel Panel = new VerticalPanel
+    public readonly VerticalPanel Panel = new()
     {
         Pivot = Float2.Zero,
     };

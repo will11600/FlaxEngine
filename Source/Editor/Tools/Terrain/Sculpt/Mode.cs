@@ -124,7 +124,7 @@ public abstract class Mode
             if (sourceHeights == null && sourceHoles == null)
                 throw new Exception("Cannot modify terrain. Loading heightmap failed. See log for more info.");
 
-            ApplyParams p = new ApplyParams
+            ApplyParams p = new()
             {
                 Terrain = terrain,
                 TerrainWorld = terrainWorld,

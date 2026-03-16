@@ -657,7 +657,7 @@ public static partial class Animation
         /// <summary>
         /// The transitions list from this state to the others.
         /// </summary>
-        public readonly List<StateMachineTransition> Transitions = new List<StateMachineTransition>();
+        public readonly List<StateMachineTransition> Transitions = new();
 
         /// <summary>
         /// The transitions rectangle (in surface-space).

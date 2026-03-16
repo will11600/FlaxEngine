@@ -83,42 +83,42 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <summary>
     /// The X unit <see cref="Double4" /> (1, 0, 0, 0).
     /// </summary>
-    public static readonly Double4 UnitX = new Double4(1.0, 0.0, 0.0, 0.0);
+    public static readonly Double4 UnitX = new(1.0, 0.0, 0.0, 0.0);
 
     /// <summary>
     /// The Y unit <see cref="Double4" /> (0, 1, 0, 0).
     /// </summary>
-    public static readonly Double4 UnitY = new Double4(0.0, 1.0, 0.0, 0.0);
+    public static readonly Double4 UnitY = new(0.0, 1.0, 0.0, 0.0);
 
     /// <summary>
     /// The Z unit <see cref="Double4" /> (0, 0, 1, 0).
     /// </summary>
-    public static readonly Double4 UnitZ = new Double4(0.0, 0.0, 1.0, 0.0);
+    public static readonly Double4 UnitZ = new(0.0, 0.0, 1.0, 0.0);
 
     /// <summary>
     /// The W unit <see cref="Double4" /> (0, 0, 0, 1).
     /// </summary>
-    public static readonly Double4 UnitW = new Double4(0.0, 0.0, 0.0, 1.0);
+    public static readonly Double4 UnitW = new(0.0, 0.0, 0.0, 1.0);
 
     /// <summary>
     /// A <see cref="Double4" /> with all of its components set to half.
     /// </summary>
-    public static readonly Double4 Half = new Double4(0.5f, 0.5f, 0.5f, 0.5f);
+    public static readonly Double4 Half = new(0.5f, 0.5f, 0.5f, 0.5f);
 
     /// <summary>
     /// A <see cref="Double4" /> with all of its components set to one.
     /// </summary>
-    public static readonly Double4 One = new Double4(1.0, 1.0, 1.0, 1.0);
+    public static readonly Double4 One = new(1.0, 1.0, 1.0, 1.0);
 
     /// <summary>
     /// A <see cref="Double4" /> with all components equal to <see cref="double.MinValue"/>.
     /// </summary>
-    public static readonly Double4 Minimum = new Double4(double.MinValue);
+    public static readonly Double4 Minimum = new(double.MinValue);
 
     /// <summary>
     /// A <see cref="Double4" /> with all components equal to <see cref="double.MaxValue"/>.
     /// </summary>
-    public static readonly Double4 Maximum = new Double4(double.MaxValue);
+    public static readonly Double4 Maximum = new(double.MaxValue);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Double4" /> struct.
@@ -255,12 +255,12 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <summary>
     /// Gets a vector with values being absolute values of that vector.
     /// </summary>
-    public Double4 Absolute => new Double4(Math.Abs(X), Math.Abs(Y), Math.Abs(Z), Math.Abs(W));
+    public Double4 Absolute => new(Math.Abs(X), Math.Abs(Y), Math.Abs(Z), Math.Abs(W));
 
     /// <summary>
     /// Gets a vector with values being opposite to values of that vector.
     /// </summary>
-    public Double4 Negative => new Double4(-X, -Y, -Z, -W);
+    public Double4 Negative => new(-X, -Y, -Z, -W);
 
     /// <summary>
     /// Gets or sets the component at the specified index.

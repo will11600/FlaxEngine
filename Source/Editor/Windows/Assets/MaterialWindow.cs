@@ -26,22 +26,22 @@ public sealed class MaterialWindow : VisjectSurfaceWindow<Material, MaterialSurf
 {
     private readonly ScriptType[] _newParameterTypes =
     {
-        new ScriptType(typeof(float)),
-        new ScriptType(typeof(Texture)),
-        new ScriptType(typeof(NormalMap)),
-        new ScriptType(typeof(CubeTexture)),
-        new ScriptType(typeof(GPUTexture)),
-        new ScriptType(typeof(ChannelMask)),
-        new ScriptType(typeof(bool)),
-        new ScriptType(typeof(int)),
-        new ScriptType(typeof(Float2)),
-        new ScriptType(typeof(Float3)),
-        new ScriptType(typeof(Float4)),
-        new ScriptType(typeof(Vector2)),
-        new ScriptType(typeof(Vector3)),
-        new ScriptType(typeof(Vector4)),
-        new ScriptType(typeof(Color)),
-        new ScriptType(typeof(Matrix)),
+        new(typeof(float)),
+        new(typeof(Texture)),
+        new(typeof(NormalMap)),
+        new(typeof(CubeTexture)),
+        new(typeof(GPUTexture)),
+        new(typeof(ChannelMask)),
+        new(typeof(bool)),
+        new(typeof(int)),
+        new(typeof(Float2)),
+        new(typeof(Float3)),
+        new(typeof(Float4)),
+        new(typeof(Vector2)),
+        new(typeof(Vector3)),
+        new(typeof(Vector4)),
+        new(typeof(Color)),
+        new(typeof(Matrix)),
     };
 
     /// <summary>

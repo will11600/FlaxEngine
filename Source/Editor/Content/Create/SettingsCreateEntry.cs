@@ -26,7 +26,7 @@ internal class SettingsCreateEntry : CreateFileEntry
         public Type Type;
 
         [HideInEditor, NoSerialize]
-        public static readonly List<Type> Types = new List<Type>();
+        public static readonly List<Type> Types = new();
 
         private static bool IsValid(Type type)
         {
@@ -34,7 +34,7 @@ internal class SettingsCreateEntry : CreateFileEntry
         }
     }
 
-    private readonly Options _options = new Options();
+    private readonly Options _options = new();
 
     /// <inheritdoc />
     public override object Settings => _options;

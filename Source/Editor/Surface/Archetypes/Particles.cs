@@ -334,8 +334,7 @@ public static class Particles
     /// </summary>
     public static NodeArchetype[] Nodes =
     {
-        new NodeArchetype
-        {
+        new() {
             TypeID = 1,
             Create = (id, context, arch, groupArch) => new ParticleEmitterNode(id, context, arch, groupArch),
             Title = "Particle Emitter",
@@ -380,8 +379,7 @@ public static class Particles
         },
 
         // Particle data access nodes
-        new NodeArchetype
-        {
+        new() {
             TypeID = 100,
             Create = (id, context, arch, groupArch) => new ParticleAttributeNode(id, context, arch, groupArch),
             Title = "Particle Attribute",
@@ -400,8 +398,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, null, 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 303,
             Create = (id, context, arch, groupArch) => new ParticleAttributeNode(id, context, arch, groupArch),
             Title = "Particle Attribute (by index)",
@@ -421,8 +418,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Input(2, "Index", true, typeof(uint), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 101,
             Title = "Particle Position",
             Description = "Particle position (in simulation space for emitter graph, world space in material graph).",
@@ -433,8 +429,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 102,
             Title = "Particle Total Lifetime",
             Description = "Total particle lifetime (in seconds) at the time when the particle was created. Always the same, no matter the particles age.",
@@ -446,8 +441,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 103,
             Title = "Particle Age",
             Description = "Particle age (in seconds). How long the particle has been alive since it was created.",
@@ -459,8 +453,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 104,
             Title = "Particle Color",
             Description = "Particle color (RGBA).",
@@ -471,8 +464,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float4), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 105,
             Title = "Particle Velocity",
             Description = "Particle velocity (position delta per second).",
@@ -483,8 +475,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 106,
             Title = "Particle Sprite Size",
             Description = "Particle size (width and height of the sprite).",
@@ -495,8 +486,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float2), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 1027,
             Title = "Particle Mass",
             Description = "Particle mass (in kilograms).",
@@ -507,8 +497,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 108,
             Title = "Particle Rotation",
             Description = "Particle rotation (in XYZ).",
@@ -519,8 +508,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 109,
             Title = "Particle Angular Velocity",
             Description = "Particle velocity (rotation delta per second).",
@@ -531,8 +519,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 110,
             Title = "Particle Normalized Age",
             Description = "The normalized age of the particle, represented as 0 (max lifetime) to 1 (max age). (Same as age divided by lifetime.)",
@@ -544,8 +531,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 111,
             Title = "Particle Radius",
             Description = "Particle radius.",
@@ -556,8 +542,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 112,
             Title = "Particle Scale",
             Description = "Particle scale.",
@@ -570,8 +555,7 @@ public static class Particles
         },
 
         // Simulation data access nodes
-        new NodeArchetype
-        {
+        new() {
             TypeID = 200,
             Title = "Effect Position",
             Description = "Particle effect position (in world space).",
@@ -582,8 +566,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 201,
             Title = "Effect Rotation",
             Description = "Particle effect rotation (in world space).",
@@ -594,8 +577,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Quaternion), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 202,
             Title = "Effect Scale",
             Description = "Particle effect scale (in world space).",
@@ -606,8 +588,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 203,
             Title = "Simulation Mode",
             Description = "Particle emitter simulation execution mode.",
@@ -619,8 +600,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(1, "GPU", typeof(bool), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 204,
             Title = "View Position",
             Description = "World-space camera location (of the main game view)",
@@ -631,8 +611,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 205,
             Title = "View Direction",
             Description = "Camera forward vector (of the main game view)",
@@ -643,8 +622,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 206,
             Title = "View Far Plane",
             Description = "Camera far plane distance (of the main game view)",
@@ -655,8 +633,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 207,
             Title = "Screen Size",
             Description = "Gets the screen size (of the main game view)",
@@ -670,8 +647,7 @@ public static class Particles
         },
 
         // Random values generation
-        new NodeArchetype
-        {
+        new() {
             TypeID = 208,
             Title = "Random Float",
             Description = "Gets the random floating point value (normalized to 0-1 range)",
@@ -682,8 +658,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 209,
             Title = "Random Float2",
             Description = "Gets the random Float2 value (normalized to 0-1 range)",
@@ -694,8 +669,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float2), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 210,
             Title = "Random Float3",
             Description = "Gets the random Float3 value (normalized to 0-1 range)",
@@ -706,8 +680,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 211,
             Title = "Random Float4",
             Description = "Gets the random Float4 value (normalized to 0-1 range)",
@@ -718,8 +691,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float4), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 212,
             Title = "Particle Position (world space)",
             Description = "Particle position (in world space).",
@@ -730,8 +702,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 213,
             Title = "Random Float Range",
             Description = "Gets the random floating point value from a given range",
@@ -749,8 +720,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Input(1, "Max", true, typeof(float), 2, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 214,
             Title = "Random Float2 Range",
             Description = "Gets the random Float2 value from a given range (per-component range)",
@@ -768,8 +738,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Input(1, "Max", true, typeof(Float2), 2, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 215,
             Title = "Random Float3 Range",
             Description = "Gets the random Float3 value from a given range (per-component range)",
@@ -787,8 +756,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Input(1, "Max", true, typeof(Float3), 2, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 216,
             Title = "Random Float4 Range",
             Description = "Gets the random Float4 value from a given range (per-component range)",
@@ -808,8 +776,7 @@ public static class Particles
         },
 
         // Utilities
-        new NodeArchetype
-        {
+        new() {
             TypeID = 300,
             Create = (id, context, arch, groupArch) => new ParticleEmitterFunctionNode(id, context, arch, groupArch),
             Title = "Particle Emitter Function",
@@ -825,8 +792,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Asset(0, 0, 0, typeof(ParticleEmitterFunction)),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 301,
             Title = "Particle Index",
             Description = "Gets the zero-based index of the current particle",
@@ -837,8 +803,7 @@ public static class Particles
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(uint), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 302,
             Title = "Particles Count",
             Description = "Gets the amount of particles alive in the current emitter",

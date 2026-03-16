@@ -80,7 +80,7 @@ partial class RichTextBox
     /// <summary>
     /// Collection of HTML tags processors.
     /// </summary>
-    public static Dictionary<string, ProcessTagDelegate> TagProcessors = new Dictionary<string, ProcessTagDelegate>
+    public static Dictionary<string, ProcessTagDelegate> TagProcessors = new()
     {
         { "br", ProcessBr },
         { "color", ProcessColor },
@@ -96,8 +96,8 @@ partial class RichTextBox
         { "center", ProcessCenter },
     };
 
-    private HtmlParser _parser = new HtmlParser();
-    private Stack<TextBlockStyle> _styleStack = new Stack<TextBlockStyle>();
+    private HtmlParser _parser = new();
+    private Stack<TextBlockStyle> _styleStack = new();
 
     /// <inheritdoc />
     protected override void OnParseTextBlocks()

@@ -637,7 +637,7 @@ public sealed class BehaviorTreeWindow : AssetEditorWindowBase<BehaviorTree>, IV
     }
 
     /// <inheritdoc />
-    public List<SceneGraphNode> Selection => new List<SceneGraphNode>();
+    public List<SceneGraphNode> Selection => new();
 
     /// <inheritdoc />
     public bool LockSelection { get; set; }

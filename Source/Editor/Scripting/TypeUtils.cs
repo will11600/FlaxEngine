@@ -15,7 +15,7 @@ partial class TypeUtils
     /// <summary>
     /// Custom list of scripting types containers. Can be used by custom scripting languages to provide types info for the editor.
     /// </summary>
-    public static List<IScriptTypesContainer> CustomTypes = new List<IScriptTypesContainer>();
+    public static List<IScriptTypesContainer> CustomTypes = new();
 
     /// <summary>
     /// Gets the script type of the object.

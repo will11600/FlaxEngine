@@ -33,7 +33,7 @@ public class FileProxy : ContentProxy
     public override EditorWindow Open(Editor editor, ContentItem item)
     {
 #if PLATFORM_WINDOWS
-        CreateProcessSettings settings = new CreateProcessSettings
+        CreateProcessSettings settings = new()
         {
             ShellExecute = true,
             FileName = item.Path

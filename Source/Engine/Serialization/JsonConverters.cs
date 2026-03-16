@@ -61,7 +61,7 @@ internal class SceneReferenceConverter : JsonConverter
     /// <inheritdoc />
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer)
     {
-        SceneReference result = new SceneReference();
+        SceneReference result = new();
 
         if (reader.TokenType == JsonToken.String)
         {

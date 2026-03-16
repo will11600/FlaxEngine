@@ -91,7 +91,7 @@ public sealed class CodeEditingModule : EditorModule
         }
     }
 
-    private readonly List<ISourceCodeEditor> _editors = new List<ISourceCodeEditor>(8);
+    private readonly List<ISourceCodeEditor> _editors = new(8);
     private ISourceCodeEditor _selectedEditor;
     private bool _autoGenerateScriptsProjectFiles;
 
@@ -158,7 +158,7 @@ public sealed class CodeEditingModule : EditorModule
     /// <summary> 
     /// The all types collection from all assemblies (including C# system libraries).
     /// </summary>
-    public readonly CachedTypesCollection AllWithStd = new CachedTypesCollection(8096, ScriptType.Null, type => true, assembly => true);
+    public readonly CachedTypesCollection AllWithStd = new(8096, ScriptType.Null, type => true, assembly => true);
 
     /// <summary>
     /// The all valid types collection for the Visual Script property types (includes basic types like int/float, structures, object references).
@@ -168,27 +168,27 @@ public sealed class CodeEditingModule : EditorModule
     /// <summary>
     /// The actors collection.
     /// </summary>
-    public readonly CachedTypesCollection Actors = new CachedTypesCollection(1024, new ScriptType(typeof(Actor)), IsTypeValidScriptingType, HasAssemblyValidScriptingTypes);
+    public readonly CachedTypesCollection Actors = new(1024, new ScriptType(typeof(Actor)), IsTypeValidScriptingType, HasAssemblyValidScriptingTypes);
 
     /// <summary>
     /// The scripts collection.
     /// </summary>
-    public readonly CachedTypesCollection Scripts = new CachedTypesCollection(1024, new ScriptType(typeof(Script)), IsTypeValidScriptingType, HasAssemblyValidScriptingTypes);
+    public readonly CachedTypesCollection Scripts = new(1024, new ScriptType(typeof(Script)), IsTypeValidScriptingType, HasAssemblyValidScriptingTypes);
 
     /// <summary>
     /// The control types collection (for game UI).
     /// </summary>
-    public readonly CachedTypesCollection Controls = new CachedTypesCollection(64, new ScriptType(typeof(Control)), IsTypeValidScriptingTypeControls, HasAssemblyValidScriptingTypes);
+    public readonly CachedTypesCollection Controls = new(64, new ScriptType(typeof(Control)), IsTypeValidScriptingTypeControls, HasAssemblyValidScriptingTypes);
 
     /// <summary>
     /// The Animation Graph custom nodes collection.
     /// </summary>
-    public readonly CachedCustomAnimGraphNodesCollection AnimGraphNodes = new CachedCustomAnimGraphNodesCollection(32, new ScriptType(typeof(AnimationGraph.CustomNodeArchetypeFactoryAttribute)), IsTypeValidScriptingType, HasAssemblyValidScriptingTypes);
+    public readonly CachedCustomAnimGraphNodesCollection AnimGraphNodes = new(32, new ScriptType(typeof(AnimationGraph.CustomNodeArchetypeFactoryAttribute)), IsTypeValidScriptingType, HasAssemblyValidScriptingTypes);
 
     /// <summary>
     /// The Behavior Tree custom nodes collection.
     /// </summary>
-    public readonly CachedTypesCollection BehaviorTreeNodes = new CachedTypesCollection(64, new ScriptType(typeof(BehaviorTreeNode)), IsTypeValidScriptingType, HasAssemblyValidScriptingTypes);
+    public readonly CachedTypesCollection BehaviorTreeNodes = new(64, new ScriptType(typeof(BehaviorTreeNode)), IsTypeValidScriptingType, HasAssemblyValidScriptingTypes);
 
     internal CodeEditingModule(Editor editor)
     : base(editor)

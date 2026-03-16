@@ -57,7 +57,7 @@ public abstract class DragHelper<T, U> : DragHelper where U : DragEventArgs
     /// <summary>
     /// The objects gathered.
     /// </summary>
-    public readonly List<T> Objects = new List<T>();
+    public readonly List<T> Objects = new();
 
     /// <summary>
     /// Gets a value indicating whether this instance has valid drag data.

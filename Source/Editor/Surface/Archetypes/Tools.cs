@@ -192,7 +192,7 @@ public static class Tools
         }
 
         private Gradient _gradient;
-        private readonly List<GradientStop> _stops = new List<GradientStop>();
+        private readonly List<GradientStop> _stops = new();
         private GradientStop _selected;
         private Button _addButton;
         private Button _removeButton;
@@ -1071,7 +1071,7 @@ public static class Tools
 
     internal class RerouteNode : SurfaceNode, IConnectionInstigator
     {
-        internal static readonly Float2 DefaultSize = new Float2(FlaxEditor.Surface.Constants.BoxSize);
+        internal static readonly Float2 DefaultSize = new(FlaxEditor.Surface.Constants.BoxSize);
         private Rectangle _localBounds;
         private InputBox _input;
         private OutputBox _output;
@@ -1355,8 +1355,7 @@ public static class Tools
     /// </summary>
     public static NodeArchetype[] Nodes =
     {
-        new NodeArchetype
-        {
+        new() {
             // [Deprecated]
             TypeID = 1,
             Title = "Fresnel",
@@ -1371,8 +1370,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(0, "", typeof(float), 3)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 2,
             Title = "Desaturation",
             Description = "Desaturates input, or converts the colors of its input into shades of gray, based a certain percentage",
@@ -1393,8 +1391,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Vector_Z(0, Surface.Constants.LayoutOffsetY * 5 + 5, 0)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 3,
             Title = "Time",
             Description = "Game time constant",
@@ -1406,8 +1403,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(1, "Scaled Time", typeof(float), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 4,
             Title = "Fresnel",
             Description = "Calculates a falloff based on the dot product of the surface normal and the direction to the camera",
@@ -1426,8 +1422,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(0, "", typeof(float), 3)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 5,
             Title = "Time",
             Description = "Game time constant",
@@ -1439,8 +1434,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(1, "Delta Seconds", typeof(float), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 6,
             Title = "Panner",
             Description = "Animates UVs over time",
@@ -1460,8 +1454,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(0, "", typeof(Float2), 3)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 7,
             Title = "Linearize Depth",
             Description = "Scene depth buffer texture lookup node",
@@ -1473,8 +1466,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(0, "Linear Depth", typeof(float), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 8,
             Title = "Time",
             Description = "Simulation time and update delta time access",
@@ -1486,8 +1478,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(1, "Delta Seconds", typeof(float), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 9,
             Title = "Transform Position To Screen UV",
             Description = "Transforms world-space position into screen space coordinates (normalized)",
@@ -1499,8 +1490,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(0, "Screen Space UV", typeof(Float2), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 10,
             Title = "Color Gradient",
             Create = (id, context, arch, groupArch) => new ColorGradientNode(id, context, arch, groupArch),
@@ -1538,8 +1528,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float4), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 11,
             Title = "Comment",
             AlternativeTitles = new[] { "//", "Group" },
@@ -1577,8 +1566,7 @@ public static class Tools
         CurveNode<Float2>.GetArchetype(13, "Curve Float2", typeof(Float2), Float2.Zero, Float2.One),
         CurveNode<Float3>.GetArchetype(14, "Curve Float3", typeof(Float3), Float3.Zero, Float3.One),
         CurveNode<Float4>.GetArchetype(15, "Curve Float4", typeof(Float4), Float4.Zero, Float4.One),
-        new NodeArchetype
-        {
+        new() {
             TypeID = 16,
             Create = (id, context, arch, groupArch) => new GetGameplayGlobalNode(id, context, arch, groupArch),
             Title = "Get Gameplay Global",
@@ -1597,8 +1585,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(0, "Value", null, 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 17,
             Title = "Platform Switch",
             Description = "Gets the input value based on the runtime-platform type",
@@ -1624,8 +1611,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Input(11, "iOS", true, null, 12),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 18,
             Title = "Asset Reference",
             Create = (id, context, arch, groupArch) => new AssetReferenceNode(id, context, arch, groupArch),
@@ -1642,8 +1628,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Asset(0, 0, 0, typeof(Asset)),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 19,
             Title = "This Instance",
             Create = (id, context, arch, groupArch) => new ThisNode(id, context, arch, groupArch),
@@ -1659,8 +1644,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(0, "Instance", typeof(VisualScript), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 20,
             Title = "To String",
             Description = "Converts the value into a human-readable string representation.",
@@ -1677,8 +1661,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Input(0, string.Empty, true, null, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 21,
             Title = "Actor Reference",
             Create = (id, context, arch, groupArch) => new ActorReferenceNode(id, context, arch, groupArch),
@@ -1695,8 +1678,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Actor(0, 0, 0, typeof(Actor), 160),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 22,
             Title = "As",
             AlternativeTitles = new[] { "Cast" },
@@ -1714,8 +1696,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(FlaxEngine.Object), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 23,
             Title = "Type Reference",
             Create = (id, context, arch, groupArch) => new TypeReferenceNode(id, context, arch, groupArch),
@@ -1732,8 +1713,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(1, "Type Name", typeof(string), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 24,
             Title = "Is",
             Create = (id, context, arch, groupArch) => new IsNode(id, context, arch, groupArch),
@@ -1750,8 +1730,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(FlaxEngine.Object), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 25,
             Title = "Cast",
             Create = (id, context, arch, groupArch) => new CastNode(id, context, arch, groupArch, new ScriptType(typeof(FlaxEngine.Object))),
@@ -1771,8 +1750,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(2, string.Empty, typeof(FlaxEngine.Object), 4),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 26,
             Title = "Cast Value",
             Create = (id, context, arch, groupArch) => new CastNode(id, context, arch, groupArch, ScriptType.Object),
@@ -1792,8 +1770,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Output(2, string.Empty, typeof(object), 4),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 27,
             Title = "Is Null",
             Description = "Checks if the object is null. Return false if it's valid.",
@@ -1805,8 +1782,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(object), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 28,
             Title = "Is Valid",
             Description = "Checks if the object is valid. Return false if it's null.",
@@ -1818,8 +1794,7 @@ public static class Tools
                 NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(object), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 29,
             Title = "Reroute",
             Create = (id, context, arch, groupArch) => new RerouteNode(id, context, arch, groupArch),

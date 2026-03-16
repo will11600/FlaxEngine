@@ -94,8 +94,7 @@ internal sealed class AssetReferencesGraphWindow : EditorWindow, IVisjectSurface
 
     private static readonly NodeArchetype[] GraphNodes =
     {
-        new NodeArchetype
-        {
+        new() {
             TypeID = 1,
             Title = "Asset",
             Description = string.Empty,
@@ -104,7 +103,7 @@ internal sealed class AssetReferencesGraphWindow : EditorWindow, IVisjectSurface
         },
     };
 
-    private static readonly List<GroupArchetype> GraphGroups = new List<GroupArchetype>
+    private static readonly List<GroupArchetype> GraphGroups = new()
     {
         new GroupArchetype
         {

@@ -191,7 +191,7 @@ public class SculptTerrainGizmoMode : EditorGizmoMode
     /// <summary>
     /// The selected terrain patches collection that are under cursor (affected by the brush).
     /// </summary>
-    public readonly List<PatchLocation> PatchesUnderCursor = new List<PatchLocation>();
+    public readonly List<PatchLocation> PatchesUnderCursor = new();
 
     /// <summary>
     /// Describes the terrain chunk link.
@@ -212,7 +212,7 @@ public class SculptTerrainGizmoMode : EditorGizmoMode
     /// <summary>
     /// The selected terrain chunk collection that are under cursor (affected by the brush).
     /// </summary>
-    public readonly List<ChunkLocation> ChunksUnderCursor = new List<ChunkLocation>();
+    public readonly List<ChunkLocation> ChunksUnderCursor = new();
 
     /// <summary>
     /// Gets the selected terrain actor (see <see cref="Modules.SceneEditingModule"/>).

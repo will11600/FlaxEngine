@@ -31,9 +31,9 @@ public unsafe class ManagedArray
 
     [ThreadStatic] private static Dictionary<ManagedArray, ManagedHandle> pooledArrayHandles;
 
-    public static ManagedArray WrapNewArray(Array arr) => new ManagedArray(arr, arr.GetType());
+    public static ManagedArray WrapNewArray(Array arr) => new(arr, arr.GetType());
 
-    public static ManagedArray WrapNewArray(Array arr, Type arrayType) => new ManagedArray(arr, arrayType);
+    public static ManagedArray WrapNewArray(Array arr, Type arrayType) => new(arr, arrayType);
 
     /// <summary>
     /// Returns an instance of ManagedArray from shared pool.
@@ -74,10 +74,10 @@ public unsafe class ManagedArray
     }
 
     internal static ManagedArray AllocateNewArray(int length, Type arrayType, Type elementType)
-        => new ManagedArray((IntPtr)NativeInterop.NativeAlloc(length, NativeInterop.GetTypeSize(elementType)), length, arrayType, elementType);
+        => new((IntPtr)NativeInterop.NativeAlloc(length, NativeInterop.GetTypeSize(elementType)), length, arrayType, elementType);
 
     internal static ManagedArray AllocateNewArray(IntPtr ptr, int length, Type arrayType, Type elementType)
-        => new ManagedArray(ptr, length, arrayType, elementType);
+        => new(ptr, length, arrayType, elementType);
 
     /// <summary>
     /// Returns an instance of ManagedArray from shared pool.
@@ -190,7 +190,7 @@ public unsafe class ManagedArray
 
     internal Type ArrayType => _arrayType;
 
-    public Span<T> ToSpan<T>() where T : struct => new Span<T>(_unmanagedData.ToPointer(), _length);
+    public Span<T> ToSpan<T>() where T : struct => new(_unmanagedData.ToPointer(), _length);
 
     public T[] ToArray<T>() where T : struct => new Span<T>(_unmanagedData.ToPointer(), _length).ToArray();
 
@@ -363,10 +363,10 @@ public struct ManagedHandle
     private ManagedHandle(object value, GCHandleType type) => handle = ManagedHandlePool.AllocateHandle(value, type);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ManagedHandle Alloc(object value) => new ManagedHandle(value, GCHandleType.Normal);
+    public static ManagedHandle Alloc(object value) => new(value, GCHandleType.Normal);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ManagedHandle Alloc(object value, GCHandleType type) => new ManagedHandle(value, type);
+    public static ManagedHandle Alloc(object value, GCHandleType type) => new(value, type);
 
     public void Free()
     {
@@ -388,7 +388,7 @@ public struct ManagedHandle
     public static explicit operator ManagedHandle(IntPtr value) => FromIntPtr(value);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ManagedHandle FromIntPtr(IntPtr value) => new ManagedHandle(value);
+    public static ManagedHandle FromIntPtr(IntPtr value) => new(value);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static explicit operator IntPtr(ManagedHandle value) => ToIntPtr(value);
@@ -435,7 +435,7 @@ public struct ManagedHandle
         // Periodically when the pools are being accessed and conditions are met, the other pool is cleared and swapped.
         private static Dictionary<IntPtr, object> weakPool = new();
         private static Dictionary<IntPtr, object> weakPoolOther = new();
-        private static object weakPoolLock = new object();
+        private static object weakPoolLock = new();
         private static ulong nextWeakPoolCollection;
         private static int nextWeakPoolGCCollection;
         private static long lastWeakPoolCollectionTime;

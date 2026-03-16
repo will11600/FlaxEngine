@@ -165,10 +165,10 @@ partial class JsonSerializer
     internal static JsonSerializerSettings SettingsManagedOnly = CreateDefaultSettings(true);
     internal static ExtendedSerializationBinder SerializationBinder;
     internal static FlaxObjectConverter ObjectConverter;
-    internal static ThreadLocal<SerializerCache> Current = new ThreadLocal<SerializerCache>();
-    internal static ThreadLocal<SerializerCache> Cache = new ThreadLocal<SerializerCache>(() => new SerializerCache(false));
-    internal static ThreadLocal<SerializerCache> CacheManagedOnly = new ThreadLocal<SerializerCache>(() => new SerializerCache(true));
-    internal static ThreadLocal<IntPtr> CachedGuidBuffer = new ThreadLocal<IntPtr>(() => Marshal.AllocHGlobal(32 * sizeof(char)), true);
+    internal static ThreadLocal<SerializerCache> Current = new();
+    internal static ThreadLocal<SerializerCache> Cache = new(() => new SerializerCache(false));
+    internal static ThreadLocal<SerializerCache> CacheManagedOnly = new(() => new SerializerCache(true));
+    internal static ThreadLocal<IntPtr> CachedGuidBuffer = new(() => Marshal.AllocHGlobal(32 * sizeof(char)), true);
     internal static string CachedGuidDigits = "0123456789abcdef";
 #if FLAX_EDITOR
     /// <summary>The version of the cache, used to check that a cache is not out of date</summary>

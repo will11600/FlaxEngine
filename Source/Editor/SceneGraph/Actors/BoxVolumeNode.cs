@@ -20,18 +20,18 @@ public class BoxVolumeNode : ActorNode
 {
     private static readonly Int3[] BoxTrianglesIndicesCache =
     {
-        new Int3(3, 1, 2),
-        new Int3(3, 0, 1),
-        new Int3(7, 0, 3),
-        new Int3(7, 4, 0),
-        new Int3(7, 6, 5),
-        new Int3(7, 5, 4),
-        new Int3(6, 2, 1),
-        new Int3(6, 1, 5),
-        new Int3(1, 0, 4),
-        new Int3(1, 4, 5),
-        new Int3(7, 2, 6),
-        new Int3(7, 3, 2),
+        new(3, 1, 2),
+        new(3, 0, 1),
+        new(7, 0, 3),
+        new(7, 4, 0),
+        new(7, 6, 5),
+        new(7, 5, 4),
+        new(6, 2, 1),
+        new(6, 1, 5),
+        new(1, 0, 4),
+        new(1, 4, 5),
+        new(7, 2, 6),
+        new(7, 3, 2),
     };
 
     /// <summary>
@@ -86,7 +86,7 @@ public class BoxVolumeNode : ActorNode
             {
                 var actor = (BoxVolume)_node.Actor;
                 var localOffset = _offset * actor.Size;
-                Transform localTrans = new Transform(localOffset);
+                Transform localTrans = new(localOffset);
                 return actor.Transform.LocalToWorld(localTrans);
             }
             set

@@ -29,7 +29,7 @@ public static class Parameters
     public class SurfaceNodeParamsGet : SurfaceNode, IParametersDependantNode
     {
         private ComboBoxElement _combobox;
-        private readonly List<ISurfaceNodeElement> _dynamicChildren = new List<ISurfaceNodeElement>();
+        private readonly List<ISurfaceNodeElement> _dynamicChildren = new();
         private bool _isUpdateLocked;
         private ScriptType _layoutType;
         private NodeElementArchetype[] _layoutElements;
@@ -42,7 +42,7 @@ public static class Parameters
         /// <summary>
         /// The default prototypes for the node elements to use for the given parameter type.
         /// </summary>
-        public static readonly Dictionary<Type, NodeElementArchetype[]> DefaultPrototypes = new Dictionary<Type, NodeElementArchetype[]>
+        public static readonly Dictionary<Type, NodeElementArchetype[]> DefaultPrototypes = new()
         {
             {
                 typeof(bool),
@@ -557,7 +557,7 @@ public static class Parameters
         /// <summary>
         /// The <see cref="SurfaceNodeParamsGet.DefaultPrototypes"/> implementation for Particle Emitter graph.
         /// </summary>
-        public static readonly Dictionary<Type, NodeElementArchetype[]> DefaultPrototypesParticleEmitter = new Dictionary<Type, NodeElementArchetype[]>
+        public static readonly Dictionary<Type, NodeElementArchetype[]> DefaultPrototypesParticleEmitter = new()
         {
             {
                 typeof(bool),
@@ -1020,8 +1020,7 @@ public static class Parameters
     /// </summary>
     public static NodeArchetype[] Nodes =
     {
-        new NodeArchetype
-        {
+        new() {
             TypeID = 1,
             Create = (id, context, arch, groupArch) => new SurfaceNodeParamsGet(id, context, arch, groupArch),
             IsInputCompatible = SurfaceNodeParamsGet.IsInputCompatible,
@@ -1039,8 +1038,7 @@ public static class Parameters
                 NodeElementArchetype.Factory.ComboBox(2, 0, 116)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 2,
             Create = (id, context, arch, groupArch) => new SurfaceNodeParamsGetParticleEmitter(id, context, arch, groupArch),
             IsInputCompatible = SurfaceNodeParamsGetParticleEmitter.IsInputCompatible,
@@ -1058,8 +1056,7 @@ public static class Parameters
                 NodeElementArchetype.Factory.ComboBox(2, 0, 116)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 3,
             Create = (id, context, arch, groupArch) => new SurfaceNodeParamsGetVisualScript(id, context, arch, groupArch),
             IsInputCompatible = SurfaceNodeParamsGetVisualScript.IsInputCompatible,
@@ -1077,8 +1074,7 @@ public static class Parameters
                 NodeElementArchetype.Factory.ComboBox(2, 0, 116)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 4,
             Create = (id, context, arch, groupArch) => new SurfaceNodeParamsSet(id, context, arch, groupArch),
             IsInputCompatible = SurfaceNodeParamsSet.IsInputCompatible,
@@ -1100,8 +1096,7 @@ public static class Parameters
                 NodeElementArchetype.Factory.ComboBox(2 + 20, 0, 116)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 5,
             Create = (id, context, arch, groupArch) => new SurfaceNodeParamsSet(id, context, arch, groupArch),
             Title = "Set Parameter",

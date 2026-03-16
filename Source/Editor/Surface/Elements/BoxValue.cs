@@ -42,7 +42,7 @@ public sealed class BoxValue : ContainerControl, ISurfaceNodeElement
     /// </summary>
     public BoundingBox Value
     {
-        get => new BoundingBox(new Vector3(_minX.Value, _minY.Value, _minZ.Value), new Vector3(_maxX.Value, _maxY.Value, _maxZ.Value));
+        get => new(new Vector3(_minX.Value, _minY.Value, _minZ.Value), new Vector3(_maxX.Value, _maxY.Value, _maxZ.Value));
         set
         {
             _minX.Value = value.Minimum.X;

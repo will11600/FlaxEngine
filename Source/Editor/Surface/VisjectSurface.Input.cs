@@ -28,12 +28,12 @@ public partial class VisjectSurface
     private Float2 _gridRoundingDelta;
     private HashSet<SurfaceNode> _movingNodes;
     private HashSet<SurfaceNode> _temporarySelectedNodes;
-    private readonly Stack<InputBracket> _inputBrackets = new Stack<InputBracket>();
+    private readonly Stack<InputBracket> _inputBrackets = new();
 
     private class InputBracket
     {
         private readonly float DefaultWidth = 120f;
-        private readonly Margin _padding = new Margin(10f);
+        private readonly Margin _padding = new(10f);
 
         public Box Box { get; }
         public Float2 EndBracketPosition { get; }

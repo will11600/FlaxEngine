@@ -22,7 +22,7 @@ public sealed class BuildingScenesState : EditorState
     private sealed class SubStateMachine : StateMachine
     {
         public int ActionIndex = -1;
-        public readonly List<GeneralOptions.BuildAction> Actions = new List<GeneralOptions.BuildAction>();
+        public readonly List<GeneralOptions.BuildAction> Actions = new();
 
         protected override void SwitchState(State nextState)
         {

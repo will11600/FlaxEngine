@@ -29,7 +29,7 @@ public partial class VisjectSurface
     /// <summary>
     /// Drag and drop handlers.
     /// </summary>
-    public readonly DragHandlers DragHandlers = new DragHandlers();
+    public readonly DragHandlers DragHandlers = new();
 
     /// <inheritdoc />
     public override DragDropEffect OnDragEnter(ref Float2 location, DragData data)

@@ -26,8 +26,8 @@ public sealed class PluginsWindow : EditorWindow
     private Tabs _tabs;
     private Button _addPluginProjectButton;
     private Button _cloneProjectButton;
-    private readonly List<CategoryEntry> _categories = new List<CategoryEntry>();
-    private readonly Dictionary<Plugin, PluginEntry> _entries = new Dictionary<Plugin, PluginEntry>();
+    private readonly List<CategoryEntry> _categories = new();
+    private readonly Dictionary<Plugin, PluginEntry> _entries = new();
 
     /// <summary>
     /// Plugin entry control.

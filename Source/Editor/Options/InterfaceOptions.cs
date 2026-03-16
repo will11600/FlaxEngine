@@ -551,11 +551,11 @@ public class InterfaceOptions
     private static FontAsset DefaultFont => FlaxEngine.Content.LoadAsyncInternal<FontAsset>(EditorAssets.PrimaryFont);
     private static FontAsset ConsoleFont => FlaxEngine.Content.LoadAsyncInternal<FontAsset>(EditorAssets.InconsolataRegularFont);
 
-    private FontReference _titleFont = new FontReference(DefaultFont, 18);
-    private FontReference _largeFont = new FontReference(DefaultFont, 14);
-    private FontReference _mediumFont = new FontReference(DefaultFont, 9);
-    private FontReference _smallFont = new FontReference(DefaultFont, 9);
-    private FontReference _outputLogFont = new FontReference(ConsoleFont, 10);
+    private FontReference _titleFont = new(DefaultFont, 18);
+    private FontReference _largeFont = new(DefaultFont, 14);
+    private FontReference _mediumFont = new(DefaultFont, 9);
+    private FontReference _smallFont = new(DefaultFont, 9);
+    private FontReference _outputLogFont = new(ConsoleFont, 10);
 
     /// <summary>
     /// The list of fallback fonts to use when main text font is missing certain characters. Empty to use fonts from GraphicsSettings.

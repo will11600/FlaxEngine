@@ -100,7 +100,7 @@ public class CameraCutMedia : Media
     /// <param name="req">The request data.</param>
     public void OnThumbnailRenderingBegin(SceneRenderTask task, GPUContext context, ref CameraCutThumbnailRenderer.Request req)
     {
-        RenderView view = new RenderView();
+        RenderView view = new();
         var track = (CameraCutTrack)Track;
         Camera cam = track.Camera;
         var viewport = new FlaxEngine.Viewport(Float2.Zero, task.Buffers.Size);

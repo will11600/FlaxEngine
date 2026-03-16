@@ -14,7 +14,7 @@ public class ButtonElement : LayoutElement
     /// <summary>
     /// The button.
     /// </summary>
-    public readonly Button Button = new Button();
+    public readonly Button Button = new();
 
     /// <inheritdoc />
     public override Control Control => Button;

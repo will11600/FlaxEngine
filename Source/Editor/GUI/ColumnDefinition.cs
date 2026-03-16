@@ -56,7 +56,7 @@ public class ColumnDefinition
     /// <summary>
     /// The column title margin.
     /// </summary>
-    public Margin TitleMargin = new Margin(4, 4, 0, 0);
+    public Margin TitleMargin = new(4, 4, 0, 0);
 
     /// <summary>
     /// The minimum size (in pixels) of the column.

@@ -59,12 +59,12 @@ public class ContextMenu : ContextMenuBase
     /// <summary>
     /// The items area margin.
     /// </summary>
-    protected Margin _itemsAreaMargin = new Margin(0, 0, 3, 3);
+    protected Margin _itemsAreaMargin = new(0, 0, 3, 3);
 
     /// <summary>
     /// The items margin.
     /// </summary>
-    protected Margin _itemsMargin = new Margin(16, 0, 2, 0);
+    protected Margin _itemsMargin = new(16, 0, 2, 0);
 
     /// <summary>
     /// The items panel.

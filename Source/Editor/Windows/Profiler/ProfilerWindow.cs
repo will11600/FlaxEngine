@@ -252,7 +252,7 @@ public sealed class ProfilerWindow : EditorWindow
             var managedAllocs = managedMemory - _lastManagedMemory - _lastManagedMemoryProfiler;
             _lastManagedMemory = managedMemory;
 
-            ProfilerMode.SharedUpdateData sharedData = new ProfilerMode.SharedUpdateData();
+            ProfilerMode.SharedUpdateData sharedData = new();
             sharedData.Begin();
             sharedData.ManagedMemoryAllocation = (int)managedAllocs;
             for (int i = 0; i < _tabs.ChildrenCount; i++)

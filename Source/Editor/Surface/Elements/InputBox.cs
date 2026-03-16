@@ -1324,7 +1324,7 @@ public class InputBox : Box
     /// <summary>
     /// The handlers for the input box default value editing. Used to display the default to the UI.
     /// </summary>
-    public static readonly List<IDefaultValueEditor> DefaultValueEditors = new List<IDefaultValueEditor>()
+    public static readonly List<IDefaultValueEditor> DefaultValueEditors = new()
     {
         new BooleanDefaultValueEditor(),
         new IntegerDefaultValueEditor(),

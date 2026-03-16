@@ -21,7 +21,7 @@ public abstract class RichTextBoxBase : TextBoxBase
     /// <summary>
     /// The text blocks.
     /// </summary>
-    protected List<TextBlock> _textBlocks = new List<TextBlock>();
+    protected List<TextBlock> _textBlocks = new();
 
     /// <summary>
     /// The custom callback for parsing text blocks.
@@ -382,7 +382,7 @@ public abstract class RichTextBoxBase : TextBoxBase
                 float alpha = Mathf.Min(1.0f, Mathf.Cos(_animateTime * BackgroundSelectedFlashSpeed) * 0.5f + 1.3f);
                 alpha *= alpha;
                 Color selectionColor = Color.White * alpha;
-                Rectangle selectionRect = new Rectangle(leftEdge.X, leftEdge.Y, rightEdge.X - leftEdge.X, height);
+                Rectangle selectionRect = new(leftEdge.X, leftEdge.Y, rightEdge.X - leftEdge.X, height);
                 textBlock.Style.BackgroundSelectedBrush.Draw(selectionRect, selectionColor);
             }
         }

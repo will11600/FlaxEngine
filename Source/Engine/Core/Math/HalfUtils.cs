@@ -66,7 +66,7 @@ internal class HalfUtils
     /// <returns>The half value</returns>
     public static ushort Pack(float f)
     {
-        FloatToUint conv = new FloatToUint
+        FloatToUint conv = new()
         {
             floatValue = f
         };

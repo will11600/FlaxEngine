@@ -100,32 +100,32 @@ public unsafe partial struct Vector2 : IEquatable<Vector2>, IFormattable, Json.I
     /// <summary>
     /// The X unit <see cref="Vector2" /> (1, 0).
     /// </summary>
-    public static readonly Vector2 UnitX = new Vector2(1.0f, 0.0f);
+    public static readonly Vector2 UnitX = new(1.0f, 0.0f);
 
     /// <summary>
     /// The Y unit <see cref="Vector2" /> (0, 1).
     /// </summary>
-    public static readonly Vector2 UnitY = new Vector2(0.0f, 1.0f);
+    public static readonly Vector2 UnitY = new(0.0f, 1.0f);
 
     /// <summary>
     /// A <see cref="Vector2" /> with all of its components set to half.
     /// </summary>
-    public static readonly Vector2 Half = new Vector2(0.5f, 0.5f);
+    public static readonly Vector2 Half = new(0.5f, 0.5f);
 
     /// <summary>
     /// A <see cref="Vector2" /> with all of its components set to one.
     /// </summary>
-    public static readonly Vector2 One = new Vector2(1.0f, 1.0f);
+    public static readonly Vector2 One = new(1.0f, 1.0f);
 
     /// <summary>
     /// A <see cref="Vector2" /> with all components equal to <see cref="double.MinValue"/> (or <see cref="float.MinValue"/> if using 32-bit precision).
     /// </summary>
-    public static readonly Vector2 Minimum = new Vector2(Real.MinValue);
+    public static readonly Vector2 Minimum = new(Real.MinValue);
 
     /// <summary>
     /// A <see cref="Vector2" /> with all components equal to <see cref="double.MaxValue"/> (or <see cref="float.MaxValue"/> if using 32-bit precision).
     /// </summary>
-    public static readonly Vector2 Maximum = new Vector2(Real.MaxValue);
+    public static readonly Vector2 Maximum = new(Real.MaxValue);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Vector2" /> struct.
@@ -237,12 +237,12 @@ public unsafe partial struct Vector2 : IEquatable<Vector2>, IFormattable, Json.I
     /// <summary>
     /// Gets a vector with values being absolute values of that vector.
     /// </summary>
-    public Vector2 Absolute => new Vector2(Mathr.Abs(X), Mathr.Abs(Y));
+    public Vector2 Absolute => new(Mathr.Abs(X), Mathr.Abs(Y));
 
     /// <summary>
     /// Gets a vector with values being opposite to values of that vector.
     /// </summary>
-    public Vector2 Negative => new Vector2(-X, -Y);
+    public Vector2 Negative => new(-X, -Y);
 
     /// <summary>
     /// Gets or sets the component at the specified index.

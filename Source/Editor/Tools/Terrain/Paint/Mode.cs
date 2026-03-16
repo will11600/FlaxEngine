@@ -75,7 +75,7 @@ public abstract class Mode
         var tempBuffer = (Color32*)gizmo.GetSplatmapTempBuffer(heightmapLength * Color32.SizeInBytes, splatmapIndex).ToPointer();
         var tempBufferOther = (Color32*)gizmo.GetSplatmapTempBuffer(heightmapLength * Color32.SizeInBytes, (splatmapIndex + 1) % 2).ToPointer();
         var unitsPerVertexInv = 1.0f / FlaxEngine.Terrain.UnitsPerVertex;
-        ApplyParams p = new ApplyParams
+        ApplyParams p = new()
         {
             Terrain = terrain,
             Brush = brush,

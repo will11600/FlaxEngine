@@ -13,7 +13,7 @@ partial class LayersAndTagsSettings
     /// The tag names.
     /// </summary>
     [EditorOrder(10), EditorDisplay("Tags", EditorDisplayAttribute.InlineStyle)]
-    public List<string> Tags = new List<string>();
+    public List<string> Tags = new();
 
     /// <summary>
     /// The layer names.

@@ -494,8 +494,7 @@ public static class ParticleModules
     public static NodeArchetype[] Nodes =
     {
         // Spawn Modules
-        new NodeArchetype
-        {
+        new() {
             TypeID = 100,
             Create = CreateParticleModuleNode,
             Title = "Constant Spawn Rate",
@@ -513,8 +512,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f, "Rate", true, typeof(float), 0, 2),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 101,
             Create = CreateParticleModuleNode,
             Title = "Single Burst",
@@ -532,8 +530,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f, "Count", true, typeof(float), 0, 2),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 102,
             Create = CreateParticleModuleNode,
             Title = "Periodic Burst",
@@ -553,8 +550,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Delay", true, typeof(float), 1, 3),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 103,
             Create = CreateParticleModuleNode,
             Title = "Periodic Burst (range)",
@@ -576,8 +572,7 @@ public static class ParticleModules
         },
 
         // Initialize
-        new NodeArchetype
-        {
+        new() {
             TypeID = 200,
             Create = CreateSetParticleAttributeModuleNode,
             Title = "Set Attribute",
@@ -599,8 +594,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 1.0f, string.Empty, true, null, 0, 4),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 201,
             Create = CreateOrientSpriteNode,
             Title = "Orient Sprite",
@@ -620,8 +614,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Custom Vector", true, typeof(Float3), 0, 3),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 202,
             Create = CreateParticleModuleNode,
             Title = "Position (sphere surface)",
@@ -643,8 +636,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Arc", true, typeof(float), 2, 4),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 203,
             Create = CreateParticleModuleNode,
             Title = "Position (plane)",
@@ -664,8 +656,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Size", true, typeof(Float2), 1, 3),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 204,
             Create = CreateParticleModuleNode,
             Title = "Position (circle)",
@@ -687,8 +678,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Arc", true, typeof(float), 2, 4),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 205,
             Create = CreateParticleModuleNode,
             Title = "Position (disc)",
@@ -710,8 +700,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Arc", true, typeof(float), 2, 4),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 206,
             Create = CreateParticleModuleNode,
             Title = "Position (box surface)",
@@ -731,8 +720,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Size", true, typeof(Float3), 1, 3),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 207,
             Create = CreateParticleModuleNode,
             Title = "Position (box volume)",
@@ -752,8 +740,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Size", true, typeof(Float3), 1, 3),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 208,
             Create = CreateParticleModuleNode,
             Title = "Position (cylinder)",
@@ -777,8 +764,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 3.0f, "Arc", true, typeof(float), 3, 5),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 209,
             Create = CreateParticleModuleNode,
             Title = "Position (line)",
@@ -798,8 +784,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "End", true, typeof(Float3), 1, 3),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 210,
             Create = CreateParticleModuleNode,
             Title = "Position (torus)",
@@ -823,8 +808,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 3.0f, "Arc", true, typeof(float), 3, 5),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 211,
             Create = CreateParticleModuleNode,
             Title = "Position (sphere volume)",
@@ -846,8 +830,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Arc", true, typeof(float), 2, 4),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 212,
             Create = CreateParticleModuleNode,
             Title = "Position (depth)",
@@ -868,8 +851,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Depth Offset", true, typeof(float), 2, 3),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 213,
             Create = CreateParticleModuleNode,
             Title = "Orient Model",
@@ -887,8 +869,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.ComboBox(0, -10.0f, 160, 2, typeof(ParticleModelFacingMode)),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 214,
             Create = CreateParticleModuleNode,
             Title = "Position (spiral)",
@@ -910,8 +891,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 2.0f, "Velocity Scale", true, typeof(float), 2, 4),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 215,
             Create = CreateParticleModuleNode,
             Title = "Position (Global SDF)",
@@ -924,8 +904,7 @@ public static class ParticleModules
                 (int)ModuleType.Initialize,
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 216,
             Create = CreateParticleModuleNode,
             Title = "Rotate Position Shape",
@@ -959,8 +938,7 @@ public static class ParticleModules
         GetParticleAttribute(ModuleType.Initialize, 263, "Set Radius", "Sets the particle radius", typeof(float), 100.0f),
 
         // Update Modules
-        new NodeArchetype
-        {
+        new() {
             TypeID = 300,
             Create = CreateParticleModuleNode,
             Title = "Update Age",
@@ -973,8 +951,7 @@ public static class ParticleModules
                 (int)ModuleType.Update,
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 301,
             Create = CreateParticleModuleNode,
             Title = "Gravity",
@@ -992,8 +969,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f, "Force", true, typeof(Float3), 0, 2),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 302,
             Create = CreateSetParticleAttributeModuleNode,
             Title = "Set Attribute",
@@ -1015,8 +991,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 1.0f, string.Empty, true, null, 0, 4),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 303,
             Create = CreateOrientSpriteNode,
             Title = "Orient Sprite",
@@ -1036,8 +1011,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 1.0f, "Custom Vector", true, typeof(Float3), 0, 3),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 304,
             Create = CreateParticleModuleNode,
             Title = "Force",
@@ -1055,8 +1029,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f, "Force", true, typeof(Float3), 0, 2),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 305,
             Create = CreateParticleModuleNode,
             Title = "Conform to Sphere",
@@ -1084,8 +1057,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 5.0f, "Stick Force", true, typeof(float), 5, 7),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 306,
             Create = CreateParticleModuleNode,
             Title = "Kill (sphere)",
@@ -1108,8 +1080,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Bool(0, (-0.5f + 2.0f) * Surface.Constants.LayoutOffsetY, 4),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 307,
             Create = CreateParticleModuleNode,
             Title = "Kill (box)",
@@ -1132,8 +1103,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Bool(0, (-0.5f + 2.0f) * Surface.Constants.LayoutOffsetY, 4),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 308,
             Create = CreateParticleModuleNode,
             Title = "Kill (custom)",
@@ -1150,8 +1120,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f, "Kill", true, typeof(bool), 0),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 309,
             Create = CreateParticleModuleNode,
             Title = "Orient Model",
@@ -1169,8 +1138,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.ComboBox(0, -10.0f, 160, 2, typeof(ParticleModelFacingMode)),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 330,
             Create = CreateParticleModuleNode,
             Title = "Collision (plane)",
@@ -1204,8 +1172,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 7, "Plane Normal", true, typeof(Float3), 6, 9),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 310,
             Create = CreateParticleModuleNode,
             Title = "Linear Drag",
@@ -1226,8 +1193,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Text(20.0f, 0.5f * Surface.Constants.LayoutOffsetY, "Use Sprite Size"),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 311,
             Create = CreateParticleModuleNode,
             Title = "Turbulence",
@@ -1255,8 +1221,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 5, "Octaves Count", true, typeof(int), 5, 7),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 331,
             Create = CreateParticleModuleNode,
             Title = "Collision (sphere)",
@@ -1290,8 +1255,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 7, "Sphere Radius", true, typeof(float), 6, 9),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 332,
             Create = CreateParticleModuleNode,
             Title = "Collision (box)",
@@ -1325,8 +1289,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 7, "Box Size", true, typeof(Float3), 6, 9),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 333,
             Create = CreateParticleModuleNode,
             Title = "Collision (cylinder)",
@@ -1362,8 +1325,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 8, "Cylinder Radius", true, typeof(float), 7, 10),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 334,
             Create = CreateParticleModuleNode,
             Title = "Collision (depth)",
@@ -1393,8 +1355,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 0, "Surface Thickness", true, typeof(float), 5, 8),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 335,
             Create = CreateParticleModuleNode,
             Title = "Conform to Global SDF",
@@ -1418,8 +1379,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 3.0f, "Stick Force", true, typeof(float), 3, 5),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 336,
             Create = CreateParticleModuleNode,
             Title = "Collision (Global SDF)",
@@ -1462,8 +1422,7 @@ public static class ParticleModules
         GetParticleAttribute(ModuleType.Update, 363, "Set Radius", "Sets the particle radius", typeof(float), 100.0f),
 
         // Render Modules
-        new NodeArchetype
-        {
+        new() {
             TypeID = 400,
             Create = CreateParticleModuleNode,
             Title = "Sprite Rendering",
@@ -1488,8 +1447,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Enum(100.0f, -10 + 70, 140, 3, typeof(DrawPass)),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 401,
             Create = CreateParticleModuleNode,
             Title = "Light Rendering",
@@ -1511,8 +1469,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Input(-0.5f + 2, "Fall Off Exponent", true, typeof(float), 2, 4),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 402,
             Create = CreateSortNode,
             Title = "Sort",
@@ -1533,8 +1490,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.TextBox(185, -10.0f, 100, TextBox.DefaultHeight, 3, false),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 403,
             Create = CreateParticleModuleNode,
             Title = "Model Rendering",
@@ -1564,8 +1520,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Enum(100.0f, -10 + 140, 140, 4, typeof(DrawPass)),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 404,
             Create = CreateParticleModuleNode,
             Title = "Ribbon Rendering",
@@ -1603,8 +1558,7 @@ public static class ParticleModules
                 NodeElementArchetype.Factory.Enum(100.0f, 6.0f * Surface.Constants.LayoutOffsetY, 140, 6, typeof(DrawPass)),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 405,
             Create = CreateParticleModuleNode,
             Title = "Volumetric Fog Rendering",

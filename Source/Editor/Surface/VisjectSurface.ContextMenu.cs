@@ -31,9 +31,9 @@ public partial class VisjectSurface
         /// <param name="version">The cache version number. Can be used to reject any cached data after.<see cref="NodesCache"/> rebuilt.</param>
         public delegate void IterateType(ScriptType scriptType, Dictionary<KeyValuePair<string, ushort>, GroupArchetype> cache, int version);
 
-        internal static readonly List<NodesCache> Caches = new List<NodesCache>(8);
+        internal static readonly List<NodesCache> Caches = new(8);
 
-        private readonly object _locker = new object();
+        private readonly object _locker = new();
         private readonly IterateType _iterator;
         private int _version;
         private Task _task;
@@ -203,7 +203,7 @@ public partial class VisjectSurface
     private ContextMenuButton _cmDistributeNodesVerticallyButton;
     private ContextMenuButton _cmRemoveNodeConnectionsButton;
     private ContextMenuButton _cmRemoveBoxConnectionsButton;
-    private readonly Float2 ContextMenuOffset = new Float2(5);
+    private readonly Float2 ContextMenuOffset = new(5);
 
     /// <summary>
     /// Gets a value indicating whether the primary surface context menu is being opened (eg. user is adding nodes).
@@ -298,7 +298,7 @@ public partial class VisjectSurface
 
         _cmStartPos = location;
 
-        List<Box> startBoxes = new List<Box>(_connectionInstigators.Where(c => c is Box).Cast<Box>());
+        List<Box> startBoxes = new(_connectionInstigators.Where(c => c is Box).Cast<Box>());
 
         // Position offset added so the user can quickly close the menu by clicking
         OnShowPrimaryMenu(_activeVisjectCM, _cmStartPos + ContextMenuOffset, startBoxes);

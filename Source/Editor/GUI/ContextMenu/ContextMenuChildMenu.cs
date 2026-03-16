@@ -15,7 +15,7 @@ public class ContextMenuChildMenu : ContextMenuButton
     /// <summary>
     /// The child context menu.
     /// </summary>
-    public readonly ContextMenu ContextMenu = new ContextMenu();
+    public readonly ContextMenu ContextMenu = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ContextMenuChildMenu"/> class.

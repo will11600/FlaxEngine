@@ -20,7 +20,7 @@ public class MainMenuButton : Control
     /// <summary>
     /// The context menu.
     /// </summary>
-    public readonly ContextMenu.ContextMenu ContextMenu = new ContextMenu.ContextMenu();
+    public readonly ContextMenu.ContextMenu ContextMenu = new();
 
     /// <summary>
     /// The background color when mouse is over.

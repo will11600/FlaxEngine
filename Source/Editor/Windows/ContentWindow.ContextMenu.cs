@@ -42,7 +42,7 @@ public partial class ContentWindow
         
         // Create context menu
         ContextMenuButton b;
-        ContextMenu cm = new ContextMenu
+        ContextMenu cm = new()
         {
             Tag = item
         };

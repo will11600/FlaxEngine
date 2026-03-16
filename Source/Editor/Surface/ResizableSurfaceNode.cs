@@ -28,7 +28,7 @@ public class ResizableSurfaceNode : SurfaceNode
     /// <summary>
     /// Minimum node size.
     /// </summary>
-    protected Float2 _sizeMin = new Float2(240, 160);
+    protected Float2 _sizeMin = new(240, 160);
 
     /// <summary>
     /// Node resizing rectangle bounds.

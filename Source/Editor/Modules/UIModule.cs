@@ -36,7 +36,7 @@ public sealed class UIModule : EditorModule
     private ContentStats _contentStats;
     private bool _progressFailed;
 
-    ContextMenuSingleSelectGroup<int> _numberOfClientsGroup = new ContextMenuSingleSelectGroup<int>();
+    ContextMenuSingleSelectGroup<int> _numberOfClientsGroup = new();
     
     /// <summary>
     /// Defines a viewport scaling option.
@@ -78,12 +78,12 @@ public sealed class UIModule : EditorModule
     /// <summary>
     /// The default viewport scaling options.
     /// </summary>
-    public List<ViewportScaleOption> DefaultViewportScaleOptions = new List<ViewportScaleOption>();
+    public List<ViewportScaleOption> DefaultViewportScaleOptions = new();
 
     /// <summary>
     /// The user defined viewport scaling options.
     /// </summary>
-    public List<ViewportScaleOption> CustomViewportScaleOptions = new List<ViewportScaleOption>();
+    public List<ViewportScaleOption> CustomViewportScaleOptions = new();
 
     private ContextMenuButton _menuFileSaveScenes;
     private ContextMenuButton _menuFileReloadScenes;
@@ -153,7 +153,7 @@ public sealed class UIModule : EditorModule
     /// <summary>
     /// The master dock panel for all Editor windows.
     /// </summary>
-    public MasterDockPanel MasterPanel = new MasterDockPanel();
+    public MasterDockPanel MasterPanel = new();
 
     /// <summary>
     /// The status strip control.

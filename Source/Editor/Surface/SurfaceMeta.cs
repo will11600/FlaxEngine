@@ -36,7 +36,7 @@ public class SurfaceMeta
     /// <summary>
     /// All meta entries
     /// </summary>
-    public readonly List<Entry> Entries = new List<Entry>();
+    public readonly List<Entry> Entries = new();
 
     /// <summary>
     /// The attribute meta type identifier. Uses byte[] as storage for Attribute[] serialized with BinaryFormatter (deprecated in .NET 5).
@@ -176,7 +176,7 @@ public class SurfaceMeta
 
             for (int i = 0; i < entries; i++)
             {
-                Entry e = new Entry
+                Entry e = new()
                 {
                     TypeID = stream.ReadInt32()
                 };

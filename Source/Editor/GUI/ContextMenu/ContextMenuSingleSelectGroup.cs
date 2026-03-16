@@ -21,8 +21,8 @@ class ContextMenuSingleSelectGroup<T>
         public List<ContextMenuButton> Buttons;
     }
 
-    private List<ContextMenu> _menus = new List<ContextMenu>();
-    private List<SingleSelectGroupItem> _items = new List<SingleSelectGroupItem>();
+    private List<ContextMenu> _menus = new();
+    private List<SingleSelectGroupItem> _items = new();
     private bool _hasSelected = false;
     private SingleSelectGroupItem _selectedItem;
 

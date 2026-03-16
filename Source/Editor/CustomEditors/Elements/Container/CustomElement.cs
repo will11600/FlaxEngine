@@ -14,7 +14,7 @@ where T : ContainerControl, new()
     /// <summary>
     /// The custom control.
     /// </summary>
-    public readonly T CustomControl = new T();
+    public readonly T CustomControl = new();
 
     /// <inheritdoc />
     public override ContainerControl ContainerControl => CustomControl;
@@ -30,7 +30,7 @@ where T : Control, new()
     /// <summary>
     /// The custom control.
     /// </summary>
-    public readonly T CustomControl = new T();
+    public readonly T CustomControl = new();
 
     /// <inheritdoc />
     public override Control Control => CustomControl;

@@ -30,7 +30,7 @@ public struct Matrix2x2 : IEquatable<Matrix2x2>, IFormattable
     /// <summary>
     /// The identity <see cref="Matrix2x2"/>.
     /// </summary>
-    public static readonly Matrix2x2 Identity = new Matrix2x2
+    public static readonly Matrix2x2 Identity = new()
     {
         M11 = 1.0f,
         M22 = 1.0f
@@ -103,7 +103,7 @@ public struct Matrix2x2 : IEquatable<Matrix2x2>, IFormattable
     /// </summary>
     public Float2 Row1
     {
-        get => new Float2(M11, M12);
+        get => new(M11, M12);
         set
         {
             M11 = value.X;
@@ -116,7 +116,7 @@ public struct Matrix2x2 : IEquatable<Matrix2x2>, IFormattable
     /// </summary>
     public Float2 Row2
     {
-        get => new Float2(M21, M22);
+        get => new(M21, M22);
         set
         {
             M21 = value.X;
@@ -129,7 +129,7 @@ public struct Matrix2x2 : IEquatable<Matrix2x2>, IFormattable
     /// </summary>
     public Float2 Column1
     {
-        get => new Float2(M11, M21);
+        get => new(M11, M21);
         set
         {
             M11 = value.X;
@@ -142,7 +142,7 @@ public struct Matrix2x2 : IEquatable<Matrix2x2>, IFormattable
     /// </summary>
     public Float2 Column2
     {
-        get => new Float2(M12, M22);
+        get => new(M12, M22);
         set
         {
             M12 = value.X;
@@ -155,7 +155,7 @@ public struct Matrix2x2 : IEquatable<Matrix2x2>, IFormattable
     /// </summary>
     public Float2 ScaleVector
     {
-        get => new Float2(M11, M22);
+        get => new(M11, M22);
         set
         {
             M11 = value.X;

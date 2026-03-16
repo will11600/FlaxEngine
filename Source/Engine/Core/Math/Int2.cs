@@ -31,27 +31,27 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// <summary>
     /// The X unit <see cref="Int2" /> (1, 0).
     /// </summary>
-    public static readonly Int2 UnitX = new Int2(1, 0);
+    public static readonly Int2 UnitX = new(1, 0);
 
     /// <summary>
     /// The Y unit <see cref="Int2" /> (0, 1).
     /// </summary>
-    public static readonly Int2 UnitY = new Int2(0, 1);
+    public static readonly Int2 UnitY = new(0, 1);
 
     /// <summary>
     /// A <see cref="Int2" /> with all of its components set to one.
     /// </summary>
-    public static readonly Int2 One = new Int2(1, 1);
+    public static readonly Int2 One = new(1, 1);
 
     /// <summary>
     /// A <see cref="Int2" /> with all components equal to <see cref="int.MinValue"/>.
     /// </summary>
-    public static readonly Int2 Minimum = new Int2(int.MinValue);
+    public static readonly Int2 Minimum = new(int.MinValue);
 
     /// <summary>
     /// A <see cref="Int2" /> with all components equal to <see cref="int.MaxValue"/>.
     /// </summary>
-    public static readonly Int2 Maximum = new Int2(int.MaxValue);
+    public static readonly Int2 Maximum = new(int.MaxValue);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Int2" /> struct.

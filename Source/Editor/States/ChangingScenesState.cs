@@ -16,8 +16,8 @@ namespace FlaxEditor.States;
 [HideInEditor]
 public sealed class ChangingScenesState : EditorState
 {
-    private readonly List<Guid> _scenesToLoad = new List<Guid>();
-    private readonly List<Scene> _scenesToUnload = new List<Scene>();
+    private readonly List<Guid> _scenesToLoad = new();
+    private readonly List<Scene> _scenesToUnload = new();
     private Guid _lastSceneFromRequest;
     private bool _sameSceneReload = false;
 

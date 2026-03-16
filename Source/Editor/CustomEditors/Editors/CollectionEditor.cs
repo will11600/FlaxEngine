@@ -457,7 +457,7 @@ public abstract class CollectionEditor : CustomEditor
     private bool _canResize;
     private bool _canReorderItems;
     private CollectionAttribute.DisplayType _displayType;
-    private List<CollectionDropPanel> _cachedDropPanels = new List<CollectionDropPanel>();
+    private List<CollectionDropPanel> _cachedDropPanels = new();
 
     /// <summary>
     /// Gets the length of the collection.

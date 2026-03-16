@@ -107,7 +107,7 @@ public class Table : ContainerControl
 
         if (_columns != null && _splits != null)
         {
-            Rectangle rect = new Rectangle(0, 0, 0, _headerHeight);
+            Rectangle rect = new(0, 0, 0, _headerHeight);
             for (int i = 0; i < _columns.Length; i++)
             {
                 rect.Width = GetColumnWidth(i);
@@ -148,7 +148,7 @@ public class Table : ContainerControl
         {
             if (_columns != null && _splits != null)
             {
-                Rectangle rect = new Rectangle(0, 0, 0, _headerHeight);
+                Rectangle rect = new(0, 0, 0, _headerHeight);
                 for (int i = 0; i < _columns.Length - 1; i++)
                 {
                     rect.Width = GetColumnWidth(i);
@@ -199,7 +199,7 @@ public class Table : ContainerControl
         {
             if (_columns != null && _splits != null)
             {
-                Rectangle rect = new Rectangle(0, 0, 0, _headerHeight);
+                Rectangle rect = new(0, 0, 0, _headerHeight);
                 for (int i = 0; i < _columns.Length - 1; i++)
                 {
                     rect.Width = GetColumnWidth(i);

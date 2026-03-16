@@ -138,7 +138,7 @@ public struct Viewport : IEquatable<Viewport>
     /// <value>The bounds.</value>
     public Rectangle Bounds
     {
-        get => new Rectangle(X, Y, Width, Height);
+        get => new(X, Y, Width, Height);
         set
         {
             X = value.X;
@@ -153,7 +153,7 @@ public struct Viewport : IEquatable<Viewport>
     /// </summary>
     public Float2 Size
     {
-        get => new Float2(Width, Height);
+        get => new(Width, Height);
         set
         {
             Width = value.X;

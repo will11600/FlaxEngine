@@ -193,9 +193,9 @@ public abstract class Media : ContainerControl
     /// </summary>
     public Track Track => _tack;
 
-    private Rectangle MoveLeftEdgeRect => new Rectangle(-5, -5, 10, Height + 10);
+    private Rectangle MoveLeftEdgeRect => new(-5, -5, 10, Height + 10);
 
-    private Rectangle MoveRightEdgeRect => new Rectangle(Width - 5, -5, 10, Height + 10);
+    private Rectangle MoveRightEdgeRect => new(Width - 5, -5, 10, Height + 10);
 
     /// <summary>
     /// The track properties editing proxy object. Assign it to add media properties editing support.

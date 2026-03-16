@@ -17,8 +17,8 @@ namespace FlaxEditor.States;
 [HideInEditor]
 public sealed class PlayingState : EditorState
 {
-    private readonly DuplicateScenes _duplicateScenes = new DuplicateScenes();
-    private readonly List<Guid> _selectedObjects = new List<Guid>();
+    private readonly DuplicateScenes _duplicateScenes = new();
+    private readonly List<Guid> _selectedObjects = new();
 
     /// <summary>
     /// Gets a value indicating whether any scene was dirty before entering the play mode.

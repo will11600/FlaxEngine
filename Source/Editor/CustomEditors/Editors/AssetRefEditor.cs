@@ -158,7 +158,7 @@ public class FilePathEditor : CustomEditor
     {
         private const float DropdownIconMargin = 3.0f;
         private const float DropdownIconSize = 12.0f;
-        private Rectangle DropdownRect => new Rectangle(Width - DropdownIconSize - DropdownIconMargin, DropdownIconMargin, DropdownIconSize, DropdownIconSize);
+        private Rectangle DropdownRect => new(Width - DropdownIconSize - DropdownIconMargin, DropdownIconMargin, DropdownIconSize, DropdownIconSize);
 
         public Action ShowPicker;
         public Action<ContentItem> OnAssetDropped;

@@ -80,7 +80,7 @@ public class SkinnedModelProxy : BinaryAssetProxy
 
         // Hack the animation graph window to modify the base model of the animation graph.
         // TODO: implement it without window logic (load AnimGraphSurface and set AnimationGraphWindow.BaseModelId to model)
-        AnimationGraphWindow win = new AnimationGraphWindow(Editor.Instance, item as AssetItem);
+        AnimationGraphWindow win = new(Editor.Instance, item as AssetItem);
         win.Show();
 
         // Ensure the window knows the asset is loaded so we can save it later.

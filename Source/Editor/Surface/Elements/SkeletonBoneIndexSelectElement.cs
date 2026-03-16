@@ -62,7 +62,7 @@ public class SkeletonBoneIndexSelectElement : ComboBoxElement
         var nodes = skeleton.Nodes;
         var bones = skeleton.Bones;
         _items.Capacity = Mathf.Max(_items.Capacity, bones.Length);
-        StringBuilder sb = new StringBuilder(64);
+        StringBuilder sb = new(64);
         for (int i = 0; i < bones.Length; i++)
         {
             sb.Clear();

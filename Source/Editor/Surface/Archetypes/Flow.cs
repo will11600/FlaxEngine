@@ -210,8 +210,7 @@ public static class Flow
     /// </summary>
     public static NodeArchetype[] Nodes =
     {
-        new NodeArchetype
-        {
+        new() {
             TypeID = 1,
             Title = "If",
             AlternativeTitles = new[] { "branch" },
@@ -226,8 +225,7 @@ public static class Flow
                 NodeElementArchetype.Factory.Output(1, "False", typeof(void), 3, true),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 2,
             Title = "For Loop",
             AlternativeTitles = new[] { "loop" },
@@ -246,8 +244,7 @@ public static class Flow
                 NodeElementArchetype.Factory.Output(2, "Done", typeof(void), 6, true),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 3,
             Title = "While Loop",
             Description = "Iterates in the loop until the given condition is True.",
@@ -263,8 +260,7 @@ public static class Flow
                 NodeElementArchetype.Factory.Output(2, "Done", typeof(void), 5, true),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 4,
             Title = "Sequence",
             Create = (id, context, arch, groupArch) => new SequenceNode(id, context, arch, groupArch),
@@ -277,8 +273,7 @@ public static class Flow
                 NodeElementArchetype.Factory.Input(0, string.Empty, false, typeof(void), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 5,
             Title = "Branch On Enum",
             Create = (id, context, arch, groupArch) => new BranchOnEnumNode(id, context, arch, groupArch),
@@ -293,8 +288,7 @@ public static class Flow
                 NodeElementArchetype.Factory.Input(1, "Value", true, null, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 6,
             Title = "Delay",
             Description = "Delays the graph execution. If delay is 0 then it will pass though.",
@@ -308,8 +302,7 @@ public static class Flow
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(void), 2, true),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 7,
             Title = "Array For Each",
             AlternativeTitles = new[] { "foreach" },
@@ -331,8 +324,7 @@ public static class Flow
                 NodeElementArchetype.Factory.Output(3, "Done", typeof(void), 6, true),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 8,
             Title = "Dictionary For Each",
             AlternativeTitles = new[] { "foreach" },

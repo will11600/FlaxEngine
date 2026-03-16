@@ -476,19 +476,19 @@ public class UIControlControlEditor : GenericEditor
             CreateTransformElements(mainHor, ValuesTypes);
 
             ScriptMemberInfo scaleInfo = ValuesTypes[0].GetProperty("Scale");
-            ItemInfo scaleItem = new ItemInfo(scaleInfo);
+            ItemInfo scaleItem = new(scaleInfo);
             transformGroup.Property("Scale", scaleItem.GetValues(Values));
 
             ScriptMemberInfo pivotInfo = ValuesTypes[0].GetProperty("Pivot");
-            ItemInfo pivotItem = new ItemInfo(pivotInfo);
+            ItemInfo pivotItem = new(pivotInfo);
             transformGroup.Property("Pivot", pivotItem.GetValues(Values));
 
             ScriptMemberInfo shearInfo = ValuesTypes[0].GetProperty("Shear");
-            ItemInfo shearItem = new ItemInfo(shearInfo);
+            ItemInfo shearItem = new(shearInfo);
             transformGroup.Property("Shear", shearItem.GetValues(Values));
 
             ScriptMemberInfo rotationInfo = ValuesTypes[0].GetProperty("Rotation");
-            ItemInfo rotationItem = new ItemInfo(rotationInfo);
+            ItemInfo rotationItem = new(rotationInfo);
             transformGroup.Property("Rotation", rotationItem.GetValues(Values));
 
             // Get position of general tab
@@ -510,7 +510,7 @@ public class UIControlControlEditor : GenericEditor
         sidePanel.Panel.ClipChildren = false;
 
         ScriptMemberInfo anchorInfo = valueTypes[0].GetProperty("AnchorPreset");
-        ItemInfo anchorItem = new ItemInfo(anchorInfo);
+        ItemInfo anchorItem = new(anchorInfo);
         sidePanel.Object(anchorItem.GetValues(Values));
 
         VerticalPanelElement group = VerticalPanelWithoutMargin(sidePanel);
@@ -576,8 +576,8 @@ public class UIControlControlEditor : GenericEditor
     {
         ScriptMemberInfo minInfo = valueTypes[0].GetProperty("AnchorMin");
         ScriptMemberInfo maxInfo = valueTypes[0].GetProperty("AnchorMax");
-        ItemInfo minItem = new ItemInfo(minInfo);
-        ItemInfo maxItem = new ItemInfo(maxInfo);
+        ItemInfo minItem = new(minInfo);
+        ItemInfo maxItem = new(maxInfo);
 
         GroupElement ng = main.Group("Anchors", true);
         ng.Panel.IsClosed = _anchorDropDownClosed;
@@ -590,13 +590,13 @@ public class UIControlControlEditor : GenericEditor
     {
         ScriptMemberInfo minInfo = valueTypes[0].GetProperty("AnchorMin");
         ScriptMemberInfo maxInfo = valueTypes[0].GetProperty("AnchorMax");
-        ItemInfo minItem = new ItemInfo(minInfo);
-        ItemInfo maxItem = new ItemInfo(maxInfo);
+        ItemInfo minItem = new(minInfo);
+        ItemInfo maxItem = new(maxInfo);
         ValueContainer minVal = minItem.GetValues(Values);
         ValueContainer maxVal = maxItem.GetValues(Values);
 
-        ItemInfo xItem = new ItemInfo(minInfo.ValueType.GetField("X"));
-        ItemInfo yItem = new ItemInfo(minInfo.ValueType.GetField("Y"));
+        ItemInfo xItem = new(minInfo.ValueType.GetField("X"));
+        ItemInfo yItem = new(minInfo.ValueType.GetField("Y"));
 
         xEq = xItem.GetValues(minVal).ToList().Any(xItem.GetValues(maxVal).ToList().Contains);
         yEq = yItem.GetValues(minVal).ToList().Any(yItem.GetValues(maxVal).ToList().Contains);
@@ -605,22 +605,22 @@ public class UIControlControlEditor : GenericEditor
     private void BuildLocationSizeOffsets(LayoutElementsContainer horUp, LayoutElementsContainer horDown, bool xEq, bool yEq, ScriptType[] valueTypes)
     {
         ScriptMemberInfo xInfo = valueTypes[0].GetProperty("LocalX");
-        ItemInfo xItem = new ItemInfo(xInfo);
+        ItemInfo xItem = new(xInfo);
         ScriptMemberInfo yInfo = valueTypes[0].GetProperty("LocalY");
-        ItemInfo yItem = new ItemInfo(yInfo);
+        ItemInfo yItem = new(yInfo);
         ScriptMemberInfo widthInfo = valueTypes[0].GetProperty("Width");
-        ItemInfo widthItem = new ItemInfo(widthInfo);
+        ItemInfo widthItem = new(widthInfo);
         ScriptMemberInfo heightInfo = valueTypes[0].GetProperty("Height");
-        ItemInfo heightItem = new ItemInfo(heightInfo);
+        ItemInfo heightItem = new(heightInfo);
 
         ScriptMemberInfo leftInfo = valueTypes[0].GetProperty("Proxy_Offset_Left", BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        ItemInfo leftItem = new ItemInfo(leftInfo);
+        ItemInfo leftItem = new(leftInfo);
         ScriptMemberInfo rightInfo = valueTypes[0].GetProperty("Proxy_Offset_Right", BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        ItemInfo rightItem = new ItemInfo(rightInfo);
+        ItemInfo rightItem = new(rightInfo);
         ScriptMemberInfo topInfo = valueTypes[0].GetProperty("Proxy_Offset_Top", BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        ItemInfo topItem = new ItemInfo(topInfo);
+        ItemInfo topItem = new(topInfo);
         ScriptMemberInfo bottomInfo = valueTypes[0].GetProperty("Proxy_Offset_Bottom", BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        ItemInfo bottomItem = new ItemInfo(bottomInfo);
+        ItemInfo bottomItem = new(bottomInfo);
 
         LayoutElementsContainer xEl;
         LayoutElementsContainer yEl;

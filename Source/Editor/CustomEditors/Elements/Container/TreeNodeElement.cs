@@ -29,7 +29,7 @@ public class TreeNodeElement : LayoutElementsContainer, ITreeElement
     /// <summary>
     /// The tree node control.
     /// </summary>
-    public readonly TreeNode TreeNode = new TreeNode(false);
+    public readonly TreeNode TreeNode = new(false);
 
     /// <inheritdoc />
     public override ContainerControl ContainerControl => TreeNode;
@@ -37,7 +37,7 @@ public class TreeNodeElement : LayoutElementsContainer, ITreeElement
     /// <inheritdoc />
     public TreeNodeElement Node(string text)
     {
-        TreeNodeElement element = new TreeNodeElement();
+        TreeNodeElement element = new();
         element.TreeNode.Text = text;
         OnAddElement(element);
         return element;

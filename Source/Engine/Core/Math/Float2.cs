@@ -77,32 +77,32 @@ partial struct Float2 : IEquatable<Float2>, IFormattable, Json.ICustomValueEqual
     /// <summary>
     /// The X unit <see cref="Float2" /> (1, 0).
     /// </summary>
-    public static readonly Float2 UnitX = new Float2(1.0f, 0.0f);
+    public static readonly Float2 UnitX = new(1.0f, 0.0f);
 
     /// <summary>
     /// The Y unit <see cref="Float2" /> (0, 1).
     /// </summary>
-    public static readonly Float2 UnitY = new Float2(0.0f, 1.0f);
+    public static readonly Float2 UnitY = new(0.0f, 1.0f);
 
     /// <summary>
     /// A <see cref="Float2" /> with all of its components set to half.
     /// </summary>
-    public static readonly Float2 Half = new Float2(0.5f, 0.5f);
+    public static readonly Float2 Half = new(0.5f, 0.5f);
 
     /// <summary>
     /// A <see cref="Float2" /> with all of its components set to one.
     /// </summary>
-    public static readonly Float2 One = new Float2(1.0f, 1.0f);
+    public static readonly Float2 One = new(1.0f, 1.0f);
 
     /// <summary>
     /// A <see cref="Float2" /> with all components equal to <see cref="float.MinValue"/>.
     /// </summary>
-    public static readonly Float2 Minimum = new Float2(float.MinValue);
+    public static readonly Float2 Minimum = new(float.MinValue);
 
     /// <summary>
     /// A <see cref="Float2" /> with all components equal to <see cref="float.MaxValue"/>.
     /// </summary>
-    public static readonly Float2 Maximum = new Float2(float.MaxValue);
+    public static readonly Float2 Maximum = new(float.MaxValue);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Float2" /> struct.
@@ -214,12 +214,12 @@ partial struct Float2 : IEquatable<Float2>, IFormattable, Json.ICustomValueEqual
     /// <summary>
     /// Gets a vector with values being absolute values of that vector.
     /// </summary>
-    public Float2 Absolute => new Float2(Mathf.Abs(X), Mathf.Abs(Y));
+    public Float2 Absolute => new(Mathf.Abs(X), Mathf.Abs(Y));
 
     /// <summary>
     /// Gets a vector with values being opposite to values of that vector.
     /// </summary>
-    public Float2 Negative => new Float2(-X, -Y);
+    public Float2 Negative => new(-X, -Y);
 
     /// <summary>
     /// Gets or sets the component at the specified index.

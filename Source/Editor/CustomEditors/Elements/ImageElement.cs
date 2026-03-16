@@ -13,7 +13,7 @@ public class ImageElement : LayoutElement
     /// <summary>
     /// The image.
     /// </summary>
-    public readonly Image Image = new Image();
+    public readonly Image Image = new();
 
     /// <inheritdoc />
     public override Control Control => Image;

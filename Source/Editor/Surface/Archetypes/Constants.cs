@@ -475,8 +475,7 @@ public static class Constants
     /// </summary>
     public static NodeArchetype[] Nodes =
     {
-        new NodeArchetype
-        {
+        new() {
             TypeID = 1,
             Title = "Bool",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(bool))),
@@ -508,8 +507,7 @@ public static class Constants
                 return false;
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 2,
             Title = "Integer",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(int))),
@@ -536,8 +534,7 @@ public static class Constants
                 return false;
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 3,
             Title = "Float",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(float))),
@@ -564,8 +561,7 @@ public static class Constants
                 return false;
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 4,
             Title = "Float2",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(Float2))),
@@ -595,8 +591,7 @@ public static class Constants
                 return false;
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 5,
             Title = "Float3",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(Float3))),
@@ -628,8 +623,7 @@ public static class Constants
                 return false;
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 6,
             Title = "Float4",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(Float4))),
@@ -663,8 +657,7 @@ public static class Constants
                 return false;
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 7,
             Title = "Color",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(Color))),
@@ -696,8 +689,7 @@ public static class Constants
                 return false;
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 8,
             Title = "Rotation",
             Create = (id, context, arch, groupArch) =>
@@ -722,8 +714,7 @@ public static class Constants
                 NodeElementArchetype.Factory.Text(0, Surface.Constants.LayoutOffsetY * 2, "Roll:"),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 9,
             Title = "String",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(string))),
@@ -744,8 +735,7 @@ public static class Constants
                 NodeElementArchetype.Factory.TextBox(0, 0, 180, TextBox.DefaultHeight, 0, false),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 10,
             Title = "PI",
             Description = "A value specifying the approximation of π which is 180 degrees",
@@ -756,8 +746,7 @@ public static class Constants
                 NodeElementArchetype.Factory.Output(0, "π", typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 11,
             Title = "Enum",
             Create = (id, context, arch, groupArch) => new EnumNode(id, context, arch, groupArch),
@@ -774,8 +763,7 @@ public static class Constants
                 NodeElementArchetype.Factory.Output(0, string.Empty, null, 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 12,
             Title = "Unsigned Integer",
             AlternativeTitles = new[] { "UInt", "U Int" },
@@ -793,8 +781,7 @@ public static class Constants
                 NodeElementArchetype.Factory.UnsignedInteger(0, 0, 0, -1, 0, int.MaxValue)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 13,
             Title = "Array",
             Create = (id, context, arch, groupArch) => new ArrayNode(id, context, arch, groupArch),
@@ -805,8 +792,7 @@ public static class Constants
             DefaultValues = new object[] { new int[] { 0, 1, 2 } },
             Elements = new[] { NodeElementArchetype.Factory.Output(0, string.Empty, null, 0) }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 14,
             Title = "Dictionary",
             Create = (id, context, arch, groupArch) => new DictionaryNode(id, context, arch, groupArch),
@@ -817,8 +803,7 @@ public static class Constants
             DefaultValues = new object[] { typeof(int).FullName, typeof(string).FullName },
             Elements = new[] { NodeElementArchetype.Factory.Output(0, string.Empty, null, 0) }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 15,
             Title = "Double",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(double))),
@@ -835,8 +820,7 @@ public static class Constants
                 NodeElementArchetype.Factory.Float(0, 0, 0)
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 16,
             Title = "Vector2",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(Vector2))),
@@ -856,8 +840,7 @@ public static class Constants
                 NodeElementArchetype.Factory.Vector_Y(0, 2 * Surface.Constants.LayoutOffsetY, 0)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 17,
             Title = "Vector3",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(Vector3))),
@@ -879,8 +862,7 @@ public static class Constants
                 NodeElementArchetype.Factory.Vector_Z(0, 3 * Surface.Constants.LayoutOffsetY, 0)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 18,
             Title = "Vector4",
             Create = (id, context, arch, groupArch) => new ConvertToParameterNode(id, context, arch, groupArch, new ScriptType(typeof(Vector4))),

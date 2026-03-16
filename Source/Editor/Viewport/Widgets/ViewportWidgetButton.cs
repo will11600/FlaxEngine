@@ -18,7 +18,7 @@ public class OrthoCamToggleViewportWidgetButton : ViewportWidgetButton
     private const int iconPointCount = 4;
     private const float iconRenderScale = 4.0f;
 
-    private readonly Float2 iconDrawOffset = new Float2(3.0f, 3.0f);
+    private readonly Float2 iconDrawOffset = new(3.0f, 3.0f);
 
     private readonly Float2[] iconPointsPerspective = new[]
     {

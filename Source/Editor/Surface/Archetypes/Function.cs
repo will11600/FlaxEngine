@@ -631,7 +631,7 @@ public static class Function
         }
 
         /// <inheritdoc />
-        protected override Color FooterColor => new Color(200, 11, 112);
+        protected override Color FooterColor => new(200, 11, 112);
 
         /// <inheritdoc />
         public override void OnLoaded(SurfaceNodeActions action)
@@ -2153,8 +2153,8 @@ public static class Function
         private Image _helperButton;
         private bool _isBind;
         private bool _isUpdateLocked = true;
-        private List<string> _tooltips = new List<string>();
-        private List<uint> _functionNodesIds = new List<uint>();
+        private List<string> _tooltips = new();
+        private List<uint> _functionNodesIds = new();
         private ScriptMemberInfo.Parameter[] _signature;
 
         protected EventBaseNode(bool isBind, uint id, VisjectSurfaceContext context, NodeArchetype nodeArch, GroupArchetype groupArch)
@@ -2439,8 +2439,7 @@ public static class Function
     /// </summary>
     public static NodeArchetype[] Nodes =
     {
-        new NodeArchetype
-        {
+        new() {
             TypeID = 1,
             Create = (id, context, arch, groupArch) => new FunctionInputNode(id, context, arch, groupArch),
             Title = "Function Input",
@@ -2458,8 +2457,7 @@ public static class Function
                 NodeElementArchetype.Factory.Input(1.5f, "Default Value", true, typeof(float), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 2,
             Create = (id, context, arch, groupArch) => new FunctionOutputNode(id, context, arch, groupArch),
             Title = "Function Output",
@@ -2476,8 +2474,7 @@ public static class Function
                 NodeElementArchetype.Factory.Input(0, string.Empty, true, typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 3,
             Create = (id, context, arch, groupArch) => new MethodOverrideNode(id, context, arch, groupArch),
             Title = string.Empty,
@@ -2494,8 +2491,7 @@ public static class Function
                 Utils.GetEmptyArray<byte>(), // Cached function signature data
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 4,
             Create = (id, context, arch, groupArch) => new InvokeMethodNode(id, context, arch, groupArch),
             IsInputCompatible = InvokeMethodNode.IsInputCompatible,
@@ -2519,8 +2515,7 @@ public static class Function
                 // @formatter:on
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 5,
             Create = (id, context, arch, groupArch) => new ReturnNode(id, context, arch, groupArch),
             Title = "Return",
@@ -2536,8 +2531,7 @@ public static class Function
                 NodeElementArchetype.Factory.Input(1, "Result", true, null, 1),
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 6,
             Create = (id, context, arch, groupArch) => new VisualScriptFunctionNode(id, context, arch, groupArch),
             IsInputCompatible = VisualScriptFunctionNode.IsInputCompatible,
@@ -2551,8 +2545,7 @@ public static class Function
                 Utils.GetEmptyArray<byte>(), // Function signature data
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 7,
             Create = (id, context, arch, groupArch) => new GetFieldNode(id, context, arch, groupArch),
             IsInputCompatible = GetFieldNode.IsInputCompatible,
@@ -2568,8 +2561,7 @@ public static class Function
                 false, // Is Static
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 8,
             Create = (id, context, arch, groupArch) => new SetFieldNode(id, context, arch, groupArch),
             IsInputCompatible = SetFieldNode.IsInputCompatible,
@@ -2586,8 +2578,7 @@ public static class Function
                 null, // Default value
             },
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 9,
             Create = (id, context, arch, groupArch) => new BindEventNode(id, context, arch, groupArch),
             IsInputCompatible = EventBaseNode.IsInputCompatible,
@@ -2610,8 +2601,7 @@ public static class Function
                 NodeElementArchetype.Factory.ComboBox(100, 20, 140),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 10,
             Create = (id, context, arch, groupArch) => new UnbindEventNode(id, context, arch, groupArch),
             IsInputCompatible = EventBaseNode.IsInputCompatible,

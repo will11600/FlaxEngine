@@ -41,7 +41,7 @@ public class TreeNode : ContainerControl
     private float _headerHeight = 16.0f;
     private Rectangle _headerRect;
     private SpriteHandle _iconCollaped, _iconOpened;
-    private Margin _margin = new Margin(2.0f);
+    private Margin _margin = new(2.0f);
     private string _text;
     private bool _textChanged;
     private bool _isMouseDown;

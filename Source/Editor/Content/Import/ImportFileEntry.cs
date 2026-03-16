@@ -95,7 +95,7 @@ public class ImportFileEntry : IFileEntryAction
     /// The file types registered for importing. Key is a file extension (without a leading dot).
     /// Allows to plug custom importing options gather for different input file types.
     /// </summary>
-    public static readonly Dictionary<string, ImportFileEntryHandler> FileTypes = new Dictionary<string, ImportFileEntryHandler>(32);
+    public static readonly Dictionary<string, ImportFileEntryHandler> FileTypes = new(32);
 
     /// <summary>
     /// Creates the entry.

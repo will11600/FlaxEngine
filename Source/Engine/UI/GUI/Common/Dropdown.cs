@@ -189,7 +189,7 @@ public class Dropdown : ContainerControl
     /// <summary>
     /// The items.
     /// </summary>
-    protected List<LocalizedString> _items = new List<LocalizedString>();
+    protected List<LocalizedString> _items = new();
 
     /// <summary>
     /// The popup menu. May be null if has not been used yet.

@@ -13,7 +13,7 @@ namespace FlaxEditor.Surface.Elements;
 [HideInEditor]
 public class SkeletonNodeNameSelectElement : ComboBoxElement
 {
-    private readonly Dictionary<string, int> _nodeNameToIndex = new Dictionary<string, int>();
+    private readonly Dictionary<string, int> _nodeNameToIndex = new();
 
     /// <summary>
     /// Gets or sets the name of the selected node.

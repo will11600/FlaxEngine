@@ -33,12 +33,12 @@ public abstract class LayoutElementsContainer : LayoutElement
     /// <summary>
     /// The children.
     /// </summary>
-    public readonly List<LayoutElement> Children = new List<LayoutElement>();
+    public readonly List<LayoutElement> Children = new();
 
     /// <summary>
     /// The child custom editors.
     /// </summary>
-    public readonly List<CustomEditor> Editors = new List<CustomEditor>();
+    public readonly List<CustomEditor> Editors = new();
 
     /// <summary>
     /// Gets the control represented by this element.
@@ -194,7 +194,7 @@ public abstract class LayoutElementsContainer : LayoutElement
     /// <returns>The created element.</returns>
     public ButtonElement Button(string text, Color color, string tooltip = null)
     {
-        ButtonElement element = new ButtonElement();
+        ButtonElement element = new();
         element.Button.Text = text;
         element.Button.TooltipText = tooltip;
         element.Button.SetColors(color);

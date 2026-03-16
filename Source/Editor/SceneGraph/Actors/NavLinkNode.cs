@@ -44,7 +44,7 @@ public sealed class NavLinkNode : ActorNode
             get
             {
                 var actor = (NavLink)_node.Actor;
-                Transform localTrans = new Transform(_isStart ? actor.Start : actor.End);
+                Transform localTrans = new(_isStart ? actor.Start : actor.End);
                 return actor.Transform.LocalToWorld(localTrans);
             }
             set

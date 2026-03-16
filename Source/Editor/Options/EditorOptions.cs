@@ -15,42 +15,42 @@ public sealed class EditorOptions
     /// <summary>
     /// The general options.
     /// </summary>
-    public GeneralOptions General = new GeneralOptions();
+    public GeneralOptions General = new();
 
     /// <summary>
     /// The interface options.
     /// </summary>
-    public InterfaceOptions Interface = new InterfaceOptions();
+    public InterfaceOptions Interface = new();
 
     /// <summary>
     /// The input options.
     /// </summary>
-    public InputOptions Input = new InputOptions();
+    public InputOptions Input = new();
 
     /// <summary>
     /// The viewport options.
     /// </summary>
-    public ViewportOptions Viewport = new ViewportOptions();
+    public ViewportOptions Viewport = new();
 
     /// <summary>
     /// The visual options.
     /// </summary>
-    public VisualOptions Visual = new VisualOptions();
+    public VisualOptions Visual = new();
 
     /// <summary>
     /// The source code options.
     /// </summary>
-    public SourceCodeOptions SourceCode = new SourceCodeOptions();
+    public SourceCodeOptions SourceCode = new();
 
     /// <summary>
     /// The theme options.
     /// </summary>
-    public ThemeOptions Theme = new ThemeOptions();
+    public ThemeOptions Theme = new();
 
     /// <summary>
     /// The custom settings collection. Can be used by the editor plugins to provide customization for options. Key is a settings tab name and the value is the serialized settings object (for a custom editor).
     /// </summary>
-    public readonly Dictionary<string, string> CustomSettings = new Dictionary<string, string>();
+    public readonly Dictionary<string, string> CustomSettings = new();
 
     /// <summary>
     /// Tries to load the custom settings object by the given key. If settings are missing it creates a new default object of this type.

@@ -14,7 +14,7 @@ namespace FlaxEditor.CustomEditors.Dedicated;
 [CustomEditor(typeof(PhysicalMaterial)), DefaultEditor]
 public class PhysicalMaterialEditor : GenericEditor
 {
-    private readonly List<CheckablePropertyNameLabel> _labels = new List<CheckablePropertyNameLabel>(64);
+    private readonly List<CheckablePropertyNameLabel> _labels = new(64);
     private const int FrictionCombineModeOrder = 1;
     private const int RestitutionCombineModeOrder = 4;
 

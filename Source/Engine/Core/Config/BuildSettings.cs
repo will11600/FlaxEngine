@@ -14,8 +14,7 @@ partial class BuildSettings
     [EditorOrder(5000), EditorDisplay("Presets", EditorDisplayAttribute.InlineStyle), Tooltip("Build presets configuration")]
     public BuildPreset[] Presets =
     {
-        new BuildPreset
-        {
+        new() {
             Name = "Development",
             Targets = new[]
             {
@@ -28,8 +27,7 @@ partial class BuildSettings
                 },
             }
         },
-        new BuildPreset
-        {
+        new() {
             Name = "Release",
             Targets = new[]
             {

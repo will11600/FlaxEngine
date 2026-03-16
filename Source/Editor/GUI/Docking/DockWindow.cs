@@ -65,7 +65,7 @@ public class DockWindow : Panel
     /// <summary>
     /// Gets the default window size (in UI units, unscaled by DPI which is handled by windowing system).
     /// </summary>
-    public virtual Float2 DefaultSize => new Float2(900, 580);
+    public virtual Float2 DefaultSize => new(900, 580);
 
     /// <summary>
     /// Gets the serialization typename.
@@ -107,7 +107,7 @@ public class DockWindow : Panel
     /// <summary>
     /// The input actions collection to processed during user input.
     /// </summary>
-    public InputActionsContainer InputActions = new InputActionsContainer();
+    public InputActionsContainer InputActions = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DockWindow"/> class.

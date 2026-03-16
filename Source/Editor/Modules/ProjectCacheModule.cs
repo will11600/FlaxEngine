@@ -19,9 +19,9 @@ public sealed class ProjectCacheModule : EditorModule
     private bool _isDirty;
     private DateTime _lastSaveTime;
 
-    private readonly HashSet<Guid> _expandedActors = new HashSet<Guid>();
-    private readonly HashSet<string> _toggledGroups = new HashSet<string>();
-    private readonly Dictionary<string, string> _customData = new Dictionary<string, string>();
+    private readonly HashSet<Guid> _expandedActors = new();
+    private readonly HashSet<string> _toggledGroups = new();
+    private readonly Dictionary<string, string> _customData = new();
 
     /// <summary>
     /// Gets or sets the automatic data save interval.

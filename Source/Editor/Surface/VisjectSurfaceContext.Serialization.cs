@@ -93,8 +93,8 @@ public partial class VisjectSurfaceContext
         public byte BoxB;
     }
 
-    private readonly ThreadLocal<List<Box>> _cachedBoxes = new ThreadLocal<List<Box>>(() => new List<Box>());
-    private readonly ThreadLocal<List<ConnectionHint>> _cachedConnections = new ThreadLocal<List<ConnectionHint>>(() => new List<ConnectionHint>());
+    private readonly ThreadLocal<List<Box>> _cachedBoxes = new(() => new List<Box>());
+    private readonly ThreadLocal<List<ConnectionHint>> _cachedConnections = new(() => new List<ConnectionHint>());
 
     /// <summary>
     /// Loads the surface from bytes. Clears the surface before and uses context source data as a surface bytes source.

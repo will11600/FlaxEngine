@@ -24,7 +24,7 @@ public sealed class EditorOptionsWindow : EditorWindow
     private EditorOptions _options;
     private ToolStripButton _saveButton;
     private readonly Undo _undo;
-    private readonly List<Tab> _customTabs = new List<Tab>();
+    private readonly List<Tab> _customTabs = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EditorOptionsWindow"/> class.

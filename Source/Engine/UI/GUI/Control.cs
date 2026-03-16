@@ -26,27 +26,27 @@ public partial class Control : IComparable, IDrawable
 
     private static readonly AnchorPresetData[] AnchorPresetsData =
     {
-        new AnchorPresetData(AnchorPresets.TopLeft, new Float2(0, 0), new Float2(0, 0)),
-        new AnchorPresetData(AnchorPresets.TopCenter, new Float2(0.5f, 0), new Float2(0.5f, 0)),
-        new AnchorPresetData(AnchorPresets.TopRight, new Float2(1, 0), new Float2(1, 0)),
+        new(AnchorPresets.TopLeft, new Float2(0, 0), new Float2(0, 0)),
+        new(AnchorPresets.TopCenter, new Float2(0.5f, 0), new Float2(0.5f, 0)),
+        new(AnchorPresets.TopRight, new Float2(1, 0), new Float2(1, 0)),
 
-        new AnchorPresetData(AnchorPresets.MiddleLeft, new Float2(0, 0.5f), new Float2(0, 0.5f)),
-        new AnchorPresetData(AnchorPresets.MiddleCenter, new Float2(0.5f, 0.5f), new Float2(0.5f, 0.5f)),
-        new AnchorPresetData(AnchorPresets.MiddleRight, new Float2(1, 0.5f), new Float2(1, 0.5f)),
+        new(AnchorPresets.MiddleLeft, new Float2(0, 0.5f), new Float2(0, 0.5f)),
+        new(AnchorPresets.MiddleCenter, new Float2(0.5f, 0.5f), new Float2(0.5f, 0.5f)),
+        new(AnchorPresets.MiddleRight, new Float2(1, 0.5f), new Float2(1, 0.5f)),
 
-        new AnchorPresetData(AnchorPresets.BottomLeft, new Float2(0, 1), new Float2(0, 1)),
-        new AnchorPresetData(AnchorPresets.BottomCenter, new Float2(0.5f, 1), new Float2(0.5f, 1)),
-        new AnchorPresetData(AnchorPresets.BottomRight, new Float2(1, 1), new Float2(1, 1)),
+        new(AnchorPresets.BottomLeft, new Float2(0, 1), new Float2(0, 1)),
+        new(AnchorPresets.BottomCenter, new Float2(0.5f, 1), new Float2(0.5f, 1)),
+        new(AnchorPresets.BottomRight, new Float2(1, 1), new Float2(1, 1)),
 
-        new AnchorPresetData(AnchorPresets.HorizontalStretchTop, new Float2(0, 0), new Float2(1, 0)),
-        new AnchorPresetData(AnchorPresets.HorizontalStretchMiddle, new Float2(0, 0.5f), new Float2(1, 0.5f)),
-        new AnchorPresetData(AnchorPresets.HorizontalStretchBottom, new Float2(0, 1), new Float2(1, 1)),
+        new(AnchorPresets.HorizontalStretchTop, new Float2(0, 0), new Float2(1, 0)),
+        new(AnchorPresets.HorizontalStretchMiddle, new Float2(0, 0.5f), new Float2(1, 0.5f)),
+        new(AnchorPresets.HorizontalStretchBottom, new Float2(0, 1), new Float2(1, 1)),
 
-        new AnchorPresetData(AnchorPresets.VerticalStretchLeft, new Float2(0, 0), new Float2(0, 1)),
-        new AnchorPresetData(AnchorPresets.VerticalStretchCenter, new Float2(0.5f, 0), new Float2(0.5f, 1)),
-        new AnchorPresetData(AnchorPresets.VerticalStretchRight, new Float2(1, 0), new Float2(1, 1)),
+        new(AnchorPresets.VerticalStretchLeft, new Float2(0, 0), new Float2(0, 1)),
+        new(AnchorPresets.VerticalStretchCenter, new Float2(0.5f, 0), new Float2(0.5f, 1)),
+        new(AnchorPresets.VerticalStretchRight, new Float2(1, 0), new Float2(1, 1)),
 
-        new AnchorPresetData(AnchorPresets.StretchAll, new Float2(0, 0), new Float2(1, 1)),
+        new(AnchorPresets.StretchAll, new Float2(0, 0), new Float2(1, 1)),
     };
 
     private ContainerControl _parent;
@@ -68,11 +68,11 @@ public partial class Control : IComparable, IDrawable
     // Transform
 
     private Rectangle _bounds;
-    private Margin _offsets = new Margin(0.0f, 100.0f, 0.0f, 30.0f);
+    private Margin _offsets = new(0.0f, 100.0f, 0.0f, 30.0f);
     private Float2 _anchorMin;
     private Float2 _anchorMax;
-    private Float2 _scale = new Float2(1.0f);
-    private Float2 _pivot = new Float2(0.5f);
+    private Float2 _scale = new(1.0f);
+    private Float2 _pivot = new(0.5f);
     private Float2 _shear;
     private float _rotation;
     internal Matrix3x3 _cachedTransform;
@@ -1321,7 +1321,7 @@ public partial class Control : IComparable, IDrawable
     /// <summary>
     /// Bounds rectangle for editor UI.
     /// </summary>
-    public virtual Rectangle EditorBounds => new Rectangle(Float2.Zero, _bounds.Size);
+    public virtual Rectangle EditorBounds => new(Float2.Zero, _bounds.Size);
 #endif
 
     #endregion

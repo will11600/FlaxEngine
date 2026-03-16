@@ -53,8 +53,8 @@ public enum SortType
 [HideInEditor]
 public partial class ContentView : ContainerControl, IContentItemOwner
 {
-    private readonly List<ContentItem> _items = new List<ContentItem>(256);
-    private readonly List<ContentItem> _selection = new List<ContentItem>();
+    private readonly List<ContentItem> _items = new(256);
+    private readonly List<ContentItem> _selection = new();
 
     private float _viewScale = 1.0f;
     private ContentViewType _viewType = ContentViewType.Tiles;
@@ -62,7 +62,7 @@ public partial class ContentView : ContainerControl, IContentItemOwner
     private Float2 _mousePressLocation;
     private Rectangle _rubberBandRectangle;
     private bool _isCutting;
-    private List<ContentItem> _cutItems = new List<ContentItem>();
+    private List<ContentItem> _cutItems = new();
 
     private bool _validDragOver;
     private DragActors _dragActors;

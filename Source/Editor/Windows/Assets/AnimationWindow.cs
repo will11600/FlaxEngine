@@ -83,7 +83,7 @@ public sealed class AnimationWindow : ClonedAssetEditorWindowBase<Animation>
     {
         private AnimationWindow Window;
         private Animation Asset;
-        private ModelImportSettings ImportSettings = new ModelImportSettings();
+        private ModelImportSettings ImportSettings = new();
         private bool EnablePreviewModelCache = true;
 
         [EditorDisplay("Preview"), NoSerialize, AssetReference(true), Tooltip("The skinned model to preview the animation playback.")]

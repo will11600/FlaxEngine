@@ -121,7 +121,7 @@ public sealed class EditGameWindow : SceneEditorWindow
         }
     }
 
-    private readonly List<CameraPreview> _previews = new List<CameraPreview>();
+    private readonly List<CameraPreview> _previews = new();
     private Actor _pilotActor;
     private BoundingBox _pilotBounds;
     private Transform _pilotStart;

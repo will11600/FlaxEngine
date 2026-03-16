@@ -15,7 +15,7 @@ public class ContainerControl : Control
     /// The children collection.
     /// </summary>
     [NoSerialize]
-    protected readonly List<Control> _children = new List<Control>();
+    protected readonly List<Control> _children = new();
 
     /// <summary>
     /// The contains focus cached flag.

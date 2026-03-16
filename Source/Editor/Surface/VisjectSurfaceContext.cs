@@ -28,7 +28,7 @@ public partial class VisjectSurfaceContext
 
     private bool _isModified;
     private VisjectSurface _surface;
-    private SurfaceMeta _meta = new SurfaceMeta();
+    private SurfaceMeta _meta = new();
     internal Float2 _cachedViewCenterPosition;
     internal float _cachedViewScale = -1; // Negative scale to indicate missing data (will show whole surface on start)
 
@@ -40,7 +40,7 @@ public partial class VisjectSurfaceContext
     /// <summary>
     /// The children of this context (loaded and opened in editor only).
     /// </summary>
-    public readonly List<VisjectSurfaceContext> Children = new List<VisjectSurfaceContext>();
+    public readonly List<VisjectSurfaceContext> Children = new();
 
     /// <summary>
     /// The context.
@@ -55,12 +55,12 @@ public partial class VisjectSurfaceContext
     /// <summary>
     /// The nodes collection. Read-only.
     /// </summary>
-    public readonly List<SurfaceNode> Nodes = new List<SurfaceNode>(64);
+    public readonly List<SurfaceNode> Nodes = new(64);
 
     /// <summary>
     /// The collection of the surface parameters.
     /// </summary>
-    public readonly List<SurfaceParameter> Parameters = new List<SurfaceParameter>();
+    public readonly List<SurfaceParameter> Parameters = new();
 
     /// <summary>
     /// Gets the meta for the surface context.

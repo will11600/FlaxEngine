@@ -170,8 +170,8 @@ public class GradientEditor : ContainerControl
         }
     }
 
-    private List<Stop> _data = new List<Stop>();
-    private List<StopControl> _stops = new List<StopControl>();
+    private List<Stop> _data = new();
+    private List<StopControl> _stops = new();
     private StopControl _selected;
     private float _scale;
     private UpdateDelegate _update;

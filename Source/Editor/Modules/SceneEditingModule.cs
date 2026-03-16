@@ -19,7 +19,7 @@ public sealed class SceneEditingModule : EditorModule
     /// <summary>
     /// The selected objects.
     /// </summary>
-    public readonly List<SceneGraphNode> Selection = new List<SceneGraphNode>(64);
+    public readonly List<SceneGraphNode> Selection = new(64);
 
     /// <summary>
     /// Gets the amount of the selected objects.

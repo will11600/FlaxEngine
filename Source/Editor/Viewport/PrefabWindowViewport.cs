@@ -66,8 +66,8 @@ public class PrefabWindowViewport : PrefabPreview, IGizmoOwner
     private readonly PrefabWindow _window;
     private UpdateDelegate _update;
 
-    private readonly ViewportDebugDrawData _debugDrawData = new ViewportDebugDrawData(32);
-    private readonly List<Actor> _debugDrawActors = new List<Actor>();
+    private readonly ViewportDebugDrawData _debugDrawData = new(32);
+    private readonly List<Actor> _debugDrawActors = new();
     private PrefabSpritesRenderer _spritesRenderer;
     private IntPtr _tempDebugDrawContext;
 

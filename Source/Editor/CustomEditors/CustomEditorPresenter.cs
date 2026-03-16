@@ -246,7 +246,7 @@ public class CustomEditorPresenter : LayoutElementsContainer
     /// <summary>
     /// The selected objects list (read-only).
     /// </summary>
-    public readonly ValueContainer Selection = new ValueContainer(ScriptMemberInfo.Null);
+    public readonly ValueContainer Selection = new(ScriptMemberInfo.Null);
 
     /// <summary>
     /// The undo object used by this editor.

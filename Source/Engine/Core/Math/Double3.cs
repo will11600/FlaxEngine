@@ -83,67 +83,67 @@ partial struct Double3 : IEquatable<Double3>, IFormattable, Json.ICustomValueEqu
     /// <summary>
     /// The X unit <see cref="Double3" /> (1, 0, 0).
     /// </summary>
-    public static readonly Double3 UnitX = new Double3(1.0, 0.0, 0.0);
+    public static readonly Double3 UnitX = new(1.0, 0.0, 0.0);
 
     /// <summary>
     /// The Y unit <see cref="Double3" /> (0, 1, 0).
     /// </summary>
-    public static readonly Double3 UnitY = new Double3(0.0, 1.0, 0.0);
+    public static readonly Double3 UnitY = new(0.0, 1.0, 0.0);
 
     /// <summary>
     /// The Z unit <see cref="Double3" /> (0, 0, 1).
     /// </summary>
-    public static readonly Double3 UnitZ = new Double3(0.0, 0.0, 1.0);
+    public static readonly Double3 UnitZ = new(0.0, 0.0, 1.0);
 
     /// <summary>
     /// A <see cref="Double3" /> with all of its components set to one.
     /// </summary>
-    public static readonly Double3 One = new Double3(1.0, 1.0, 1.0);
+    public static readonly Double3 One = new(1.0, 1.0, 1.0);
 
     /// <summary>
     /// A <see cref="Double3" /> with all of its components set to half.
     /// </summary>
-    public static readonly Double3 Half = new Double3(0.5f, 0.5f, 0.5f);
+    public static readonly Double3 Half = new(0.5f, 0.5f, 0.5f);
 
     /// <summary>
     /// A unit <see cref="Double3" /> designating up (0, 1, 0).
     /// </summary>
-    public static readonly Double3 Up = new Double3(0.0, 1.0, 0.0);
+    public static readonly Double3 Up = new(0.0, 1.0, 0.0);
 
     /// <summary>
     /// A unit <see cref="Double3" /> designating down (0, -1, 0).
     /// </summary>
-    public static readonly Double3 Down = new Double3(0.0, -1.0, 0.0);
+    public static readonly Double3 Down = new(0.0, -1.0, 0.0);
 
     /// <summary>
     /// A unit <see cref="Double3" /> designating left (-1, 0, 0).
     /// </summary>
-    public static readonly Double3 Left = new Double3(-1.0, 0.0, 0.0);
+    public static readonly Double3 Left = new(-1.0, 0.0, 0.0);
 
     /// <summary>
     /// A unit <see cref="Double3" /> designating right (1, 0, 0).
     /// </summary>
-    public static readonly Double3 Right = new Double3(1.0, 0.0, 0.0);
+    public static readonly Double3 Right = new(1.0, 0.0, 0.0);
 
     /// <summary>
     /// A unit <see cref="Double3" /> designating forward in a left-handed coordinate system (0, 0, 1).
     /// </summary>
-    public static readonly Double3 Forward = new Double3(0.0, 0.0, 1.0);
+    public static readonly Double3 Forward = new(0.0, 0.0, 1.0);
 
     /// <summary>
     /// A unit <see cref="Double3" /> designating backward in a left-handed coordinate system (0, 0, -1).
     /// </summary>
-    public static readonly Double3 Backward = new Double3(0.0, 0.0, -1.0);
+    public static readonly Double3 Backward = new(0.0, 0.0, -1.0);
 
     /// <summary>
     /// A <see cref="Double3" /> with all components equal to <see cref="double.MinValue"/>.
     /// </summary>
-    public static readonly Double3 Minimum = new Double3(double.MinValue);
+    public static readonly Double3 Minimum = new(double.MinValue);
 
     /// <summary>
     /// A <see cref="Double3" /> with all components equal to <see cref="double.MaxValue"/>.
     /// </summary>
-    public static readonly Double3 Maximum = new Double3(double.MaxValue);
+    public static readonly Double3 Maximum = new(double.MaxValue);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Double3" /> struct.
@@ -282,12 +282,12 @@ partial struct Double3 : IEquatable<Double3>, IFormattable, Json.ICustomValueEqu
     /// <summary>
     /// Gets a vector with values being absolute values of that vector.
     /// </summary>
-    public Double3 Absolute => new Double3(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
+    public Double3 Absolute => new(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
 
     /// <summary>
     /// Gets a vector with values being opposite to values of that vector.
     /// </summary>
-    public Double3 Negative => new Double3(-X, -Y, -Z);
+    public Double3 Negative => new(-X, -Y, -Z);
 
     /// <summary>
     /// Gets or sets the component at the specified index.

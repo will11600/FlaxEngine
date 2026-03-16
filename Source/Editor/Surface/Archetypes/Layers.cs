@@ -16,8 +16,7 @@ public static class Layers
     /// </summary>
     public static NodeArchetype[] Nodes =
     {
-        new NodeArchetype
-        {
+        new() {
             TypeID = 1,
             Title = "Sample Layer",
             Description = "Sample material or material instance",
@@ -34,8 +33,7 @@ public static class Layers
                 NodeElementArchetype.Factory.Asset(0, Surface.Constants.LayoutOffsetY, 0, typeof(MaterialBase))
             }
         },
-        new NodeArchetype
-        {
+        new() {
             // [Deprecated]
             TypeID = 2,
             Title = "Linear Layer Blend",
@@ -50,8 +48,7 @@ public static class Layers
                 NodeElementArchetype.Factory.Output(0, "", typeof(void), 3)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 3,
             Title = "Pack Material Layer",
             Description = "Pack material properties",
@@ -73,8 +70,7 @@ public static class Layers
                 NodeElementArchetype.Factory.Input(10, "Position Offset", true, typeof(Float3), 11),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 4,
             Title = "Unpack Material Layer",
             Description = "Unpack material properties",
@@ -96,8 +92,7 @@ public static class Layers
                 NodeElementArchetype.Factory.Output(10, "Position Offset", typeof(Float3), 11),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 5,
             Title = "Linear Layer Blend",
             Description = "Create blended layer using linear math",
@@ -115,8 +110,7 @@ public static class Layers
                 NodeElementArchetype.Factory.Output(0, "", typeof(void), 3)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 6,
             Title = "Pack Material Layer",
             Description = "Pack material properties",
@@ -141,8 +135,7 @@ public static class Layers
                 NodeElementArchetype.Factory.Input(13, "Subsurface Color", true, typeof(Float3), 14),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 7,
             Title = "Unpack Material Layer",
             Description = "Unpack material properties",
@@ -167,8 +160,7 @@ public static class Layers
                 NodeElementArchetype.Factory.Output(13, "Subsurface Color", typeof(Float3), 14),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 8,
             Title = "Height Layer Blend",
             Description = "Create blended layer using height-based blending",

@@ -94,8 +94,7 @@ public static class Math
         Op1(8, "Ceil", "Returns the smallest integer value greater than or equal to A"),
         Op1(9, "Cosine", "Returns cosine of A"),
         Op1(10, "Floor", "Returns the largest integer value less than or equal to A"),
-        new NodeArchetype
-        {
+        new() {
             TypeID = 11,
             Title = "Length",
             AlternativeTitles = new[] { "Magnitude", "Mag" },
@@ -127,8 +126,7 @@ public static class Math
             "**"
         }),
         //
-        new NodeArchetype
-        {
+        new() {
             TypeID = 24,
             Title = "Clamp",
             Description = "Clamps value to the specified range",
@@ -150,8 +148,7 @@ public static class Math
                 NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 25,
             Title = "Lerp",
             Description = "Performs a linear interpolation",
@@ -174,8 +171,7 @@ public static class Math
                 NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 26,
             Title = "Reflect",
             Description = "Returns reflected vector over the normal",
@@ -195,8 +191,7 @@ public static class Math
         Op1(27, "Negate", "Returns opposite value", new[] { "Invert" }),
         Op1(28, "One Minus", "Returns 1 - value"),
         //
-        new NodeArchetype
-        {
+        new() {
             TypeID = 29,
             Title = "Derive Normal Z",
             Description = "Derives the Z component of a tangent space normal given the X and Y components and outputs the resulting three-channel tangent space normal",
@@ -208,8 +203,7 @@ public static class Math
                 NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 1)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 30,
             Title = "Vector Transform",
             Description = "Transform vector from source space to destination space",
@@ -228,8 +222,7 @@ public static class Math
                 NodeElementArchetype.Factory.ComboBox(100, 22, 70, 1, VectorTransformSpaces),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 31,
             Title = "Mad",
             AlternativeTitles = new[] { "Multiply", "Add", "*+" },
@@ -253,8 +246,7 @@ public static class Math
                 NodeElementArchetype.Factory.Output(0, string.Empty, null, 3)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 32,
             Title = "Largest Component Mask",
             Description = "Gets the largest component mask from the input vector",
@@ -269,8 +261,7 @@ public static class Math
         Op1(33, "Asin", "Returns arcus sine of A"),
         Op1(34, "Acos", "Returns arcus cosinus of A"),
         Op1(35, "Atan", "Returns arcus tangent of A"),
-        new NodeArchetype
-        {
+        new() {
             TypeID = 36,
             Title = "Bias and Scale",
             Description = "Adds a constant to input and scales it",
@@ -294,8 +285,7 @@ public static class Math
                 NodeElementArchetype.Factory.Float(40, Surface.Constants.LayoutOffsetY * 2, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 37,
             Title = "Rotate About Axis",
             Description = "Rotates given vector using the rotation axis, a point on the axis, and the angle to rotate",
@@ -314,8 +304,7 @@ public static class Math
         Op1(39, "Frac", "Returns fractional part of the value"),
         Op2(40, "Fmod", "Returns the floating-point remainder of A/B"),
         Op2(41, "Atan2", "Returns arctangent tangent of two values (A, B)"),
-        new NodeArchetype
-        {
+        new() {
             TypeID = 42,
             Title = "Near Equal",
             Description = "Determines if two values are nearly equal within a given epsilon",
@@ -339,8 +328,7 @@ public static class Math
         },
         Op1(43, "Degrees", "Converts the specified value from radians to degrees."),
         Op1(44, "Radians", "Converts the specified value from degrees to radians."),
-        new NodeArchetype
-        {
+        new() {
             TypeID = 45,
             Title = "Enum Value",
             Description = "Unpacks the enum into underlying Uint64 value.",
@@ -353,8 +341,7 @@ public static class Math
                 NodeElementArchetype.Factory.Output(0, "", typeof(ulong), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 46,
             Title = "Enum AND",
             Description = "Performs a conjunction on two enum values (returns the shared part for flag enums).",
@@ -370,8 +357,7 @@ public static class Math
                 NodeElementArchetype.Factory.Output(0, "A & B", null, 2),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 47,
             Title = "Enum OR",
             Description = "Performs a disjunction on two enum values (returns the sum for flag enums).",
@@ -387,8 +373,7 @@ public static class Math
                 NodeElementArchetype.Factory.Output(0, "A | B", null, 2),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 48,
             Title = "Remap",
             Description = "Remaps a value from one range to another, so for example having 25 in a range of 0 to 100 being remapped to 0 to 1 would return 0.25",
@@ -410,8 +395,7 @@ public static class Math
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 4),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 49,
             Title = "Rotate Vector",
             Description = "Rotates given vector using the Quaternion",
@@ -424,8 +408,7 @@ public static class Math
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 2),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 50,
             Title = "Smoothstep",
             Description = "Returns a smooth Hermite interpolation between 0 and 1, if value is in the range [min, max].",

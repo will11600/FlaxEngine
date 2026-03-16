@@ -24,7 +24,7 @@ public class DropPanel : ContainerControl
     /// <summary>
     /// The header text margin.
     /// </summary>
-    protected Margin _headerTextMargin = new Margin(2.0f);
+    protected Margin _headerTextMargin = new(2.0f);
 
     /// <summary>
     /// The 'is closed' flag.
@@ -64,7 +64,7 @@ public class DropPanel : ContainerControl
     /// <summary>
     /// The items margin.
     /// </summary>
-    protected Margin _itemsMargin = new Margin(2.0f, 2.0f, 2.0f, 2.0f);
+    protected Margin _itemsMargin = new(2.0f, 2.0f, 2.0f, 2.0f);
 
     /// <summary>
     /// Gets or sets the header text.
@@ -239,7 +239,7 @@ public class DropPanel : ContainerControl
     /// <summary>
     /// Gets the header rectangle.
     /// </summary>
-    protected Rectangle HeaderRectangle => new Rectangle(0, 0, Width, HeaderHeight);
+    protected Rectangle HeaderRectangle => new(0, 0, Width, HeaderHeight);
 
     /// <inheritdoc />
     protected override bool ShowTooltip => base.ShowTooltip && _mouseOverHeader;
@@ -445,7 +445,7 @@ public class DropPanel : ContainerControl
         if (!_isClosed || _animationProgress < 0.998f)
         {
             // Draw children with clipping mask (so none of the controls will override the header)
-            Rectangle clipMask = new Rectangle(0, HeaderHeight, Width, Height - HeaderHeight);
+            Rectangle clipMask = new(0, HeaderHeight, Width, Height - HeaderHeight);
             Render2D.PushClip(ref clipMask);
             if (CullChildren)
             {

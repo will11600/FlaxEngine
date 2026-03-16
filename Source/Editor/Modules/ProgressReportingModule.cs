@@ -14,52 +14,52 @@ namespace FlaxEditor.Modules;
 /// <seealso cref="FlaxEditor.Modules.EditorModule" />
 public sealed class ProgressReportingModule : EditorModule
 {
-    private readonly List<ProgressHandler> _handlers = new List<ProgressHandler>(8);
+    private readonly List<ProgressHandler> _handlers = new(8);
 
     /// <summary>
     /// The game building progress handler.
     /// </summary>
-    public readonly BuildingGameProgress BuildingGame = new BuildingGameProgress();
+    public readonly BuildingGameProgress BuildingGame = new();
 
     /// <summary>
     /// The assets importing progress handler.
     /// </summary>
-    public readonly ImportAssetsProgress ImportAssets = new ImportAssetsProgress();
+    public readonly ImportAssetsProgress ImportAssets = new();
 
     /// <summary>
     /// The scripts compilation progress handler.
     /// </summary>
-    public readonly CompileScriptsProgress CompileScripts = new CompileScriptsProgress();
+    public readonly CompileScriptsProgress CompileScripts = new();
 
     /// <summary>
     /// The lightmaps baking progress handler.
     /// </summary>
-    public readonly BakeLightmapsProgress BakeLightmaps = new BakeLightmapsProgress();
+    public readonly BakeLightmapsProgress BakeLightmaps = new();
 
     /// <summary>
     /// The environment probes baking progress handler.
     /// </summary>
-    public readonly BakeEnvProbesProgress BakeEnvProbes = new BakeEnvProbesProgress();
+    public readonly BakeEnvProbesProgress BakeEnvProbes = new();
 
     /// <summary>
     /// The code editor async open progress handler.
     /// </summary>
-    public readonly CodeEditorOpenProgress CodeEditorOpen = new CodeEditorOpenProgress();
+    public readonly CodeEditorOpenProgress CodeEditorOpen = new();
 
     /// <summary>
     /// The navigation mesh building progress handler.
     /// </summary>
-    public readonly NavMeshBuildingProgress NavMeshBuilding = new NavMeshBuildingProgress();
+    public readonly NavMeshBuildingProgress NavMeshBuilding = new();
 
     /// <summary>
     /// The scripts project files generation progress handler.
     /// </summary>
-    public readonly GenerateScriptsProjectFilesProgress GenerateScriptsProjectFiles = new GenerateScriptsProjectFilesProgress();
+    public readonly GenerateScriptsProjectFilesProgress GenerateScriptsProjectFiles = new();
 
     /// <summary>
     /// The assets loading progress handler.
     /// </summary>
-    public readonly LoadAssetsProgress LoadAssets = new LoadAssetsProgress();
+    public readonly LoadAssetsProgress LoadAssets = new();
 
     /// <summary>
     /// Gets the first active handler.

@@ -71,7 +71,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// <summary>
     /// The identity <see cref="Matrix3x3"/>.
     /// </summary>
-    public static readonly Matrix3x3 Identity = new Matrix3x3()
+    public static readonly Matrix3x3 Identity = new()
     {
         M11 = 1.0f,
         M22 = 1.0f,
@@ -207,7 +207,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// </summary>
     public Float3 Row1
     {
-        get => new Float3(M11, M12, M13);
+        get => new(M11, M12, M13);
         set
         {
             M11 = value.X;
@@ -221,7 +221,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// </summary>
     public Float3 Row2
     {
-        get => new Float3(M21, M22, M23);
+        get => new(M21, M22, M23);
         set
         {
             M21 = value.X;
@@ -235,7 +235,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// </summary>
     public Float3 Row3
     {
-        get => new Float3(M31, M32, M33);
+        get => new(M31, M32, M33);
         set
         {
             M31 = value.X;
@@ -249,7 +249,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// </summary>
     public Float3 Column1
     {
-        get => new Float3(M11, M21, M31);
+        get => new(M11, M21, M31);
         set
         {
             M11 = value.X;
@@ -263,7 +263,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// </summary>
     public Float3 Column2
     {
-        get => new Float3(M12, M22, M32);
+        get => new(M12, M22, M32);
         set
         {
             M12 = value.X;
@@ -277,7 +277,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// </summary>
     public Float3 Column3
     {
-        get => new Float3(M13, M23, M33);
+        get => new(M13, M23, M33);
         set
         {
             M13 = value.X;
@@ -291,7 +291,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// </summary>
     public Float3 ScaleVector
     {
-        get => new Float3(M11, M22, M33);
+        get => new(M11, M22, M33);
         set
         {
             M11 = value.X;
@@ -535,7 +535,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
         }
 
         //The rotation is the left over Matrix3x3 after dividing out the scaling.
-        Matrix3x3 rotationMatrix = new Matrix3x3
+        Matrix3x3 rotationMatrix = new()
         {
             M11 = M11 / scale.X,
             M12 = M12 / scale.X,
@@ -776,7 +776,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// <param name="result">The product of the two matrices.</param>
     public static void Multiply(ref Matrix3x3 left, ref Matrix3x3 right, out Matrix3x3 result)
     {
-        Matrix3x3 temp = new Matrix3x3
+        Matrix3x3 temp = new()
         {
             M11 = (left.M11 * right.M11) + (left.M12 * right.M21) + (left.M13 * right.M31),
             M12 = (left.M11 * right.M12) + (left.M12 * right.M22) + (left.M13 * right.M32),
@@ -1027,7 +1027,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// <param name="result">When the method completes, contains the transpose of the specified Matrix3x3.</param>
     public static void Transpose(ref Matrix3x3 value, out Matrix3x3 result)
     {
-        Matrix3x3 temp = new Matrix3x3
+        Matrix3x3 temp = new()
         {
             M11 = value.M11,
             M12 = value.M21,

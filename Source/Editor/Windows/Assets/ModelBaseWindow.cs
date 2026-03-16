@@ -102,9 +102,9 @@ where TWindow : ModelBaseWindow<TAsset, TWindow>
 
     protected class MeshesPropertiesProxyBase : PropertiesProxyBase
     {
-        private readonly List<ComboBox> _materialSlotComboBoxes = new List<ComboBox>();
-        private readonly List<CheckBox> _isolateCheckBoxes = new List<CheckBox>();
-        private readonly List<CheckBox> _highlightCheckBoxes = new List<CheckBox>();
+        private readonly List<ComboBox> _materialSlotComboBoxes = new();
+        private readonly List<CheckBox> _isolateCheckBoxes = new();
+        private readonly List<CheckBox> _highlightCheckBoxes = new();
 
         public override void OnLoad(TWindow window)
         {
@@ -408,7 +408,7 @@ where TWindow : ModelBaseWindow<TAsset, TWindow>
             }
         }
 
-        private readonly List<ComboBox> _materialSlotComboBoxes = new List<ComboBox>();
+        private readonly List<ComboBox> _materialSlotComboBoxes = new();
 
         /// <summary>
         /// Updates the material slots UI parts. Should be called after material slot rename.
@@ -776,7 +776,7 @@ where TWindow : ModelBaseWindow<TAsset, TWindow>
     protected readonly Tabs _tabs;
     protected readonly ToolStripButton _saveButton;
 
-    protected ModelImportSettings _importSettings = new ModelImportSettings();
+    protected ModelImportSettings _importSettings = new();
     protected bool _refreshOnLODsLoaded;
     protected bool _skipEffectsGuiEvents;
     protected int _isolateIndex = -1;

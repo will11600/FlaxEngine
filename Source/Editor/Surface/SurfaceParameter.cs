@@ -47,5 +47,5 @@ public class SurfaceParameter
     /// The metadata.
     /// </summary>
     [NoSerialize, HideInEditor]
-    public readonly SurfaceMeta Meta = new SurfaceMeta();
+    public readonly SurfaceMeta Meta = new();
 }

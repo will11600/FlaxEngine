@@ -68,7 +68,7 @@ public class RagdollEditor : ActorEditor
     class RebuildContextMenu : ContextMenuBase
     {
         private Action<AnimatedModelNode.RebuildOptions> _rebuild;
-        private AnimatedModelNode.RebuildOptions _options = new AnimatedModelNode.RebuildOptions();
+        private AnimatedModelNode.RebuildOptions _options = new();
 
         public RebuildContextMenu(Action<AnimatedModelNode.RebuildOptions> rebuild)
         {

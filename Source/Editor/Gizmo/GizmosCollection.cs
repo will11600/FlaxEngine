@@ -17,7 +17,7 @@ public class GizmosCollection : List<GizmoBase>
     private IGizmoOwner _owner;
     private GizmoBase _active;
     private EditorGizmoMode _activeMode;
-    private readonly List<EditorGizmoMode> _modes = new List<EditorGizmoMode>();
+    private readonly List<EditorGizmoMode> _modes = new();
 
     /// <summary>
     /// Occurs when active gizmo tool gets changed.

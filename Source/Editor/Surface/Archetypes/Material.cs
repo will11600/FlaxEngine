@@ -312,7 +312,7 @@ public static class Material
         : base(id, context, nodeArch, groupArch)
         {
             _sizeValueIndex = Archetype.TypeID == 8 ? 1 : 3; // Index of the Size stored in Values array
-            Float2 pos = new Float2(FlaxEditor.Surface.Constants.NodeMarginX, FlaxEditor.Surface.Constants.NodeMarginY + FlaxEditor.Surface.Constants.NodeHeaderSize), size;
+            Float2 pos = new(FlaxEditor.Surface.Constants.NodeMarginX, FlaxEditor.Surface.Constants.NodeMarginY + FlaxEditor.Surface.Constants.NodeHeaderSize), size;
             if (nodeArch.TypeID == 8)
             {
                 pos += new Float2(60, 0);
@@ -387,8 +387,7 @@ public static class Material
     /// </summary>
     public static NodeArchetype[] Nodes =
     {
-        new NodeArchetype
-        {
+        new() {
             TypeID = 1,
             Create = (id, context, arch, groupArch) => new SurfaceNodeMaterial(id, context, arch, groupArch),
             Title = "Material",
@@ -414,8 +413,7 @@ public static class Material
                 NodeElementArchetype.Factory.Input(14, "Subsurface Color", true, typeof(Float3), 14),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 2,
             Title = "World Position",
             Description = "Absolute world space position",
@@ -426,8 +424,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 3,
             Title = "View",
             Description = "View properties",
@@ -440,8 +437,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(2, "Far Plane", typeof(float), 2),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 4,
             Title = "Normal Vector",
             Description = "World space normal vector",
@@ -452,8 +448,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "Normal", typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 5,
             Title = "Camera Vector",
             Description = "Calculates camera vector",
@@ -464,8 +459,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "Vector", typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 6,
             Title = "Screen Position",
             Description = "Gathers screen position or texcoord",
@@ -480,8 +474,7 @@ public static class Material
                 NodeElementArchetype.Factory.Text(20, 0, "Main View"),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 7,
             Title = "Screen Size",
             Description = "Gathers screen size",
@@ -496,8 +489,7 @@ public static class Material
                 NodeElementArchetype.Factory.Text(20, 0, "Main View"),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 8,
             Create = (id, context, arch, groupArch) => new CustomCodeNode(id, context, arch, groupArch),
             Title = "Custom Code",
@@ -526,8 +518,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(3, "Output3", typeof(Float4), 11),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 9,
             Title = "Object Position",
             Description = "Absolute world space object position",
@@ -538,8 +529,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 10,
             Title = "Two Sided Sign",
             Description = "Scalar value with surface side sign. 1 for normal facing, -1 for inverted",
@@ -550,8 +540,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "", typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 11,
             Title = "Camera Depth Fade",
             Description = "Creates a gradient of 0 near the camera to white at fade length. Useful for preventing particles from camera clipping.",
@@ -569,8 +558,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "Result", typeof(float), 2),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 12,
             Title = "Vertex Color",
             Description = "Per vertex color",
@@ -581,8 +569,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "Color", typeof(Float4), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 13,
             Title = "Pre-skinned Local Position",
             Description = "Per vertex local position (before skinning)",
@@ -594,8 +581,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 14,
             Title = "Pre-skinned Local Normal",
             Description = "Per vertex local normal (before skinning)",
@@ -607,8 +593,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 15,
             Title = "Depth",
             Description = "Current pixel/vertex linear distance to the camera",
@@ -619,8 +604,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 16,
             Title = "Tangent Vector",
             Description = "World space tangent vector",
@@ -631,8 +615,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "Tangent", typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 17,
             Title = "Bitangent Vector",
             Description = "World space bitangent vector",
@@ -643,8 +626,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "Bitangent", typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 18,
             Title = "Camera Position",
             Description = "World space camera location",
@@ -655,8 +637,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 19,
             Title = "Per Instance Random",
             Description = "Per object instance random value (normalized to range 0-1)",
@@ -667,8 +648,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "", typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 20,
             Title = "Interpolate VS To PS",
             Description = "Helper node used to pass data from Vertex Shader to Pixel Shader",
@@ -680,8 +660,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "Pixel Shader", typeof(Float4), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 21,
             Title = "Terrain Holes Mask",
             Description = "Scalar terrain visibility mask used mostly for creating holes in terrain",
@@ -692,8 +671,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "", typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 22,
             Title = "Terrain Layer Weight",
             Description = "Terrain layer weight mask used for blending terrain layers",
@@ -709,8 +687,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "", typeof(float), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 23,
             Title = "Depth Fade",
             Description = "Creates a gradient of 0 near the scene depth geometry. Useful for preventing particles from clipping with geometry (use it for soft particles).",
@@ -726,8 +703,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 24,
             Create = (id, context, arch, groupArch) => new MaterialFunctionNode(id, context, arch, groupArch),
             Title = "Material Function",
@@ -743,8 +719,7 @@ public static class Material
                 NodeElementArchetype.Factory.Asset(0, 0, 0, typeof(MaterialFunction)),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 25,
             Title = "Object Size",
             Description = "Absolute world space object size",
@@ -755,8 +730,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "XYZ", typeof(Float3), 0),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 26,
             Title = "Blend Normals",
             Description = "Blend two normal maps to create a single normal map",
@@ -770,8 +744,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "Result", typeof(Float3), 2)
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 27,
             Title = "Rotator",
             Description = "Rotates UV coordinates according to a scalar angle (in radians, 0-2PI)",
@@ -785,8 +758,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float2), 3),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 28,
             Title = "Sphere Mask",
             Description = "Creates a sphere mask",
@@ -814,8 +786,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 5),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 29,
             Title = "UV Tiling & Offset",
             Description = "Takes UVs and applies tiling and offset",
@@ -834,8 +805,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float2), 3),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 30,
             Title = "DDX",
             Description = "Returns the partial derivative of the specified value with respect to the screen-space x-coordinate",
@@ -850,8 +820,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, null, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 31,
             Title = "DDY",
             Description = "Returns the partial derivative of the specified value with respect to the screen-space y-coordinate",
@@ -866,8 +835,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, null, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 32,
             Title = "Sign",
             Description = "Returns -1 if value is less than zero; 0 if value equals zero; and 1 if value is greater than zero",
@@ -881,8 +849,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 33,
             Title = "Any",
             Description = "True if any components of value are non-zero; otherwise, false",
@@ -896,8 +863,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(bool), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 34,
             Title = "All",
             Description = "Determines if all components of the specified value are non-zero",
@@ -911,8 +877,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(bool), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 35,
             Title = "Black Body",
             Description = "Simulates black body radiation via a given temperature in kelvin",
@@ -928,8 +893,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 36,
             Title = "HSVToRGB",
             Description = "Converts a HSV value to linear RGB [X = 0/360, Y = 0/1, Z = 0/1]",
@@ -945,8 +909,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "RGB", typeof(Float3), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 37,
             Title = "RGBToHSV",
             Description = "Converts a linear RGB value to HSV [X = 0/360, Y = 0/1, Z = 0/1]",
@@ -962,8 +925,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "HSV", typeof(Float3), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 38,
             Create = (id, context, arch, groupArch) => new CustomCodeNode(id, context, arch, groupArch),
             Title = "Custom Global Code",
@@ -985,8 +947,7 @@ public static class Material
                 NodeElementArchetype.Factory.Enum(50, 20, 120, 2, typeof(MaterialTemplateInputsMapping)),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 39,
             Title = "View Size",
             Description = "The size of the view. The draw rectangle size in GUI materials.",
@@ -998,8 +959,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(1, "Inv Size", typeof(Float2), 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 40,
             Title = "Rectangle Mask",
             Description = "Creates a rectangle mask",
@@ -1017,8 +977,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 2),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 41,
             Title = "FWidth",
             Description = "Creates a partial derivative (fwidth)",
@@ -1033,8 +992,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, null, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 42,
             Title = "AA Step",
             Description = "Smooth version of step function with less aliasing",
@@ -1052,8 +1010,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 2),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 43,
             Title = "Rotate UV",
             Description = "Rotates 2D vector by given angle around (0,0) origin",
@@ -1071,8 +1028,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float2), 2),
             ]
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 44,
             Title = "Cone Gradient",
             Description = "Creates cone gradient around normalized UVs (range [-1; 1]), angle is in radians (range [0; TwoPi])",
@@ -1090,8 +1046,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 2),
             ]
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 45,
             Title = "Cycle Gradient",
             Description = "Creates 2D sphere mask gradient around normalized UVs (range [-1; 1])",
@@ -1104,8 +1059,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 1),
             ]
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 46,
             Title = "Falloff and Offset",
             Description = "",
@@ -1125,8 +1079,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 3),
             ]
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 47,
             Title = "Linear Gradient",
             Description = "x = Gradient along X axis, y = Gradient along Y axis",
@@ -1146,8 +1099,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float2), 3),
             ]
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 48,
             Title = "Radial Gradient",
             Description = "",
@@ -1165,8 +1117,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(float), 2),
             ]
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 49,
             Title = "Ring Gradient",
             Description = "x = InnerMask,y = OuterMask,z = Mask",
@@ -1188,8 +1139,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, string.Empty, typeof(Float3), 4),
             ]
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 50,
             Title = "Shift HSV",
             Description = "Modifies the HSV of a color, values are from -1:1, preserves alpha",
@@ -1210,8 +1160,7 @@ public static class Material
                 NodeElementArchetype.Factory.Output(0, "RGBA", typeof(Float4), 4),
             ]
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 51,
             Title = "Color Blend",
             Description = "Blends two colors using various blend modes. Passes base alpha through.",

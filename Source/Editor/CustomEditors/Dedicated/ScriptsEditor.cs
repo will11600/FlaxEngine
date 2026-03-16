@@ -626,7 +626,7 @@ public sealed class ScriptsEditor : SyncPointEditor
     /// <summary>
     /// The scripts collection. Undo operations are recorder for scripts.
     /// </summary>
-    private readonly List<Script> _scripts = new List<Script>();
+    private readonly List<Script> _scripts = new();
 
     /// <inheritdoc />
     public override IEnumerable<object> UndoObjects => _scripts;

@@ -21,7 +21,7 @@ public sealed class OptionsModule : EditorModule
     /// <summary>
     /// The current editor options. Don't modify the values directly (local session state lifetime), use <see cref="Apply"/>.
     /// </summary>
-    public EditorOptions Options = new EditorOptions();
+    public EditorOptions Options = new();
 
     /// <summary>
     /// Occurs when editor options get changed (reloaded or applied).
@@ -40,7 +40,7 @@ public sealed class OptionsModule : EditorModule
     public delegate object CreateCustomSettingsDelegate();
 
     private readonly string _optionsFilePath;
-    private readonly Dictionary<string, CreateCustomSettingsDelegate> _customSettings = new Dictionary<string, CreateCustomSettingsDelegate>();
+    private readonly Dictionary<string, CreateCustomSettingsDelegate> _customSettings = new();
 
     /// <summary>
     /// Gets the custom settings factories. Each entry defines the custom settings type identified by the given key name. The value is a factory function that returns the default options for a given type.

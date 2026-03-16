@@ -18,7 +18,7 @@ public static class NodeFactory
     /// <summary>
     /// The list of supported attribute types for Visject Surface parameters. Attributes must be marked with Serializable attribute and contain empty constructor.
     /// </summary>
-    public static readonly List<Type> ParameterAttributeTypes = new List<Type>(16)
+    public static readonly List<Type> ParameterAttributeTypes = new(16)
     {
         typeof(TooltipAttribute),
         typeof(LimitAttribute),
@@ -34,7 +34,7 @@ public static class NodeFactory
     /// <summary>
     /// The list of supported attribute types for Visject Surface function nodes. Attributes must be marked with Serializable attribute and contain empty constructor.
     /// </summary>
-    public static readonly List<Type> FunctionAttributeTypes = new List<Type>(8)
+    public static readonly List<Type> FunctionAttributeTypes = new(8)
     {
         typeof(TooltipAttribute),
         typeof(HideInEditorAttribute),
@@ -45,7 +45,7 @@ public static class NodeFactory
     /// <summary>
     /// The list of supported attribute types for Visject Surface type. Attributes must be marked with Serializable attribute and contain empty constructor.
     /// </summary>
-    public static readonly List<Type> TypeAttributeTypes = new List<Type>(8)
+    public static readonly List<Type> TypeAttributeTypes = new(8)
     {
         typeof(TooltipAttribute),
         typeof(HideInEditorAttribute),
@@ -54,7 +54,7 @@ public static class NodeFactory
     /// <summary>
     /// The default Visject Node archetype groups collection.
     /// </summary>
-    public static readonly List<GroupArchetype> DefaultGroups = new List<GroupArchetype>(32)
+    public static readonly List<GroupArchetype> DefaultGroups = new(32)
     {
         new GroupArchetype
         {

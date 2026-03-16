@@ -70,7 +70,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// <summary>
     /// The identity <see cref="Matrix" />.
     /// </summary>
-    public static readonly Matrix Identity = new Matrix
+    public static readonly Matrix Identity = new()
     {
         M11 = 1.0f,
         M22 = 1.0f,
@@ -163,7 +163,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float3 Up
     {
-        get => new Float3(M21, M22, M23);
+        get => new(M21, M22, M23);
         set
         {
             M21 = value.X;
@@ -177,7 +177,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float3 Down
     {
-        get => new Float3(-M21, -M22, -M23);
+        get => new(-M21, -M22, -M23);
         set
         {
             M21 = -value.X;
@@ -191,7 +191,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float3 Right
     {
-        get => new Float3(M11, M12, M13);
+        get => new(M11, M12, M13);
         set
         {
             M11 = value.X;
@@ -205,7 +205,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float3 Left
     {
-        get => new Float3(-M11, -M12, -M13);
+        get => new(-M11, -M12, -M13);
         set
         {
             M11 = -value.X;
@@ -219,7 +219,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float3 Forward
     {
-        get => new Float3(M31, M32, M33);
+        get => new(M31, M32, M33);
         set
         {
             M31 = value.X;
@@ -233,7 +233,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float3 Backward
     {
-        get => new Float3(-M31, -M32, -M33);
+        get => new(-M31, -M32, -M33);
         set
         {
             M31 = -value.X;
@@ -359,7 +359,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float4 Row1
     {
-        get => new Float4(M11, M12, M13, M14);
+        get => new(M11, M12, M13, M14);
         set
         {
             M11 = value.X;
@@ -374,7 +374,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float4 Row2
     {
-        get => new Float4(M21, M22, M23, M24);
+        get => new(M21, M22, M23, M24);
         set
         {
             M21 = value.X;
@@ -389,7 +389,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float4 Row3
     {
-        get => new Float4(M31, M32, M33, M34);
+        get => new(M31, M32, M33, M34);
         set
         {
             M31 = value.X;
@@ -404,7 +404,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float4 Row4
     {
-        get => new Float4(M41, M42, M43, M44);
+        get => new(M41, M42, M43, M44);
         set
         {
             M41 = value.X;
@@ -419,7 +419,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float4 Column1
     {
-        get => new Float4(M11, M21, M31, M41);
+        get => new(M11, M21, M31, M41);
         set
         {
             M11 = value.X;
@@ -434,7 +434,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float4 Column2
     {
-        get => new Float4(M12, M22, M32, M42);
+        get => new(M12, M22, M32, M42);
         set
         {
             M12 = value.X;
@@ -449,7 +449,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float4 Column3
     {
-        get => new Float4(M13, M23, M33, M43);
+        get => new(M13, M23, M33, M43);
         set
         {
             M13 = value.X;
@@ -464,7 +464,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float4 Column4
     {
-        get => new Float4(M14, M24, M34, M44);
+        get => new(M14, M24, M34, M44);
         set
         {
             M14 = value.X;
@@ -479,7 +479,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float3 TranslationVector
     {
-        get => new Float3(M41, M42, M43);
+        get => new(M41, M42, M43);
         set
         {
             M41 = value.X;
@@ -493,7 +493,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     public Float3 ScaleVector
     {
-        get => new Float3(M11, M22, M33);
+        get => new(M11, M22, M33);
         set
         {
             M11 = value.X;

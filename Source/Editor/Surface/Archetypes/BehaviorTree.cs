@@ -872,8 +872,7 @@ public static class BehaviorTree
     /// </summary>
     public static NodeArchetype[] Nodes =
     {
-        new NodeArchetype
-        {
+        new() {
             TypeID = 1, // Task Node
             Create = Node.Create,
             Flags = NodeFlags.BehaviorTreeGraph | NodeFlags.NoSpawnViaGUI,
@@ -890,8 +889,7 @@ public static class BehaviorTree
                 NodeElementArchetype.Factory.Output(0, string.Empty, ScriptType.Void, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 2, // Root Node
             Create = Node.Create,
             Flags = NodeFlags.BehaviorTreeGraph | NodeFlags.NoSpawnViaGUI,
@@ -907,8 +905,7 @@ public static class BehaviorTree
                 NodeElementArchetype.Factory.Output(0, string.Empty, ScriptType.Void, 1),
             }
         },
-        new NodeArchetype
-        {
+        new() {
             TypeID = 3, // Decorator Node
             Create = Decorator.Create,
             Flags = NodeFlags.BehaviorTreeGraph | NodeFlags.NoSpawnViaGUI | NodeFlags.NoMove,

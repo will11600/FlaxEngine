@@ -29,7 +29,7 @@ public sealed class ActorStaticFlagsEditor : EnumEditor
             {
                 // Note: this possibly breaks the design a little bit
                 // But it's the easiest way to set value for selected actor and its children with one undo action
-                List<Actor> actors = new List<Actor>(32);
+                List<Actor> actors = new(32);
                 Utilities.Utils.GetActorsTree(actors, actor);
                 if (Presenter.Undo != null && Presenter.Undo.Enabled)
                 {

@@ -57,8 +57,8 @@ public class ColorPickerDialog : Dialog, IColorPickerDialog
     private Button _cOK;
     private Button _cEyedropper;
 
-    private List<Color> _savedColors = new List<Color>();
-    private List<Button> _savedColorButtons = new List<Button>();
+    private List<Color> _savedColors = new();
+    private List<Button> _savedColorButtons = new();
 
     /// <summary>
     /// Gets the selected color.

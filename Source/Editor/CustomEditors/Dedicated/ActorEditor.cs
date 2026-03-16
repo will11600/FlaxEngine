@@ -432,7 +432,7 @@ public class ActorEditor : ScriptingObjectEditor
     private TreeNode CreateDiffTree(Actor actor, CustomEditorPresenter presenter, LayoutElementsContainer layout)
     {
         var actorNode = Editor.Instance.Scene.GetActorNode(actor);
-        ValueContainer vc = new ValueContainer(ScriptMemberInfo.Null);
+        ValueContainer vc = new(ScriptMemberInfo.Null);
         vc.SetType(new ScriptType(actorNode.EditableObject.GetType()));
         vc.Add(actorNode.EditableObject);
         var editor = CustomEditorsUtil.CreateEditor(vc, null, false);

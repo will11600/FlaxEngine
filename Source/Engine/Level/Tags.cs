@@ -13,7 +13,7 @@ namespace FlaxEngine
         /// <summary>
         /// The default <see cref="Tag"/>.
         /// </summary>
-        public static Tag Default => new Tag(0);
+        public static Tag Default => new(0);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tag" /> struct.

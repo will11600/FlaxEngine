@@ -326,7 +326,7 @@ public sealed class VisjectCMItem : Control
 
     private string GetTooltip()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         sb.Append(string.IsNullOrEmpty(_archetype.Signature) ? _archetype.Title : _archetype.Signature);
         if (!string.IsNullOrEmpty(_archetype.Description))
             sb.Append("\n" + _archetype.Description);

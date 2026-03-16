@@ -21,7 +21,7 @@ public class MeshReferenceEditor : CustomEditor
 {
     private class MeshRefPickerControl : Control
     {
-        private ModelInstanceActor.MeshReference _value = new ModelInstanceActor.MeshReference { LODIndex = -1, MeshIndex = -1 };
+        private ModelInstanceActor.MeshReference _value = new() { LODIndex = -1, MeshIndex = -1 };
         private string _valueName;
         private Float2 _mousePos;
 

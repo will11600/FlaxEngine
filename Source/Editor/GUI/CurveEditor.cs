@@ -328,7 +328,7 @@ public abstract partial class CurveEditor<T> : CurveEditorBase where T : new()
     /// <summary>
     /// The keyframes size.
     /// </summary>
-    protected static readonly Float2 KeyframesSize = new Float2(8.0f);
+    protected static readonly Float2 KeyframesSize = new(8.0f);
 
     /// <summary>
     /// The colors for the keyframe points.
@@ -372,15 +372,15 @@ public abstract partial class CurveEditor<T> : CurveEditorBase where T : new()
     /// <summary>
     /// Preset values for <see cref="CurvePreset"/> to be applied to a <see cref="CurveEditor{T}"/>.
     /// </summary>
-    protected Dictionary<CurvePreset, CurveEditorPreset> Presets = new Dictionary<CurvePreset, CurveEditorPreset>
+    protected Dictionary<CurvePreset, CurveEditorPreset> Presets = new()
     {
         { CurvePreset.Constant, new CurveEditorPreset
             {
                 LinearTangents = true,
                 Points = new List<CurvePresetPoint>
                 {
-                    new CurvePresetPoint { Time = 0f, Value = 0.5f, TangentIn = 0f, TangentOut = 0f },
-                    new CurvePresetPoint { Time = 1f, Value = 0.5f, TangentIn = 0f, TangentOut = 0f },
+                    new() { Time = 0f, Value = 0.5f, TangentIn = 0f, TangentOut = 0f },
+                    new() { Time = 1f, Value = 0.5f, TangentIn = 0f, TangentOut = 0f },
                 }
             }
         },
@@ -389,8 +389,8 @@ public abstract partial class CurveEditor<T> : CurveEditorBase where T : new()
                 LinearTangents = false,
                 Points = new List<CurvePresetPoint>
                 {
-                    new CurvePresetPoint { Time = 0f, Value = 0f, TangentIn = 0f, TangentOut = 0f },
-                    new CurvePresetPoint { Time = 1f, Value = 1f, TangentIn = -1.4f, TangentOut = 0f },
+                    new() { Time = 0f, Value = 0f, TangentIn = 0f, TangentOut = 0f },
+                    new() { Time = 1f, Value = 1f, TangentIn = -1.4f, TangentOut = 0f },
                 }
             }
         },
@@ -399,8 +399,8 @@ public abstract partial class CurveEditor<T> : CurveEditorBase where T : new()
                 LinearTangents = false,
                 Points = new List<CurvePresetPoint>
                 {
-                    new CurvePresetPoint { Time = 1f, Value = 1f, TangentIn = 0f, TangentOut = 0f },
-                    new CurvePresetPoint { Time = 0f, Value = 0f, TangentIn = 0f, TangentOut = 1.4f },
+                    new() { Time = 1f, Value = 1f, TangentIn = 0f, TangentOut = 0f },
+                    new() { Time = 0f, Value = 0f, TangentIn = 0f, TangentOut = 1.4f },
                 }
             }
         },
@@ -409,8 +409,8 @@ public abstract partial class CurveEditor<T> : CurveEditorBase where T : new()
                 LinearTangents = true,
                 Points = new List<CurvePresetPoint>
                 {
-                    new CurvePresetPoint { Time = 0f, Value = 0f, TangentIn = 0f, TangentOut = 0f },
-                    new CurvePresetPoint { Time = 1f, Value = 1f, TangentIn = 0f, TangentOut = 0f },
+                    new() { Time = 0f, Value = 0f, TangentIn = 0f, TangentOut = 0f },
+                    new() { Time = 1f, Value = 1f, TangentIn = 0f, TangentOut = 0f },
                 }
             }
         },
@@ -419,8 +419,8 @@ public abstract partial class CurveEditor<T> : CurveEditorBase where T : new()
                 LinearTangents = false,
                 Points = new List<CurvePresetPoint>
                 {
-                    new CurvePresetPoint { Time = 0f, Value = 0f, TangentIn = 0f, TangentOut = 0f },
-                    new CurvePresetPoint { Time = 1f, Value = 1f, TangentIn = 0f, TangentOut = 0f },
+                    new() { Time = 0f, Value = 0f, TangentIn = 0f, TangentOut = 0f },
+                    new() { Time = 1f, Value = 1f, TangentIn = 0f, TangentOut = 0f },
                 }
             }
         },
@@ -429,7 +429,7 @@ public abstract partial class CurveEditor<T> : CurveEditorBase where T : new()
     /// <summary>
     /// The keyframe UI points.
     /// </summary>
-    protected readonly List<KeyframePoint> _points = new List<KeyframePoint>();
+    protected readonly List<KeyframePoint> _points = new();
 
     /// <summary>
     /// The tangents UI points.
@@ -1220,7 +1220,7 @@ public class LinearCurveEditor<T> : CurveEditor<T> where T : new()
     /// <summary>
     /// The keyframes collection.
     /// </summary>
-    protected List<LinearCurve<T>.Keyframe> _keyframes = new List<LinearCurve<T>.Keyframe>();
+    protected List<LinearCurve<T>.Keyframe> _keyframes = new();
 
     /// <summary>
     /// Gets the keyframes collection (read-only).
@@ -1768,7 +1768,7 @@ public class BezierCurveEditor<T> : CurveEditor<T> where T : new()
     /// <summary>
     /// The keyframes collection.
     /// </summary>
-    protected List<BezierCurve<T>.Keyframe> _keyframes = new List<BezierCurve<T>.Keyframe>();
+    protected List<BezierCurve<T>.Keyframe> _keyframes = new();
 
     /// <summary>
     /// Gets the keyframes collection (read-only).

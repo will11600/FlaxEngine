@@ -53,8 +53,8 @@ public sealed partial class ContentWindow : EditorWindow
     private RootContentTreeNode _root;
 
     private bool _navigationUnlocked;
-    private readonly Stack<ContentTreeNode> _navigationUndo = new Stack<ContentTreeNode>(32);
-    private readonly Stack<ContentTreeNode> _navigationRedo = new Stack<ContentTreeNode>(32);
+    private readonly Stack<ContentTreeNode> _navigationUndo = new(32);
+    private readonly Stack<ContentTreeNode> _navigationRedo = new(32);
 
     private NewItem _newElement;
 

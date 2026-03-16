@@ -64,7 +64,7 @@ sealed class VisualScriptParameterInfo : IScriptMemberInfo
     public int ParametersCount => 0;
 
     /// <inheritdoc />
-    public ScriptType DeclaringType => new ScriptType(_type);
+    public ScriptType DeclaringType => new(_type);
 
     /// <inheritdoc />
     public ScriptType ValueType
@@ -562,7 +562,7 @@ public class VisualScriptItem : BinaryAssetItem
     /// <summary>
     /// The cached list of all Visual Script assets found in the workspace (engine, game and plugin projects). Updated on workspace modifications.
     /// </summary>
-    public static readonly List<VisualScriptItem> VisualScripts = new List<VisualScriptItem>();
+    public static readonly List<VisualScriptItem> VisualScripts = new();
 
     private VisualScriptType _scriptType;
 

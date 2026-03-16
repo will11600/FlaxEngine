@@ -32,7 +32,7 @@ internal sealed class AboutDialog : Dialog
     /// <returns>Returns icon controller (most top left)</returns>
     private Control CreateHeader()
     {
-        Image icon = new Image(4, 4, 80, 80)
+        Image icon = new(4, 4, 80, 80)
         {
             Brush = new SpriteBrush(Editor.Instance.Icons.FlaxLogo128),
             Parent = this

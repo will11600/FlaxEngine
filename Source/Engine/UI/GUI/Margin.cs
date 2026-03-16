@@ -53,12 +53,12 @@ public struct Margin : IEquatable<Margin>, IFormattable
     /// <summary>
     /// Gets the margin's location (Left, Top).
     /// </summary>
-    public Float2 Location => new Float2(Left, Top);
+    public Float2 Location => new(Left, Top);
 
     /// <summary>
     /// Gets the margin's total size. Cumulative margin size (Left + Right, Top + Bottom).
     /// </summary>
-    public Float2 Size => new Float2(Left + Right, Top + Bottom);
+    public Float2 Size => new(Left + Right, Top + Bottom);
 
     /// <summary>
     /// Gets the width (left + right).

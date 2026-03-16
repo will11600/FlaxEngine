@@ -225,7 +225,7 @@ public class ContentFindingModule : EditorModule
             {
                 return new List<SearchResult>
                 {
-                    new SearchResult { Name = item.ShortName, Type = assetItem.TypeName, Item = item }
+                    new() { Name = item.ShortName, Type = assetItem.TypeName, Item = item }
                 };
             }
             var actor = FlaxEngine.Object.Find<Actor>(ref id, true);
@@ -233,7 +233,7 @@ public class ContentFindingModule : EditorModule
             {
                 return new List<SearchResult>
                 {
-                    new SearchResult { Name = actor.Name, Type = actor.TypeName, Item = actor }
+                    new() { Name = actor.Name, Type = actor.TypeName, Item = actor }
                 };
             }
             var script = FlaxEngine.Object.Find<Script>(ref id, true);
@@ -243,7 +243,7 @@ public class ContentFindingModule : EditorModule
 
                 return new List<SearchResult>
                 {
-                    new SearchResult { Name = $"{actorPathStart}{script.TypeName}", Type = script.TypeName, Item = script }
+                    new() { Name = $"{actorPathStart}{script.TypeName}", Type = script.TypeName, Item = script }
                 };
             }
         }
@@ -426,7 +426,7 @@ public class ContentFindingModule : EditorModule
     /// <summary>
     /// The aliases to match the given type to its name.
     /// </summary>
-    public static readonly Dictionary<string, string> Aliases = new Dictionary<string, string>
+    public static readonly Dictionary<string, string> Aliases = new()
     {
         // Assets
         { "FlaxEditor.Content.Settings.AudioSettings", "Settings" },

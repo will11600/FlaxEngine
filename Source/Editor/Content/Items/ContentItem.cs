@@ -191,7 +191,7 @@ public abstract class ContentItem : Control
 
     private bool _isMouseDown;
     private Float2 _mouseDownStartPos;
-    private readonly List<IContentItemOwner> _references = new List<IContentItemOwner>(4);
+    private readonly List<IContentItemOwner> _references = new(4);
 
     private SpriteHandle _thumbnail;
     private SpriteHandle _shadowIcon;

@@ -30,7 +30,7 @@ namespace FlaxEditor.Windows.Assets;
 /// <seealso cref="AnimatedModelPreview" />
 public sealed class AnimationGraphWindow : VisjectSurfaceWindow<AnimationGraph, AnimGraphSurface, AnimatedModelPreview>, ISearchWindow
 {
-    internal static Guid BaseModelId = new Guid(1000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    internal static Guid BaseModelId = new(1000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
     private sealed class AnimationGraphPreview : AnimationPreview
     {
@@ -177,7 +177,7 @@ public sealed class AnimationGraphWindow : VisjectSurfaceWindow<AnimationGraph, 
     private PropertiesProxy _properties;
     private ToolStripButton _showNodesButton;
     private Tab _previewTab;
-    private readonly List<AnimGraphDebugFlowInfo> _debugFlows = new List<AnimGraphDebugFlowInfo>();
+    private readonly List<AnimGraphDebugFlowInfo> _debugFlows = new();
 
     /// <summary>
     /// Gets the animated model actor used for the animation preview.
