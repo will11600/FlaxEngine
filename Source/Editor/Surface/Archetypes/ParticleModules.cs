@@ -341,29 +341,16 @@ public static class ParticleModules
 
         private void UpdateOutputBoxType()
         {
-            Type type;
-            switch ((Particles.ValueTypes)Values[3])
+            Type type = (Particles.ValueTypes)Values[3] switch
             {
-            case Particles.ValueTypes.Float:
-                type = typeof(float);
-                break;
-            case Particles.ValueTypes.Float2:
-                type = typeof(Float2);
-                break;
-            case Particles.ValueTypes.Float3:
-                type = typeof(Float3);
-                break;
-            case Particles.ValueTypes.Float4:
-                type = typeof(Float4);
-                break;
-            case Particles.ValueTypes.Int:
-                type = typeof(int);
-                break;
-            case Particles.ValueTypes.Uint:
-                type = typeof(uint);
-                break;
-            default: throw new ArgumentOutOfRangeException();
-            }
+                Particles.ValueTypes.Float => typeof(float),
+                Particles.ValueTypes.Float2 => typeof(Float2),
+                Particles.ValueTypes.Float3 => typeof(Float3),
+                Particles.ValueTypes.Float4 => typeof(Float4),
+                Particles.ValueTypes.Int => typeof(int),
+                Particles.ValueTypes.Uint => typeof(uint),
+                _ => throw new ArgumentOutOfRangeException(),
+            };
             GetBox(0).CurrentType = new ScriptType(type);
         }
     }

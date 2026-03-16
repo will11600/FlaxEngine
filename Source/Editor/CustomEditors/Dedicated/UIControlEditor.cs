@@ -83,62 +83,27 @@ public sealed class AnchorPresetsEditor : CustomEditor
 
             // Calculate fill area
             float fillSize = rect.Width / 3;
-            Rectangle fillArea;
-            switch (_presets)
+            var fillArea = _presets switch
             {
-            case AnchorPresets.Custom:
-                fillArea = Rectangle.Empty;
-                break;
-            case AnchorPresets.TopLeft:
-                fillArea = new Rectangle(0, 0, fillSize, fillSize);
-                break;
-            case AnchorPresets.TopCenter:
-                fillArea = new Rectangle(fillSize, 0, fillSize, fillSize);
-                break;
-            case AnchorPresets.TopRight:
-                fillArea = new Rectangle(fillSize * 2, 0, fillSize, fillSize);
-                break;
-            case AnchorPresets.MiddleLeft:
-                fillArea = new Rectangle(0, fillSize, fillSize, fillSize);
-                break;
-            case AnchorPresets.MiddleCenter:
-                fillArea = new Rectangle(fillSize, fillSize, fillSize, fillSize);
-                break;
-            case AnchorPresets.MiddleRight:
-                fillArea = new Rectangle(fillSize * 2, fillSize, fillSize, fillSize);
-                break;
-            case AnchorPresets.BottomLeft:
-                fillArea = new Rectangle(0, fillSize * 2, fillSize, fillSize);
-                break;
-            case AnchorPresets.BottomCenter:
-                fillArea = new Rectangle(fillSize, fillSize * 2, fillSize, fillSize);
-                break;
-            case AnchorPresets.BottomRight:
-                fillArea = new Rectangle(fillSize * 2, fillSize * 2, fillSize, fillSize);
-                break;
-            case AnchorPresets.VerticalStretchLeft:
-                fillArea = new Rectangle(0, 0, fillSize, fillSize * 3);
-                break;
-            case AnchorPresets.VerticalStretchRight:
-                fillArea = new Rectangle(fillSize * 2, 0, fillSize, fillSize * 3);
-                break;
-            case AnchorPresets.VerticalStretchCenter:
-                fillArea = new Rectangle(fillSize, 0, fillSize, fillSize * 3);
-                break;
-            case AnchorPresets.HorizontalStretchTop:
-                fillArea = new Rectangle(0, 0, fillSize * 3, fillSize);
-                break;
-            case AnchorPresets.HorizontalStretchMiddle:
-                fillArea = new Rectangle(0, fillSize, fillSize * 3, fillSize);
-                break;
-            case AnchorPresets.HorizontalStretchBottom:
-                fillArea = new Rectangle(0, fillSize * 2, fillSize * 3, fillSize);
-                break;
-            case AnchorPresets.StretchAll:
-                fillArea = new Rectangle(0, 0, fillSize * 3, fillSize * 3);
-                break;
-            default: throw new ArgumentOutOfRangeException();
-            }
+                AnchorPresets.Custom => Rectangle.Empty,
+                AnchorPresets.TopLeft => new Rectangle(0, 0, fillSize, fillSize),
+                AnchorPresets.TopCenter => new Rectangle(fillSize, 0, fillSize, fillSize),
+                AnchorPresets.TopRight => new Rectangle(fillSize * 2, 0, fillSize, fillSize),
+                AnchorPresets.MiddleLeft => new Rectangle(0, fillSize, fillSize, fillSize),
+                AnchorPresets.MiddleCenter => new Rectangle(fillSize, fillSize, fillSize, fillSize),
+                AnchorPresets.MiddleRight => new Rectangle(fillSize * 2, fillSize, fillSize, fillSize),
+                AnchorPresets.BottomLeft => new Rectangle(0, fillSize * 2, fillSize, fillSize),
+                AnchorPresets.BottomCenter => new Rectangle(fillSize, fillSize * 2, fillSize, fillSize),
+                AnchorPresets.BottomRight => new Rectangle(fillSize * 2, fillSize * 2, fillSize, fillSize),
+                AnchorPresets.VerticalStretchLeft => new Rectangle(0, 0, fillSize, fillSize * 3),
+                AnchorPresets.VerticalStretchRight => new Rectangle(fillSize * 2, 0, fillSize, fillSize * 3),
+                AnchorPresets.VerticalStretchCenter => new Rectangle(fillSize, 0, fillSize, fillSize * 3),
+                AnchorPresets.HorizontalStretchTop => new Rectangle(0, 0, fillSize * 3, fillSize),
+                AnchorPresets.HorizontalStretchMiddle => new Rectangle(0, fillSize, fillSize * 3, fillSize),
+                AnchorPresets.HorizontalStretchBottom => new Rectangle(0, fillSize * 2, fillSize * 3, fillSize),
+                AnchorPresets.StretchAll => new Rectangle(0, 0, fillSize * 3, fillSize * 3),
+                _ => throw new ArgumentOutOfRangeException(),
+            };
 
             // Draw background
             //Render2D.FillRectangle(rect, backgroundColor);
@@ -160,48 +125,20 @@ public sealed class AnchorPresetsEditor : CustomEditor
             // Draw pivot point
             if (SupportsShiftModulation && Input.GetKey(KeyboardKeys.Control))
             {
-                Float2 pivotPoint;
-                switch (_presets)
+                var pivotPoint = _presets switch
                 {
-                case AnchorPresets.Custom:
-                    pivotPoint = Float2.Minimum;
-                    break;
-                case AnchorPresets.TopLeft:
-                    pivotPoint = new Float2(0, 0);
-                    break;
-                case AnchorPresets.TopCenter:
-                case AnchorPresets.HorizontalStretchTop:
-                    pivotPoint = new Float2(rect.Width / 2, 0);
-                    break;
-                case AnchorPresets.TopRight:
-                    pivotPoint = new Float2(rect.Width, 0);
-                    break;
-                case AnchorPresets.MiddleLeft:
-                case AnchorPresets.VerticalStretchLeft:
-                    pivotPoint = new Float2(0, rect.Height / 2);
-                    break;
-                case AnchorPresets.MiddleCenter:
-                case AnchorPresets.VerticalStretchCenter:
-                case AnchorPresets.HorizontalStretchMiddle:
-                case AnchorPresets.StretchAll:
-                    pivotPoint = new Float2(rect.Width / 2, rect.Height / 2);
-                    break;
-                case AnchorPresets.MiddleRight:
-                case AnchorPresets.VerticalStretchRight:
-                    pivotPoint = new Float2(rect.Width, rect.Height / 2);
-                    break;
-                case AnchorPresets.BottomLeft:
-                    pivotPoint = new Float2(0, rect.Height);
-                    break;
-                case AnchorPresets.BottomCenter:
-                case AnchorPresets.HorizontalStretchBottom:
-                    pivotPoint = new Float2(rect.Width / 2, rect.Height);
-                    break;
-                case AnchorPresets.BottomRight:
-                    pivotPoint = new Float2(rect.Width, rect.Height);
-                    break;
-                default: throw new ArgumentOutOfRangeException();
-                }
+                    AnchorPresets.Custom => Float2.Minimum,
+                    AnchorPresets.TopLeft => new Float2(0, 0),
+                    AnchorPresets.TopCenter or AnchorPresets.HorizontalStretchTop => new Float2(rect.Width / 2, 0),
+                    AnchorPresets.TopRight => new Float2(rect.Width, 0),
+                    AnchorPresets.MiddleLeft or AnchorPresets.VerticalStretchLeft => new Float2(0, rect.Height / 2),
+                    AnchorPresets.MiddleCenter or AnchorPresets.VerticalStretchCenter or AnchorPresets.HorizontalStretchMiddle or AnchorPresets.StretchAll => new Float2(rect.Width / 2, rect.Height / 2),
+                    AnchorPresets.MiddleRight or AnchorPresets.VerticalStretchRight => new Float2(rect.Width, rect.Height / 2),
+                    AnchorPresets.BottomLeft => new Float2(0, rect.Height),
+                    AnchorPresets.BottomCenter or AnchorPresets.HorizontalStretchBottom => new Float2(rect.Width / 2, rect.Height),
+                    AnchorPresets.BottomRight => new Float2(rect.Width, rect.Height),
+                    _ => throw new ArgumentOutOfRangeException(),
+                };
                 var pivotPointSize = new Float2(3.0f);
                 Render2D.DrawRectangle(new Rectangle(pivotPoint - pivotPointSize * 0.5f, pivotPointSize), style.ProgressNormal, 1.1f);
             }

@@ -282,29 +282,16 @@ public static class Particles
 
         private void UpdateOutputBoxType()
         {
-            Type type;
-            switch ((ValueTypes)Values[1])
+            Type type = (ValueTypes)Values[1] switch
             {
-            case ValueTypes.Float:
-                type = typeof(float);
-                break;
-            case ValueTypes.Float2:
-                type = typeof(Float2);
-                break;
-            case ValueTypes.Float3:
-                type = typeof(Float3);
-                break;
-            case ValueTypes.Float4:
-                type = typeof(Float4);
-                break;
-            case ValueTypes.Int:
-                type = typeof(int);
-                break;
-            case ValueTypes.Uint:
-                type = typeof(uint);
-                break;
-            default: throw new ArgumentOutOfRangeException();
-            }
+                ValueTypes.Float => typeof(float),
+                ValueTypes.Float2 => typeof(Float2),
+                ValueTypes.Float3 => typeof(Float3),
+                ValueTypes.Float4 => typeof(Float4),
+                ValueTypes.Int => typeof(int),
+                ValueTypes.Uint => typeof(uint),
+                _ => throw new ArgumentOutOfRangeException(),
+            };
             GetBox(0).CurrentType = new ScriptType(type);
         }
     }

@@ -251,17 +251,14 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0,3].</exception>
     public float this[int index]
     {
-        readonly get
+        readonly get => index switch
         {
-            switch (index)
-            {
-                case 0: return X;
-                case 1: return Y;
-                case 2: return Z;
-                case 3: return W;
-            }
-            throw new ArgumentOutOfRangeException(nameof(index), "Indices for Float4 run from 0 to 3, inclusive.");
-        }
+            0 => X,
+            1 => Y,
+            2 => Z,
+            3 => W,
+            _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Float4 run from 0 to 3, inclusive."),
+        };
         set
         {
             switch (index)

@@ -312,55 +312,51 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 15].</exception>
     public float this[int index]
     {
-        readonly get
+        readonly get => index switch
         {
-            switch (index)
-            {
-            case 0: return M11;
-            case 1: return M12;
-            case 2: return M13;
-            case 3: return M21;
-            case 4: return M22;
-            case 5: return M23;
-            case 6: return M31;
-            case 7: return M32;
-            case 8: return M33;
-            }
-
-            throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix3x3 run from 0 to 8, inclusive.");
-        }
+            0 => M11,
+            1 => M12,
+            2 => M13,
+            3 => M21,
+            4 => M22,
+            5 => M23,
+            6 => M31,
+            7 => M32,
+            8 => M33,
+            _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix3x3 run from 0 to 8, inclusive."),
+        };
         set
         {
             switch (index)
             {
-            case 0:
-                M11 = value;
-                break;
-            case 1:
-                M12 = value;
-                break;
-            case 2:
-                M13 = value;
-                break;
-            case 3:
-                M21 = value;
-                break;
-            case 4:
-                M22 = value;
-                break;
-            case 5:
-                M23 = value;
-                break;
-            case 6:
-                M31 = value;
-                break;
-            case 7:
-                M32 = value;
-                break;
-            case 8:
-                M33 = value;
-                break;
-            default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix3x3 run from 0 to 8, inclusive.");
+                case 0:
+                    M11 = value;
+                    break;
+                case 1:
+                    M12 = value;
+                    break;
+                case 2:
+                    M13 = value;
+                    break;
+                case 3:
+                    M21 = value;
+                    break;
+                case 4:
+                    M22 = value;
+                    break;
+                case 5:
+                    M23 = value;
+                    break;
+                case 6:
+                    M31 = value;
+                    break;
+                case 7:
+                    M32 = value;
+                    break;
+                case 8:
+                    M33 = value;
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix3x3 run from 0 to 8, inclusive.");
             }
         }
     }

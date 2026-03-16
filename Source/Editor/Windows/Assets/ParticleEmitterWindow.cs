@@ -146,16 +146,16 @@ public sealed class ParticleEmitterWindow : VisjectSurfaceWindow<ParticleEmitter
 
             private static string GetAttributeType(PixelFormat format)
             {
-                switch (format)
+                return format switch
                 {
-                case PixelFormat.R32_Float: return "float";
-                case PixelFormat.R32G32_Float: return "Float2";
-                case PixelFormat.R32G32B32_Float: return "Float3";
-                case PixelFormat.R32G32B32A32_Float: return "Float4";
-                case PixelFormat.R32_SInt: return "int";
-                case PixelFormat.R32_UInt: return "uint";
-                default: return format.ToString();
-                }
+                    PixelFormat.R32_Float => "float",
+                    PixelFormat.R32G32_Float => "Float2",
+                    PixelFormat.R32G32B32_Float => "Float3",
+                    PixelFormat.R32G32B32A32_Float => "Float4",
+                    PixelFormat.R32_SInt => "int",
+                    PixelFormat.R32_UInt => "uint",
+                    _ => format.ToString(),
+                };
             }
         }
     }

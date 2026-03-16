@@ -250,20 +250,13 @@ class Background : ContainerControl
                 Render2D.FillRectangle(lineRect, lineColor);
 
                 // Time label
-                string labelText;
-                switch (timeShowMode)
+                string labelText = timeShowMode switch
                 {
-                case Timeline.TimeShowModes.Frames:
-                    labelText = tick.ToString("###0", CultureInfo.InvariantCulture);
-                    break;
-                case Timeline.TimeShowModes.Seconds:
-                    labelText = time.ToString("###0.##'s'", CultureInfo.InvariantCulture);
-                    break;
-                case Timeline.TimeShowModes.Time:
-                    labelText = TimeSpan.FromSeconds(time).ToString("g");
-                    break;
-                default: throw new ArgumentOutOfRangeException();
-                }
+                    Timeline.TimeShowModes.Frames => tick.ToString("###0", CultureInfo.InvariantCulture),
+                    Timeline.TimeShowModes.Seconds => time.ToString("###0.##'s'", CultureInfo.InvariantCulture),
+                    Timeline.TimeShowModes.Time => TimeSpan.FromSeconds(time).ToString("g"),
+                    _ => throw new ArgumentOutOfRangeException(),
+                };
                 var labelRect = new Rectangle(x + 2, -verticalLinesHeaderExtend * 0.8f + timeAxisHeaderOffset, 50, verticalLinesHeaderExtend);
                 Render2D.DrawText(style.FontSmall, labelText, labelRect, labelColor, TextAlignment.Near, TextAlignment.Center, TextWrapping.NoWrap, 1.0f, 0.8f);
             }

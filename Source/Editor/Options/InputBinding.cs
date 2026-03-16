@@ -96,11 +96,11 @@ public struct InputBinding : IEquatable<InputBinding>
     /// <returns>A <see cref="System.String" /> that represents the key.</returns>
     public static string ToString(KeyboardKeys key)
     {
-        switch (key)
+        return key switch
         {
-        case KeyboardKeys.Control: return "Ctrl";
-        default: return key.ToString();
-        }
+            KeyboardKeys.Control => "Ctrl",
+            _ => key.ToString(),
+        };
     }
 
     /// <summary>

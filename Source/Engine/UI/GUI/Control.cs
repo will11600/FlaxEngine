@@ -662,16 +662,16 @@ public partial class Control : IComparable, IDrawable
     public virtual Float2 GetNavOrigin(NavDirection direction)
     {
         var size = Size;
-        switch (direction)
+        return direction switch
         {
-        case NavDirection.Up: return new Float2(size.X * 0.5f, 0);
-        case NavDirection.Down: return new Float2(size.X * 0.5f, size.Y);
-        case NavDirection.Left: return new Float2(0, size.Y * 0.5f);
-        case NavDirection.Right: return new Float2(size.X, size.Y * 0.5f);
-        case NavDirection.Next: return Float2.Zero;
-        case NavDirection.Previous: return size;
-        default: return size * 0.5f;
-        }
+            NavDirection.Up => new Float2(size.X * 0.5f, 0),
+            NavDirection.Down => new Float2(size.X * 0.5f, size.Y),
+            NavDirection.Left => new Float2(0, size.Y * 0.5f),
+            NavDirection.Right => new Float2(size.X, size.Y * 0.5f),
+            NavDirection.Next => Float2.Zero,
+            NavDirection.Previous => size,
+            _ => size * 0.5f,
+        };
     }
 
     /// <summary>

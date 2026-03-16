@@ -33,20 +33,13 @@ class PositionHandle : ContainerControl
         var timeAxisHeaderOffset = -_timeline.MediaBackground.ViewOffset.Y - timeAxisOverlap;
 
         // Time label
-        string labelText;
-        switch (_timeline.TimeShowMode)
+        string labelText = _timeline.TimeShowMode switch
         {
-        case Timeline.TimeShowModes.Frames:
-            labelText = _timeline.CurrentFrame.ToString("###0", CultureInfo.InvariantCulture);
-            break;
-        case Timeline.TimeShowModes.Seconds:
-            labelText = _timeline.CurrentTime.ToString("###0.##'s'", CultureInfo.InvariantCulture);
-            break;
-        case Timeline.TimeShowModes.Time:
-            labelText = TimeSpan.FromSeconds(_timeline.CurrentTime).ToString("g");
-            break;
-        default: throw new ArgumentOutOfRangeException();
-        }
+            Timeline.TimeShowModes.Frames => _timeline.CurrentFrame.ToString("###0", CultureInfo.InvariantCulture),
+            Timeline.TimeShowModes.Seconds => _timeline.CurrentTime.ToString("###0.##'s'", CultureInfo.InvariantCulture),
+            Timeline.TimeShowModes.Time => TimeSpan.FromSeconds(_timeline.CurrentTime).ToString("g"),
+            _ => throw new ArgumentOutOfRangeException(),
+        };
         var color = (_timeline.IsMovingPositionHandle ? style.SelectionBorder : style.Foreground).AlphaMultiplied(0.6f);
         Matrix3x3.RotationZ(Mathf.PiOverTwo, out var m1);
         var m2 = Matrix3x3.Translation2D(0, timeAxisHeaderOffset);

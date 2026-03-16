@@ -259,16 +259,12 @@ public class EnumComboBox : ComboBox
             }
             else
             {
-                switch (formatMode)
+                name = formatMode switch
                 {
-                case EnumDisplayAttribute.FormatMode.Default:
-                    name = Utilities.Utils.GetPropertyNameUI(field.Name);
-                    break;
-                case EnumDisplayAttribute.FormatMode.None:
-                    name = field.Name;
-                    break;
-                default: throw new ArgumentOutOfRangeException(nameof(formatMode), formatMode, null);
-                }
+                    EnumDisplayAttribute.FormatMode.Default => Utilities.Utils.GetPropertyNameUI(field.Name),
+                    EnumDisplayAttribute.FormatMode.None => field.Name,
+                    _ => throw new ArgumentOutOfRangeException(nameof(formatMode), formatMode, null),
+                };
             }
 
             string tooltip = Editor.Instance.CodeDocs.GetTooltip(new ScriptMemberInfo(field), attributes);

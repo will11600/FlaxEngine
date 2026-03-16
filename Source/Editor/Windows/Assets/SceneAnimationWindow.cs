@@ -171,17 +171,17 @@ public sealed class SceneAnimationWindow : ClonedAssetEditorWindowBase<SceneAnim
 
         public Int2 GetResolution()
         {
-            switch (Resolution)
+            return Resolution switch
             {
-            case ResolutionModes._640x480: return new Int2(640, 480);
-            case ResolutionModes._1280x720: return new Int2(1280, 720);
-            case ResolutionModes._1920x1080: return new Int2(1920, 1080);
-            case ResolutionModes._2560x1440: return new Int2(2560, 1440);
-            case ResolutionModes._3840x2160: return new Int2(3840, 2160);
-            case ResolutionModes._7680x4320: return new Int2(7680, 4320);
-            case ResolutionModes.Custom: return new Int2(Width, Height);
-            default: throw new ArgumentOutOfRangeException();
-            }
+                ResolutionModes._640x480 => new Int2(640, 480),
+                ResolutionModes._1280x720 => new Int2(1280, 720),
+                ResolutionModes._1920x1080 => new Int2(1920, 1080),
+                ResolutionModes._2560x1440 => new Int2(2560, 1440),
+                ResolutionModes._3840x2160 => new Int2(3840, 2160),
+                ResolutionModes._7680x4320 => new Int2(7680, 4320),
+                ResolutionModes.Custom => new Int2(Width, Height),
+                _ => throw new ArgumentOutOfRangeException(),
+            };
         }
 
         public string GetOutputPath(ref StagingTexture texture)

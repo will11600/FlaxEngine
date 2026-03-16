@@ -123,13 +123,13 @@ public class CircleBrush : Brush
         float falloff = halfSize * Falloff;
         float radius = halfSize - falloff;
 
-        switch (FalloffType)
+        return FalloffType switch
         {
-        case FalloffTypes.Smooth: return CalculateFalloff_Smooth(distance, radius, falloff);
-        case FalloffTypes.Linear: return CalculateFalloff_Linear(distance, radius, falloff);
-        case FalloffTypes.Spherical: return CalculateFalloff_Spherical(distance, radius, falloff);
-        case FalloffTypes.Tip: return CalculateFalloff_Tip(distance, radius, falloff);
-        default: throw new ArgumentOutOfRangeException();
-        }
+            FalloffTypes.Smooth => CalculateFalloff_Smooth(distance, radius, falloff),
+            FalloffTypes.Linear => CalculateFalloff_Linear(distance, radius, falloff),
+            FalloffTypes.Spherical => CalculateFalloff_Spherical(distance, radius, falloff),
+            FalloffTypes.Tip => CalculateFalloff_Tip(distance, radius, falloff),
+            _ => throw new ArgumentOutOfRangeException(),
+        };
     }
 }

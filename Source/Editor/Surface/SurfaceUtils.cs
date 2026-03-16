@@ -81,27 +81,27 @@ internal static class SurfaceUtils
 
     private static Type ToType(MaterialParameterType type)
     {
-        switch (type)
+        return type switch
         {
-        case MaterialParameterType.Bool: return typeof(bool);
-        case MaterialParameterType.Integer: return typeof(int);
-        case MaterialParameterType.Float: return typeof(float);
-        case MaterialParameterType.Vector2: return typeof(Vector2);
-        case MaterialParameterType.Vector3: return typeof(Vector3);
-        case MaterialParameterType.Vector4: return typeof(Vector4);
-        case MaterialParameterType.Color: return typeof(Color);
-        case MaterialParameterType.Texture: return typeof(Texture);
-        case MaterialParameterType.CubeTexture: return typeof(CubeTexture);
-        case MaterialParameterType.NormalMap: return typeof(Texture);
-        case MaterialParameterType.SceneTexture: return typeof(MaterialSceneTextures);
-        case MaterialParameterType.GPUTexture: return typeof(GPUTexture);
-        case MaterialParameterType.Matrix: return typeof(Matrix);
-        case MaterialParameterType.ChannelMask: return typeof(ChannelMask);
-        case MaterialParameterType.GameplayGlobal: return typeof(GameplayGlobals);
-        case MaterialParameterType.TextureGroupSampler: return typeof(int);
-        case MaterialParameterType.GlobalSDF: return typeof(object);
-        default: throw new ArgumentOutOfRangeException(nameof(type), type, null);
-        }
+            MaterialParameterType.Bool => typeof(bool),
+            MaterialParameterType.Integer => typeof(int),
+            MaterialParameterType.Float => typeof(float),
+            MaterialParameterType.Vector2 => typeof(Vector2),
+            MaterialParameterType.Vector3 => typeof(Vector3),
+            MaterialParameterType.Vector4 => typeof(Vector4),
+            MaterialParameterType.Color => typeof(Color),
+            MaterialParameterType.Texture => typeof(Texture),
+            MaterialParameterType.CubeTexture => typeof(CubeTexture),
+            MaterialParameterType.NormalMap => typeof(Texture),
+            MaterialParameterType.SceneTexture => typeof(MaterialSceneTextures),
+            MaterialParameterType.GPUTexture => typeof(GPUTexture),
+            MaterialParameterType.Matrix => typeof(Matrix),
+            MaterialParameterType.ChannelMask => typeof(ChannelMask),
+            MaterialParameterType.GameplayGlobal => typeof(GameplayGlobals),
+            MaterialParameterType.TextureGroupSampler => typeof(int),
+            MaterialParameterType.GlobalSDF => typeof(object),
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null),
+        };
     }
 
     internal static GroupElement InitGraphParametersGroup(LayoutElementsContainer layout)

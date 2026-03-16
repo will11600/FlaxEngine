@@ -378,48 +378,48 @@ public static class VariantUtils
             var typeName = new string(data);
             return TypeUtils.GetType(typeName);
         }
-        switch (variantType)
+        return variantType switch
         {
-        case VariantType.Null: return ScriptType.Null;
-        case VariantType.Void: return new ScriptType(typeof(void));
-        case VariantType.Bool: return new ScriptType(typeof(bool));
-        case VariantType.Int16: return new ScriptType(typeof(short));
-        case VariantType.Uint16: return new ScriptType(typeof(ushort));
-        case VariantType.Int: return new ScriptType(typeof(int));
-        case VariantType.Uint: return new ScriptType(typeof(uint));
-        case VariantType.Int64: return new ScriptType(typeof(long));
-        case VariantType.Uint64: return new ScriptType(typeof(ulong));
-        case VariantType.Float: return new ScriptType(typeof(float));
-        case VariantType.Double: return new ScriptType(typeof(double));
-        case VariantType.Pointer: return new ScriptType(typeof(IntPtr));
-        case VariantType.String: return new ScriptType(typeof(string));
-        case VariantType.Typename: return new ScriptType(typeof(Type));
-        case VariantType.Object: return ScriptType.FlaxObject;
-        case VariantType.Asset: return new ScriptType(typeof(Asset));
-        case VariantType.Float2: return new ScriptType(typeof(Float2));
-        case VariantType.Float3: return new ScriptType(typeof(Float3));
-        case VariantType.Float4: return new ScriptType(typeof(Float4));
-        case VariantType.Double2: return new ScriptType(typeof(Double2));
-        case VariantType.Double3: return new ScriptType(typeof(Double3));
-        case VariantType.Double4: return new ScriptType(typeof(Double4));
-        case VariantType.Int2: return new ScriptType(typeof(Int2));
-        case VariantType.Int3: return new ScriptType(typeof(Int3));
-        case VariantType.Int4: return new ScriptType(typeof(Int4));
-        case VariantType.Color: return new ScriptType(typeof(Color));
-        case VariantType.Guid: return new ScriptType(typeof(Guid));
-        case VariantType.BoundingBox: return new ScriptType(typeof(BoundingBox));
-        case VariantType.BoundingSphere: return new ScriptType(typeof(BoundingSphere));
-        case VariantType.Quaternion: return new ScriptType(typeof(Quaternion));
-        case VariantType.Transform: return new ScriptType(typeof(Transform));
-        case VariantType.Rectangle: return new ScriptType(typeof(Rectangle));
-        case VariantType.Ray: return new ScriptType(typeof(Ray));
-        case VariantType.Matrix: return new ScriptType(typeof(Matrix));
-        case VariantType.Array: return new ScriptType(typeof(object[]));
-        case VariantType.Dictionary: return new ScriptType(typeof(Dictionary<object, object>));
-        case VariantType.ManagedObject: return ScriptType.Object;
-        case VariantType.Blob: return new ScriptType(typeof(byte[]));
-        default: throw new ArgumentOutOfRangeException($"Unknown Variant Type {variantType} without typename.");
-        }
+            VariantType.Null => ScriptType.Null,
+            VariantType.Void => new ScriptType(typeof(void)),
+            VariantType.Bool => new ScriptType(typeof(bool)),
+            VariantType.Int16 => new ScriptType(typeof(short)),
+            VariantType.Uint16 => new ScriptType(typeof(ushort)),
+            VariantType.Int => new ScriptType(typeof(int)),
+            VariantType.Uint => new ScriptType(typeof(uint)),
+            VariantType.Int64 => new ScriptType(typeof(long)),
+            VariantType.Uint64 => new ScriptType(typeof(ulong)),
+            VariantType.Float => new ScriptType(typeof(float)),
+            VariantType.Double => new ScriptType(typeof(double)),
+            VariantType.Pointer => new ScriptType(typeof(IntPtr)),
+            VariantType.String => new ScriptType(typeof(string)),
+            VariantType.Typename => new ScriptType(typeof(Type)),
+            VariantType.Object => ScriptType.FlaxObject,
+            VariantType.Asset => new ScriptType(typeof(Asset)),
+            VariantType.Float2 => new ScriptType(typeof(Float2)),
+            VariantType.Float3 => new ScriptType(typeof(Float3)),
+            VariantType.Float4 => new ScriptType(typeof(Float4)),
+            VariantType.Double2 => new ScriptType(typeof(Double2)),
+            VariantType.Double3 => new ScriptType(typeof(Double3)),
+            VariantType.Double4 => new ScriptType(typeof(Double4)),
+            VariantType.Int2 => new ScriptType(typeof(Int2)),
+            VariantType.Int3 => new ScriptType(typeof(Int3)),
+            VariantType.Int4 => new ScriptType(typeof(Int4)),
+            VariantType.Color => new ScriptType(typeof(Color)),
+            VariantType.Guid => new ScriptType(typeof(Guid)),
+            VariantType.BoundingBox => new ScriptType(typeof(BoundingBox)),
+            VariantType.BoundingSphere => new ScriptType(typeof(BoundingSphere)),
+            VariantType.Quaternion => new ScriptType(typeof(Quaternion)),
+            VariantType.Transform => new ScriptType(typeof(Transform)),
+            VariantType.Rectangle => new ScriptType(typeof(Rectangle)),
+            VariantType.Ray => new ScriptType(typeof(Ray)),
+            VariantType.Matrix => new ScriptType(typeof(Matrix)),
+            VariantType.Array => new ScriptType(typeof(object[])),
+            VariantType.Dictionary => new ScriptType(typeof(Dictionary<object, object>)),
+            VariantType.ManagedObject => ScriptType.Object,
+            VariantType.Blob => new ScriptType(typeof(byte[])),
+            _ => throw new ArgumentOutOfRangeException($"Unknown Variant Type {variantType} without typename."),
+        };
     }
 
     internal static Type ReadVariantType(this BinaryReader stream)
@@ -453,48 +453,48 @@ public static class VariantUtils
             var typeName = new string(data);
             return TypeUtils.GetManagedType(typeName);
         }
-        switch (variantType)
+        return variantType switch
         {
-        case VariantType.Null: return null;
-        case VariantType.Void: return typeof(void);
-        case VariantType.Bool: return typeof(bool);
-        case VariantType.Int16: return typeof(short);
-        case VariantType.Uint16: return typeof(ushort);
-        case VariantType.Int: return typeof(int);
-        case VariantType.Uint: return typeof(uint);
-        case VariantType.Int64: return typeof(long);
-        case VariantType.Uint64: return typeof(ulong);
-        case VariantType.Float: return typeof(float);
-        case VariantType.Double: return typeof(double);
-        case VariantType.Pointer: return typeof(IntPtr);
-        case VariantType.String: return typeof(string);
-        case VariantType.Typename: return typeof(Type);
-        case VariantType.Object: return typeof(FlaxEngine.Object);
-        case VariantType.Asset: return typeof(Asset);
-        case VariantType.Float2: return typeof(Float2);
-        case VariantType.Float3: return typeof(Float3);
-        case VariantType.Float4: return typeof(Float4);
-        case VariantType.Double2: return typeof(Double2);
-        case VariantType.Double3: return typeof(Double3);
-        case VariantType.Double4: return typeof(Double4);
-        case VariantType.Int2: return typeof(Int2);
-        case VariantType.Int3: return typeof(Int3);
-        case VariantType.Int4: return typeof(Int4);
-        case VariantType.Color: return typeof(Color);
-        case VariantType.Guid: return typeof(Guid);
-        case VariantType.BoundingBox: return typeof(BoundingBox);
-        case VariantType.BoundingSphere: return typeof(BoundingSphere);
-        case VariantType.Quaternion: return typeof(Quaternion);
-        case VariantType.Transform: return typeof(Transform);
-        case VariantType.Rectangle: return typeof(Rectangle);
-        case VariantType.Ray: return typeof(Ray);
-        case VariantType.Matrix: return typeof(Matrix);
-        case VariantType.Array: return typeof(object[]);
-        case VariantType.Dictionary: return typeof(Dictionary<object, object>);
-        case VariantType.ManagedObject: return typeof(object);
-        case VariantType.Blob: return typeof(byte[]);
-        default: throw new ArgumentOutOfRangeException($"Unknown Variant Type {variantType} without typename.");
-        }
+            VariantType.Null => null,
+            VariantType.Void => typeof(void),
+            VariantType.Bool => typeof(bool),
+            VariantType.Int16 => typeof(short),
+            VariantType.Uint16 => typeof(ushort),
+            VariantType.Int => typeof(int),
+            VariantType.Uint => typeof(uint),
+            VariantType.Int64 => typeof(long),
+            VariantType.Uint64 => typeof(ulong),
+            VariantType.Float => typeof(float),
+            VariantType.Double => typeof(double),
+            VariantType.Pointer => typeof(IntPtr),
+            VariantType.String => typeof(string),
+            VariantType.Typename => typeof(Type),
+            VariantType.Object => typeof(FlaxEngine.Object),
+            VariantType.Asset => typeof(Asset),
+            VariantType.Float2 => typeof(Float2),
+            VariantType.Float3 => typeof(Float3),
+            VariantType.Float4 => typeof(Float4),
+            VariantType.Double2 => typeof(Double2),
+            VariantType.Double3 => typeof(Double3),
+            VariantType.Double4 => typeof(Double4),
+            VariantType.Int2 => typeof(Int2),
+            VariantType.Int3 => typeof(Int3),
+            VariantType.Int4 => typeof(Int4),
+            VariantType.Color => typeof(Color),
+            VariantType.Guid => typeof(Guid),
+            VariantType.BoundingBox => typeof(BoundingBox),
+            VariantType.BoundingSphere => typeof(BoundingSphere),
+            VariantType.Quaternion => typeof(Quaternion),
+            VariantType.Transform => typeof(Transform),
+            VariantType.Rectangle => typeof(Rectangle),
+            VariantType.Ray => typeof(Ray),
+            VariantType.Matrix => typeof(Matrix),
+            VariantType.Array => typeof(object[]),
+            VariantType.Dictionary => typeof(Dictionary<object, object>),
+            VariantType.ManagedObject => typeof(object),
+            VariantType.Blob => typeof(byte[]),
+            _ => throw new ArgumentOutOfRangeException($"Unknown Variant Type {variantType} without typename."),
+        };
     }
 
     internal static unsafe object ReadVariant(this BinaryReader stream)

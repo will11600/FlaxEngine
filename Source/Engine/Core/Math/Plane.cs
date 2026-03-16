@@ -138,34 +138,31 @@ partial struct Plane : IEquatable<Plane>, IFormattable
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0,3].</exception>
     public Real this[int index]
     {
-        readonly get
+        readonly get => index switch
         {
-            switch (index)
-            {
-            case 0: return Normal.X;
-            case 1: return Normal.Y;
-            case 2: return Normal.Z;
-            case 3: return D;
-            }
-            throw new ArgumentOutOfRangeException(nameof(index), "Indices for Plane run from 0 to 3, inclusive.");
-        }
+            0 => Normal.X,
+            1 => Normal.Y,
+            2 => Normal.Z,
+            3 => D,
+            _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Plane run from 0 to 3, inclusive."),
+        };
         set
         {
             switch (index)
             {
-            case 0:
-                Normal.X = value;
-                break;
-            case 1:
-                Normal.Y = value;
-                break;
-            case 2:
-                Normal.Z = value;
-                break;
-            case 3:
-                D = value;
-                break;
-            default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Plane run from 0 to 3, inclusive.");
+                case 0:
+                    Normal.X = value;
+                    break;
+                case 1:
+                    Normal.Y = value;
+                    break;
+                case 2:
+                    Normal.Z = value;
+                    break;
+                case 3:
+                    D = value;
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Plane run from 0 to 3, inclusive.");
             }
         }
     }

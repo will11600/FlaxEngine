@@ -64,21 +64,15 @@ public struct ColorHSV : IEquatable<ColorHSV>, IFormattable
         float q = V * (1 - (S * f));
         float t = V * (1 - (S * (1 - f)));
 
-        switch (hi)
+        return hi switch
         {
-        case 0:
-            return new Color(V, t, p, A);
-        case 1:
-            return new Color(q, V, p, A);
-        case 2:
-            return new Color(p, V, t, A);
-        case 3:
-            return new Color(p, q, V, A);
-        case 4:
-            return new Color(t, p, V, A);
-        default:
-            return new Color(V, p, q, A);
-        }
+            0 => new Color(V, t, p, A),
+            1 => new Color(q, V, p, A),
+            2 => new Color(p, V, t, A),
+            3 => new Color(p, q, V, A),
+            4 => new Color(t, p, V, A),
+            _ => new Color(V, p, q, A),
+        };
     }
 
     /// <summary>

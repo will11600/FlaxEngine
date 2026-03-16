@@ -90,24 +90,21 @@ partial class GameCooker
     /// <returns>The run-type platform type.</returns>
     public static PlatformType GetPlatformType(BuildPlatform buildPlatform)
     {
-        switch (buildPlatform)
+        return buildPlatform switch
         {
-        case BuildPlatform.Windows32:
-        case BuildPlatform.Windows64: return PlatformType.Windows;
-        case BuildPlatform.UWPx86:
-        case BuildPlatform.UWPx64: return PlatformType.UWP;
-        case BuildPlatform.XboxOne: return PlatformType.XboxOne;
-        case BuildPlatform.LinuxX64: return PlatformType.Linux;
-        case BuildPlatform.PS4: return PlatformType.PS4;
-        case BuildPlatform.PS5: return PlatformType.PS5;
-        case BuildPlatform.AndroidARM64: return PlatformType.Android;
-        case BuildPlatform.XboxScarlett: return PlatformType.XboxScarlett;
-        case BuildPlatform.Switch: return PlatformType.Switch;
-        case BuildPlatform.MacOSARM64:
-        case BuildPlatform.MacOSx64: return PlatformType.Mac;
-        case BuildPlatform.iOSARM64: return PlatformType.iOS;
-        default: throw new ArgumentOutOfRangeException(nameof(buildPlatform), buildPlatform, null);
-        }
+            BuildPlatform.Windows32 or BuildPlatform.Windows64 => PlatformType.Windows,
+            BuildPlatform.UWPx86 or BuildPlatform.UWPx64 => PlatformType.UWP,
+            BuildPlatform.XboxOne => PlatformType.XboxOne,
+            BuildPlatform.LinuxX64 => PlatformType.Linux,
+            BuildPlatform.PS4 => PlatformType.PS4,
+            BuildPlatform.PS5 => PlatformType.PS5,
+            BuildPlatform.AndroidARM64 => PlatformType.Android,
+            BuildPlatform.XboxScarlett => PlatformType.XboxScarlett,
+            BuildPlatform.Switch => PlatformType.Switch,
+            BuildPlatform.MacOSARM64 or BuildPlatform.MacOSx64 => PlatformType.Mac,
+            BuildPlatform.iOSARM64 => PlatformType.iOS,
+            _ => throw new ArgumentOutOfRangeException(nameof(buildPlatform), buildPlatform, null),
+        };
     }
 
     internal static void Internal_OnEvent(EventType type)

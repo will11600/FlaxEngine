@@ -176,34 +176,31 @@ public struct Matrix2x2 : IEquatable<Matrix2x2>, IFormattable
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
     public float this[int index]
     {
-        readonly get
+        readonly get => index switch
         {
-            switch (index)
-            {
-            case 0: return M11;
-            case 1: return M12;
-            case 2: return M21;
-            case 3: return M22;
-            }
-            throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix2x2 run from 0 to 3, inclusive.");
-        }
+            0 => M11,
+            1 => M12,
+            2 => M21,
+            3 => M22,
+            _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix2x2 run from 0 to 3, inclusive."),
+        };
         set
         {
             switch (index)
             {
-            case 0:
-                M11 = value;
-                break;
-            case 1:
-                M12 = value;
-                break;
-            case 2:
-                M21 = value;
-                break;
-            case 3:
-                M22 = value;
-                break;
-            default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix2x2 run from 0 to 3, inclusive.");
+                case 0:
+                    M11 = value;
+                    break;
+                case 1:
+                    M12 = value;
+                    break;
+                case 2:
+                    M21 = value;
+                    break;
+                case 3:
+                    M22 = value;
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Matrix2x2 run from 0 to 3, inclusive.");
             }
         }
     }

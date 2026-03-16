@@ -939,20 +939,13 @@ public sealed class OutputLogWindow : EditorWindow
                     },
                 };
 
-                switch (entry.Level)
+                textBlock.Style = entry.Level switch
                 {
-                case LogType.Info:
-                    textBlock.Style = _output.DefaultStyle;
-                    break;
-                case LogType.Warning:
-                    textBlock.Style = _output.WarningStyle;
-                    break;
-                case LogType.Error:
-                case LogType.Fatal:
-                    textBlock.Style = _output.ErrorStyle;
-                    break;
-                default: throw new ArgumentOutOfRangeException();
-                }
+                    LogType.Info => _output.DefaultStyle,
+                    LogType.Warning => _output.WarningStyle,
+                    LogType.Error or LogType.Fatal => _output.ErrorStyle,
+                    _ => throw new ArgumentOutOfRangeException(),
+                };
                 var prevBlockBottom = _textBlocks.Count == 0 ? 0.0f : _textBlocks[_textBlocks.Count - 1].Bounds.Bottom;
                 var entryText = _textBuffer.ToString(startIndex, endIndex - startIndex);
                 var font = textBlock.Style.Font.GetFont();

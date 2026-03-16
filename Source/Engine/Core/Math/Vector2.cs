@@ -252,26 +252,23 @@ public unsafe partial struct Vector2 : IEquatable<Vector2>, IFormattable, Json.I
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0,1].</exception>
     public Real this[int index]
     {
-        readonly get
+        readonly get => index switch
         {
-            switch (index)
-            {
-            case 0: return X;
-            case 1: return Y;
-            }
-            throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector2 run from 0 to 1, inclusive.");
-        }
+            0 => X,
+            1 => Y,
+            _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector2 run from 0 to 1, inclusive."),
+        };
         set
         {
             switch (index)
             {
-            case 0:
-                X = value;
-                break;
-            case 1:
-                Y = value;
-                break;
-            default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector2 run from 0 to 1, inclusive.");
+                case 0:
+                    X = value;
+                    break;
+                case 1:
+                    Y = value;
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Vector2 run from 0 to 1, inclusive.");
             }
         }
     }

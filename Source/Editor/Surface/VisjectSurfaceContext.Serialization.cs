@@ -345,57 +345,57 @@ public partial class VisjectSurfaceContext
     internal static Type GetGraphParameterValueType(GraphParamType_Deprecated type)
     {
         // [Deprecated on 31.07.2020, expires on 31.07.2022]
-        switch (type)
+        return type switch
         {
-        case GraphParamType_Deprecated.Bool: return typeof(bool);
-        case GraphParamType_Deprecated.Integer: return typeof(int);
-        case GraphParamType_Deprecated.Float: return typeof(float);
-        case GraphParamType_Deprecated.Vector2: return typeof(Float2);
-        case GraphParamType_Deprecated.Vector3: return typeof(Float3);
-        case GraphParamType_Deprecated.Vector4: return typeof(Float4);
-        case GraphParamType_Deprecated.Color: return typeof(Color);
-        case GraphParamType_Deprecated.Texture: return typeof(Texture);
-        case GraphParamType_Deprecated.NormalMap: return typeof(Texture);
-        case GraphParamType_Deprecated.String: return typeof(string);
-        case GraphParamType_Deprecated.Box: return typeof(BoundingBox);
-        case GraphParamType_Deprecated.Rotation: return typeof(Quaternion);
-        case GraphParamType_Deprecated.Transform: return typeof(Transform);
-        case GraphParamType_Deprecated.Asset: return typeof(Asset);
-        case GraphParamType_Deprecated.Actor: return typeof(Actor);
-        case GraphParamType_Deprecated.Rectangle: return typeof(Rectangle);
-        case GraphParamType_Deprecated.CubeTexture: return typeof(CubeTexture);
-        case GraphParamType_Deprecated.SceneTexture: return typeof(MaterialSceneTextures);
-        case GraphParamType_Deprecated.GPUTexture: return typeof(GPUTexture);
-        case GraphParamType_Deprecated.Matrix: return typeof(Matrix);
-        case GraphParamType_Deprecated.GPUTextureArray: return typeof(GPUTexture);
-        case GraphParamType_Deprecated.GPUTextureVolume: return typeof(GPUTexture);
-        case GraphParamType_Deprecated.GPUTextureCube: return typeof(GPUTexture);
-        case GraphParamType_Deprecated.ChannelMask: return typeof(ChannelMask);
-        default: throw new ArgumentOutOfRangeException(nameof(type), type, null);
-        }
+            GraphParamType_Deprecated.Bool => typeof(bool),
+            GraphParamType_Deprecated.Integer => typeof(int),
+            GraphParamType_Deprecated.Float => typeof(float),
+            GraphParamType_Deprecated.Vector2 => typeof(Float2),
+            GraphParamType_Deprecated.Vector3 => typeof(Float3),
+            GraphParamType_Deprecated.Vector4 => typeof(Float4),
+            GraphParamType_Deprecated.Color => typeof(Color),
+            GraphParamType_Deprecated.Texture => typeof(Texture),
+            GraphParamType_Deprecated.NormalMap => typeof(Texture),
+            GraphParamType_Deprecated.String => typeof(string),
+            GraphParamType_Deprecated.Box => typeof(BoundingBox),
+            GraphParamType_Deprecated.Rotation => typeof(Quaternion),
+            GraphParamType_Deprecated.Transform => typeof(Transform),
+            GraphParamType_Deprecated.Asset => typeof(Asset),
+            GraphParamType_Deprecated.Actor => typeof(Actor),
+            GraphParamType_Deprecated.Rectangle => typeof(Rectangle),
+            GraphParamType_Deprecated.CubeTexture => typeof(CubeTexture),
+            GraphParamType_Deprecated.SceneTexture => typeof(MaterialSceneTextures),
+            GraphParamType_Deprecated.GPUTexture => typeof(GPUTexture),
+            GraphParamType_Deprecated.Matrix => typeof(Matrix),
+            GraphParamType_Deprecated.GPUTextureArray => typeof(GPUTexture),
+            GraphParamType_Deprecated.GPUTextureVolume => typeof(GPUTexture),
+            GraphParamType_Deprecated.GPUTextureCube => typeof(GPUTexture),
+            GraphParamType_Deprecated.ChannelMask => typeof(ChannelMask),
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null),
+        };
     }
 
     internal static Type GetGraphConnectionType(GraphConnectionType_Deprecated connectionType)
     {
         // [Deprecated on 31.07.2020, expires on 31.07.2022]
-        switch (connectionType)
+        return connectionType switch
         {
-        case GraphConnectionType_Deprecated.Impulse: return typeof(void);
-        case GraphConnectionType_Deprecated.Bool: return typeof(bool);
-        case GraphConnectionType_Deprecated.Integer: return typeof(int);
-        case GraphConnectionType_Deprecated.Float: return typeof(float);
-        case GraphConnectionType_Deprecated.Vector2: return typeof(Float2);
-        case GraphConnectionType_Deprecated.Vector3: return typeof(Float3);
-        case GraphConnectionType_Deprecated.Vector4: return typeof(Float4);
-        case GraphConnectionType_Deprecated.String: return typeof(string);
-        case GraphConnectionType_Deprecated.Object: return typeof(FlaxEngine.Object);
-        case GraphConnectionType_Deprecated.Rotation: return typeof(Quaternion);
-        case GraphConnectionType_Deprecated.Transform: return typeof(Transform);
-        case GraphConnectionType_Deprecated.Box: return typeof(BoundingBox);
-        case GraphConnectionType_Deprecated.ImpulseSecondary: return typeof(void);
-        case GraphConnectionType_Deprecated.UnsignedInteger: return typeof(uint);
-        default: return null;
-        }
+            GraphConnectionType_Deprecated.Impulse => typeof(void),
+            GraphConnectionType_Deprecated.Bool => typeof(bool),
+            GraphConnectionType_Deprecated.Integer => typeof(int),
+            GraphConnectionType_Deprecated.Float => typeof(float),
+            GraphConnectionType_Deprecated.Vector2 => typeof(Float2),
+            GraphConnectionType_Deprecated.Vector3 => typeof(Float3),
+            GraphConnectionType_Deprecated.Vector4 => typeof(Float4),
+            GraphConnectionType_Deprecated.String => typeof(string),
+            GraphConnectionType_Deprecated.Object => typeof(FlaxEngine.Object),
+            GraphConnectionType_Deprecated.Rotation => typeof(Quaternion),
+            GraphConnectionType_Deprecated.Transform => typeof(Transform),
+            GraphConnectionType_Deprecated.Box => typeof(BoundingBox),
+            GraphConnectionType_Deprecated.ImpulseSecondary => typeof(void),
+            GraphConnectionType_Deprecated.UnsignedInteger => typeof(uint),
+            _ => null,
+        };
     }
 
     private void SaveGraph(BinaryWriter stream)

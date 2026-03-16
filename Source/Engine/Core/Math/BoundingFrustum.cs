@@ -186,16 +186,16 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// <returns>The frustum plane.</returns>
     public readonly Plane GetPlane(int index)
     {
-        switch (index)
+        return index switch
         {
-        case 0: return pLeft;
-        case 1: return pRight;
-        case 2: return pTop;
-        case 3: return pBottom;
-        case 4: return pNear;
-        case 5: return pFar;
-        default: return new Plane();
-        }
+            0 => pLeft,
+            1 => pRight,
+            2 => pTop,
+            3 => pBottom,
+            4 => pNear,
+            5 => pFar,
+            _ => new Plane(),
+        };
     }
 
     private static void GetPlanesFromMatrix(ref Matrix matrix, out Plane near, out Plane far, out Plane left, out Plane right, out Plane top, out Plane bottom)
@@ -396,11 +396,11 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
                 break;
             }
         }
-        switch (result)
+        return result switch
         {
-        case PlaneIntersectionType.Intersecting: return ContainmentType.Intersects;
-        default: return ContainmentType.Contains;
-        }
+            PlaneIntersectionType.Intersecting => ContainmentType.Intersects,
+            _ => ContainmentType.Contains,
+        };
     }
 
     /// <summary>
@@ -513,11 +513,11 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
                 break;
             }
         }
-        switch (result)
+        return result switch
         {
-        case PlaneIntersectionType.Intersecting: return ContainmentType.Intersects;
-        default: return ContainmentType.Contains;
-        }
+            PlaneIntersectionType.Intersecting => ContainmentType.Intersects,
+            _ => ContainmentType.Contains,
+        };
     }
 
     /// <summary>

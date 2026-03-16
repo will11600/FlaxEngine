@@ -49,20 +49,13 @@ class TimelineEdge : Control
         if (_canEdit && _isMoving)
         {
             // TODO: handle start
-            string labelText;
-            switch (_timeline.TimeShowMode)
+            string labelText = _timeline.TimeShowMode switch
             {
-            case Timeline.TimeShowModes.Frames:
-                labelText = _timeline.DurationFrames.ToString("###0", CultureInfo.InvariantCulture);
-                break;
-            case Timeline.TimeShowModes.Seconds:
-                labelText = _timeline.Duration.ToString("###0.##'s'", CultureInfo.InvariantCulture);
-                break;
-            case Timeline.TimeShowModes.Time:
-                labelText = TimeSpan.FromSeconds(_timeline.DurationFrames / _timeline.FramesPerSecond).ToString("g");
-                break;
-            default: throw new ArgumentOutOfRangeException();
-            }
+                Timeline.TimeShowModes.Frames => _timeline.DurationFrames.ToString("###0", CultureInfo.InvariantCulture),
+                Timeline.TimeShowModes.Seconds => _timeline.Duration.ToString("###0.##'s'", CultureInfo.InvariantCulture),
+                Timeline.TimeShowModes.Time => TimeSpan.FromSeconds(_timeline.DurationFrames / _timeline.FramesPerSecond).ToString("g"),
+                _ => throw new ArgumentOutOfRangeException(),
+            };
             Render2D.DrawText(style.FontSmall, labelText, style.Foreground, new Float2((Width - thickness) * 0.5f + 4, timeAxisHeaderOffset));
         }
     }

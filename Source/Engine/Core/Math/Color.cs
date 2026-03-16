@@ -26,29 +26,14 @@ partial struct Color : Json.ICustomValueEquals
     /// <exception cref="System.IndexOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
     public float this[int index]
     {
-        readonly get
+        readonly get => index switch
         {
-            switch (index)
-            {
-            case 0:
-            {
-                return R;
-            }
-            case 1:
-            {
-                return G;
-            }
-            case 2:
-            {
-                return B;
-            }
-            case 3:
-            {
-                return A;
-            }
-            }
-            throw new IndexOutOfRangeException("Invalid Color index!");
-        }
+            0 => R,
+            1 => G,
+            2 => B,
+            3 => A,
+            _ => throw new IndexOutOfRangeException("Invalid Color index!"),
+        };
         set
         {
             switch (index)

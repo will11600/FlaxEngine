@@ -61,29 +61,14 @@ public struct Color32
     /// <exception cref="System.IndexOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
     public byte this[int index]
     {
-        readonly get
+        readonly get => index switch
         {
-            switch (index)
-            {
-            case 0:
-            {
-                return R;
-            }
-            case 1:
-            {
-                return G;
-            }
-            case 2:
-            {
-                return B;
-            }
-            case 3:
-            {
-                return A;
-            }
-            }
-            throw new IndexOutOfRangeException("Invalid Color32 index!");
-        }
+            0 => R,
+            1 => G,
+            2 => B,
+            3 => A,
+            _ => throw new IndexOutOfRangeException("Invalid Color32 index!"),
+        };
         set
         {
             switch (index)
