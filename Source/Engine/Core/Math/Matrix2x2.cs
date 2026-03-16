@@ -20,7 +20,7 @@ public struct Matrix2x2 : IEquatable<Matrix2x2>, IFormattable
     /// <summary>
     /// The size of the <see cref="Matrix2x2"/> type, in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Matrix2x2));
+    public static unsafe readonly int SizeInBytes = sizeof(Matrix2x2);
 
     /// <summary>
     /// A <see cref="Matrix2x2"/> with all of its components set to zero.

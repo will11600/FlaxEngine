@@ -3,13 +3,11 @@
 #if USE_LARGE_WORLDS
 using Real = System.Double;
 #else
-using Real = System.Single;
 #endif
 
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -23,7 +21,7 @@ partial struct Transform : IEquatable<Transform>, IFormattable, Json.ICustomValu
     /// <summary>
     /// The size of the <see cref="Transform" /> type, in bytes
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Transform));
+    public static unsafe readonly int SizeInBytes = sizeof(Transform);
 
     /// <summary>
     /// A identity <see cref="Transform" /> with all default values

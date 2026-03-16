@@ -52,7 +52,6 @@
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace FlaxEngine;
 
@@ -67,7 +66,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// <summary>
     /// The size of the <see cref="Quaternion" /> type, in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Quaternion));
+    public static unsafe readonly int SizeInBytes = sizeof(Quaternion);
 
     /// <summary>
     /// A <see cref="Quaternion" /> with all of its components set to zero.

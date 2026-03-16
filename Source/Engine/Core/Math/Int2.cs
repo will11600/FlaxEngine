@@ -3,7 +3,6 @@
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace FlaxEngine;
 
@@ -21,7 +20,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// <summary>
     /// The size of the <see cref="Int2" /> type, in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Int2));
+    public static unsafe readonly int SizeInBytes = sizeof(Int2);
 
     /// <summary>
     /// A <see cref="Int2" /> with all of its components set to zero.

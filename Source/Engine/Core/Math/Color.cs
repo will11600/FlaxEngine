@@ -3,7 +3,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace FlaxEngine;
 
@@ -16,7 +15,7 @@ partial struct Color : Json.ICustomValueEquals
     /// <summary>
     /// The size of the <see cref="Color" /> type, in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Color));
+    public static unsafe readonly int SizeInBytes = sizeof(Color);
 
     /// <summary>
     /// Gets or sets the component at the specified index.

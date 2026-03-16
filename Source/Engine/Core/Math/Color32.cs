@@ -15,7 +15,7 @@ public struct Color32
     /// <summary>
     /// The size of the <see cref="Color32" /> type, in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Color32));
+    public static unsafe readonly int SizeInBytes = sizeof(Color32);
 
     /// <summary>
     /// The transparent color.

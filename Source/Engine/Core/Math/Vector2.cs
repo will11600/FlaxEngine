@@ -90,7 +90,7 @@ public unsafe partial struct Vector2 : IEquatable<Vector2>, IFormattable, Json.I
     /// <summary>
     /// The size of the <see cref="Vector2" /> type, in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Vector2));
+    public static unsafe readonly int SizeInBytes = sizeof(Vector2);
 
     /// <summary>
     /// A <see cref="Vector2" /> with all of its components set to zero.

@@ -19,7 +19,7 @@ public struct Margin : IEquatable<Margin>, IFormattable
     /// <summary>
     /// The size of the <see cref="Margin" /> type, in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Margin));
+    public static unsafe readonly int SizeInBytes = sizeof(Margin);
 
     /// <summary>
     /// A <see cref="Margin" /> with all of its components set to zero.

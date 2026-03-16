@@ -99,7 +99,7 @@ public partial struct Vector4 : IEquatable<Vector4>, IFormattable, Json.ICustomV
     /// <summary>
     /// The size of the <see cref="Vector4" /> type, in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Vector4));
+    public static unsafe readonly int SizeInBytes = sizeof(Vector4);
 
     /// <summary>
     /// A <see cref="Vector4" /> with all of its components set to zero.

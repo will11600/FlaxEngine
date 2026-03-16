@@ -57,7 +57,6 @@ using Real = System.Single;
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace FlaxEngine;
 
@@ -72,7 +71,7 @@ partial struct Double2 : IEquatable<Double2>, IFormattable, Json.ICustomValueEqu
     /// <summary>
     /// The size of the <see cref="Double2" /> type, in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Double2));
+    public static unsafe readonly int SizeInBytes = sizeof(Double2);
 
     /// <summary>
     /// A <see cref="Double2" /> with all of its components set to zero.

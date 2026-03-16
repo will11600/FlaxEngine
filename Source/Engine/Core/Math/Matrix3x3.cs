@@ -52,7 +52,6 @@
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace FlaxEngine;
 
@@ -61,7 +60,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// <summary>
     /// The size of the <see cref="Matrix3x3"/> type, in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(typeof(Matrix3x3));
+    public static unsafe readonly int SizeInBytes = sizeof(Matrix3x3);
 
     /// <summary>
     /// A <see cref="Matrix3x3"/> with all of its components set to zero.
