@@ -184,14 +184,15 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <summary>
     /// Initializes a new instance of the <see cref="Float4" /> struct.
     /// </summary>
-    /// <param name="values">The values to assign to the X, Y, Z, and W components of the vector. This must be an array with four elements.</param>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="values" /> is <c>null</c>.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values" /> contains more or less than four elements.</exception>
-    public Float4(float[] values)
+    /// <param name="values">The span of values to assign to the X, Y, Z, and W components. Must contain exactly four elements.</param>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values" /> does not contain exactly four elements.</exception>
+    public Float4(ReadOnlySpan<float> values)
     {
-        ArgumentNullException.ThrowIfNull(values);
         if (values.Length != 4)
+        {
             throw new ArgumentOutOfRangeException(nameof(values), "There must be four and only four input values for Float4.");
+        }
+
         X = values[0];
         Y = values[1];
         Z = values[2];
@@ -199,19 +200,22 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     }
 
     /// <summary>
-    /// Gets a value indicting whether this instance is normalized.
+    /// Gets a value indicating whether this instance is normalized.
     /// </summary>
-    public readonly bool IsNormalized => Mathf.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
+    /// <remarks>
+    /// This property checks if the squared length of the vector is within a small epsilon of 1.0.
+    /// </remarks>
+    public readonly bool IsNormalized => IsNormalizedWithLength(out _);
 
     /// <summary>
-    /// Gets a value indicting whether this vector is zero
+    /// Gets a value indicating whether this vector is zero (0, 0, 0, 0).
     /// </summary>
-    public readonly bool IsZero => Mathf.IsZero(X) && Mathf.IsZero(Y) && Mathf.IsZero(Z) && Mathf.IsZero(W);
+    public readonly bool IsZero => this.AsVector128() == Vector128<float>.Zero;
 
     /// <summary>
-    /// Gets a value indicting whether this vector is one
+    /// Gets a value indicating whether this vector is one (1, 1, 1, 1).
     /// </summary>
-    public readonly bool IsOne => Mathf.IsOne(X) && Mathf.IsOne(Y) && Mathf.IsOne(Z) && Mathf.IsOne(W);
+    public readonly bool IsOne => this.AsVector128() == Vector128.Create(1.0f);
 
     /// <summary>
     /// Gets a minimum component value
@@ -223,25 +227,33 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// </summary>
     public readonly float MaxValue => Mathf.Max(X, Mathf.Max(Y, Mathf.Max(Z, W)));
 
+
     /// <summary>
     /// Gets an arithmetic average value of all vector components.
     /// </summary>
-    public readonly float AvgValue => (X + Y + Z + W) * (1.0f / 4.0f);
+    public readonly float AvgValue
+    {
+        get
+        {
+            const float OneOverFour = 1.0f / 4.0f;
+            return ValuesSum * OneOverFour;
+        }
+    }
 
     /// <summary>
-    /// Gets a sum of the component values.
+    /// Gets the sum of all vector components (X + Y + Z + W).
     /// </summary>
-    public readonly float ValuesSum => X + Y + Z + W;
+    public readonly float ValuesSum => Vector128.Sum(this.AsVector128());
 
     /// <summary>
     /// Gets a vector with values being absolute values of that vector.
     /// </summary>
-    public readonly Float4 Absolute => new(Mathf.Abs(X), Mathf.Abs(Y), Mathf.Abs(Z), Mathf.Abs(W));
+    public readonly Float4 Absolute => Vector128.Abs(this.AsVector128()).AsVector4();
 
     /// <summary>
     /// Gets a vector with values being opposite to values of that vector.
     /// </summary>
-    public readonly Float4 Negative => new(-X, -Y, -Z, -W);
+    public readonly Float4 Negative => Negate(this);
 
     /// <summary>
     /// Gets or sets the component at the specified index.
@@ -264,51 +276,82 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
         {
             switch (index)
             {
-                case 0:
-                    X = value;
-                    break;
-                case 1:
-                    Y = value;
-                    break;
-                case 2:
-                    Z = value;
-                    break;
-                case 3:
-                    W = value;
-                    break;
+                case 0: X = value; break;
+                case 1: Y = value; break;
+                case 2: Z = value; break;
+                case 3: W = value; break;
                 default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Float4 run from 0 to 3, inclusive.");
             }
         }
     }
 
+    /// <remarks>
+    /// Uses a fast approximation for the inverse square root, so the result may not be precise. 
+    /// For a more accurate result, use <see cref="Float4.PreciseLength" />.
+    /// </remarks>
+    /// <inheritdoc cref="PreciseLength" />
+    public readonly float Length => IsNormalizedWithLength(out float lengthSquared) ? 1.0f : MathF.ReciprocalSqrtEstimate(lengthSquared);
+
     /// <summary>
     /// Calculates the length of the vector.
     /// </summary>
     /// <returns>The length of the vector.</returns>
-    /// <remarks><see cref="Float4.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-    public readonly float Length => (float)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+    public readonly float PreciseLength => IsNormalizedWithLength(out float lengthSquared) ? 1.0f : MathF.Sqrt(lengthSquared);
 
     /// <summary>
     /// Calculates the squared length of the vector.
     /// </summary>
     /// <returns>The squared length of the vector.</returns>
-    /// <remarks>This method may be preferred to <see cref="Float4.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-    public readonly float LengthSquared => X * X + Y * Y + Z * Z + W * W;
+    /// <remarks>
+    /// This method may be preferred to <see cref="Float4.Length" /> when only a relative 
+    /// length is needed and speed is of the essence.
+    /// </remarks>
+    public readonly float LengthSquared
+    {
+        get
+        {
+            Vector128<float> vValue = this.AsVector128();
+            return Vector128.Sum(vValue * vValue);
+        }
+    }
 
-    /// <summary>
-    /// Converts the vector into a unit vector.
-    /// </summary>
+    /// <remarks>
+    /// Uses a fast approximation for the inverse square root, so the result may not be precise. 
+    /// For a more accurate result, use <see cref="Float4.NormalizePrecise" />.
+    /// </remarks>
+    /// <inheritdoc cref="Float4.NormalizePrecise" />
     public void Normalize()
     {
-        float length = Length;
-        if (length >= Mathf.Epsilon)
+        if (IsNormalizedWithLength(out float lengthSquared))
         {
-            float inverse = 1.0f / length;
-            X *= inverse;
-            Y *= inverse;
-            Z *= inverse;
-            W *= inverse;
+            return;
         }
+
+        float inv = MathF.ReciprocalSqrtEstimate(lengthSquared);
+        Vector128<float> vInv = Vector128.Create(inv);
+        this = (this.AsVector128() * vInv).AsVector4();
+    }
+
+    /// <summary>
+    /// Converts the vector into a unit vector with a length of 1.
+    /// </summary>
+    public void NormalizePrecise()
+    {
+        if (IsNormalizedWithLength(out float lengthSquared))
+        {
+            return;
+        }
+
+        float inv = 1.0f / MathF.Sqrt(lengthSquared);
+        Vector128<float> vInv = Vector128.Create(inv);
+        this = (this.AsVector128() * vInv).AsVector4();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    private readonly bool IsNormalizedWithLength(out float lengthSquared)
+    {
+        lengthSquared = LengthSquared;
+        return MathF.Abs(lengthSquared - 1.0f) < 1e-4f;
     }
 
     /// <summary>
@@ -317,7 +360,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>A four-element array containing the components of the vector.</returns>
     public readonly float[] ToArray()
     {
-        return new[] { X, Y, Z, W };
+        return [X, Y, Z, W];
     }
 
     /// <summary>
@@ -328,7 +371,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the sum of the two vectors.</param>
     public static void Add(ref Float4 left, ref Float4 right, out Float4 result)
     {
-        result = new Float4(left.X + right.X, left.Y + right.Y, left.Z + right.Z, left.W + right.W);
+        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
+        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
+        Vector128<float> vResult = vLeft + vRight;
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -339,7 +385,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The sum of the two vectors.</returns>
     public static Float4 Add(Float4 left, Float4 right)
     {
-        return new Float4(left.X + right.X, left.Y + right.Y, left.Z + right.Z, left.W + right.W);
+        return (left.AsVector128() + right.AsVector128()).AsVector4();
     }
 
     /// <summary>
@@ -350,7 +396,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">The vector with added scalar for each element.</param>
     public static void Add(ref Float4 left, ref float right, out Float4 result)
     {
-        result = new Float4(left.X + right, left.Y + right, left.Z + right, left.W + right);
+        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
+        Vector128<float> vRight = Vector128.Create(right);
+        Vector128<float> vResult = vLeft + vRight;
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -361,7 +410,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The vector with added scalar for each element.</returns>
     public static Float4 Add(Float4 left, float right)
     {
-        return new Float4(left.X + right, left.Y + right, left.Z + right, left.W + right);
+        return (left.AsVector128() + Vector128.Create(right)).AsVector4();
     }
 
     /// <summary>
@@ -372,7 +421,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the difference of the two vectors.</param>
     public static void Subtract(ref Float4 left, ref Float4 right, out Float4 result)
     {
-        result = new Float4(left.X - right.X, left.Y - right.Y, left.Z - right.Z, left.W - right.W);
+        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
+        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
+        Vector128<float> vResult = vLeft - vRight;
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -383,7 +435,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The difference of the two vectors.</returns>
     public static Float4 Subtract(Float4 left, Float4 right)
     {
-        return new Float4(left.X - right.X, left.Y - right.Y, left.Z - right.Z, left.W - right.W);
+        return (left.AsVector128() - right.AsVector128()).AsVector4();
     }
 
     /// <summary>
@@ -394,7 +446,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">The vector with subtracted scalar for each element.</param>
     public static void Subtract(ref Float4 left, ref float right, out Float4 result)
     {
-        result = new Float4(left.X - right, left.Y - right, left.Z - right, left.W - right);
+        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
+        Vector128<float> vRight = Vector128.Create(right);
+        Vector128<float> vResult = vLeft - vRight;
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -405,7 +460,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The vector with subtracted scalar for each element.</returns>
     public static Float4 Subtract(Float4 left, float right)
     {
-        return new Float4(left.X - right, left.Y - right, left.Z - right, left.W - right);
+        return (left.AsVector128() - Vector128.Create(right)).AsVector4();
     }
 
     /// <summary>
@@ -416,7 +471,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">The vector with subtracted scalar for each element.</param>
     public static void Subtract(ref float left, ref Float4 right, out Float4 result)
     {
-        result = new Float4(left - right.X, left - right.Y, left - right.Z, left - right.W);
+        Vector128<float> vLeft = Vector128.Create(left);
+        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
+        Vector128<float> vResult = vLeft - vRight;
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -427,7 +485,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The vector with subtracted scalar for each element.</returns>
     public static Float4 Subtract(float left, Float4 right)
     {
-        return new Float4(left - right.X, left - right.Y, left - right.Z, left - right.W);
+        return (Vector128.Create(left) - right.AsVector128()).AsVector4();
     }
 
     /// <summary>
@@ -438,7 +496,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the scaled vector.</param>
     public static void Multiply(ref Float4 value, float scale, out Float4 result)
     {
-        result = new Float4(value.X * scale, value.Y * scale, value.Z * scale, value.W * scale);
+        ref Vector128<float> vValue = ref VectorExtensions.AsVector128(ref value);
+        Vector128<float> vScale = Vector128.Create(scale);
+        Vector128<float> vResult = vValue * vScale;
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -449,7 +510,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 Multiply(Float4 value, float scale)
     {
-        return new Float4(value.X * scale, value.Y * scale, value.Z * scale, value.W * scale);
+        return (value.AsVector128() * Vector128.Create(scale)).AsVector4();
     }
 
     /// <summary>
@@ -460,7 +521,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the multiplied vector.</param>
     public static void Multiply(ref Float4 left, ref Float4 right, out Float4 result)
     {
-        result = new Float4(left.X * right.X, left.Y * right.Y, left.Z * right.Z, left.W * right.W);
+        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
+        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
+        Vector128<float> vResult = vLeft * vRight;
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -471,7 +535,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The multiplied vector.</returns>
     public static Float4 Multiply(Float4 left, Float4 right)
     {
-        return new Float4(left.X * right.X, left.Y * right.Y, left.Z * right.Z, left.W * right.W);
+        return (left.AsVector128() * right.AsVector128()).AsVector4();
     }
 
     /// <summary>
@@ -482,7 +546,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the scaled vector.</param>
     public static void Divide(ref Float4 value, float scale, out Float4 result)
     {
-        result = new Float4(value.X / scale, value.Y / scale, value.Z / scale, value.W / scale);
+        ref Vector128<float> vValue = ref VectorExtensions.AsVector128(ref value);
+        Vector128<float> vScale = Vector128.Create(scale);
+        Vector128<float> vResult = vValue / vScale;
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -493,7 +560,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 Divide(Float4 value, float scale)
     {
-        return new Float4(value.X / scale, value.Y / scale, value.Z / scale, value.W / scale);
+        return (value.AsVector128() / Vector128.Create(scale)).AsVector4();
     }
 
     /// <summary>
@@ -504,7 +571,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the scaled vector.</param>
     public static void Divide(float scale, ref Float4 value, out Float4 result)
     {
-        result = new Float4(scale / value.X, scale / value.Y, scale / value.Z, scale / value.W);
+        Vector128<float> vScale = Vector128.Create(scale);
+        ref Vector128<float> vValue = ref VectorExtensions.AsVector128(ref value);
+        Vector128<float> vResult = vScale / vValue;
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -515,7 +585,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 Divide(float scale, Float4 value)
     {
-        return new Float4(scale / value.X, scale / value.Y, scale / value.Z, scale / value.W);
+        return (Vector128.Create(scale) / value.AsVector128()).AsVector4();
     }
 
     /// <summary>
@@ -525,7 +595,9 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains a vector facing in the opposite direction.</param>
     public static void Negate(ref Float4 value, out Float4 result)
     {
-        result = new Float4(-value.X, -value.Y, -value.Z, -value.W);
+        ref Vector128<float> vValue = ref VectorExtensions.AsVector128(ref value);
+        Vector128<float> vResult = Vector128.Negate(vValue);
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -535,7 +607,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>A vector facing in the opposite direction.</returns>
     public static Float4 Negate(Float4 value)
     {
-        return new Float4(-value.X, -value.Y, -value.Z, -value.W);
+        Negate(ref value, out Float4 result);
+        return result;
     }
 
     /// <summary>
@@ -549,10 +622,16 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the 4D Cartesian coordinates of the specified point.</param>
     public static void Barycentric(ref Float4 value1, ref Float4 value2, ref Float4 value3, float amount1, float amount2, out Float4 result)
     {
-        result = new Float4(value1.X + amount1 * (value2.X - value1.X) + amount2 * (value3.X - value1.X),
-                            value1.Y + amount1 * (value2.Y - value1.Y) + amount2 * (value3.Y - value1.Y),
-                            value1.Z + amount1 * (value2.Z - value1.Z) + amount2 * (value3.Z - value1.Z),
-                            value1.W + amount1 * (value2.W - value1.W) + amount2 * (value3.W - value1.W));
+        Vector128<float> v1 = VectorExtensions.AsVector128(ref value1);
+        Vector128<float> v2 = VectorExtensions.AsVector128(ref value2);
+        Vector128<float> v3 = VectorExtensions.AsVector128(ref value3);
+
+        Vector128<float> a1 = Vector128.Create(amount1);
+        Vector128<float> a2 = Vector128.Create(amount2);
+
+        Vector128<float> vResult = v1 + (a1 * (v2 - v1)) + (a2 * (v3 - v1));
+
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -579,19 +658,11 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the clamped value.</param>
     public static void Clamp(ref Float4 value, ref Float4 min, ref Float4 max, out Float4 result)
     {
-        float x = value.X;
-        x = x > max.X ? max.X : x;
-        x = x < min.X ? min.X : x;
-        float y = value.Y;
-        y = y > max.Y ? max.Y : y;
-        y = y < min.Y ? min.Y : y;
-        float z = value.Z;
-        z = z > max.Z ? max.Z : z;
-        z = z < min.Z ? min.Z : z;
-        float w = value.W;
-        w = w > max.W ? max.W : w;
-        w = w < min.W ? min.W : w;
-        result = new Float4(x, y, z, w);
+        ref Vector128<float> vValue = ref VectorExtensions.AsVector128(ref value);
+        ref Vector128<float> vMin = ref VectorExtensions.AsVector128(ref min);
+        ref Vector128<float> vMax = ref VectorExtensions.AsVector128(ref max);
+        Vector128<float> vResult = Vector128.Clamp(vValue, vMin, vMax);
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -616,11 +687,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <remarks><see cref="Float4.DistanceSquared(ref Float4, ref Float4, out float)" /> may be preferred when only the relative distance is needed and speed is of the essence.</remarks>
     public static void Distance(ref Float4 value1, ref Float4 value2, out float result)
     {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        float w = value1.W - value2.W;
-        result = (float)Math.Sqrt(x * x + y * y + z * z + w * w);
+        DistanceSquared(ref value1, ref value2, out float sqrDistance);
+        result = MathF.Sqrt(sqrDistance);
     }
 
     /// <summary>
@@ -632,11 +700,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <remarks><see cref="Float4.DistanceSquared(Float4, Float4)" /> may be preferred when only the relative distance is needed and speed is of the essence.</remarks>
     public static float Distance(Float4 value1, Float4 value2)
     {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        float w = value1.W - value2.W;
-        return (float)Math.Sqrt(x * x + y * y + z * z + w * w);
+        Distance(ref value1, ref value2, out float result);
+        return result;
     }
 
     /// <summary>
@@ -647,11 +712,11 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the squared distance between the two vectors.</param>
     public static void DistanceSquared(ref Float4 value1, ref Float4 value2, out float result)
     {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        float w = value1.W - value2.W;
-        result = x * x + y * y + z * z + w * w;
+        ref Vector128<float> vValue1 = ref VectorExtensions.AsVector128(ref value1);
+        ref Vector128<float> vValue2 = ref VectorExtensions.AsVector128(ref value2);
+        Vector128<float> vDiff = Vector128.Subtract(vValue1, vValue2);
+        Vector128<float> vSqr = Vector128.Multiply(vDiff, vDiff);
+        result = Vector128.Sum(vSqr);
     }
 
     /// <summary>
@@ -662,11 +727,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The squared distance between the two vectors.</returns>
     public static float DistanceSquared(Float4 value1, Float4 value2)
     {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        float w = value1.W - value2.W;
-        return x * x + y * y + z * z + w * w;
+        DistanceSquared(ref value1, ref value2, out float result);
+        return result;
     }
 
     /// <summary>
@@ -701,7 +763,9 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the dot product of the two vectors.</param>
     public static void Dot(ref Float4 left, ref Float4 right, out float result)
     {
-        result = left.X * right.X + left.Y * right.Y + left.Z * right.Z + left.W * right.W;
+        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
+        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
+        result = Vector128.Dot(vLeft, vRight);
     }
 
     /// <summary>
@@ -712,7 +776,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The dot product of the two vectors.</returns>
     public static float Dot(Float4 left, Float4 right)
     {
-        return left.X * right.X + left.Y * right.Y + left.Z * right.Z + left.W * right.W;
+        Dot(ref left, ref right, out float result);
+        return result;
     }
 
     /// <summary>
@@ -769,22 +834,17 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     public static void ClampLength(Float4 vector, float min, float max, out Float4 result)
     {
         result = vector;
-        float lenSq = result.LengthSquared;
+        Vector128<float> vVector = vector.AsVector128();
+        float lenSq = Vector128.Sum(vVector * vVector);
         if (lenSq > max * max)
         {
-            float scaleFactor = max / (float)Math.Sqrt(lenSq);
-            result.X *= scaleFactor;
-            result.Y *= scaleFactor;
-            result.Z *= scaleFactor;
-            result.W *= scaleFactor;
+            Vector128<float> scaleFactor = Vector128.Create(max * MathF.ReciprocalSqrtEstimate(lenSq));
+            result = VectorExtensions.AsVector4(scaleFactor * vVector);
         }
         if (lenSq < min * min)
         {
-            float scaleFactor = min / (float)Math.Sqrt(lenSq);
-            result.X *= scaleFactor;
-            result.Y *= scaleFactor;
-            result.Z *= scaleFactor;
-            result.W *= scaleFactor;
+            Vector128<float> scaleFactor = Vector128.Create(min * MathF.ReciprocalSqrtEstimate(lenSq));
+            result = VectorExtensions.AsVector4(scaleFactor * vVector);
         }
     }
 
@@ -798,10 +858,11 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <remarks>Passing <paramref name="amount" /> a value of 0 will cause <paramref name="start" /> to be returned; a value of 1 will cause <paramref name="end" /> to be returned.</remarks>
     public static void Lerp(ref Float4 start, ref Float4 end, float amount, out Float4 result)
     {
-        result.X = Mathf.Lerp(start.X, end.X, amount);
-        result.Y = Mathf.Lerp(start.Y, end.Y, amount);
-        result.Z = Mathf.Lerp(start.Z, end.Z, amount);
-        result.W = Mathf.Lerp(start.W, end.W, amount);
+        ref Vector128<float> vStart = ref VectorExtensions.AsVector128(ref start);
+        ref Vector128<float> vEnd = ref VectorExtensions.AsVector128(ref end);
+        Vector128<float> vAmount = Vector128.Create(amount);
+        Vector128<float> vResult = vStart + (vEnd - vStart) * vAmount;
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -857,14 +918,25 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     {
         float squared = amount * amount;
         float cubed = amount * squared;
+
         float part1 = 2.0f * cubed - 3.0f * squared + 1.0f;
         float part2 = -2.0f * cubed + 3.0f * squared;
         float part3 = cubed - 2.0f * squared + amount;
         float part4 = cubed - squared;
-        result = new Float4(value1.X * part1 + value2.X * part2 + tangent1.X * part3 + tangent2.X * part4,
-                            value1.Y * part1 + value2.Y * part2 + tangent1.Y * part3 + tangent2.Y * part4,
-                            value1.Z * part1 + value2.Z * part2 + tangent1.Z * part3 + tangent2.Z * part4,
-                            value1.W * part1 + value2.W * part2 + tangent1.W * part3 + tangent2.W * part4);
+
+        Vector128<float> v1 = VectorExtensions.AsVector128(ref value1);
+        Vector128<float> t1 = VectorExtensions.AsVector128(ref tangent1);
+        Vector128<float> v2 = VectorExtensions.AsVector128(ref value2);
+        Vector128<float> t2 = VectorExtensions.AsVector128(ref tangent2);
+
+        Vector128<float> vp1 = Vector128.Create(part1);
+        Vector128<float> vp2 = Vector128.Create(part2);
+        Vector128<float> vp3 = Vector128.Create(part3);
+        Vector128<float> vp4 = Vector128.Create(part4);
+
+        Vector128<float> vResult = (v1 * vp1) + (v2 * vp2) + (t1 * vp3) + (t2 * vp4);
+
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -895,10 +967,22 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     {
         float squared = amount * amount;
         float cubed = amount * squared;
-        result.X = 0.5f * (2.0f * value2.X + (-value1.X + value3.X) * amount + (2.0f * value1.X - 5.0f * value2.X + 4.0f * value3.X - value4.X) * squared + (-value1.X + 3.0f * value2.X - 3.0f * value3.X + value4.X) * cubed);
-        result.Y = 0.5f * (2.0f * value2.Y + (-value1.Y + value3.Y) * amount + (2.0f * value1.Y - 5.0f * value2.Y + 4.0f * value3.Y - value4.Y) * squared + (-value1.Y + 3.0f * value2.Y - 3.0f * value3.Y + value4.Y) * cubed);
-        result.Z = 0.5f * (2.0f * value2.Z + (-value1.Z + value3.Z) * amount + (2.0f * value1.Z - 5.0f * value2.Z + 4.0f * value3.Z - value4.Z) * squared + (-value1.Z + 3.0f * value2.Z - 3.0f * value3.Z + value4.Z) * cubed);
-        result.W = 0.5f * (2.0f * value2.W + (-value1.W + value3.W) * amount + (2.0f * value1.W - 5.0f * value2.W + 4.0f * value3.W - value4.W) * squared + (-value1.W + 3.0f * value2.W - 3.0f * value3.W + value4.W) * cubed);
+
+        Vector128<float> v1 = VectorExtensions.AsVector128(ref value1);
+        Vector128<float> v2 = VectorExtensions.AsVector128(ref value2);
+        Vector128<float> v3 = VectorExtensions.AsVector128(ref value3);
+        Vector128<float> v4 = VectorExtensions.AsVector128(ref value4);
+
+        Vector128<float> vT  = Vector128.Create(amount);
+        Vector128<float> vT2 = Vector128.Create(squared);
+        Vector128<float> vT3 = Vector128.Create(cubed);
+
+        Vector128<float> term0 = Vector128.Create(2.0f) * v2;
+        Vector128<float> term1 = (-v1 + v3) * vT;
+        Vector128<float> term2 = (Vector128.Create(2.0f) * v1 - Vector128.Create(5.0f) * v2 + Vector128.Create(4.0f) * v3 - v4) * vT2;
+        Vector128<float> term3 = (-v1 + Vector128.Create(3.0f) * v2 - Vector128.Create(3.0f) * v3 + v4) * vT3;
+
+        result = (Vector128.Create(0.5f) * (term0 + term1 + term2 + term3)).AsVector4();
     }
 
     /// <summary>
@@ -924,10 +1008,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains an new vector composed of the largest components of the source vectors.</param>
     public static void Max(ref Float4 left, ref Float4 right, out Float4 result)
     {
-        result.X = left.X > right.X ? left.X : right.X;
-        result.Y = left.Y > right.Y ? left.Y : right.Y;
-        result.Z = left.Z > right.Z ? left.Z : right.Z;
-        result.W = left.W > right.W ? left.W : right.W;
+        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
+        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
+        Vector128<float> vResult = Vector128.Max(vLeft, vRight);
+        result = vResult.AsVector4();
     }
 
     /// <summary>
@@ -950,10 +1034,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains an new vector composed of the smallest components of the source vectors.</param>
     public static void Min(ref Float4 left, ref Float4 right, out Float4 result)
     {
-        result.X = left.X < right.X ? left.X : right.X;
-        result.Y = left.Y < right.Y ? left.Y : right.Y;
-        result.Z = left.Z < right.Z ? left.Z : right.Z;
-        result.W = left.W < right.W ? left.W : right.W;
+        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
+        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
+        Vector128<float> vResult = Vector128.Min(vLeft, vRight);
+        result = vResult.AsVector4();
     }
 
     /// <summary>
@@ -975,7 +1059,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns> A vector which components are less or equal to 0.</returns>
     public static Float4 Abs(Float4 v)
     {
-        return new Float4(Math.Abs(v.X), Math.Abs(v.Y), Math.Abs(v.Z), Math.Abs(v.W));
+        Vector128<float> result = Vector128.Abs(v.AsVector128());
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -989,19 +1074,23 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
         float x = rotation.X + rotation.X;
         float y = rotation.Y + rotation.Y;
         float z = rotation.Z + rotation.Z;
-        float wx = rotation.W * x;
-        float wy = rotation.W * y;
-        float wz = rotation.W * z;
-        float xx = rotation.X * x;
-        float xy = rotation.X * y;
-        float xz = rotation.X * z;
-        float yy = rotation.Y * y;
-        float yz = rotation.Y * z;
-        float zz = rotation.Z * z;
-        result = new Float4(vector.X * (1.0f - yy - zz) + vector.Y * (xy - wz) + vector.Z * (xz + wy),
-                            vector.X * (xy + wz) + vector.Y * (1.0f - xx - zz) + vector.Z * (yz - wx),
-                            vector.X * (xz - wy) + vector.Y * (yz + wx) + vector.Z * (1.0f - xx - yy),
-                            vector.W);
+        float wx = rotation.W * x, wy = rotation.W * y, wz = rotation.W * z;
+        float xx = rotation.X * x, xy = rotation.X * y, xz = rotation.X * z;
+        float yy = rotation.Y * y, yz = rotation.Y * z, zz = rotation.Z * z;
+
+        Vector128<float> vX = Vector128.Create(vector.X);
+        Vector128<float> vY = Vector128.Create(vector.Y);
+        Vector128<float> vZ = Vector128.Create(vector.Z);
+
+        Vector128<float> col1 = Vector128.Create(1.0f - yy - zz, xy + wz, xz - wy, 0.0f);
+        Vector128<float> col2 = Vector128.Create(xy - wz, 1.0f - xx - zz, yz + wx, 0.0f);
+        Vector128<float> col3 = Vector128.Create(xz + wy, yz - wx, 1.0f - xx - yy, 0.0f);
+
+        Vector128<float> vResult = (vX * col1) + (vY * col2) + (vZ * col3);
+
+        result = VectorExtensions.AsVector4(ref vResult);
+
+        result.W = vector.W;
     }
 
     /// <summary>
@@ -1024,10 +1113,19 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="result">When the method completes, contains the transformed <see cref="Float4" />.</param>
     public static void Transform(ref Float4 vector, ref Matrix transform, out Float4 result)
     {
-        result = new Float4(vector.X * transform.M11 + vector.Y * transform.M21 + vector.Z * transform.M31 + vector.W * transform.M41,
-                            vector.X * transform.M12 + vector.Y * transform.M22 + vector.Z * transform.M32 + vector.W * transform.M42,
-                            vector.X * transform.M13 + vector.Y * transform.M23 + vector.Z * transform.M33 + vector.W * transform.M43,
-                            vector.X * transform.M14 + vector.Y * transform.M24 + vector.Z * transform.M34 + vector.W * transform.M44);
+        Vector128<float> vX = Vector128.Create(vector.X);
+        Vector128<float> vY = Vector128.Create(vector.Y);
+        Vector128<float> vZ = Vector128.Create(vector.Z);
+        Vector128<float> vW = Vector128.Create(vector.W);
+
+        ref Vector128<float> row1 = ref Unsafe.As<float, Vector128<float>>(ref transform.M11);
+        ref Vector128<float> row2 = ref Unsafe.As<float, Vector128<float>>(ref transform.M21);
+        ref Vector128<float> row3 = ref Unsafe.As<float, Vector128<float>>(ref transform.M31);
+        ref Vector128<float> row4 = ref Unsafe.As<float, Vector128<float>>(ref transform.M41);
+
+        Vector128<float> vResult = (vX * row1) + (vY * row2) + (vZ * row3) + (vW * row4);
+
+        result = VectorExtensions.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -1050,7 +1148,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The sum of the two vectors.</returns>
     public static Float4 operator +(Float4 left, Float4 right)
     {
-        return new Float4(left.X + right.X, left.Y + right.Y, left.Z + right.Z, left.W + right.W);
+        Add(ref left, ref right, out Float4 result);
+        return result;
     }
 
     /// <summary>
@@ -1061,7 +1160,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The multiplication of the two vectors.</returns>
     public static Float4 operator *(Float4 left, Float4 right)
     {
-        return new Float4(left.X * right.X, left.Y * right.Y, left.Z * right.Z, left.W * right.W);
+        Multiply(ref left, ref right, out Float4 result);
+        return result;
     }
 
     /// <summary>
@@ -1082,7 +1182,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The difference of the two vectors.</returns>
     public static Float4 operator -(Float4 left, Float4 right)
     {
-        return new Float4(left.X - right.X, left.Y - right.Y, left.Z - right.Z, left.W - right.W);
+        Subtract(ref left, ref right, out Float4 result);
+        return result;
     }
 
     /// <summary>
@@ -1092,7 +1193,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>A vector facing in the opposite direction.</returns>
     public static Float4 operator -(Float4 value)
     {
-        return new Float4(-value.X, -value.Y, -value.Z, -value.W);
+        Negate(ref value, out Float4 result);
+        return result;
     }
 
     /// <summary>
@@ -1103,7 +1205,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 operator *(float scale, Float4 value)
     {
-        return new Float4(value.X * scale, value.Y * scale, value.Z * scale, value.W * scale);
+        Vector128<float> result = Vector128.Create(scale) * value.AsVector128();
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1114,7 +1217,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 operator *(Float4 value, float scale)
     {
-        return new Float4(value.X * scale, value.Y * scale, value.Z * scale, value.W * scale);
+        Vector128<float> result = value.AsVector128() * Vector128.Create(scale);
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1125,7 +1229,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 operator /(Float4 value, float scale)
     {
-        return new Float4(value.X / scale, value.Y / scale, value.Z / scale, value.W / scale);
+        Vector128<float> result = value.AsVector128() / Vector128.Create(scale);
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1136,7 +1241,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 operator /(float scale, Float4 value)
     {
-        return new Float4(scale / value.X, scale / value.Y, scale / value.Z, scale / value.W);
+        Vector128<float> result = Vector128.Create(scale) / value.AsVector128();
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1147,8 +1253,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 operator *(double scale, Float4 value)
     {
-        var s = (float)scale;
-        return new Float4(value.X * s, value.Y * s, value.Z * s, value.W * s);
+        return (float)scale * value;
     }
 
     /// <summary>
@@ -1159,8 +1264,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 operator *(Float4 value, double scale)
     {
-        var s = (float)scale;
-        return new Float4(value.X * s, value.Y * s, value.Z * s, value.W * s);
+        return value * (float)scale;
     }
 
     /// <summary>
@@ -1171,8 +1275,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 operator /(Float4 value, double scale)
     {
-        var s = (float)scale;
-        return new Float4(value.X / s, value.Y / s, value.Z / s, value.W / s);
+        return value / (float)scale;
     }
 
     /// <summary>
@@ -1183,8 +1286,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 operator /(double scale, Float4 value)
     {
-        var s = (float)scale;
-        return new Float4(s / value.X, s / value.Y, s / value.Z, s / value.W);
+        return (float)scale / value;
     }
 
     /// <summary>
@@ -1195,7 +1297,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The scaled vector.</returns>
     public static Float4 operator /(Float4 value, Float4 scale)
     {
-        return new Float4(value.X / scale.X, value.Y / scale.Y, value.Z / scale.Z, value.W / scale.W);
+        Vector128<float> result = value.AsVector128() / scale.AsVector128();
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1206,7 +1309,14 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The remained vector.</returns>
     public static Float4 operator %(Float4 value, float scale)
     {
-        return new Float4(value.X % scale, value.Y % scale, value.Z % scale, value.W % scale);
+        Vector128<float> vValue = value.AsVector128();
+        Vector128<float> vScale = Vector128.Create(scale);
+
+        Vector128<float> div = vValue / vScale;
+        Vector128<float> trunc = Vector128.Truncate(div);
+        Vector128<float> result = vValue - (vScale * trunc);
+
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1217,7 +1327,14 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The remained vector.</returns>
     public static Float4 operator %(float value, Float4 scale)
     {
-        return new Float4(value % scale.X, value % scale.Y, value % scale.Z, value % scale.W);
+        Vector128<float> vValue = Vector128.Create(value);
+        Vector128<float> vScale = scale.AsVector128();
+
+        Vector128<float> div = vValue / vScale;
+        Vector128<float> trunc = Vector128.Truncate(div);
+        Vector128<float> result = vValue - (vScale * trunc);
+
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1228,7 +1345,14 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The remained vector.</returns>
     public static Float4 operator %(Float4 value, Float4 scale)
     {
-        return new Float4(value.X % scale.X, value.Y % scale.Y, value.Z % scale.Z, value.W % scale.W);
+        Vector128<float> vValue = value.AsVector128();
+        Vector128<float> vScale = scale.AsVector128();
+
+        Vector128<float> div = vValue / vScale;
+        Vector128<float> trunc = Vector128.Truncate(div);
+        Vector128<float> result = vValue - (vScale * trunc);
+
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1239,7 +1363,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The vector with added scalar for each element.</returns>
     public static Float4 operator +(Float4 value, float scalar)
     {
-        return new Float4(value.X + scalar, value.Y + scalar, value.Z + scalar, value.W + scalar);
+        Vector128<float> result = value.AsVector128() + Vector128.Create(scalar);
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1250,7 +1375,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The vector with added scalar for each element.</returns>
     public static Float4 operator +(float scalar, Float4 value)
     {
-        return new Float4(scalar + value.X, scalar + value.Y, scalar + value.Z, scalar + value.W);
+        Vector128<float> result = Vector128.Create(scalar) + value.AsVector128();
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1261,7 +1387,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The vector with subtracted scalar from each element.</returns>
     public static Float4 operator -(Float4 value, float scalar)
     {
-        return new Float4(value.X - scalar, value.Y - scalar, value.Z - scalar, value.W - scalar);
+        Vector128<float> result = value.AsVector128() - Vector128.Create(scalar);
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1272,7 +1399,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>The vector with subtracted scalar from each element.</returns>
     public static Float4 operator -(float scalar, Float4 value)
     {
-        return new Float4(scalar - value.X, scalar - value.Y, scalar - value.Z, scalar - value.W);
+        Vector128<float> result = Vector128.Create(scalar) - value.AsVector128();
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1365,8 +1493,11 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
     public readonly string ToString(string format)
     {
-        if (format == null)
+        if (format is null)
+        {
             return ToString();
+        }
+
         return string.Format(CultureInfo.CurrentCulture, _formatString, X.ToString(format, CultureInfo.CurrentCulture), Y.ToString(format, CultureInfo.CurrentCulture), Z.ToString(format, CultureInfo.CurrentCulture), W.ToString(format, CultureInfo.CurrentCulture));
     }
 
@@ -1388,8 +1519,11 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
     public readonly string ToString(string format, IFormatProvider formatProvider)
     {
-        if (format == null)
+        if (format is null)
+        {
             return ToString(formatProvider);
+        }
+
         return string.Format(formatProvider, "X:{0} Y:{1} Z:{2} W:{3}", X.ToString(format, formatProvider), Y.ToString(format, formatProvider), Z.ToString(format, formatProvider), W.ToString(format, formatProvider));
     }
 
@@ -1415,7 +1549,8 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <returns><c>true</c> if the specified <see cref="Float4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     public readonly bool Equals(ref Float4 other)
     {
-        return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
+        ref Vector128<float> vOther = ref VectorExtensions.AsVector128(ref other);
+        return this.AsVector128().Equals(vOther);
     }
 
     /// <summary>
@@ -1426,7 +1561,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public readonly bool Equals(Float4 other)
     {
-        return Equals(ref other);
+        return this.AsVector128().Equals(other.AsVector128());
     }
 
     /// <summary>
