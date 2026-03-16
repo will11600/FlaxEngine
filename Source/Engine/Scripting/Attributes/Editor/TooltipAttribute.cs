@@ -2,32 +2,31 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// Specifies a tooltip for a property/field in the editor.
+/// </summary>
+/// <seealso cref="System.Attribute" />
+[Serializable]
+[AttributeUsage(AttributeTargets.All)]
+public sealed class TooltipAttribute : Attribute
 {
     /// <summary>
-    /// Specifies a tooltip for a property/field in the editor.
+    /// The tooltip text.
     /// </summary>
-    /// <seealso cref="System.Attribute" />
-    [Serializable]
-    [AttributeUsage(AttributeTargets.All)]
-    public sealed class TooltipAttribute : Attribute
+    public string Text;
+
+    private TooltipAttribute()
     {
-        /// <summary>
-        /// The tooltip text.
-        /// </summary>
-        public string Text;
+    }
 
-        private TooltipAttribute()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TooltipAttribute"/> class.
-        /// </summary>
-        /// <param name="text">The tooltip text.</param>
-        public TooltipAttribute(string text)
-        {
-            Text = text;
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TooltipAttribute"/> class.
+    /// </summary>
+    /// <param name="text">The tooltip text.</param>
+    public TooltipAttribute(string text)
+    {
+        Text = text;
     }
 }

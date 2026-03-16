@@ -2,105 +2,104 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// Virtual input axis binding. Helps with listening for a selected axis input.
+/// </summary>
+public class InputAxis : IComparable, IComparable<InputAxis>
 {
     /// <summary>
-    /// Virtual input axis binding. Helps with listening for a selected axis input.
+    /// The name of the axis to use. See <see cref="Input.AxisMappings"/>.
     /// </summary>
-    public class InputAxis : IComparable, IComparable<InputAxis>
+    [Tooltip("The name of the axis to use.")]
+    public string Name;
+
+    /// <summary>
+    /// Gets the current axis value.
+    /// </summary>
+    public float Value => Input.GetAxis(Name);
+
+    /// <summary>
+    /// Gets the current axis raw value.
+    /// </summary>
+    public float ValueRaw => Input.GetAxisRaw(Name);
+
+    /// <summary>
+    /// Occurs when axis is changed. Called before scripts update.
+    /// </summary>
+    public event Action ValueChanged;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InputAxis"/> class.
+    /// </summary>
+    public InputAxis()
     {
-        /// <summary>
-        /// The name of the axis to use. See <see cref="Input.AxisMappings"/>.
-        /// </summary>
-        [Tooltip("The name of the axis to use.")]
-        public string Name;
+        Input.AxisValueChanged += Handler;
+    }
 
-        /// <summary>
-        /// Gets the current axis value.
-        /// </summary>
-        public float Value => Input.GetAxis(Name);
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InputAxis"/> class.
+    /// </summary>
+    /// <param name="name">The axis name.</param>
+    public InputAxis(string name)
+    {
+        Input.AxisValueChanged += Handler;
+        Name = name;
+    }
 
-        /// <summary>
-        /// Gets the current axis raw value.
-        /// </summary>
-        public float ValueRaw => Input.GetAxisRaw(Name);
+    private void Handler(string name)
+    {
+        if (string.Equals(Name, name, StringComparison.OrdinalIgnoreCase))
+            ValueChanged?.Invoke();
+    }
 
-        /// <summary>
-        /// Occurs when axis is changed. Called before scripts update.
-        /// </summary>
-        public event Action ValueChanged;
+    /// <summary>
+    /// Finalizes an instance of the <see cref="InputAxis"/> class.
+    /// </summary>
+    ~InputAxis()
+    {
+        Input.AxisValueChanged -= Handler;
+        ValueChanged = null;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InputAxis"/> class.
-        /// </summary>
-        public InputAxis()
-        {
-            Input.AxisValueChanged += Handler;
-        }
+    /// <summary>
+    /// Releases this object.
+    /// </summary>
+    public void Dispose()
+    {
+        Input.AxisValueChanged -= Handler;
+        ValueChanged = null;
+        GC.SuppressFinalize(this);
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InputAxis"/> class.
-        /// </summary>
-        /// <param name="name">The axis name.</param>
-        public InputAxis(string name)
-        {
-            Input.AxisValueChanged += Handler;
-            Name = name;
-        }
+    /// <inheritdoc />
+    public int CompareTo(InputAxis other)
+    {
+        return string.Compare(Name, other.Name, StringComparison.Ordinal);
+    }
 
-        private void Handler(string name)
-        {
-            if (string.Equals(Name, name, StringComparison.OrdinalIgnoreCase))
-                ValueChanged?.Invoke();
-        }
+    /// <inheritdoc />
+    public int CompareTo(object obj)
+    {
+        return obj is InputAxis other ? CompareTo(other) : -1;
+    }
 
-        /// <summary>
-        /// Finalizes an instance of the <see cref="InputAxis"/> class.
-        /// </summary>
-        ~InputAxis()
-        {
-            Input.AxisValueChanged -= Handler;
-            ValueChanged = null;
-        }
+    /// <inheritdoc />
+    public override int GetHashCode()
+    {
+        return Name?.GetHashCode() ?? 0;
+    }
 
-        /// <summary>
-        /// Releases this object.
-        /// </summary>
-        public void Dispose()
-        {
-            Input.AxisValueChanged -= Handler;
-            ValueChanged = null;
-            GC.SuppressFinalize(this);
-        }
+    /// <inheritdoc />
+    public override bool Equals(object obj)
+    {
+        return obj is InputAxis other && string.Equals(Name, other.Name, StringComparison.Ordinal);
+    }
 
-        /// <inheritdoc />
-        public int CompareTo(InputAxis other)
-        {
-            return string.Compare(Name, other.Name, StringComparison.Ordinal);
-        }
-
-        /// <inheritdoc />
-        public int CompareTo(object obj)
-        {
-            return obj is InputAxis other ? CompareTo(other) : -1;
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            return Name?.GetHashCode() ?? 0;
-        }
-
-        /// <inheritdoc />
-        public override bool Equals(object obj)
-        {
-            return obj is InputAxis other && string.Equals(Name, other.Name, StringComparison.Ordinal);
-        }
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return Name;
-        }
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return Name;
     }
 }

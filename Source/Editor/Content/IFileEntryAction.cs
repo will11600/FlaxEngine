@@ -2,28 +2,27 @@
 
 using FlaxEngine;
 
-namespace FlaxEditor.Content
+namespace FlaxEditor.Content;
+
+/// <summary>
+/// File entry action (import or create).
+/// </summary>
+[HideInEditor]
+public interface IFileEntryAction
 {
     /// <summary>
-    /// File entry action (import or create).
+    /// The source file path (may be empty or null).
     /// </summary>
-    [HideInEditor]
-    public interface IFileEntryAction
-    {
-        /// <summary>
-        /// The source file path (may be empty or null).
-        /// </summary>
-        string SourceUrl { get; }
+    string SourceUrl { get; }
 
-        /// <summary>
-        /// The result file path.
-        /// </summary>
-        string ResultUrl { get; }
+    /// <summary>
+    /// The result file path.
+    /// </summary>
+    string ResultUrl { get; }
 
-        /// <summary>
-        /// Executes this action.
-        /// </summary>
-        /// <returns>True if, failed, otherwise false.</returns>
-        bool Execute();
-    }
+    /// <summary>
+    /// Executes this action.
+    /// </summary>
+    /// <returns>True if, failed, otherwise false.</returns>
+    bool Execute();
 }

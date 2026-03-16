@@ -5,52 +5,51 @@ using FlaxEditor.GUI;
 using FlaxEngine;
 using FlaxEngine.Utilities;
 
-namespace FlaxEditor.Surface.Elements
+namespace FlaxEditor.Surface.Elements;
+
+/// <summary>
+/// Assets picking control.
+/// </summary>
+/// <seealso cref="AssetPicker" />
+/// <seealso cref="ISurfaceNodeElement" />
+[HideInEditor]
+public class AssetSelect : AssetPicker, ISurfaceNodeElement
 {
+    /// <inheritdoc />
+    public SurfaceNode ParentNode { get; }
+
+    /// <inheritdoc />
+    public NodeElementArchetype Archetype { get; }
+
     /// <summary>
-    /// Assets picking control.
+    /// Initializes a new instance of the <see cref="AssetSelect"/> class.
     /// </summary>
-    /// <seealso cref="AssetPicker" />
-    /// <seealso cref="ISurfaceNodeElement" />
-    [HideInEditor]
-    public class AssetSelect : AssetPicker, ISurfaceNodeElement
+    /// <param name="parentNode">The parent node.</param>
+    /// <param name="archetype">The archetype.</param>
+    public AssetSelect(SurfaceNode parentNode, NodeElementArchetype archetype)
+    : base(TypeUtils.GetType(archetype.Text), archetype.ActualPosition)
     {
-        /// <inheritdoc />
-        public SurfaceNode ParentNode { get; }
+        ParentNode = parentNode;
+        Archetype = archetype;
 
-        /// <inheritdoc />
-        public NodeElementArchetype Archetype { get; }
+        ParentNode.ValuesChanged += OnNodeValuesChanged;
+        OnNodeValuesChanged();
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AssetSelect"/> class.
-        /// </summary>
-        /// <param name="parentNode">The parent node.</param>
-        /// <param name="archetype">The archetype.</param>
-        public AssetSelect(SurfaceNode parentNode, NodeElementArchetype archetype)
-        : base(TypeUtils.GetType(archetype.Text), archetype.ActualPosition)
+    private void OnNodeValuesChanged()
+    {
+        Validator.SelectedID = (Guid)ParentNode.Values[Archetype.ValueIndex];
+    }
+
+    /// <inheritdoc />
+    protected override void OnSelectedItemChanged()
+    {
+        var selectedId = Validator.SelectedID;
+        if (ParentNode != null && (Guid)ParentNode.Values[Archetype.ValueIndex] != selectedId)
         {
-            ParentNode = parentNode;
-            Archetype = archetype;
-
-            ParentNode.ValuesChanged += OnNodeValuesChanged;
-            OnNodeValuesChanged();
+            ParentNode.SetValue(Archetype.ValueIndex, selectedId);
         }
 
-        private void OnNodeValuesChanged()
-        {
-            Validator.SelectedID = (Guid)ParentNode.Values[Archetype.ValueIndex];
-        }
-
-        /// <inheritdoc />
-        protected override void OnSelectedItemChanged()
-        {
-            var selectedId = Validator.SelectedID;
-            if (ParentNode != null && (Guid)ParentNode.Values[Archetype.ValueIndex] != selectedId)
-            {
-                ParentNode.SetValue(Archetype.ValueIndex, selectedId);
-            }
-
-            base.OnSelectedItemChanged();
-        }
+        base.OnSelectedItemChanged();
     }
 }

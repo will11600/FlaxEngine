@@ -10,220 +10,219 @@ using FlaxEditor.Viewport.Previews;
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace FlaxEditor.Windows.Assets
+namespace FlaxEditor.Windows.Assets;
+
+/// <summary>
+/// Editor window to view/modify <see cref="CubeTexture"/> asset.
+/// </summary>
+/// <seealso cref="CubeTexture" />
+/// <seealso cref="FlaxEditor.Windows.Assets.AssetEditorWindow" />
+public sealed class CubeTextureWindow : AssetEditorWindowBase<CubeTexture>
 {
     /// <summary>
-    /// Editor window to view/modify <see cref="CubeTexture"/> asset.
+    /// The texture properties proxy object.
     /// </summary>
-    /// <seealso cref="CubeTexture" />
-    /// <seealso cref="FlaxEditor.Windows.Assets.AssetEditorWindow" />
-    public sealed class CubeTextureWindow : AssetEditorWindowBase<CubeTexture>
+    [CustomEditor(typeof(ProxyEditor))]
+    private sealed class PropertiesProxy
     {
-        /// <summary>
-        /// The texture properties proxy object.
-        /// </summary>
-        [CustomEditor(typeof(ProxyEditor))]
-        private sealed class PropertiesProxy
+        private CubeTextureWindow _window;
+
+        [EditorOrder(1000), EditorDisplay("Import Settings", EditorDisplayAttribute.InlineStyle)]
+        public FlaxEngine.Tools.TextureTool.Options ImportSettings = new();
+
+        public sealed class ProxyEditor : GenericEditor
         {
-            private CubeTextureWindow _window;
-
-            [EditorOrder(1000), EditorDisplay("Import Settings", EditorDisplayAttribute.InlineStyle)]
-            public FlaxEngine.Tools.TextureTool.Options ImportSettings = new();
-
-            public sealed class ProxyEditor : GenericEditor
+            public override void Initialize(LayoutElementsContainer layout)
             {
-                public override void Initialize(LayoutElementsContainer layout)
+                var window = ((PropertiesProxy)Values[0])._window;
+                if (window == null)
                 {
-                    var window = ((PropertiesProxy)Values[0])._window;
-                    if (window == null)
-                    {
-                        layout.Label("Loading...", TextAlignment.Center);
-                        return;
-                    }
-
-                    // Texture properties
-                    {
-                        var texture = window.Asset;
-
-                        var group = layout.Group("General");
-                        group.Label("Format: " + texture.Format);
-                        group.Label(string.Format("Size: {0}x{1}", texture.Width, texture.Height)).AddCopyContextMenu();
-                        group.Label("Mip levels: " + texture.MipLevels);
-                        group.Label("Memory usage: " + Utilities.Utils.FormatBytesCount(texture.TotalMemoryUsage));
-                    }
-
-                    base.Initialize(layout);
-
-                    // Creates the import path UI
-                    var pathGroup = layout.Group("Import Path");
-                    Utilities.Utils.CreateImportPathUI(pathGroup, window.Item as BinaryAssetItem);
-
-                    pathGroup.Space(5);
-                    var reimportButton = pathGroup.Button("Reimport");
-                    reimportButton.Button.Clicked += () => ((PropertiesProxy)Values[0]).Reimport();
+                    layout.Label("Loading...", TextAlignment.Center);
+                    return;
                 }
-            }
 
-            /// <summary>
-            /// Gathers parameters from the specified texture.
-            /// </summary>
-            /// <param name="window">The asset window.</param>
-            public void OnLoad(CubeTextureWindow window)
-            {
-                // Link
-                _window = window;
+                // Texture properties
+                {
+                    var texture = window.Asset;
 
-                // Try to restore target asset texture import options (useful for fast reimport)
-                Editor.TryRestoreImportOptions(ref ImportSettings, window.Item.Path);
+                    var group = layout.Group("General");
+                    group.Label("Format: " + texture.Format);
+                    group.Label(string.Format("Size: {0}x{1}", texture.Width, texture.Height)).AddCopyContextMenu();
+                    group.Label("Mip levels: " + texture.MipLevels);
+                    group.Label("Memory usage: " + Utilities.Utils.FormatBytesCount(texture.TotalMemoryUsage));
+                }
 
-                // Prepare restore data
-                PeekState();
-            }
+                base.Initialize(layout);
 
-            /// <summary>
-            /// Records the current state to restore it on DiscardChanges.
-            /// </summary>
-            public void PeekState()
-            {
-            }
+                // Creates the import path UI
+                var pathGroup = layout.Group("Import Path");
+                Utilities.Utils.CreateImportPathUI(pathGroup, window.Item as BinaryAssetItem);
 
-            /// <summary>
-            /// Reimports asset.
-            /// </summary>
-            public void Reimport()
-            {
-                Editor.Instance.ContentImporting.Reimport((BinaryAssetItem)_window.Item, ImportSettings);
-            }
-
-            /// <summary>
-            /// On discard changes
-            /// </summary>
-            public void DiscardChanges()
-            {
-            }
-
-            /// <summary>
-            /// Clears temporary data.
-            /// </summary>
-            public void OnClean()
-            {
-                // Unlink
-                _window = null;
+                pathGroup.Space(5);
+                var reimportButton = pathGroup.Button("Reimport");
+                reimportButton.Button.Clicked += () => ((PropertiesProxy)Values[0]).Reimport();
             }
         }
 
-        private readonly SplitPanel _split;
-        private readonly CubeTexturePreview _preview;
-        private readonly CustomEditorPresenter _propertiesEditor;
-
-        private readonly PropertiesProxy _properties;
-        private bool _isWaitingForLoad;
-
-        /// <inheritdoc />
-        public CubeTextureWindow(Editor editor, AssetItem item)
-        : base(editor, item)
+        /// <summary>
+        /// Gathers parameters from the specified texture.
+        /// </summary>
+        /// <param name="window">The asset window.</param>
+        public void OnLoad(CubeTextureWindow window)
         {
-            // Split Panel
-            _split = new SplitPanel(Orientation.Horizontal, ScrollBars.None, ScrollBars.Vertical)
-            {
-                AnchorPreset = AnchorPresets.StretchAll,
-                Offsets = new Margin(0, 0, _toolstrip.Bottom, 0),
-                SplitterValue = 0.7f,
-                Parent = this
-            };
+            // Link
+            _window = window;
 
-            // Texture preview
-            _preview = new CubeTexturePreview(true)
-            {
-                Parent = _split.Panel1
-            };
+            // Try to restore target asset texture import options (useful for fast reimport)
+            Editor.TryRestoreImportOptions(ref ImportSettings, window.Item.Path);
 
-            // Texture properties editor
-            _propertiesEditor = new CustomEditorPresenter(null);
-            _propertiesEditor.Panel.Parent = _split.Panel2;
-            _properties = new PropertiesProxy();
-            _propertiesEditor.Select(_properties);
-
-            // Toolstrip
-            _toolstrip.AddButton(Editor.Icons.Import64, () => Editor.ContentImporting.Reimport((BinaryAssetItem)Item)).LinkTooltip("Reimport");
-            _toolstrip.AddSeparator();
-            _toolstrip.AddButton(editor.Icons.Docs64, () => Platform.OpenUrl(Utilities.Constants.DocsUrl + "manual/graphics/textures/cube-textures.html")).LinkTooltip("See documentation to learn more");
+            // Prepare restore data
+            PeekState();
         }
 
-        /// <inheritdoc />
-        protected override void UnlinkItem()
+        /// <summary>
+        /// Records the current state to restore it on DiscardChanges.
+        /// </summary>
+        public void PeekState()
         {
-            _properties.OnClean();
-            _preview.CubeTexture = null;
+        }
+
+        /// <summary>
+        /// Reimports asset.
+        /// </summary>
+        public void Reimport()
+        {
+            Editor.Instance.ContentImporting.Reimport((BinaryAssetItem)_window.Item, ImportSettings);
+        }
+
+        /// <summary>
+        /// On discard changes
+        /// </summary>
+        public void DiscardChanges()
+        {
+        }
+
+        /// <summary>
+        /// Clears temporary data.
+        /// </summary>
+        public void OnClean()
+        {
+            // Unlink
+            _window = null;
+        }
+    }
+
+    private readonly SplitPanel _split;
+    private readonly CubeTexturePreview _preview;
+    private readonly CustomEditorPresenter _propertiesEditor;
+
+    private readonly PropertiesProxy _properties;
+    private bool _isWaitingForLoad;
+
+    /// <inheritdoc />
+    public CubeTextureWindow(Editor editor, AssetItem item)
+    : base(editor, item)
+    {
+        // Split Panel
+        _split = new SplitPanel(Orientation.Horizontal, ScrollBars.None, ScrollBars.Vertical)
+        {
+            AnchorPreset = AnchorPresets.StretchAll,
+            Offsets = new Margin(0, 0, _toolstrip.Bottom, 0),
+            SplitterValue = 0.7f,
+            Parent = this
+        };
+
+        // Texture preview
+        _preview = new CubeTexturePreview(true)
+        {
+            Parent = _split.Panel1
+        };
+
+        // Texture properties editor
+        _propertiesEditor = new CustomEditorPresenter(null);
+        _propertiesEditor.Panel.Parent = _split.Panel2;
+        _properties = new PropertiesProxy();
+        _propertiesEditor.Select(_properties);
+
+        // Toolstrip
+        _toolstrip.AddButton(Editor.Icons.Import64, () => Editor.ContentImporting.Reimport((BinaryAssetItem)Item)).LinkTooltip("Reimport");
+        _toolstrip.AddSeparator();
+        _toolstrip.AddButton(editor.Icons.Docs64, () => Platform.OpenUrl(Utilities.Constants.DocsUrl + "manual/graphics/textures/cube-textures.html")).LinkTooltip("See documentation to learn more");
+    }
+
+    /// <inheritdoc />
+    protected override void UnlinkItem()
+    {
+        _properties.OnClean();
+        _preview.CubeTexture = null;
+        _isWaitingForLoad = false;
+
+        base.UnlinkItem();
+    }
+
+    /// <inheritdoc />
+    protected override void OnAssetLinked()
+    {
+        _preview.CubeTexture = _asset;
+        _isWaitingForLoad = true;
+
+        base.OnAssetLinked();
+    }
+
+    /// <inheritdoc />
+    public override void OnItemReimported(ContentItem item)
+    {
+        // Invalidate data
+        _isWaitingForLoad = true;
+    }
+
+    /// <inheritdoc />
+    protected override void OnClose()
+    {
+        // Discard unsaved changes
+        _properties.DiscardChanges();
+
+        base.OnClose();
+    }
+
+    /// <inheritdoc />
+    public override void Update(float deltaTime)
+    {
+        base.Update(deltaTime);
+
+        // Check if need to load
+        if (_isWaitingForLoad && _asset.IsLoaded)
+        {
+            // Clear flag
             _isWaitingForLoad = false;
 
-            base.UnlinkItem();
+            // Init properties and parameters proxy
+            _properties.OnLoad(this);
+            _propertiesEditor.BuildLayout();
+
+            // Setup
+            ClearEditedFlag();
         }
+    }
 
-        /// <inheritdoc />
-        protected override void OnAssetLinked()
-        {
-            _preview.CubeTexture = _asset;
-            _isWaitingForLoad = true;
+    /// <inheritdoc />
+    public override bool UseLayoutData => true;
 
-            base.OnAssetLinked();
-        }
+    /// <inheritdoc />
+    public override void OnLayoutSerialize(XmlWriter writer)
+    {
+        LayoutSerializeSplitter(writer, "Split", _split);
+    }
 
-        /// <inheritdoc />
-        public override void OnItemReimported(ContentItem item)
-        {
-            // Invalidate data
-            _isWaitingForLoad = true;
-        }
+    /// <inheritdoc />
+    public override void OnLayoutDeserialize(XmlElement node)
+    {
+        LayoutDeserializeSplitter(node, "Split", _split);
+    }
 
-        /// <inheritdoc />
-        protected override void OnClose()
-        {
-            // Discard unsaved changes
-            _properties.DiscardChanges();
-
-            base.OnClose();
-        }
-
-        /// <inheritdoc />
-        public override void Update(float deltaTime)
-        {
-            base.Update(deltaTime);
-
-            // Check if need to load
-            if (_isWaitingForLoad && _asset.IsLoaded)
-            {
-                // Clear flag
-                _isWaitingForLoad = false;
-
-                // Init properties and parameters proxy
-                _properties.OnLoad(this);
-                _propertiesEditor.BuildLayout();
-
-                // Setup
-                ClearEditedFlag();
-            }
-        }
-
-        /// <inheritdoc />
-        public override bool UseLayoutData => true;
-
-        /// <inheritdoc />
-        public override void OnLayoutSerialize(XmlWriter writer)
-        {
-            LayoutSerializeSplitter(writer, "Split", _split);
-        }
-
-        /// <inheritdoc />
-        public override void OnLayoutDeserialize(XmlElement node)
-        {
-            LayoutDeserializeSplitter(node, "Split", _split);
-        }
-
-        /// <inheritdoc />
-        public override void OnLayoutDeserialize()
-        {
-            _split.SplitterValue = 0.7f;
-        }
+    /// <inheritdoc />
+    public override void OnLayoutDeserialize()
+    {
+        _split.SplitterValue = 0.7f;
     }
 }

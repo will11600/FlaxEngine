@@ -3,37 +3,36 @@
 using System.Collections.Generic;
 using FlaxEngine;
 
-namespace FlaxEditor.Surface
+namespace FlaxEditor.Surface;
+
+/// <summary>
+/// Surface nodes group archetype description.
+/// </summary>
+[HideInEditor]
+public sealed class GroupArchetype
 {
     /// <summary>
-    /// Surface nodes group archetype description.
+    /// Unique group ID.
     /// </summary>
-    [HideInEditor]
-    public sealed class GroupArchetype
-    {
-        /// <summary>
-        /// Unique group ID.
-        /// </summary>
-        public ushort GroupID;
+    public ushort GroupID;
 
-        /// <summary>
-        /// The group name.
-        /// </summary>
-        public string Name;
+    /// <summary>
+    /// The group name.
+    /// </summary>
+    public string Name;
 
-        /// <summary>
-        /// Primary color for the group nodes.
-        /// </summary>
-        public Color Color;
+    /// <summary>
+    /// Primary color for the group nodes.
+    /// </summary>
+    public Color Color;
 
-        /// <summary>
-        /// The custom tag.
-        /// </summary>
-        public object Tag;
+    /// <summary>
+    /// The custom tag.
+    /// </summary>
+    public object Tag;
 
-        /// <summary>
-        /// All nodes descriptions.
-        /// </summary>
-        public IEnumerable<NodeArchetype> Archetypes;
-    }
+    /// <summary>
+    /// All nodes descriptions.
+    /// </summary>
+    public IEnumerable<NodeArchetype> Archetypes;
 }

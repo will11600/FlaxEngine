@@ -4,34 +4,92 @@ using FlaxEngine;
 using FlaxEngine.GUI;
 using System.Collections.Generic;
 
-namespace FlaxEditor.GUI.Tree
+namespace FlaxEditor.GUI.Tree;
+
+/// <summary>
+/// Tree node control with in-built checkbox.
+/// </summary>
+[HideInEditor]
+public class TreeNodeWithAddons : TreeNode
 {
     /// <summary>
-    /// Tree node control with in-built checkbox.
+    /// The additional controls (eg. added to the header).
     /// </summary>
-    [HideInEditor]
-    public class TreeNodeWithAddons : TreeNode
+    public List<Control> Addons = new List<Control>();
+
+    /// <inheritdoc />
+    public override void Draw()
     {
-        /// <summary>
-        /// The additional controls (eg. added to the header).
-        /// </summary>
-        public List<Control> Addons = new List<Control>();
+        base.Draw();
 
-        /// <inheritdoc />
-        public override void Draw()
+        foreach (var child in Addons)
         {
-            base.Draw();
+            Render2D.PushTransform(ref child._cachedTransform);
+            child.Draw();
+            Render2D.PopTransform();
+        }
+    }
 
-            foreach (var child in Addons)
+    /// <inheritdoc />
+    public override bool OnMouseDown(Float2 location, MouseButton button)
+    {
+        foreach (var child in Addons)
+        {
+            if (child.Visible && child.Enabled)
             {
-                Render2D.PushTransform(ref child._cachedTransform);
-                child.Draw();
-                Render2D.PopTransform();
+                if (IntersectsChildContent(child, location, out var childLocation))
+                {
+                    if (child.OnMouseDown(childLocation, button))
+                        return true;
+                }
             }
         }
 
-        /// <inheritdoc />
-        public override bool OnMouseDown(Float2 location, MouseButton button)
+        return base.OnMouseDown(location, button);
+    }
+
+    /// <inheritdoc />
+    public override bool OnMouseUp(Float2 location, MouseButton button)
+    {
+        foreach (var child in Addons)
+        {
+            if (child.Visible && child.Enabled)
+            {
+                if (IntersectsChildContent(child, location, out var childLocation))
+                {
+                    if (child.OnMouseUp(childLocation, button))
+                        return true;
+                }
+            }
+        }
+
+        return base.OnMouseUp(location, button);
+    }
+
+    /// <inheritdoc />
+    public override bool OnMouseDoubleClick(Float2 location, MouseButton button)
+    {
+        foreach (var child in Addons)
+        {
+            if (child.Visible && child.Enabled)
+            {
+                if (IntersectsChildContent(child, location, out var childLocation))
+                {
+                    if (child.OnMouseDoubleClick(childLocation, button))
+                        return true;
+                }
+            }
+        }
+
+        return base.OnMouseDoubleClick(location, button);
+    }
+
+    /// <inheritdoc />
+    public override void OnMouseMove(Float2 location)
+    {
+        base.OnMouseMove(location);
+
+        if (IsCollapsed)
         {
             foreach (var child in Addons)
             {
@@ -39,80 +97,21 @@ namespace FlaxEditor.GUI.Tree
                 {
                     if (IntersectsChildContent(child, location, out var childLocation))
                     {
-                        if (child.OnMouseDown(childLocation, button))
-                            return true;
-                    }
-                }
-            }
-
-            return base.OnMouseDown(location, button);
-        }
-
-        /// <inheritdoc />
-        public override bool OnMouseUp(Float2 location, MouseButton button)
-        {
-            foreach (var child in Addons)
-            {
-                if (child.Visible && child.Enabled)
-                {
-                    if (IntersectsChildContent(child, location, out var childLocation))
-                    {
-                        if (child.OnMouseUp(childLocation, button))
-                            return true;
-                    }
-                }
-            }
-
-            return base.OnMouseUp(location, button);
-        }
-
-        /// <inheritdoc />
-        public override bool OnMouseDoubleClick(Float2 location, MouseButton button)
-        {
-            foreach (var child in Addons)
-            {
-                if (child.Visible && child.Enabled)
-                {
-                    if (IntersectsChildContent(child, location, out var childLocation))
-                    {
-                        if (child.OnMouseDoubleClick(childLocation, button))
-                            return true;
-                    }
-                }
-            }
-
-            return base.OnMouseDoubleClick(location, button);
-        }
-
-        /// <inheritdoc />
-        public override void OnMouseMove(Float2 location)
-        {
-            base.OnMouseMove(location);
-
-            if (IsCollapsed)
-            {
-                foreach (var child in Addons)
-                {
-                    if (child.Visible && child.Enabled)
-                    {
-                        if (IntersectsChildContent(child, location, out var childLocation))
+                        if (child.IsMouseOver)
                         {
-                            if (child.IsMouseOver)
-                            {
-                                // Move
-                                child.OnMouseMove(childLocation);
-                            }
-                            else
-                            {
-                                // Enter
-                                child.OnMouseEnter(childLocation);
-                            }
+                            // Move
+                            child.OnMouseMove(childLocation);
                         }
-                        else if (child.IsMouseOver)
+                        else
                         {
-                            // Leave
-                            child.OnMouseLeave();
+                            // Enter
+                            child.OnMouseEnter(childLocation);
                         }
+                    }
+                    else if (child.IsMouseOver)
+                    {
+                        // Leave
+                        child.OnMouseLeave();
                     }
                 }
             }

@@ -5,53 +5,52 @@ using FlaxEditor.CustomEditors.Editors;
 using FlaxEngine;
 using FlaxEngine.Utilities;
 
-namespace FlaxEditor.Surface.Elements
+namespace FlaxEditor.Surface.Elements;
+
+/// <summary>
+/// Actors picking control.
+/// </summary>
+/// <seealso cref="FlaxObjectRefPickerControl" />
+/// <seealso cref="ISurfaceNodeElement" />
+[HideInEditor]
+public class ActorSelect : FlaxObjectRefPickerControl, ISurfaceNodeElement
 {
+    /// <inheritdoc />
+    public SurfaceNode ParentNode { get; }
+
+    /// <inheritdoc />
+    public NodeElementArchetype Archetype { get; }
+
     /// <summary>
-    /// Actors picking control.
+    /// Initializes a new instance of the <see cref="ActorSelect"/> class.
     /// </summary>
-    /// <seealso cref="FlaxObjectRefPickerControl" />
-    /// <seealso cref="ISurfaceNodeElement" />
-    [HideInEditor]
-    public class ActorSelect : FlaxObjectRefPickerControl, ISurfaceNodeElement
+    /// <param name="parentNode">The parent node.</param>
+    /// <param name="archetype">The archetype.</param>
+    public ActorSelect(SurfaceNode parentNode, NodeElementArchetype archetype)
     {
-        /// <inheritdoc />
-        public SurfaceNode ParentNode { get; }
+        ParentNode = parentNode;
+        Archetype = archetype;
+        Bounds = new Rectangle(Archetype.ActualPosition, archetype.Size);
+        Type = TypeUtils.GetType(archetype.Text);
 
-        /// <inheritdoc />
-        public NodeElementArchetype Archetype { get; }
+        ParentNode.ValuesChanged += OnNodeValuesChanged;
+        OnNodeValuesChanged();
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActorSelect"/> class.
-        /// </summary>
-        /// <param name="parentNode">The parent node.</param>
-        /// <param name="archetype">The archetype.</param>
-        public ActorSelect(SurfaceNode parentNode, NodeElementArchetype archetype)
+    private void OnNodeValuesChanged()
+    {
+        ValueID = (Guid)ParentNode.Values[Archetype.ValueIndex];
+    }
+
+    /// <inheritdoc />
+    protected override void OnValueChanged()
+    {
+        var selectedId = ValueID;
+        if (ParentNode != null && (Guid)ParentNode.Values[Archetype.ValueIndex] != selectedId)
         {
-            ParentNode = parentNode;
-            Archetype = archetype;
-            Bounds = new Rectangle(Archetype.ActualPosition, archetype.Size);
-            Type = TypeUtils.GetType(archetype.Text);
-
-            ParentNode.ValuesChanged += OnNodeValuesChanged;
-            OnNodeValuesChanged();
+            ParentNode.SetValue(Archetype.ValueIndex, selectedId);
         }
 
-        private void OnNodeValuesChanged()
-        {
-            ValueID = (Guid)ParentNode.Values[Archetype.ValueIndex];
-        }
-
-        /// <inheritdoc />
-        protected override void OnValueChanged()
-        {
-            var selectedId = ValueID;
-            if (ParentNode != null && (Guid)ParentNode.Values[Archetype.ValueIndex] != selectedId)
-            {
-                ParentNode.SetValue(Archetype.ValueIndex, selectedId);
-            }
-
-            base.OnValueChanged();
-        }
+        base.OnValueChanged();
     }
 }

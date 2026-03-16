@@ -2,12 +2,11 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// Makes a variable show up in the editor as read-only (editing is disabled).
+/// </summary>
+public sealed class ReadOnlyAttribute : Attribute
 {
-    /// <summary>
-    /// Makes a variable show up in the editor as read-only (editing is disabled).
-    /// </summary>
-    public sealed class ReadOnlyAttribute : Attribute
-    {
-    }
 }

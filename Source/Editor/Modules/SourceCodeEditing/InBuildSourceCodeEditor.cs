@@ -2,88 +2,87 @@
 
 using System;
 
-namespace FlaxEditor.Modules.SourceCodeEditing
+namespace FlaxEditor.Modules.SourceCodeEditing;
+
+/// <summary>
+/// In-build source code editor.
+/// </summary>
+/// <seealso cref="FlaxEditor.Modules.SourceCodeEditing.ISourceCodeEditor" />
+internal class InBuildSourceCodeEditor : ISourceCodeEditor
 {
     /// <summary>
-    /// In-build source code editor.
+    /// The type of the editor.
     /// </summary>
-    /// <seealso cref="FlaxEditor.Modules.SourceCodeEditing.ISourceCodeEditor" />
-    internal class InBuildSourceCodeEditor : ISourceCodeEditor
+    public readonly CodeEditorTypes Type;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InBuildSourceCodeEditor"/> class.
+    /// </summary>
+    /// <param name="type">The type.</param>
+    public InBuildSourceCodeEditor(CodeEditorTypes type)
     {
-        /// <summary>
-        /// The type of the editor.
-        /// </summary>
-        public readonly CodeEditorTypes Type;
+        Type = type;
+        Name = CodeEditingManager.GetName(type);
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InBuildSourceCodeEditor"/> class.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        public InBuildSourceCodeEditor(CodeEditorTypes type)
+    /// <inheritdoc />
+    public string Name { get; set; }
+
+    /// <inheritdoc />
+    public string GenerateProjectCustomArgs => CodeEditingManager.GetGenerateProjectCustomArgs(Type);
+
+    /// <inheritdoc />
+    public void OpenSolution()
+    {
+        CodeEditingManager.OpenSolution(Type);
+    }
+
+    /// <inheritdoc />
+    public void OpenFile(string path, int line)
+    {
+        CodeEditingManager.OpenFile(Type, path, line);
+    }
+
+    /// <inheritdoc />
+    public void OnFileAdded(string path)
+    {
+        switch (Type)
         {
-            Type = type;
-            Name = CodeEditingManager.GetName(type);
+        case CodeEditorTypes.VS2008:
+        case CodeEditorTypes.VS2010:
+        case CodeEditorTypes.VS2012:
+        case CodeEditorTypes.VS2013:
+        case CodeEditorTypes.VS2015:
+        case CodeEditorTypes.VS2017:
+        case CodeEditorTypes.VS2019:
+        case CodeEditorTypes.VS2022:
+        case CodeEditorTypes.VS2026:
+            // TODO: finish dynamic files adding to the project
+            //Editor.Instance.ProgressReporting.GenerateScriptsProjectFiles.RunAsync();
+            break;
+        default:
+            CodeEditingManager.OnFileAdded(Type, path);
+            break;
         }
+    }
 
-        /// <inheritdoc />
-        public string Name { get; set; }
+    /// <inheritdoc />
+    public void OnSelected(Editor editor)
+    {
+    }
 
-        /// <inheritdoc />
-        public string GenerateProjectCustomArgs => CodeEditingManager.GetGenerateProjectCustomArgs(Type);
+    /// <inheritdoc />
+    public void OnDeselected(Editor editor)
+    {
+    }
 
-        /// <inheritdoc />
-        public void OpenSolution()
-        {
-            CodeEditingManager.OpenSolution(Type);
-        }
+    /// <inheritdoc />
+    public void OnAdded(Editor editor)
+    {
+    }
 
-        /// <inheritdoc />
-        public void OpenFile(string path, int line)
-        {
-            CodeEditingManager.OpenFile(Type, path, line);
-        }
-
-        /// <inheritdoc />
-        public void OnFileAdded(string path)
-        {
-            switch (Type)
-            {
-            case CodeEditorTypes.VS2008:
-            case CodeEditorTypes.VS2010:
-            case CodeEditorTypes.VS2012:
-            case CodeEditorTypes.VS2013:
-            case CodeEditorTypes.VS2015:
-            case CodeEditorTypes.VS2017:
-            case CodeEditorTypes.VS2019:
-            case CodeEditorTypes.VS2022:
-            case CodeEditorTypes.VS2026:
-                // TODO: finish dynamic files adding to the project
-                //Editor.Instance.ProgressReporting.GenerateScriptsProjectFiles.RunAsync();
-                break;
-            default:
-                CodeEditingManager.OnFileAdded(Type, path);
-                break;
-            }
-        }
-
-        /// <inheritdoc />
-        public void OnSelected(Editor editor)
-        {
-        }
-
-        /// <inheritdoc />
-        public void OnDeselected(Editor editor)
-        {
-        }
-
-        /// <inheritdoc />
-        public void OnAdded(Editor editor)
-        {
-        }
-
-        /// <inheritdoc />
-        public void OnRemoved(Editor editor)
-        {
-        }
+    /// <inheritdoc />
+    public void OnRemoved(Editor editor)
+    {
     }
 }

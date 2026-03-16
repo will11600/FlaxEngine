@@ -2,13 +2,12 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// Marks the types and members defined in unmanaged code (native C++).
+/// </summary>
+[AttributeUsage(AttributeTargets.All)]
+public sealed class UnmanagedAttribute : Attribute
 {
-    /// <summary>
-    /// Marks the types and members defined in unmanaged code (native C++).
-    /// </summary>
-    [AttributeUsage(AttributeTargets.All)]
-    public sealed class UnmanagedAttribute : Attribute
-    {
-    }
 }

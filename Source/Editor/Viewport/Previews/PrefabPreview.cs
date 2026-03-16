@@ -5,180 +5,179 @@ using FlaxEngine;
 using FlaxEngine.GUI;
 using Object = FlaxEngine.Object;
 
-namespace FlaxEditor.Viewport.Previews
+namespace FlaxEditor.Viewport.Previews;
+
+/// <summary>
+/// Prefab asset preview editor viewport.
+/// </summary>
+/// <seealso cref="AssetPreview" />
+public class PrefabPreview : AssetPreview
 {
+    private Prefab _prefab;
+    private Actor _instance;
+    private UIControl _uiControlLinked;
+    internal bool _hasUILinked;
+    internal ContainerControl _uiParentLink;
+
     /// <summary>
-    /// Prefab asset preview editor viewport.
+    /// Gets or sets the prefab asset to preview.
     /// </summary>
-    /// <seealso cref="AssetPreview" />
-    public class PrefabPreview : AssetPreview
+    public Prefab Prefab
     {
-        private Prefab _prefab;
-        private Actor _instance;
-        private UIControl _uiControlLinked;
-        internal bool _hasUILinked;
-        internal ContainerControl _uiParentLink;
-
-        /// <summary>
-        /// Gets or sets the prefab asset to preview.
-        /// </summary>
-        public Prefab Prefab
+        get => _prefab;
+        set
         {
-            get => _prefab;
-            set
+            if (_prefab == value)
+                return;
+
+            // Unset and cleanup spawned instance
+            if (_instance)
             {
-                if (_prefab == value)
-                    return;
+                var instance = _instance;
+                Instance = null;
+                Object.Destroy(instance);
+            }
 
-                // Unset and cleanup spawned instance
-                if (_instance)
+            _prefab = value;
+
+            if (_prefab)
+            {
+                // Load prefab
+                _prefab.WaitForLoaded();
+
+                // Spawn prefab
+                var instance = PrefabManager.SpawnPrefab(_prefab, null);
+                if (instance == null)
                 {
-                    var instance = _instance;
-                    Instance = null;
-                    Object.Destroy(instance);
+                    _prefab = null;
+                    throw new Exception("Failed to spawn a prefab for the preview.");
                 }
 
-                _prefab = value;
-
-                if (_prefab)
-                {
-                    // Load prefab
-                    _prefab.WaitForLoaded();
-
-                    // Spawn prefab
-                    var instance = PrefabManager.SpawnPrefab(_prefab, null);
-                    if (instance == null)
-                    {
-                        _prefab = null;
-                        throw new Exception("Failed to spawn a prefab for the preview.");
-                    }
-
-                    // Set instance
-                    Instance = instance;
-                }
+                // Set instance
+                Instance = instance;
             }
         }
+    }
 
-        /// <summary>
-        /// Gets the instance of the prefab spawned for the preview.
-        /// </summary>
-        public Actor Instance
+    /// <summary>
+    /// Gets the instance of the prefab spawned for the preview.
+    /// </summary>
+    public Actor Instance
+    {
+        get => _instance;
+        internal set
         {
-            get => _instance;
-            internal set
+            if (_instance == value)
+                return;
+
+            if (_instance)
             {
-                if (_instance == value)
-                    return;
-
-                if (_instance)
+                // Unlink UI control
+                if (_uiControlLinked)
                 {
-                    // Unlink UI control
-                    if (_uiControlLinked)
+                    if (_uiControlLinked.Control?.Parent == _uiParentLink)
+                        _uiControlLinked.Control.Parent = null;
+                    _uiControlLinked = null;
+                }
+                foreach (var child in _uiParentLink.Children.ToArray())
+                {
+                    if (child is CanvasRootControl canvasRoot)
                     {
-                        if (_uiControlLinked.Control?.Parent == _uiParentLink)
-                            _uiControlLinked.Control.Parent = null;
-                        _uiControlLinked = null;
+                        canvasRoot.Canvas.EditorOverride(null, null);
                     }
-                    foreach (var child in _uiParentLink.Children.ToArray())
-                    {
-                        if (child is CanvasRootControl canvasRoot)
-                        {
-                            canvasRoot.Canvas.EditorOverride(null, null);
-                        }
-                    }
-
-                    // Remove for the preview
-                    Task.RemoveCustomActor(_instance);
                 }
 
-                _instance = value;
-                _hasUILinked = false;
-
-                if (_instance)
-                {
-                    // Add to the preview
-                    Task.AddCustomActor(_instance);
-                    UpdateLinkage();
-                }
+                // Remove for the preview
+                Task.RemoveCustomActor(_instance);
             }
-        }
 
-        private void UpdateLinkage()
-        {
-            // Clear flag
+            _instance = value;
             _hasUILinked = false;
 
-            // Link UI canvases to the preview (eg. after canvas added to the prefab)
-            LinkCanvas(_instance);
-
-            // Link UI control to the preview
-            var uiControl = _instance as UIControl;
-            if (_uiControlLinked == null &&
-                uiControl != null &&
-                uiControl.Control != null &&
-                uiControl.Control.Parent == null)
+            if (_instance)
             {
-                uiControl.Control.Parent = _uiParentLink;
-                _uiControlLinked = uiControl;
-                _hasUILinked = true;
-            }
-            else if (_uiControlLinked != null)
-            {
-                if (_uiControlLinked.Control != null && 
-                    _uiControlLinked.Control.Parent == null)
-                    _uiControlLinked.Control.Parent = _uiParentLink;
-                _hasUILinked = true;
-            }
-
-            // Use UI mode when root is empty UI Control
-            if (_uiControlLinked == null && uiControl != null && uiControl.Control == null)
-            {
-                _hasUILinked = true;
-            }
-        }
-
-        private void LinkCanvas(Actor actor)
-        {
-            if (actor is UICanvas uiCanvas)
-            {
-                uiCanvas.EditorOverride(Task, _uiParentLink);
-                if (uiCanvas.GUI.Parent == _uiParentLink)
-                    _hasUILinked = true;
-            }
-
-            var children = actor.ChildrenCount;
-            for (int i = 0; i < children; i++)
-                LinkCanvas(actor.GetChild(i));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PrefabPreview"/> class.
-        /// </summary>
-        /// <param name="useWidgets">if set to <c>true</c> use widgets.</param>
-        public PrefabPreview(bool useWidgets)
-        : base(useWidgets)
-        {
-            // Link to itself by default
-            _uiParentLink = this;
-        }
-
-        /// <inheritdoc />
-        public override void Update(float deltaTime)
-        {
-            base.Update(deltaTime);
-
-            if (_instance != null)
-            {
+                // Add to the preview
+                Task.AddCustomActor(_instance);
                 UpdateLinkage();
             }
         }
+    }
 
-        /// <inheritdoc />
-        public override void OnDestroy()
+    private void UpdateLinkage()
+    {
+        // Clear flag
+        _hasUILinked = false;
+
+        // Link UI canvases to the preview (eg. after canvas added to the prefab)
+        LinkCanvas(_instance);
+
+        // Link UI control to the preview
+        var uiControl = _instance as UIControl;
+        if (_uiControlLinked == null &&
+            uiControl != null &&
+            uiControl.Control != null &&
+            uiControl.Control.Parent == null)
         {
-            Prefab = null;
-
-            base.OnDestroy();
+            uiControl.Control.Parent = _uiParentLink;
+            _uiControlLinked = uiControl;
+            _hasUILinked = true;
         }
+        else if (_uiControlLinked != null)
+        {
+            if (_uiControlLinked.Control != null && 
+                _uiControlLinked.Control.Parent == null)
+                _uiControlLinked.Control.Parent = _uiParentLink;
+            _hasUILinked = true;
+        }
+
+        // Use UI mode when root is empty UI Control
+        if (_uiControlLinked == null && uiControl != null && uiControl.Control == null)
+        {
+            _hasUILinked = true;
+        }
+    }
+
+    private void LinkCanvas(Actor actor)
+    {
+        if (actor is UICanvas uiCanvas)
+        {
+            uiCanvas.EditorOverride(Task, _uiParentLink);
+            if (uiCanvas.GUI.Parent == _uiParentLink)
+                _hasUILinked = true;
+        }
+
+        var children = actor.ChildrenCount;
+        for (int i = 0; i < children; i++)
+            LinkCanvas(actor.GetChild(i));
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PrefabPreview"/> class.
+    /// </summary>
+    /// <param name="useWidgets">if set to <c>true</c> use widgets.</param>
+    public PrefabPreview(bool useWidgets)
+    : base(useWidgets)
+    {
+        // Link to itself by default
+        _uiParentLink = this;
+    }
+
+    /// <inheritdoc />
+    public override void Update(float deltaTime)
+    {
+        base.Update(deltaTime);
+
+        if (_instance != null)
+        {
+            UpdateLinkage();
+        }
+    }
+
+    /// <inheritdoc />
+    public override void OnDestroy()
+    {
+        Prefab = null;
+
+        base.OnDestroy();
     }
 }

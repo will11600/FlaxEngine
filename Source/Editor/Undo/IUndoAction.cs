@@ -2,22 +2,21 @@
 
 using FlaxEditor.History;
 
-namespace FlaxEditor
+namespace FlaxEditor;
+
+/// <summary>
+/// Interface for <see cref="Undo"/> actions.
+/// </summary>
+/// <seealso cref="FlaxEditor.History.IHistoryAction" />
+public interface IUndoAction : IHistoryAction
 {
     /// <summary>
-    /// Interface for <see cref="Undo"/> actions.
+    /// Performs this action.
     /// </summary>
-    /// <seealso cref="FlaxEditor.History.IHistoryAction" />
-    public interface IUndoAction : IHistoryAction
-    {
-        /// <summary>
-        /// Performs this action.
-        /// </summary>
-        void Do();
+    void Do();
 
-        /// <summary>
-        /// Undoes this action.
-        /// </summary>
-        void Undo();
-    }
+    /// <summary>
+    /// Undoes this action.
+    /// </summary>
+    void Undo();
 }

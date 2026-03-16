@@ -2,22 +2,21 @@
 
 using FlaxEngine;
 
-namespace FlaxEditor.CustomEditors.Elements
+namespace FlaxEditor.CustomEditors.Elements;
+
+/// <summary>
+/// The integer value editor element.
+/// </summary>
+[HideInEditor]
+public interface IIntegerValueEditor
 {
     /// <summary>
-    /// The integer value editor element.
+    /// Gets or sets the value.
     /// </summary>
-    [HideInEditor]
-    public interface IIntegerValueEditor
-    {
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        int Value { get; set; }
+    int Value { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether user is using a slider.
-        /// </summary>
-        bool IsSliding { get; }
-    }
+    /// <summary>
+    /// Gets a value indicating whether user is using a slider.
+    /// </summary>
+    bool IsSliding { get; }
 }

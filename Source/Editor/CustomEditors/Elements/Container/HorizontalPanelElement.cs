@@ -3,23 +3,22 @@
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace FlaxEditor.CustomEditors.Elements
+namespace FlaxEditor.CustomEditors.Elements;
+
+/// <summary>
+/// The horizontal panel element.
+/// </summary>
+/// <seealso cref="FlaxEditor.CustomEditors.LayoutElement" />
+public class HorizontalPanelElement : LayoutElementsContainer
 {
     /// <summary>
-    /// The horizontal panel element.
+    /// The panel.
     /// </summary>
-    /// <seealso cref="FlaxEditor.CustomEditors.LayoutElement" />
-    public class HorizontalPanelElement : LayoutElementsContainer
+    public readonly HorizontalPanel Panel = new HorizontalPanel
     {
-        /// <summary>
-        /// The panel.
-        /// </summary>
-        public readonly HorizontalPanel Panel = new HorizontalPanel
-        {
-            Pivot = Float2.Zero,
-        };
+        Pivot = Float2.Zero,
+    };
 
-        /// <inheritdoc />
-        public override ContainerControl ContainerControl => Panel;
-    }
+    /// <inheritdoc />
+    public override ContainerControl ContainerControl => Panel;
 }

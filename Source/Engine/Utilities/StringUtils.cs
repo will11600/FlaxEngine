@@ -5,259 +5,258 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// String utilities class.
+/// </summary>
+public static class StringUtils
 {
     /// <summary>
-    /// String utilities class.
+    /// Checks if given character is valid hexadecimal digit.
     /// </summary>
-    public static class StringUtils
+    /// <param name="c">The hex character.</param>
+    /// <returns>True if character is valid hexadecimal digit, otherwise false.</returns>
+    public static bool IsHexDigit(char c)
     {
-        /// <summary>
-        /// Checks if given character is valid hexadecimal digit.
-        /// </summary>
-        /// <param name="c">The hex character.</param>
-        /// <returns>True if character is valid hexadecimal digit, otherwise false.</returns>
-        public static bool IsHexDigit(char c)
+        return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+    }
+
+    /// <summary>
+    /// Parse hexadecimals digit to value.
+    /// </summary>
+    /// <param name="c">The hex character.</param>
+    /// <returns>Value.</returns>
+    public static int HexDigit(char c)
+    {
+        int result;
+
+        if (c >= '0' && c <= '9')
         {
-            return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+            result = c - '0';
+        }
+        else if (c >= 'a' && c <= 'f')
+        {
+            result = c + 10 - 'a';
+        }
+        else if (c >= 'A' && c <= 'F')
+        {
+            result = c + 10 - 'A';
+        }
+        else
+        {
+            result = 0;
         }
 
-        /// <summary>
-        /// Parse hexadecimals digit to value.
-        /// </summary>
-        /// <param name="c">The hex character.</param>
-        /// <returns>Value.</returns>
-        public static int HexDigit(char c)
+        return result;
+    }
+
+    /// <summary>
+    /// Removes extension from the file path.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>Path without extension.</returns>
+    public static string GetPathWithoutExtension(string path)
+    {
+        int num = path.LastIndexOf('.');
+        if (num != -1)
         {
-            int result;
-
-            if (c >= '0' && c <= '9')
-            {
-                result = c - '0';
-            }
-            else if (c >= 'a' && c <= 'f')
-            {
-                result = c + 10 - 'a';
-            }
-            else if (c >= 'A' && c <= 'F')
-            {
-                result = c + 10 - 'A';
-            }
-            else
-            {
-                result = 0;
-            }
-
-            return result;
+            return path.Substring(0, num);
         }
+        return path;
+    }
 
-        /// <summary>
-        /// Removes extension from the file path.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <returns>Path without extension.</returns>
-        public static string GetPathWithoutExtension(string path)
-        {
-            int num = path.LastIndexOf('.');
-            if (num != -1)
-            {
-                return path.Substring(0, num);
-            }
+    /// <summary>
+    /// Normalizes the path to the standard Flax format (all separators are '/' except for drive 'C:\').
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>The normalized path.</returns>
+    public static string NormalizePath(string path)
+    {
+        if (string.IsNullOrEmpty(path))
             return path;
+        var chars = path.ToCharArray();
+
+        // Convert all '\' to '/'
+        for (int i = 0; i < chars.Length; i++)
+        {
+            if (chars[i] == '\\')
+                chars[i] = '/';
         }
 
-        /// <summary>
-        /// Normalizes the path to the standard Flax format (all separators are '/' except for drive 'C:\').
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <returns>The normalized path.</returns>
-        public static string NormalizePath(string path)
+        // Fix case 'C:/' to 'C:\'
+        if (chars.Length > 2 && !char.IsDigit(chars[0]) && chars[1] == ':')
         {
-            if (string.IsNullOrEmpty(path))
-                return path;
-            var chars = path.ToCharArray();
+            chars[2] = '\\';
+        }
 
-            // Convert all '\' to '/'
-            for (int i = 0; i < chars.Length; i++)
+        return new string(chars);
+    }
+
+    /// <summary>
+    /// Normalizes the file extension to common format: no leading dot and all lowercase.
+    /// For example: '.TxT' will return 'txt'.
+    /// </summary>
+    /// <param name="extension">The extension.</param>
+    /// <returns>The normalized extension.</returns>
+    public static string NormalizeExtension(string extension)
+    {
+        if (extension.Length != 0 && extension[0] == '.')
+            extension = extension.Remove(0, 1);
+        return extension.ToLower();
+    }
+
+    /// <summary>
+    /// Combines the paths.
+    /// </summary>
+    /// <param name="left">The left.</param>
+    /// <param name="right">The right.</param>
+    /// <returns>The combined path</returns>
+    public static string CombinePaths(string left, string right)
+    {
+        int cnt = left.Length;
+        if (cnt > 1 && left[cnt - 1] != '/' && left[cnt - 1] != '\\'
+            && (right.Length == 0 || (right[0] != '/' && right[0] != '\\')))
+        {
+            left += '/';
+        }
+        return left + right;
+    }
+
+    /// <summary>
+    /// Combines the paths.
+    /// </summary>
+    /// <param name="left">The left.</param>
+    /// <param name="middle">The middle.</param>
+    /// <param name="right">The right.</param>
+    /// <returns>The combined path</returns>
+    public static string CombinePaths(string left, string middle, string right)
+    {
+        return CombinePaths(CombinePaths(left, middle), right);
+    }
+
+    /// <summary>
+    /// Determines whether the specified path is relative or is absolute.
+    /// </summary>
+    /// <param name="path">The input path.</param>
+    /// <returns><c>true</c> if the specified path is relative; otherwise, <c>false</c> if is relative.</returns>
+    public static bool IsRelative(string path)
+    {
+        bool isRooted = (path.Length >= 2 && char.IsLetterOrDigit(path[0]) && path[1] == ':') ||
+                        path.StartsWith("\\\\") ||
+                        path.StartsWith("\\") ||
+                        path.StartsWith("/");
+        return !isRooted;
+    }
+
+    /// <summary>
+    /// Converts path relative to the engine startup folder into absolute path.
+    /// </summary>
+    /// <param name="path">Path relative to the engine directory.</param>
+    /// <returns>Absolute path</returns>
+    public static string ConvertRelativePathToAbsolute(string path)
+    {
+        return ConvertRelativePathToAbsolute(Globals.StartupFolder, path);
+    }
+
+    /// <summary>
+    /// Converts path relative to basePath into absolute path.
+    /// </summary>
+    /// <param name="basePath">The base path.</param>
+    /// <param name="path">Path relative to basePath.</param>
+    /// <returns>Absolute path</returns>
+    public static string ConvertRelativePathToAbsolute(string basePath, string path)
+    {
+        string fullyPathed;
+        if (IsRelative(path))
+        {
+            fullyPathed = CombinePaths(basePath, path);
+        }
+        else
+        {
+            fullyPathed = path;
+        }
+
+        NormalizePath(fullyPathed);
+        return fullyPathed;
+    }
+
+    /// <summary>
+    /// Removes the relative parts from the path. For instance it replaces 'xx/yy/../zz' with 'xx/zz'.
+    /// </summary>
+    /// <param name="path">The input path.</param>
+    /// <returns>The output path.</returns>
+    public static string RemovePathRelativeParts(string path)
+    {
+        path = NormalizePath(path);
+
+        string[] components = path.Split('/');
+
+        Stack<string> stack = new Stack<string>();
+        foreach (var bit in components)
+        {
+            if (bit == "..")
             {
-                if (chars[i] == '\\')
-                    chars[i] = '/';
-            }
-
-            // Fix case 'C:/' to 'C:\'
-            if (chars.Length > 2 && !char.IsDigit(chars[0]) && chars[1] == ':')
-            {
-                chars[2] = '\\';
-            }
-
-            return new string(chars);
-        }
-
-        /// <summary>
-        /// Normalizes the file extension to common format: no leading dot and all lowercase.
-        /// For example: '.TxT' will return 'txt'.
-        /// </summary>
-        /// <param name="extension">The extension.</param>
-        /// <returns>The normalized extension.</returns>
-        public static string NormalizeExtension(string extension)
-        {
-            if (extension.Length != 0 && extension[0] == '.')
-                extension = extension.Remove(0, 1);
-            return extension.ToLower();
-        }
-
-        /// <summary>
-        /// Combines the paths.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The combined path</returns>
-        public static string CombinePaths(string left, string right)
-        {
-            int cnt = left.Length;
-            if (cnt > 1 && left[cnt - 1] != '/' && left[cnt - 1] != '\\'
-                && (right.Length == 0 || (right[0] != '/' && right[0] != '\\')))
-            {
-                left += '/';
-            }
-            return left + right;
-        }
-
-        /// <summary>
-        /// Combines the paths.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="middle">The middle.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>The combined path</returns>
-        public static string CombinePaths(string left, string middle, string right)
-        {
-            return CombinePaths(CombinePaths(left, middle), right);
-        }
-
-        /// <summary>
-        /// Determines whether the specified path is relative or is absolute.
-        /// </summary>
-        /// <param name="path">The input path.</param>
-        /// <returns><c>true</c> if the specified path is relative; otherwise, <c>false</c> if is relative.</returns>
-        public static bool IsRelative(string path)
-        {
-            bool isRooted = (path.Length >= 2 && char.IsLetterOrDigit(path[0]) && path[1] == ':') ||
-                            path.StartsWith("\\\\") ||
-                            path.StartsWith("\\") ||
-                            path.StartsWith("/");
-            return !isRooted;
-        }
-
-        /// <summary>
-        /// Converts path relative to the engine startup folder into absolute path.
-        /// </summary>
-        /// <param name="path">Path relative to the engine directory.</param>
-        /// <returns>Absolute path</returns>
-        public static string ConvertRelativePathToAbsolute(string path)
-        {
-            return ConvertRelativePathToAbsolute(Globals.StartupFolder, path);
-        }
-
-        /// <summary>
-        /// Converts path relative to basePath into absolute path.
-        /// </summary>
-        /// <param name="basePath">The base path.</param>
-        /// <param name="path">Path relative to basePath.</param>
-        /// <returns>Absolute path</returns>
-        public static string ConvertRelativePathToAbsolute(string basePath, string path)
-        {
-            string fullyPathed;
-            if (IsRelative(path))
-            {
-                fullyPathed = CombinePaths(basePath, path);
-            }
-            else
-            {
-                fullyPathed = path;
-            }
-
-            NormalizePath(fullyPathed);
-            return fullyPathed;
-        }
-
-        /// <summary>
-        /// Removes the relative parts from the path. For instance it replaces 'xx/yy/../zz' with 'xx/zz'.
-        /// </summary>
-        /// <param name="path">The input path.</param>
-        /// <returns>The output path.</returns>
-        public static string RemovePathRelativeParts(string path)
-        {
-            path = NormalizePath(path);
-
-            string[] components = path.Split('/');
-
-            Stack<string> stack = new Stack<string>();
-            foreach (var bit in components)
-            {
-                if (bit == "..")
+                if (stack.Count != 0)
                 {
-                    if (stack.Count != 0)
+                    var popped = stack.Pop();
+                    if (popped == "..")
                     {
-                        var popped = stack.Pop();
-                        if (popped == "..")
-                        {
-                            stack.Push(popped);
-                            stack.Push(bit);
-                        }
-                    }
-                    else
-                    {
+                        stack.Push(popped);
                         stack.Push(bit);
                     }
-                }
-                else if (bit == ".")
-                {
-                    // Skip /./
                 }
                 else
                 {
                     stack.Push(bit);
                 }
             }
-
-            bool isRooted = path.StartsWith("/");
-            string result = string.Join(Path.DirectorySeparatorChar.ToString(), stack.Reverse());
-            if (isRooted && result[0] != '/')
-                result = result.Insert(0, "/");
-            return result;
-        }
-
-        private static IEnumerable<string> GraphemeClusters(this string s)
-        {
-            var enumerator = System.Globalization.StringInfo.GetTextElementEnumerator(s);
-            while (enumerator.MoveNext())
+            else if (bit == ".")
             {
-                yield return (string)enumerator.Current;
+                // Skip /./
+            }
+            else
+            {
+                stack.Push(bit);
             }
         }
 
-        /// <summary>
-        /// Reverses the specified input string.
-        /// </summary>
-        /// <remarks>Correctly handles all UTF-16 strings</remarks>
-        /// <param name="s">The string to reverse.</param>
-        /// <returns>The reversed string.</returns>
-        public static string Reverse(this string s)
-        {
-            string[] graphemes = s.GraphemeClusters().ToArray();
-            Array.Reverse(graphemes);
-            return string.Concat(graphemes);
-        }
+        bool isRooted = path.StartsWith("/");
+        string result = string.Join(Path.DirectorySeparatorChar.ToString(), stack.Reverse());
+        if (isRooted && result[0] != '/')
+            result = result.Insert(0, "/");
+        return result;
+    }
 
-        /// <summary>
-        /// Removes any new line characters (\r or \n) from the string.
-        /// </summary>
-        /// <param name="s">The string to process.</param>
-        /// <returns>The single-line string.</returns>
-        public static string RemoveNewLine(this string s)
+    private static IEnumerable<string> GraphemeClusters(this string s)
+    {
+        var enumerator = System.Globalization.StringInfo.GetTextElementEnumerator(s);
+        while (enumerator.MoveNext())
         {
-            return s.Replace("\n", "").Replace("\r", "");
+            yield return (string)enumerator.Current;
         }
+    }
+
+    /// <summary>
+    /// Reverses the specified input string.
+    /// </summary>
+    /// <remarks>Correctly handles all UTF-16 strings</remarks>
+    /// <param name="s">The string to reverse.</param>
+    /// <returns>The reversed string.</returns>
+    public static string Reverse(this string s)
+    {
+        string[] graphemes = s.GraphemeClusters().ToArray();
+        Array.Reverse(graphemes);
+        return string.Concat(graphemes);
+    }
+
+    /// <summary>
+    /// Removes any new line characters (\r or \n) from the string.
+    /// </summary>
+    /// <param name="s">The string to process.</param>
+    /// <returns>The single-line string.</returns>
+    public static string RemoveNewLine(this string s)
+    {
+        return s.Replace("\n", "").Replace("\r", "");
     }
 }

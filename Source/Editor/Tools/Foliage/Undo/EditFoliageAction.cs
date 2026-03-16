@@ -3,78 +3,77 @@
 using System;
 using FlaxEngine;
 
-namespace FlaxEditor.Tools.Foliage.Undo
+namespace FlaxEditor.Tools.Foliage.Undo;
+
+/// <summary>
+/// The foliage editing action that records before and after states to swap between unmodified and modified foliage data.
+/// </summary>
+/// <seealso cref="FlaxEditor.IUndoAction" />
+[Serializable, HideInEditor]
+public sealed class EditFoliageAction : IUndoAction
 {
+    [Serialize]
+    private readonly Guid _foliageId;
+
+    [Serialize]
+    private string _before;
+
+    [Serialize]
+    private string _after;
+
     /// <summary>
-    /// The foliage editing action that records before and after states to swap between unmodified and modified foliage data.
+    /// Initializes a new instance of the <see cref="EditFoliageAction"/> class.
     /// </summary>
-    /// <seealso cref="FlaxEditor.IUndoAction" />
-    [Serializable, HideInEditor]
-    public sealed class EditFoliageAction : IUndoAction
+    /// <remarks>Use <see cref="RecordEnd"/> to finalize foliage data after editing action.</remarks>
+    /// <param name="foliage">The foliage.</param>
+    public EditFoliageAction(FlaxEngine.Foliage foliage)
     {
-        [Serialize]
-        private readonly Guid _foliageId;
+        _foliageId = foliage.ID;
+        _before = foliage.ToJson();
+    }
 
-        [Serialize]
-        private string _before;
+    /// <summary>
+    /// Called when foliage editing ends. Records the `after` state of the actor. Marks foliage actor parent scene edited.
+    /// </summary>
+    public void RecordEnd()
+    {
+        var foliageId = _foliageId;
+        var foliage = FlaxEngine.Object.Find<FlaxEngine.Foliage>(ref foliageId);
 
-        [Serialize]
-        private string _after;
+        _after = foliage.ToJson();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditFoliageAction"/> class.
-        /// </summary>
-        /// <remarks>Use <see cref="RecordEnd"/> to finalize foliage data after editing action.</remarks>
-        /// <param name="foliage">The foliage.</param>
-        public EditFoliageAction(FlaxEngine.Foliage foliage)
-        {
-            _foliageId = foliage.ID;
-            _before = foliage.ToJson();
-        }
+        Editor.Instance.Scene.MarkSceneEdited(foliage.Scene);
+    }
 
-        /// <summary>
-        /// Called when foliage editing ends. Records the `after` state of the actor. Marks foliage actor parent scene edited.
-        /// </summary>
-        public void RecordEnd()
-        {
-            var foliageId = _foliageId;
-            var foliage = FlaxEngine.Object.Find<FlaxEngine.Foliage>(ref foliageId);
+    /// <inheritdoc />
+    public string ActionString => "Edit foliage";
 
-            _after = foliage.ToJson();
+    /// <inheritdoc />
+    public void Do()
+    {
+        Set(_after);
+    }
 
-            Editor.Instance.Scene.MarkSceneEdited(foliage.Scene);
-        }
+    /// <inheritdoc />
+    public void Undo()
+    {
+        Set(_before);
+    }
 
-        /// <inheritdoc />
-        public string ActionString => "Edit foliage";
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        _before = null;
+        _after = null;
+    }
 
-        /// <inheritdoc />
-        public void Do()
-        {
-            Set(_after);
-        }
+    private void Set(string data)
+    {
+        var foliageId = _foliageId;
+        var foliage = FlaxEngine.Object.Find<FlaxEngine.Foliage>(ref foliageId);
 
-        /// <inheritdoc />
-        public void Undo()
-        {
-            Set(_before);
-        }
+        foliage.FromJson(data);
 
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            _before = null;
-            _after = null;
-        }
-
-        private void Set(string data)
-        {
-            var foliageId = _foliageId;
-            var foliage = FlaxEngine.Object.Find<FlaxEngine.Foliage>(ref foliageId);
-
-            foliage.FromJson(data);
-
-            Editor.Instance.Scene.MarkSceneEdited(foliage.Scene);
-        }
+        Editor.Instance.Scene.MarkSceneEdited(foliage.Scene);
     }
 }

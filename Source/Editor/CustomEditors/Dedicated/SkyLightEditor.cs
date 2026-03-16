@@ -3,39 +3,38 @@
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace FlaxEditor.CustomEditors.Dedicated
+namespace FlaxEditor.CustomEditors.Dedicated;
+
+/// <summary>
+/// Custom editor for <see cref="SkyLight"/>.
+/// </summary>
+/// <seealso cref="ActorEditor" />
+[CustomEditor(typeof(SkyLight)), DefaultEditor]
+public class SkyLightEditor : ActorEditor
 {
-    /// <summary>
-    /// Custom editor for <see cref="SkyLight"/>.
-    /// </summary>
-    /// <seealso cref="ActorEditor" />
-    [CustomEditor(typeof(SkyLight)), DefaultEditor]
-    public class SkyLightEditor : ActorEditor
+    /// <inheritdoc />
+    public override void Initialize(LayoutElementsContainer layout)
     {
-        /// <inheritdoc />
-        public override void Initialize(LayoutElementsContainer layout)
-        {
-            base.Initialize(layout);
+        base.Initialize(layout);
 
-            if (Values.HasDifferentTypes == false)
-            {
-                // Add 'Bake' button
-                var group = layout.Group("Bake");
-                group.Panel.ItemsMargin = new Margin(Utilities.Constants.UIMargin * 2);
-                var button = group.Button("Bake");
-                button.Button.Clicked += BakeButtonClicked;
-            }
+        if (Values.HasDifferentTypes == false)
+        {
+            // Add 'Bake' button
+            var group = layout.Group("Bake");
+            group.Panel.ItemsMargin = new Margin(Utilities.Constants.UIMargin * 2);
+            var button = group.Button("Bake");
+            button.Button.Clicked += BakeButtonClicked;
         }
+    }
 
-        private void BakeButtonClicked()
+    private void BakeButtonClicked()
+    {
+        for (int i = 0; i < Values.Count; i++)
         {
-            for (int i = 0; i < Values.Count; i++)
+            if (Values[i] is SkyLight skyLight)
             {
-                if (Values[i] is SkyLight skyLight)
-                {
-                    skyLight.Bake();
-                    Editor.Instance.Scene.MarkSceneEdited(skyLight.Scene);
-                }
+                skyLight.Bake();
+                Editor.Instance.Scene.MarkSceneEdited(skyLight.Scene);
             }
         }
     }

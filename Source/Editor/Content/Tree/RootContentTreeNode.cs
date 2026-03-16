@@ -1,22 +1,21 @@
 // Copyright (c) Wojciech Figat. All rights reserved.
 
-namespace FlaxEditor.Content
+namespace FlaxEditor.Content;
+
+/// <summary>
+/// Root tree node for the content workspace.
+/// </summary>
+/// <seealso cref="FlaxEditor.Content.ContentTreeNode" />
+public sealed class RootContentTreeNode : ContentTreeNode
 {
     /// <summary>
-    /// Root tree node for the content workspace.
+    /// Initializes a new instance of the <see cref="RootContentTreeNode"/> class.
     /// </summary>
-    /// <seealso cref="FlaxEditor.Content.ContentTreeNode" />
-    public sealed class RootContentTreeNode : ContentTreeNode
+    public RootContentTreeNode()
+    : base(null, string.Empty)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RootContentTreeNode"/> class.
-        /// </summary>
-        public RootContentTreeNode()
-        : base(null, string.Empty)
-        {
-        }
-
-        /// <inheritdoc />
-        public override string NavButtonLabel => " /";
     }
+
+    /// <inheritdoc />
+    public override string NavButtonLabel => " /";
 }

@@ -2,20 +2,19 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// Indicates that a member of a class cannot be animated by the scene animations system. This class cannot be inherited.
+/// </summary>
+[Serializable]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method)]
+public sealed class NoAnimateAttribute : Attribute
 {
     /// <summary>
-    /// Indicates that a member of a class cannot be animated by the scene animations system. This class cannot be inherited.
+    /// Initializes a new instance of the <see cref="NoAnimateAttribute"/> class.
     /// </summary>
-    [Serializable]
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method)]
-    public sealed class NoAnimateAttribute : Attribute
+    public NoAnimateAttribute()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NoAnimateAttribute"/> class.
-        /// </summary>
-        public NoAnimateAttribute()
-        {
-        }
     }
 }

@@ -2,96 +2,95 @@
 
 using System.Text;
 
-namespace FlaxEditor.Content
+namespace FlaxEditor.Content;
+
+/// <summary>
+/// Content item that contains script file with source code.
+/// </summary>
+/// <seealso cref="FlaxEditor.Content.ContentItem" />
+public abstract class ScriptItem : ContentItem
 {
     /// <summary>
-    /// Content item that contains script file with source code.
+    /// Gets the name of the script (deducted from the asset name).
     /// </summary>
-    /// <seealso cref="FlaxEditor.Content.ContentItem" />
-    public abstract class ScriptItem : ContentItem
+    public string ScriptName => FilterScriptName(ShortName);
+
+    /// <summary>
+    /// Checks if the script item references the valid use script type that can be used in a gameplay.
+    /// </summary>
+    public bool IsValid => ScriptsBuilder.FindScript(ScriptName) != null;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ScriptItem"/> class.
+    /// </summary>
+    /// <param name="path">The path to the item.</param>
+    protected ScriptItem(string path)
+    : base(path)
     {
-        /// <summary>
-        /// Gets the name of the script (deducted from the asset name).
-        /// </summary>
-        public string ScriptName => FilterScriptName(ShortName);
+        ShowFileExtension = true;
+    }
 
-        /// <summary>
-        /// Checks if the script item references the valid use script type that can be used in a gameplay.
-        /// </summary>
-        public bool IsValid => ScriptsBuilder.FindScript(ScriptName) != null;
+    internal static string FilterScriptName(string input)
+    {
+        var length = input.Length;
+        var sb = new StringBuilder(length);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScriptItem"/> class.
-        /// </summary>
-        /// <param name="path">The path to the item.</param>
-        protected ScriptItem(string path)
-        : base(path)
+        // Skip leading '0-9' characters
+        for (int i = 0; i < length; i++)
         {
-            ShowFileExtension = true;
+            var c = input[i];
+
+            if (char.IsLetterOrDigit(c) && !char.IsDigit(c))
+                break;
         }
 
-        internal static string FilterScriptName(string input)
+        // Remove all characters that are not '_' or 'a-z' or 'A-Z' or '0-9'
+        for (int i = 0; i < length; i++)
         {
-            var length = input.Length;
-            var sb = new StringBuilder(length);
+            var c = input[i];
 
-            // Skip leading '0-9' characters
-            for (int i = 0; i < length; i++)
-            {
-                var c = input[i];
-
-                if (char.IsLetterOrDigit(c) && !char.IsDigit(c))
-                    break;
-            }
-
-            // Remove all characters that are not '_' or 'a-z' or 'A-Z' or '0-9'
-            for (int i = 0; i < length; i++)
-            {
-                var c = input[i];
-
-                if (c == '_' || char.IsLetterOrDigit(c))
-                    sb.Append(c);
-            }
-
-            return sb.ToString();
+            if (c == '_' || char.IsLetterOrDigit(c))
+                sb.Append(c);
         }
 
-        /// <summary>
-        /// Creates the name of the script for the given file.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <returns>Script name</returns>
-        public static string CreateScriptName(string path)
-        {
-            return FilterScriptName(System.IO.Path.GetFileNameWithoutExtension(path));
-        }
+        return sb.ToString();
+    }
 
-        /// <inheritdoc />
-        public override ContentItemType ItemType => ContentItemType.Script;
+    /// <summary>
+    /// Creates the name of the script for the given file.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>Script name</returns>
+    public static string CreateScriptName(string path)
+    {
+        return FilterScriptName(System.IO.Path.GetFileNameWithoutExtension(path));
+    }
 
-        /// <inheritdoc />
-        public override ContentItemSearchFilter SearchFilter => ContentItemSearchFilter.Script;
+    /// <inheritdoc />
+    public override ContentItemType ItemType => ContentItemType.Script;
 
-        /// <inheritdoc />
-        public override ScriptItem FindScriptWitScriptName(string scriptName)
-        {
-            return scriptName == ScriptName ? this : null;
-        }
+    /// <inheritdoc />
+    public override ContentItemSearchFilter SearchFilter => ContentItemSearchFilter.Script;
 
-        /// <inheritdoc />
-        public override void OnPathChanged()
-        {
-            ScriptsBuilder.MarkWorkspaceDirty();
+    /// <inheritdoc />
+    public override ScriptItem FindScriptWitScriptName(string scriptName)
+    {
+        return scriptName == ScriptName ? this : null;
+    }
 
-            base.OnPathChanged();
-        }
+    /// <inheritdoc />
+    public override void OnPathChanged()
+    {
+        ScriptsBuilder.MarkWorkspaceDirty();
 
-        /// <inheritdoc />
-        public override void OnDelete()
-        {
-            ScriptsBuilder.MarkWorkspaceDirty();
+        base.OnPathChanged();
+    }
 
-            base.OnDelete();
-        }
+    /// <inheritdoc />
+    public override void OnDelete()
+    {
+        ScriptsBuilder.MarkWorkspaceDirty();
+
+        base.OnDelete();
     }
 }

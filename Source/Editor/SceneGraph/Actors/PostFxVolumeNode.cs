@@ -2,19 +2,18 @@
 
 using FlaxEngine;
 
-namespace FlaxEditor.SceneGraph.Actors
+namespace FlaxEditor.SceneGraph.Actors;
+
+/// <summary>
+/// Actor node for <see cref="PostFxVolume"/>.
+/// </summary>
+/// <seealso cref="ActorNode" />
+[HideInEditor]
+public sealed class PostFxVolumeNode : BoxVolumeNode
 {
-    /// <summary>
-    /// Actor node for <see cref="PostFxVolume"/>.
-    /// </summary>
-    /// <seealso cref="ActorNode" />
-    [HideInEditor]
-    public sealed class PostFxVolumeNode : BoxVolumeNode
+    /// <inheritdoc />
+    public PostFxVolumeNode(Actor actor)
+    : base(actor)
     {
-        /// <inheritdoc />
-        public PostFxVolumeNode(Actor actor)
-        : base(actor)
-        {
-        }
     }
 }

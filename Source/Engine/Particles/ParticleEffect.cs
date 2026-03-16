@@ -1,9 +1,8 @@
 // Copyright (c) Wojciech Figat. All rights reserved.
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+partial class ParticleEffect
 {
-    partial class ParticleEffect
-    {
-        private bool IsFixedTimestep => UpdateMode == SimulationUpdateMode.FixedTimestep;
-    }
+    private bool IsFixedTimestep => UpdateMode == SimulationUpdateMode.FixedTimestep;
 }

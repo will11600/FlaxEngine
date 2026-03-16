@@ -6,83 +6,82 @@ using FlaxEditor.GUI;
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace FlaxEditor.Windows.Assets
+namespace FlaxEditor.Windows.Assets;
+
+/// <summary>
+/// Animation Graph function window allows to view and edit <see cref="AnimationGraphFunction"/> asset.
+/// </summary>
+/// <seealso cref="AnimationGraphFunction" />
+/// <seealso cref="AnimationGraphFunctionSurface" />
+public sealed class AnimationGraphFunctionWindow : VisjectFunctionSurfaceWindow<AnimationGraphFunction, AnimationGraphFunctionSurface>
 {
-    /// <summary>
-    /// Animation Graph function window allows to view and edit <see cref="AnimationGraphFunction"/> asset.
-    /// </summary>
-    /// <seealso cref="AnimationGraphFunction" />
-    /// <seealso cref="AnimationGraphFunctionSurface" />
-    public sealed class AnimationGraphFunctionWindow : VisjectFunctionSurfaceWindow<AnimationGraphFunction, AnimationGraphFunctionSurface>
+    private readonly NavigationBar _navigationBar;
+
+    /// <inheritdoc />
+    public AnimationGraphFunctionWindow(Editor editor, AssetItem item)
+    : base(editor, item)
     {
-        private readonly NavigationBar _navigationBar;
-
-        /// <inheritdoc />
-        public AnimationGraphFunctionWindow(Editor editor, AssetItem item)
-        : base(editor, item)
+        // Surface
+        _surface = new AnimationGraphFunctionSurface(this, Save, _undo)
         {
-            // Surface
-            _surface = new AnimationGraphFunctionSurface(this, Save, _undo)
-            {
-                AnchorPreset = AnchorPresets.StretchAll,
-                Offsets = Margin.Zero,
-                Parent = _panel,
-                Enabled = false
-            };
-            _surface.ContextChanged += OnSurfaceContextChanged;
+            AnchorPreset = AnchorPresets.StretchAll,
+            Offsets = Margin.Zero,
+            Parent = _panel,
+            Enabled = false
+        };
+        _surface.ContextChanged += OnSurfaceContextChanged;
 
-            // Toolstrip
-            SurfaceUtils.PerformCommonSetup(this, _toolstrip, _surface, out _saveButton, out _undoButton, out _redoButton);
-            _toolstrip.AddSeparator();
-            _toolstrip.AddButton(editor.Icons.Docs64, () => Platform.OpenUrl(Utilities.Constants.DocsUrl + "manual/animation/anim-graph/index.html")).LinkTooltip("See documentation to learn more");
+        // Toolstrip
+        SurfaceUtils.PerformCommonSetup(this, _toolstrip, _surface, out _saveButton, out _undoButton, out _redoButton);
+        _toolstrip.AddSeparator();
+        _toolstrip.AddButton(editor.Icons.Docs64, () => Platform.OpenUrl(Utilities.Constants.DocsUrl + "manual/animation/anim-graph/index.html")).LinkTooltip("See documentation to learn more");
 
-            // Navigation bar
-            _navigationBar = new NavigationBar
-            {
-                Parent = this
-            };
-        }
-
-        private void OnSurfaceContextChanged(VisjectSurfaceContext context)
+        // Navigation bar
+        _navigationBar = new NavigationBar
         {
-            _surface.UpdateNavigationBar(_navigationBar, _toolstrip);
-        }
+            Parent = this
+        };
+    }
 
-        /// <inheritdoc />
-        public override string SurfaceName => "Animation Graph Function";
+    private void OnSurfaceContextChanged(VisjectSurfaceContext context)
+    {
+        _surface.UpdateNavigationBar(_navigationBar, _toolstrip);
+    }
 
-        /// <inheritdoc />
-        public override byte[] SurfaceData
+    /// <inheritdoc />
+    public override string SurfaceName => "Animation Graph Function";
+
+    /// <inheritdoc />
+    public override byte[] SurfaceData
+    {
+        get => _asset.LoadSurface();
+        set
         {
-            get => _asset.LoadSurface();
-            set
+            if (_asset.SaveSurface(value))
             {
-                if (_asset.SaveSurface(value))
-                {
-                    _surface.MarkAsEdited();
-                    Editor.LogError("Failed to save surface data");
-                }
-                _asset.Reload();
+                _surface.MarkAsEdited();
+                Editor.LogError("Failed to save surface data");
             }
+            _asset.Reload();
         }
+    }
 
-        /// <inheritdoc />
-        protected override bool LoadSurface()
-        {
-            var result = base.LoadSurface();
+    /// <inheritdoc />
+    protected override bool LoadSurface()
+    {
+        var result = base.LoadSurface();
 
-            // Update navbar
-            _surface.UpdateNavigationBar(_navigationBar, _toolstrip);
+        // Update navbar
+        _surface.UpdateNavigationBar(_navigationBar, _toolstrip);
 
-            return result;
-        }
+        return result;
+    }
 
-        /// <inheritdoc />
-        protected override void PerformLayoutBeforeChildren()
-        {
-            base.PerformLayoutBeforeChildren();
+    /// <inheritdoc />
+    protected override void PerformLayoutBeforeChildren()
+    {
+        base.PerformLayoutBeforeChildren();
 
-            _navigationBar?.UpdateBounds(_toolstrip);
-        }
+        _navigationBar?.UpdateBounds(_toolstrip);
     }
 }

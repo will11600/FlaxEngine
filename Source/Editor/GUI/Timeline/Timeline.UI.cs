@@ -6,319 +6,318 @@ using FlaxEditor.GUI.Timeline.Undo;
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace FlaxEditor.GUI.Timeline
+namespace FlaxEditor.GUI.Timeline;
+
+partial class Timeline
 {
-    partial class Timeline
+    private sealed class TimeIntervalsHeader : ContainerControl
     {
-        private sealed class TimeIntervalsHeader : ContainerControl
+        private Timeline _timeline;
+        private bool _isLeftMouseButtonDown;
+
+        public TimeIntervalsHeader(Timeline timeline)
         {
-            private Timeline _timeline;
-            private bool _isLeftMouseButtonDown;
-
-            public TimeIntervalsHeader(Timeline timeline)
-            {
-                _timeline = timeline;
-            }
-
-            /// <inheritdoc />
-            public override bool OnMouseDown(Float2 location, MouseButton button)
-            {
-                if (base.OnMouseDown(location, button))
-                    return true;
-
-                if (button == MouseButton.Left)
-                {
-                    _isLeftMouseButtonDown = true;
-                    _timeline._isMovingPositionHandle = true;
-                    StartMouseCapture();
-                    Seek(ref location);
-                    Focus();
-                    return true;
-                }
-
-                return false;
-            }
-
-            /// <inheritdoc />
-            public override void OnMouseMove(Float2 location)
-            {
-                base.OnMouseMove(location);
-
-                if (_isLeftMouseButtonDown)
-                {
-                    Seek(ref location);
-                }
-            }
-
-            /// <inheritdoc />
-            public override void OnMouseEnter(Float2 location)
-            {
-                base.OnMouseEnter(location);
-                Cursor = CursorType.Hand;
-            }
-
-            /// <inheritdoc />
-            public override void OnMouseLeave()
-            {
-                Cursor = CursorType.Default;
-                base.OnMouseLeave();
-            }
-
-            /// <inheritdoc />
-            public override void Defocus()
-            {
-                Cursor = CursorType.Default;
-                base.Defocus();
-            }
-
-            private void Seek(ref Float2 location)
-            {
-                if (_timeline.PlaybackState == PlaybackStates.Disabled)
-                    return;
-
-                var locationTimeline = PointToParent(_timeline, location);
-                var locationTime = _timeline._backgroundArea.PointFromParent(_timeline, locationTimeline);
-                var frame = (locationTime.X - StartOffset * 2.0f) / _timeline.Zoom / UnitsPerSecond * _timeline.FramesPerSecond;
-                _timeline.OnSeek((int)frame);
-            }
-
-            /// <inheritdoc />
-            public override bool OnMouseUp(Float2 location, MouseButton button)
-            {
-                if (base.OnMouseUp(location, button))
-                    return true;
-
-                if (button == MouseButton.Left && _isLeftMouseButtonDown)
-                {
-                    Seek(ref location);
-                    EndMouseCapture();
-                    return true;
-                }
-
-                return false;
-            }
-
-            /// <inheritdoc />
-            public override void OnEndMouseCapture()
-            {
-                _isLeftMouseButtonDown = false;
-                _timeline._isMovingPositionHandle = false;
-
-                base.OnEndMouseCapture();
-            }
-
-            /// <inheritdoc />
-            public override void OnDestroy()
-            {
-                _timeline = null;
-
-                base.OnDestroy();
-            }
+            _timeline = timeline;
         }
 
-        class PropertiesEditPopup : ContextMenuBase
+        /// <inheritdoc />
+        public override bool OnMouseDown(Float2 location, MouseButton button)
         {
-            private Timeline _timeline;
-            private bool _isDirty;
-            private byte[] _beforeData;
-            private object _undoContext;
+            if (base.OnMouseDown(location, button))
+                return true;
 
-            public PropertiesEditPopup(Timeline timeline, object obj, object undoContext)
+            if (button == MouseButton.Left)
             {
-                const float width = 280.0f;
-                const float height = 160.0f;
-                Size = new Float2(width, height);
-
-                var panel1 = new Panel(ScrollBars.Vertical)
-                {
-                    Bounds = new Rectangle(0, 0.0f, width, height),
-                    Parent = this
-                };
-                var editor = new CustomEditorPresenter(null);
-                editor.Panel.AnchorPreset = AnchorPresets.HorizontalStretchTop;
-                editor.Panel.IsScrollable = true;
-                editor.Panel.Parent = panel1;
-                editor.Modified += OnModified;
-
-                editor.Select(obj);
-
-                _timeline = timeline;
-                if (timeline.Undo != null && timeline.Undo.Enabled && undoContext != null)
-                {
-                    _undoContext = undoContext;
-                    if (undoContext is Track track)
-                        _beforeData = EditTrackAction.CaptureData(track);
-                    else if (undoContext is Timeline)
-                        _beforeData = EditTimelineAction.CaptureData(timeline);
-                }
-            }
-
-            private void OnModified()
-            {
-                _isDirty = true;
-            }
-
-            /// <inheritdoc />
-            protected override void OnShow()
-            {
+                _isLeftMouseButtonDown = true;
+                _timeline._isMovingPositionHandle = true;
+                StartMouseCapture();
+                Seek(ref location);
                 Focus();
-
-                base.OnShow();
+                return true;
             }
 
-            /// <inheritdoc />
-            public override void Hide()
+            return false;
+        }
+
+        /// <inheritdoc />
+        public override void OnMouseMove(Float2 location)
+        {
+            base.OnMouseMove(location);
+
+            if (_isLeftMouseButtonDown)
             {
-                if (!Visible)
-                    return;
-
-                Focus(null);
-
-                if (_isDirty)
-                {
-                    if (_beforeData != null)
-                    {
-                        if (_undoContext is Track track)
-                        {
-                            var after = EditTrackAction.CaptureData(track);
-                            if (!Utils.ArraysEqual(_beforeData, after))
-                                _timeline.Undo.AddAction(new EditTrackAction(_timeline, track, _beforeData, after));
-                        }
-                        else if (_undoContext is Timeline)
-                        {
-                            var after = EditTimelineAction.CaptureData(_timeline);
-                            if (!Utils.ArraysEqual(_beforeData, after))
-                                _timeline.Undo.AddAction(new EditTimelineAction(_timeline, _beforeData, after));
-                        }
-                    }
-                    _timeline.MarkAsEdited();
-                }
-
-                base.Hide();
-            }
-
-            /// <inheritdoc />
-            public override bool OnKeyDown(KeyboardKeys key)
-            {
-                if (key == KeyboardKeys.Escape)
-                {
-                    Hide();
-                    return true;
-                }
-
-                return base.OnKeyDown(key);
-            }
-
-            /// <inheritdoc />
-            public override void OnDestroy()
-            {
-                _timeline = null;
-                _beforeData = null;
-                _undoContext = null;
-
-                base.OnDestroy();
+                Seek(ref location);
             }
         }
 
-        class TracksPanelArea : Panel
+        /// <inheritdoc />
+        public override void OnMouseEnter(Float2 location)
         {
-            private DragDropEffect _currentDragEffect = DragDropEffect.None;
-            private Timeline _timeline;
-            private bool _needSetup = true;
+            base.OnMouseEnter(location);
+            Cursor = CursorType.Hand;
+        }
 
-            public TracksPanelArea(Timeline timeline)
-            : base(ScrollBars.Vertical)
+        /// <inheritdoc />
+        public override void OnMouseLeave()
+        {
+            Cursor = CursorType.Default;
+            base.OnMouseLeave();
+        }
+
+        /// <inheritdoc />
+        public override void Defocus()
+        {
+            Cursor = CursorType.Default;
+            base.Defocus();
+        }
+
+        private void Seek(ref Float2 location)
+        {
+            if (_timeline.PlaybackState == PlaybackStates.Disabled)
+                return;
+
+            var locationTimeline = PointToParent(_timeline, location);
+            var locationTime = _timeline._backgroundArea.PointFromParent(_timeline, locationTimeline);
+            var frame = (locationTime.X - StartOffset * 2.0f) / _timeline.Zoom / UnitsPerSecond * _timeline.FramesPerSecond;
+            _timeline.OnSeek((int)frame);
+        }
+
+        /// <inheritdoc />
+        public override bool OnMouseUp(Float2 location, MouseButton button)
+        {
+            if (base.OnMouseUp(location, button))
+                return true;
+
+            if (button == MouseButton.Left && _isLeftMouseButtonDown)
             {
-                _timeline = timeline;
+                Seek(ref location);
+                EndMouseCapture();
+                return true;
             }
 
-            /// <inheritdoc />
-            public override DragDropEffect OnDragEnter(ref Float2 location, DragData data)
+            return false;
+        }
+
+        /// <inheritdoc />
+        public override void OnEndMouseCapture()
+        {
+            _isLeftMouseButtonDown = false;
+            _timeline._isMovingPositionHandle = false;
+
+            base.OnEndMouseCapture();
+        }
+
+        /// <inheritdoc />
+        public override void OnDestroy()
+        {
+            _timeline = null;
+
+            base.OnDestroy();
+        }
+    }
+
+    class PropertiesEditPopup : ContextMenuBase
+    {
+        private Timeline _timeline;
+        private bool _isDirty;
+        private byte[] _beforeData;
+        private object _undoContext;
+
+        public PropertiesEditPopup(Timeline timeline, object obj, object undoContext)
+        {
+            const float width = 280.0f;
+            const float height = 160.0f;
+            Size = new Float2(width, height);
+
+            var panel1 = new Panel(ScrollBars.Vertical)
             {
-                var result = base.OnDragEnter(ref location, data);
-                if (result == DragDropEffect.None)
+                Bounds = new Rectangle(0, 0.0f, width, height),
+                Parent = this
+            };
+            var editor = new CustomEditorPresenter(null);
+            editor.Panel.AnchorPreset = AnchorPresets.HorizontalStretchTop;
+            editor.Panel.IsScrollable = true;
+            editor.Panel.Parent = panel1;
+            editor.Modified += OnModified;
+
+            editor.Select(obj);
+
+            _timeline = timeline;
+            if (timeline.Undo != null && timeline.Undo.Enabled && undoContext != null)
+            {
+                _undoContext = undoContext;
+                if (undoContext is Track track)
+                    _beforeData = EditTrackAction.CaptureData(track);
+                else if (undoContext is Timeline)
+                    _beforeData = EditTimelineAction.CaptureData(timeline);
+            }
+        }
+
+        private void OnModified()
+        {
+            _isDirty = true;
+        }
+
+        /// <inheritdoc />
+        protected override void OnShow()
+        {
+            Focus();
+
+            base.OnShow();
+        }
+
+        /// <inheritdoc />
+        public override void Hide()
+        {
+            if (!Visible)
+                return;
+
+            Focus(null);
+
+            if (_isDirty)
+            {
+                if (_beforeData != null)
                 {
-                    if (_needSetup)
+                    if (_undoContext is Track track)
                     {
-                        _needSetup = false;
-                        _timeline.SetupDragDrop();
+                        var after = EditTrackAction.CaptureData(track);
+                        if (!Utils.ArraysEqual(_beforeData, after))
+                            _timeline.Undo.AddAction(new EditTrackAction(_timeline, track, _beforeData, after));
                     }
-                    for (int i = 0; i < _timeline.DragHandlers.Count; i++)
+                    else if (_undoContext is Timeline)
                     {
-                        var dragHelper = _timeline.DragHandlers[i].Helper;
-                        if (dragHelper.OnDragEnter(data))
-                        {
-                            result = dragHelper.Effect;
-                            break;
-                        }
+                        var after = EditTimelineAction.CaptureData(_timeline);
+                        if (!Utils.ArraysEqual(_beforeData, after))
+                            _timeline.Undo.AddAction(new EditTimelineAction(_timeline, _beforeData, after));
                     }
-                    _currentDragEffect = result;
                 }
-
-                return result;
+                _timeline.MarkAsEdited();
             }
 
-            /// <inheritdoc />
-            public override DragDropEffect OnDragMove(ref Float2 location, DragData data)
+            base.Hide();
+        }
+
+        /// <inheritdoc />
+        public override bool OnKeyDown(KeyboardKeys key)
+        {
+            if (key == KeyboardKeys.Escape)
             {
-                var result = base.OnDragEnter(ref location, data);
-                if (result == DragDropEffect.None)
+                Hide();
+                return true;
+            }
+
+            return base.OnKeyDown(key);
+        }
+
+        /// <inheritdoc />
+        public override void OnDestroy()
+        {
+            _timeline = null;
+            _beforeData = null;
+            _undoContext = null;
+
+            base.OnDestroy();
+        }
+    }
+
+    class TracksPanelArea : Panel
+    {
+        private DragDropEffect _currentDragEffect = DragDropEffect.None;
+        private Timeline _timeline;
+        private bool _needSetup = true;
+
+        public TracksPanelArea(Timeline timeline)
+        : base(ScrollBars.Vertical)
+        {
+            _timeline = timeline;
+        }
+
+        /// <inheritdoc />
+        public override DragDropEffect OnDragEnter(ref Float2 location, DragData data)
+        {
+            var result = base.OnDragEnter(ref location, data);
+            if (result == DragDropEffect.None)
+            {
+                if (_needSetup)
                 {
-                    result = _currentDragEffect;
+                    _needSetup = false;
+                    _timeline.SetupDragDrop();
                 }
-
-                return result;
-            }
-
-            /// <inheritdoc />
-            public override void OnDragLeave()
-            {
-                _currentDragEffect = DragDropEffect.None;
-                _timeline.DragHandlers.ForEach(x => x.Helper.OnDragLeave());
-
-                base.OnDragLeave();
-            }
-
-            /// <inheritdoc />
-            public override DragDropEffect OnDragDrop(ref Float2 location, DragData data)
-            {
-                var result = base.OnDragDrop(ref location, data);
-                if (result == DragDropEffect.None && _currentDragEffect != DragDropEffect.None)
+                for (int i = 0; i < _timeline.DragHandlers.Count; i++)
                 {
-                    for (int i = 0; i < _timeline.DragHandlers.Count; i++)
+                    var dragHelper = _timeline.DragHandlers[i].Helper;
+                    if (dragHelper.OnDragEnter(data))
                     {
-                        var e = _timeline.DragHandlers[i];
-                        if (e.Helper.HasValidDrag)
-                        {
-                            e.Action(_timeline, e.Helper);
-                        }
+                        result = dragHelper.Effect;
+                        break;
                     }
                 }
-
-                return result;
+                _currentDragEffect = result;
             }
 
-            /// <inheritdoc />
-            public override void Draw()
+            return result;
+        }
+
+        /// <inheritdoc />
+        public override DragDropEffect OnDragMove(ref Float2 location, DragData data)
+        {
+            var result = base.OnDragEnter(ref location, data);
+            if (result == DragDropEffect.None)
             {
-                if (IsDragOver && _currentDragEffect != DragDropEffect.None)
+                result = _currentDragEffect;
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public override void OnDragLeave()
+        {
+            _currentDragEffect = DragDropEffect.None;
+            _timeline.DragHandlers.ForEach(x => x.Helper.OnDragLeave());
+
+            base.OnDragLeave();
+        }
+
+        /// <inheritdoc />
+        public override DragDropEffect OnDragDrop(ref Float2 location, DragData data)
+        {
+            var result = base.OnDragDrop(ref location, data);
+            if (result == DragDropEffect.None && _currentDragEffect != DragDropEffect.None)
+            {
+                for (int i = 0; i < _timeline.DragHandlers.Count; i++)
                 {
-                    var style = Style.Current;
-                    var bounds = new Rectangle(Float2.Zero, Size);
-                    Render2D.FillRectangle(bounds, style.Selection);
-                    Render2D.DrawRectangle(bounds, style.SelectionBorder);
+                    var e = _timeline.DragHandlers[i];
+                    if (e.Helper.HasValidDrag)
+                    {
+                        e.Action(_timeline, e.Helper);
+                    }
                 }
-
-                base.Draw();
             }
 
-            /// <inheritdoc />
-            public override void OnDestroy()
+            return result;
+        }
+
+        /// <inheritdoc />
+        public override void Draw()
+        {
+            if (IsDragOver && _currentDragEffect != DragDropEffect.None)
             {
-                _timeline = null;
-
-                base.OnDestroy();
+                var style = Style.Current;
+                var bounds = new Rectangle(Float2.Zero, Size);
+                Render2D.FillRectangle(bounds, style.Selection);
+                Render2D.DrawRectangle(bounds, style.SelectionBorder);
             }
+
+            base.Draw();
+        }
+
+        /// <inheritdoc />
+        public override void OnDestroy()
+        {
+            _timeline = null;
+
+            base.OnDestroy();
         }
     }
 }

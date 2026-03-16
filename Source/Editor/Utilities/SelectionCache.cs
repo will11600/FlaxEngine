@@ -4,53 +4,52 @@ using System;
 using System.Collections.Generic;
 using FlaxEditor.SceneGraph;
 
-namespace FlaxEditor.Utilities
+namespace FlaxEditor.Utilities;
+
+/// <summary>
+/// Helper utility object that caches the selection of the editor and can restore it later. Works only for objects of <see cref="FlaxEngine.Object"/> type.
+/// </summary>
+public sealed class SelectionCache
 {
+    private readonly List<Guid> _objects = new List<Guid>();
+
     /// <summary>
-    /// Helper utility object that caches the selection of the editor and can restore it later. Works only for objects of <see cref="FlaxEngine.Object"/> type.
+    /// Caches selection.
     /// </summary>
-    public sealed class SelectionCache
+    public void Cache()
     {
-        private readonly List<Guid> _objects = new List<Guid>();
+        _objects.Clear();
 
-        /// <summary>
-        /// Caches selection.
-        /// </summary>
-        public void Cache()
+        var selection = Editor.Instance.SceneEditing.Selection;
+        for (int i = 0; i < selection.Count; i++)
         {
-            _objects.Clear();
+            _objects.Add(selection[i].ID);
+        }
+    }
 
-            var selection = Editor.Instance.SceneEditing.Selection;
-            for (int i = 0; i < selection.Count; i++)
-            {
-                _objects.Add(selection[i].ID);
-            }
+    /// <summary>
+    /// Restores selection.
+    /// </summary>
+    public void Restore()
+    {
+        if (_objects.Count == 0)
+        {
+            Editor.Instance.SceneEditing.Deselect();
+            return;
         }
 
-        /// <summary>
-        /// Restores selection.
-        /// </summary>
-        public void Restore()
+        var selection = new List<SceneGraph.SceneGraphNode>(_objects.Count);
+
+        for (int i = 0; i < _objects.Count; i++)
         {
-            if (_objects.Count == 0)
-            {
-                Editor.Instance.SceneEditing.Deselect();
-                return;
-            }
-
-            var selection = new List<SceneGraph.SceneGraphNode>(_objects.Count);
-
-            for (int i = 0; i < _objects.Count; i++)
-            {
-                var id = _objects[i];
-                var node = SceneGraphFactory.FindNode(id);
-                if (node != null)
-                    selection.Add(node);
-            }
-
-            _objects.Clear();
-
-            Editor.Instance.SceneEditing.Select(selection);
+            var id = _objects[i];
+            var node = SceneGraphFactory.FindNode(id);
+            if (node != null)
+                selection.Add(node);
         }
+
+        _objects.Clear();
+
+        Editor.Instance.SceneEditing.Select(selection);
     }
 }

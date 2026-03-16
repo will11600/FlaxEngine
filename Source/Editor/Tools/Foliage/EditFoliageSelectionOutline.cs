@@ -3,68 +3,67 @@
 using FlaxEditor.Gizmo;
 using FlaxEngine;
 
-namespace FlaxEditor.Tools.Foliage
+namespace FlaxEditor.Tools.Foliage;
+
+/// <summary>
+/// The custom outline for drawing the selected foliage instances outlines.
+/// </summary>
+/// <seealso cref="FlaxEditor.Gizmo.SelectionOutline" />
+[HideInEditor]
+public class EditFoliageSelectionOutline : SelectionOutline
 {
+    private StaticModel _staticModel;
+
     /// <summary>
-    /// The custom outline for drawing the selected foliage instances outlines.
+    /// The parent mode.
     /// </summary>
-    /// <seealso cref="FlaxEditor.Gizmo.SelectionOutline" />
-    [HideInEditor]
-    public class EditFoliageSelectionOutline : SelectionOutline
+    public EditFoliageGizmoMode GizmoMode;
+
+    /// <inheritdoc />
+    public override bool CanRender()
     {
-        private StaticModel _staticModel;
+        if (!HasDataReady)
+            return false;
 
-        /// <summary>
-        /// The parent mode.
-        /// </summary>
-        public EditFoliageGizmoMode GizmoMode;
+        var foliage = GizmoMode.SelectedFoliage;
+        if (!foliage)
+            return false;
+        var instanceIndex = GizmoMode.SelectedInstanceIndex;
+        if (instanceIndex < 0 || instanceIndex >= foliage.InstancesCount)
+            return false;
+        return true;
+    }
 
-        /// <inheritdoc />
-        public override bool CanRender()
+    /// <inheritdoc />
+    protected override void DrawSelectionDepth(GPUContext context, SceneRenderTask task, GPUTexture customDepth)
+    {
+        var foliage = GizmoMode.SelectedFoliage;
+        if (!foliage)
+            return;
+        var instanceIndex = GizmoMode.SelectedInstanceIndex;
+        if (instanceIndex < 0 || instanceIndex >= foliage.InstancesCount)
+            return;
+
+        // Draw single instance
+        var instance = foliage.GetInstance(instanceIndex);
+        var model = foliage.GetFoliageType(instance.Type).Model;
+        if (model)
         {
-            if (!HasDataReady)
-                return false;
+            Transform instanceWorld = foliage.Transform.LocalToWorld(instance.Transform);
 
-            var foliage = GizmoMode.SelectedFoliage;
-            if (!foliage)
-                return false;
-            var instanceIndex = GizmoMode.SelectedInstanceIndex;
-            if (instanceIndex < 0 || instanceIndex >= foliage.InstancesCount)
-                return false;
-            return true;
-        }
-
-        /// <inheritdoc />
-        protected override void DrawSelectionDepth(GPUContext context, SceneRenderTask task, GPUTexture customDepth)
-        {
-            var foliage = GizmoMode.SelectedFoliage;
-            if (!foliage)
-                return;
-            var instanceIndex = GizmoMode.SelectedInstanceIndex;
-            if (instanceIndex < 0 || instanceIndex >= foliage.InstancesCount)
-                return;
-
-            // Draw single instance
-            var instance = foliage.GetInstance(instanceIndex);
-            var model = foliage.GetFoliageType(instance.Type).Model;
-            if (model)
+            if (!_staticModel)
             {
-                Transform instanceWorld = foliage.Transform.LocalToWorld(instance.Transform);
-
-                if (!_staticModel)
+                _staticModel = new StaticModel
                 {
-                    _staticModel = new StaticModel
-                    {
-                        StaticFlags = StaticFlags.None
-                    };
-                }
-
-                _staticModel.Model = model;
-                _staticModel.Transform = instanceWorld;
-                _actors.Add(_staticModel);
-
-                Renderer.DrawSceneDepth(context, task, customDepth, _actors);
+                    StaticFlags = StaticFlags.None
+                };
             }
+
+            _staticModel.Model = model;
+            _staticModel.Transform = instanceWorld;
+            _actors.Add(_staticModel);
+
+            Renderer.DrawSceneDepth(context, task, customDepth, _actors);
         }
     }
 }

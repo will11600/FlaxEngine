@@ -4,415 +4,414 @@ using System;
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace FlaxEditor.GUI.Input
+namespace FlaxEditor.GUI.Input;
+
+/// <summary>
+/// Base class for text boxes for float/int value editing. Supports slider and range clamping.
+/// </summary>
+/// <typeparam name="T">The value type.</typeparam>
+/// <seealso cref="FlaxEngine.GUI.TextBox" />
+[HideInEditor]
+public abstract class ValueBox<T> : TextBox where T : struct, IComparable<T>
 {
     /// <summary>
-    /// Base class for text boxes for float/int value editing. Supports slider and range clamping.
+    /// The sliding box size.
     /// </summary>
-    /// <typeparam name="T">The value type.</typeparam>
-    /// <seealso cref="FlaxEngine.GUI.TextBox" />
-    [HideInEditor]
-    public abstract class ValueBox<T> : TextBox where T : struct, IComparable<T>
+    protected const float SlidingBoxSize = 12.0f;
+
+    /// <summary>
+    /// The current value.
+    /// </summary>
+    protected T _value;
+
+    /// <summary>
+    /// The minimum value.
+    /// </summary>
+    protected T _min;
+
+    /// <summary>
+    /// The maximum value.
+    /// </summary>
+    protected T _max;
+
+    /// <summary>
+    /// The slider speed.
+    /// </summary>
+    protected float _slideSpeed;
+
+    /// <summary>
+    /// True if slider is in use.
+    /// </summary>
+    protected bool _isSliding;
+
+    /// <summary>
+    /// The value cached on sliding start.
+    /// </summary>
+    protected T _startSlideValue;
+
+    /// <summary>
+    /// The text cached on editing start. Used to compare with the end result to detect changes.
+    /// </summary>
+    protected string _startEditText;
+
+    private Float2 _startSlideLocation;
+    private double _clickStartTime = -1;
+    private bool _cursorChanged;
+    private Float2 _mouseClickedPosition;
+
+    /// <summary>
+    /// Occurs when value gets changed.
+    /// </summary>
+    public event Action ValueChanged;
+
+    /// <summary>
+    /// Occurs when value gets changed.
+    /// </summary>
+    public event Action<ValueBox<T>> BoxValueChanged;
+
+    /// <summary>
+    /// Gets or sets the value.
+    /// </summary>
+    public abstract T Value { get; set; }
+
+    /// <summary>
+    /// Gets or sets the minimum value.
+    /// </summary>
+    public abstract T MinValue { get; set; }
+
+    /// <summary>
+    /// Gets or sets the maximum value.
+    /// </summary>
+    public abstract T MaxValue { get; set; }
+
+    /// <summary>
+    /// Gets a value indicating whether user is using a slider.
+    /// </summary>
+    public bool IsSliding => _isSliding;
+
+    /// <summary>
+    /// Occurs when sliding starts.
+    /// </summary>
+    public event Action SlidingStart;
+
+    /// <summary>
+    /// Occurs when sliding ends.
+    /// </summary>
+    public event Action SlidingEnd;
+
+    /// <summary>
+    /// If enabled, pressing the arrow up or down key increments/ decrements the value.
+    /// </summary>
+    public bool ArrowKeysIncrement = true;
+
+    /// <summary>
+    /// Gets or sets the slider speed. Use value 0 to disable and hide slider UI.
+    /// </summary>
+    public float SlideSpeed
     {
-        /// <summary>
-        /// The sliding box size.
-        /// </summary>
-        protected const float SlidingBoxSize = 12.0f;
+        get => _slideSpeed;
+        set => _slideSpeed = value;
+    }
 
-        /// <summary>
-        /// The current value.
-        /// </summary>
-        protected T _value;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ValueBox{T}"/> class.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <param name="x">The x.</param>
+    /// <param name="y">The y.</param>
+    /// <param name="width">The width.</param>
+    /// <param name="min">The minimum.</param>
+    /// <param name="max">The maximum.</param>
+    /// <param name="sliderSpeed">The slider speed.</param>
+    protected ValueBox(T value, float x, float y, float width, T min, T max, float sliderSpeed)
+    : base(false, x, y, width)
+    {
+        _value = value;
+        _min = min;
+        _max = max;
+        _slideSpeed = sliderSpeed;
+    }
 
-        /// <summary>
-        /// The minimum value.
-        /// </summary>
-        protected T _min;
+    /// <summary>
+    /// Updates the text of the textbox.
+    /// </summary>
+    protected abstract void UpdateText();
 
-        /// <summary>
-        /// The maximum value.
-        /// </summary>
-        protected T _max;
+    /// <summary>
+    /// Tries the get value from the textbox text.
+    /// </summary>
+    protected abstract void TryGetValue();
 
-        /// <summary>
-        /// The slider speed.
-        /// </summary>
-        protected float _slideSpeed;
+    /// <summary>
+    /// Applies the sliding delta to the value.
+    /// </summary>
+    /// <param name="delta">The delta (scaled).</param>
+    protected abstract void ApplySliding(float delta);
 
-        /// <summary>
-        /// True if slider is in use.
-        /// </summary>
-        protected bool _isSliding;
+    /// <summary>
+    /// Called when value gets changed.
+    /// </summary>
+    protected virtual void OnValueChanged()
+    {
+        ValueChanged?.Invoke();
+        BoxValueChanged?.Invoke(this);
+    }
 
-        /// <summary>
-        /// The value cached on sliding start.
-        /// </summary>
-        protected T _startSlideValue;
+    /// <summary>
+    /// Gets a value indicating whether this value box can use sliding.
+    /// </summary>
+    protected virtual bool CanUseSliding => _slideSpeed > Mathf.Epsilon;
 
-        /// <summary>
-        /// The text cached on editing start. Used to compare with the end result to detect changes.
-        /// </summary>
-        protected string _startEditText;
-
-        private Float2 _startSlideLocation;
-        private double _clickStartTime = -1;
-        private bool _cursorChanged;
-        private Float2 _mouseClickedPosition;
-
-        /// <summary>
-        /// Occurs when value gets changed.
-        /// </summary>
-        public event Action ValueChanged;
-
-        /// <summary>
-        /// Occurs when value gets changed.
-        /// </summary>
-        public event Action<ValueBox<T>> BoxValueChanged;
-
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        public abstract T Value { get; set; }
-
-        /// <summary>
-        /// Gets or sets the minimum value.
-        /// </summary>
-        public abstract T MinValue { get; set; }
-
-        /// <summary>
-        /// Gets or sets the maximum value.
-        /// </summary>
-        public abstract T MaxValue { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether user is using a slider.
-        /// </summary>
-        public bool IsSliding => _isSliding;
-
-        /// <summary>
-        /// Occurs when sliding starts.
-        /// </summary>
-        public event Action SlidingStart;
-
-        /// <summary>
-        /// Occurs when sliding ends.
-        /// </summary>
-        public event Action SlidingEnd;
-
-        /// <summary>
-        /// If enabled, pressing the arrow up or down key increments/ decrements the value.
-        /// </summary>
-        public bool ArrowKeysIncrement = true;
-
-        /// <summary>
-        /// Gets or sets the slider speed. Use value 0 to disable and hide slider UI.
-        /// </summary>
-        public float SlideSpeed
+    /// <summary>
+    /// Gets the slide rectangle.
+    /// </summary>
+    protected virtual Rectangle SlideRect
+    {
+        get
         {
-            get => _slideSpeed;
-            set => _slideSpeed = value;
+            float x = Width - SlidingBoxSize - 1.0f;
+            float y = (Height - SlidingBoxSize) * 0.5f;
+            return new Rectangle(x, y, SlidingBoxSize, SlidingBoxSize);
         }
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ValueBox{T}"/> class.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="min">The minimum.</param>
-        /// <param name="max">The maximum.</param>
-        /// <param name="sliderSpeed">The slider speed.</param>
-        protected ValueBox(T value, float x, float y, float width, T min, T max, float sliderSpeed)
-        : base(false, x, y, width)
+    private void EndSliding()
+    {
+        _isSliding = false;
+        EndEditOnClick = true;
+        EndMouseCapture();
+        if (_cursorChanged)
         {
-            _value = value;
-            _min = min;
-            _max = max;
-            _slideSpeed = sliderSpeed;
+            Cursor = CursorType.Default;
+            _cursorChanged = false;
         }
+        SlidingEnd?.Invoke();
+        Defocus();
+        Parent?.Focus();
+    }
 
-        /// <summary>
-        /// Updates the text of the textbox.
-        /// </summary>
-        protected abstract void UpdateText();
+    /// <inheritdoc />
+    public override void Draw()
+    {
+        base.Draw();
 
-        /// <summary>
-        /// Tries the get value from the textbox text.
-        /// </summary>
-        protected abstract void TryGetValue();
-
-        /// <summary>
-        /// Applies the sliding delta to the value.
-        /// </summary>
-        /// <param name="delta">The delta (scaled).</param>
-        protected abstract void ApplySliding(float delta);
-
-        /// <summary>
-        /// Called when value gets changed.
-        /// </summary>
-        protected virtual void OnValueChanged()
+        if (CanUseSliding)
         {
-            ValueChanged?.Invoke();
-            BoxValueChanged?.Invoke(this);
-        }
+            var style = Style.Current;
 
-        /// <summary>
-        /// Gets a value indicating whether this value box can use sliding.
-        /// </summary>
-        protected virtual bool CanUseSliding => _slideSpeed > Mathf.Epsilon;
+            // Draw sliding UI
+            Render2D.DrawSprite(style.Scalar, SlideRect, EnabledInHierarchy ? style.Foreground : style.ForegroundDisabled);
 
-        /// <summary>
-        /// Gets the slide rectangle.
-        /// </summary>
-        protected virtual Rectangle SlideRect
-        {
-            get
+            // Check if is sliding
+            if (_isSliding)
             {
-                float x = Width - SlidingBoxSize - 1.0f;
-                float y = (Height - SlidingBoxSize) * 0.5f;
-                return new Rectangle(x, y, SlidingBoxSize, SlidingBoxSize);
+                // Draw overlay
+                var bounds = new Rectangle(Float2.Zero, Size);
+                Render2D.FillRectangle(bounds, style.Selection);
+                Render2D.DrawRectangle(bounds, style.SelectionBorder);
             }
         }
+    }
 
-        private void EndSliding()
+    /// <inheritdoc />
+    public override void OnGotFocus()
+    {
+        base.OnGotFocus();
+
+        SelectAll();
+    }
+
+    /// <inheritdoc />
+    public override void OnLostFocus()
+    {
+        // Check if was sliding
+        if (_isSliding)
         {
-            _isSliding = false;
-            EndEditOnClick = true;
-            EndMouseCapture();
-            if (_cursorChanged)
-            {
-                Cursor = CursorType.Default;
-                _cursorChanged = false;
-            }
-            SlidingEnd?.Invoke();
-            Defocus();
-            Parent?.Focus();
+            EndSliding();
+
+            base.OnLostFocus();
+        }
+        else
+        {
+            base.OnLostFocus();
+
+            // Update
+            UpdateText();
         }
 
-        /// <inheritdoc />
-        public override void Draw()
-        {
-            base.Draw();
+        Cursor = CursorType.Default;
 
+        ResetViewOffset();
+    }
+
+    /// <inheritdoc />
+    public override bool OnKeyDown(KeyboardKeys key)
+    {
+        if (ArrowKeysIncrement && (key == KeyboardKeys.ArrowUp || key == KeyboardKeys.ArrowDown))
+        {
+            bool altDown = Root.GetKey(KeyboardKeys.Alt);
+            bool shiftDown = Root.GetKey(KeyboardKeys.Shift);
+            bool controlDown = Root.GetKey(KeyboardKeys.Control);
+            float deltaValue = altDown ? 0.1f : (shiftDown ? 10f : (controlDown ? 100f : 1f));
+            float slideDelta = key == KeyboardKeys.ArrowUp ? deltaValue : -deltaValue;
+
+            _startSlideValue = Value;
+            ApplySliding(slideDelta);
+            EndSliding();
+            Focus();
+            return true;
+        }
+
+        return base.OnKeyDown(key);
+    }
+
+    /// <inheritdoc />
+    public override bool OnMouseDown(Float2 location, MouseButton button)
+    {
+        if (button == MouseButton.Left && CanUseSliding && SlideRect.Contains(location))
+        {
+            // Start sliding
+            _isSliding = true;
+            _startSlideLocation = location;
+            _startSlideValue = _value;
+            StartMouseCapture(true);
+            EndEditOnClick = false;
+
+            // Hide cursor and cache location
+            Cursor = CursorType.Hidden;
+            _mouseClickedPosition = PointToWindow(location);
+            _cursorChanged = true;
+
+            SlidingStart?.Invoke();
+            return true;
+        }
+
+        if (button == MouseButton.Left && !IsFocused)
+            _clickStartTime = Platform.TimeSeconds;
+
+        return base.OnMouseDown(location, button);
+    }
+
+    /// <inheritdoc />
+    public override void OnMouseMove(Float2 location)
+    {
+        if (_isSliding && !RootWindow.Window.IsMouseFlippingHorizontally)
+        {
+            // Update sliding
+            var slideLocation = location + Root.TrackingMouseOffset;
+            ApplySliding(Mathf.RoundToInt(slideLocation.X - _startSlideLocation.X) * _slideSpeed);
+            return;
+        }
+
+        // Update cursor type so user knows they can slide value
+        if (CanUseSliding && SlideRect.Contains(location) && !_isSliding)
+        {
+            Cursor = CursorType.SizeWE;
+            _cursorChanged = true;
+        }
+        else if (_cursorChanged && !_isSliding)
+        {
+            Cursor = CursorType.Default;
+            _cursorChanged = false;
+        }
+
+        base.OnMouseMove(location);
+    }
+
+    /// <inheritdoc />
+    public override bool OnMouseUp(Float2 location, MouseButton button)
+    {
+        if (button == MouseButton.Left && _isSliding)
+        {
+            // End sliding and return mouse to original location
+            RootWindow.MousePosition = _mouseClickedPosition;
+            EndSliding();
+            return true;
+        }
+
+        if (button == MouseButton.Left && _clickStartTime > 0 && (Platform.TimeSeconds - _clickStartTime) < 0.2f)
+        {
+            _clickStartTime = -1;
+            OnSelectingEnd();
+            SelectAll();
+            return true;
+        }
+
+        return base.OnMouseUp(location, button);
+    }
+
+    /// <inheritdoc />
+    public override void OnMouseLeave()
+    {
+        if (_cursorChanged)
+        {
+            Cursor = CursorType.Default;
+            _cursorChanged = false;
+        }
+
+        base.OnMouseLeave();
+    }
+
+    /// <inheritdoc />
+    protected override void OnEditBegin()
+    {
+        base.OnEditBegin();
+
+        _startEditText = _text;
+    }
+
+    /// <inheritdoc />
+    protected override void OnEditEnd()
+    {
+        if (_startEditText != _text)
+        {
+            // Update value
+            TryGetValue();
+        }
+        _startEditText = null;
+
+        base.OnEditEnd();
+    }
+
+    /// <inheritdoc />
+    public override void OnEndMouseCapture()
+    {
+        // Check if was sliding
+        if (_isSliding)
+        {
+            EndSliding();
+        }
+        else
+        {
+            base.OnEndMouseCapture();
+        }
+    }
+
+    /// <inheritdoc />
+    protected override Rectangle TextRectangle
+    {
+        get
+        {
+            var result = base.TextRectangle;
             if (CanUseSliding)
             {
-                var style = Style.Current;
-
-                // Draw sliding UI
-                Render2D.DrawSprite(style.Scalar, SlideRect, EnabledInHierarchy ? style.Foreground : style.ForegroundDisabled);
-
-                // Check if is sliding
-                if (_isSliding)
-                {
-                    // Draw overlay
-                    var bounds = new Rectangle(Float2.Zero, Size);
-                    Render2D.FillRectangle(bounds, style.Selection);
-                    Render2D.DrawRectangle(bounds, style.SelectionBorder);
-                }
+                result.Size.X -= SlidingBoxSize;
             }
+            return result;
         }
+    }
 
-        /// <inheritdoc />
-        public override void OnGotFocus()
+    /// <inheritdoc />
+    protected override Rectangle TextClipRectangle
+    {
+        get
         {
-            base.OnGotFocus();
-
-            SelectAll();
-        }
-
-        /// <inheritdoc />
-        public override void OnLostFocus()
-        {
-            // Check if was sliding
-            if (_isSliding)
+            var result = base.TextRectangle;
+            if (CanUseSliding)
             {
-                EndSliding();
-
-                base.OnLostFocus();
+                result.Size.X -= SlidingBoxSize;
             }
-            else
-            {
-                base.OnLostFocus();
-
-                // Update
-                UpdateText();
-            }
-
-            Cursor = CursorType.Default;
-
-            ResetViewOffset();
-        }
-
-        /// <inheritdoc />
-        public override bool OnKeyDown(KeyboardKeys key)
-        {
-            if (ArrowKeysIncrement && (key == KeyboardKeys.ArrowUp || key == KeyboardKeys.ArrowDown))
-            {
-                bool altDown = Root.GetKey(KeyboardKeys.Alt);
-                bool shiftDown = Root.GetKey(KeyboardKeys.Shift);
-                bool controlDown = Root.GetKey(KeyboardKeys.Control);
-                float deltaValue = altDown ? 0.1f : (shiftDown ? 10f : (controlDown ? 100f : 1f));
-                float slideDelta = key == KeyboardKeys.ArrowUp ? deltaValue : -deltaValue;
-
-                _startSlideValue = Value;
-                ApplySliding(slideDelta);
-                EndSliding();
-                Focus();
-                return true;
-            }
-
-            return base.OnKeyDown(key);
-        }
-
-        /// <inheritdoc />
-        public override bool OnMouseDown(Float2 location, MouseButton button)
-        {
-            if (button == MouseButton.Left && CanUseSliding && SlideRect.Contains(location))
-            {
-                // Start sliding
-                _isSliding = true;
-                _startSlideLocation = location;
-                _startSlideValue = _value;
-                StartMouseCapture(true);
-                EndEditOnClick = false;
-
-                // Hide cursor and cache location
-                Cursor = CursorType.Hidden;
-                _mouseClickedPosition = PointToWindow(location);
-                _cursorChanged = true;
-
-                SlidingStart?.Invoke();
-                return true;
-            }
-
-            if (button == MouseButton.Left && !IsFocused)
-                _clickStartTime = Platform.TimeSeconds;
-
-            return base.OnMouseDown(location, button);
-        }
-
-        /// <inheritdoc />
-        public override void OnMouseMove(Float2 location)
-        {
-            if (_isSliding && !RootWindow.Window.IsMouseFlippingHorizontally)
-            {
-                // Update sliding
-                var slideLocation = location + Root.TrackingMouseOffset;
-                ApplySliding(Mathf.RoundToInt(slideLocation.X - _startSlideLocation.X) * _slideSpeed);
-                return;
-            }
-
-            // Update cursor type so user knows they can slide value
-            if (CanUseSliding && SlideRect.Contains(location) && !_isSliding)
-            {
-                Cursor = CursorType.SizeWE;
-                _cursorChanged = true;
-            }
-            else if (_cursorChanged && !_isSliding)
-            {
-                Cursor = CursorType.Default;
-                _cursorChanged = false;
-            }
-
-            base.OnMouseMove(location);
-        }
-
-        /// <inheritdoc />
-        public override bool OnMouseUp(Float2 location, MouseButton button)
-        {
-            if (button == MouseButton.Left && _isSliding)
-            {
-                // End sliding and return mouse to original location
-                RootWindow.MousePosition = _mouseClickedPosition;
-                EndSliding();
-                return true;
-            }
-
-            if (button == MouseButton.Left && _clickStartTime > 0 && (Platform.TimeSeconds - _clickStartTime) < 0.2f)
-            {
-                _clickStartTime = -1;
-                OnSelectingEnd();
-                SelectAll();
-                return true;
-            }
-
-            return base.OnMouseUp(location, button);
-        }
-
-        /// <inheritdoc />
-        public override void OnMouseLeave()
-        {
-            if (_cursorChanged)
-            {
-                Cursor = CursorType.Default;
-                _cursorChanged = false;
-            }
-
-            base.OnMouseLeave();
-        }
-
-        /// <inheritdoc />
-        protected override void OnEditBegin()
-        {
-            base.OnEditBegin();
-
-            _startEditText = _text;
-        }
-
-        /// <inheritdoc />
-        protected override void OnEditEnd()
-        {
-            if (_startEditText != _text)
-            {
-                // Update value
-                TryGetValue();
-            }
-            _startEditText = null;
-
-            base.OnEditEnd();
-        }
-
-        /// <inheritdoc />
-        public override void OnEndMouseCapture()
-        {
-            // Check if was sliding
-            if (_isSliding)
-            {
-                EndSliding();
-            }
-            else
-            {
-                base.OnEndMouseCapture();
-            }
-        }
-
-        /// <inheritdoc />
-        protected override Rectangle TextRectangle
-        {
-            get
-            {
-                var result = base.TextRectangle;
-                if (CanUseSliding)
-                {
-                    result.Size.X -= SlidingBoxSize;
-                }
-                return result;
-            }
-        }
-
-        /// <inheritdoc />
-        protected override Rectangle TextClipRectangle
-        {
-            get
-            {
-                var result = base.TextRectangle;
-                if (CanUseSliding)
-                {
-                    result.Size.X -= SlidingBoxSize;
-                }
-                return result;
-            }
+            return result;
         }
     }
 }

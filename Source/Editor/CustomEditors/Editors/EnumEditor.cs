@@ -7,65 +7,64 @@ using FlaxEditor.Scripting;
 using FlaxEngine;
 using FlaxEngine.Utilities;
 
-namespace FlaxEditor.CustomEditors.Editors
+namespace FlaxEditor.CustomEditors.Editors;
+
+/// <summary>
+/// Default implementation of the inspector used to edit enum value type properties.
+/// </summary>
+[CustomEditor(typeof(Enum)), DefaultEditor]
+public class EnumEditor : CustomEditor
 {
     /// <summary>
-    /// Default implementation of the inspector used to edit enum value type properties.
+    /// The enum element.
     /// </summary>
-    [CustomEditor(typeof(Enum)), DefaultEditor]
-    public class EnumEditor : CustomEditor
+    protected EnumElement element;
+
+    /// <inheritdoc />
+    public override DisplayStyle Style => DisplayStyle.Inline;
+
+    /// <inheritdoc />
+    public override void Initialize(LayoutElementsContainer layout)
     {
-        /// <summary>
-        /// The enum element.
-        /// </summary>
-        protected EnumElement element;
-
-        /// <inheritdoc />
-        public override DisplayStyle Style => DisplayStyle.Inline;
-
-        /// <inheritdoc />
-        public override void Initialize(LayoutElementsContainer layout)
+        var mode = EnumDisplayAttribute.FormatMode.Default;
+        var attributes = Values.GetAttributes();
+        if (attributes?.FirstOrDefault(x => x is EnumDisplayAttribute) is EnumDisplayAttribute enumDisplay)
         {
-            var mode = EnumDisplayAttribute.FormatMode.Default;
-            var attributes = Values.GetAttributes();
-            if (attributes?.FirstOrDefault(x => x is EnumDisplayAttribute) is EnumDisplayAttribute enumDisplay)
-            {
-                mode = enumDisplay.Mode;
-            }
-
-            if (HasDifferentTypes)
-            {
-                // No support for different enum types
-            }
-            else
-            {
-                var enumType = Values.Type.Type != typeof(object) || Values[0] == null ? TypeUtils.GetType(Values.Type) : Values[0].GetType();
-                element = layout.Enum(enumType, null, mode);
-                element.ComboBox.ValueChanged += OnValueChanged;
-            }
+            mode = enumDisplay.Mode;
         }
 
-        /// <summary>
-        /// Called when value get changed. Allows to override default value setter logic.
-        /// </summary>
-        protected virtual void OnValueChanged()
+        if (HasDifferentTypes)
         {
-            SetValue(element.ComboBox.EnumTypeValue);
+            // No support for different enum types
         }
-
-        /// <inheritdoc />
-        public override void Refresh()
+        else
         {
-            base.Refresh();
+            var enumType = Values.Type.Type != typeof(object) || Values[0] == null ? TypeUtils.GetType(Values.Type) : Values[0].GetType();
+            element = layout.Enum(enumType, null, mode);
+            element.ComboBox.ValueChanged += OnValueChanged;
+        }
+    }
 
-            if (HasDifferentValues)
-            {
-                // No support for different enum values
-            }
-            else
-            {
-                element.ComboBox.EnumTypeValue = Values[0];
-            }
+    /// <summary>
+    /// Called when value get changed. Allows to override default value setter logic.
+    /// </summary>
+    protected virtual void OnValueChanged()
+    {
+        SetValue(element.ComboBox.EnumTypeValue);
+    }
+
+    /// <inheritdoc />
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        if (HasDifferentValues)
+        {
+            // No support for different enum values
+        }
+        else
+        {
+            element.ComboBox.EnumTypeValue = Values[0];
         }
     }
 }

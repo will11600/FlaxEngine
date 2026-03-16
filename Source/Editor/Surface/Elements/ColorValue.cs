@@ -3,98 +3,97 @@
 using FlaxEditor.GUI.Input;
 using FlaxEngine;
 
-namespace FlaxEditor.Surface.Elements
+namespace FlaxEditor.Surface.Elements;
+
+/// <summary>
+/// Color value picking element.
+/// </summary>
+/// <seealso cref="ColorValueBox" />
+/// <seealso cref="ISurfaceNodeElement" />
+[HideInEditor]
+public sealed class ColorValue : ColorValueBox, ISurfaceNodeElement
 {
+    /// <inheritdoc />
+    public SurfaceNode ParentNode { get; }
+
+    /// <inheritdoc />
+    public NodeElementArchetype Archetype { get; }
+
     /// <summary>
-    /// Color value picking element.
+    /// Gets the surface.
     /// </summary>
-    /// <seealso cref="ColorValueBox" />
-    /// <seealso cref="ISurfaceNodeElement" />
-    [HideInEditor]
-    public sealed class ColorValue : ColorValueBox, ISurfaceNodeElement
+    public VisjectSurface Surface => ParentNode.Surface;
+
+    /// <inheritdoc />
+    public ColorValue(SurfaceNode parentNode, NodeElementArchetype archetype)
+    : base(Get(parentNode, archetype), archetype.Position.X, archetype.Position.Y)
     {
-        /// <inheritdoc />
-        public SurfaceNode ParentNode { get; }
+        ParentNode = parentNode;
+        Archetype = archetype;
+        UseDynamicEditing = false;
+        ParentNode.ValuesChanged += OnNodeValuesChanged;
+    }
 
-        /// <inheritdoc />
-        public NodeElementArchetype Archetype { get; }
+    private void OnNodeValuesChanged()
+    {
+        Value = Get(ParentNode, Archetype);
+    }
 
-        /// <summary>
-        /// Gets the surface.
-        /// </summary>
-        public VisjectSurface Surface => ParentNode.Surface;
+    /// <inheritdoc />
+    protected override void OnValueChanged()
+    {
+        base.OnValueChanged();
+        Set(ParentNode, Archetype, ref _value);
+    }
 
-        /// <inheritdoc />
-        public ColorValue(SurfaceNode parentNode, NodeElementArchetype archetype)
-        : base(Get(parentNode, archetype), archetype.Position.X, archetype.Position.Y)
+    private static Color Get(SurfaceNode parentNode, NodeElementArchetype arch)
+    {
+        if (arch.ValueIndex < 0)
+            return Color.White;
+
+        Color result;
+        var value = parentNode.Values[arch.ValueIndex];
+
+        if (value is Color valueColor)
         {
-            ParentNode = parentNode;
-            Archetype = archetype;
-            UseDynamicEditing = false;
-            ParentNode.ValuesChanged += OnNodeValuesChanged;
+            result = valueColor;
+        }
+        else if (value is Vector3 valueVec3)
+        {
+            result = valueVec3;
+        }
+        else if (value is Vector4 valueVec4)
+        {
+            result = valueVec4;
+        }
+        else
+        {
+            result = Color.White;
         }
 
-        private void OnNodeValuesChanged()
+        return result;
+    }
+
+    private static void Set(SurfaceNode parentNode, NodeElementArchetype arch, ref Color toSet)
+    {
+        if (arch.ValueIndex < 0)
+            return;
+
+        var value = parentNode.Values[arch.ValueIndex];
+
+        if (value is Color)
         {
-            Value = Get(ParentNode, Archetype);
+            value = toSet;
+        }
+        else if (value is Vector3)
+        {
+            value = (Vector3)toSet;
+        }
+        else if (value is Vector4)
+        {
+            value = (Vector4)toSet;
         }
 
-        /// <inheritdoc />
-        protected override void OnValueChanged()
-        {
-            base.OnValueChanged();
-            Set(ParentNode, Archetype, ref _value);
-        }
-
-        private static Color Get(SurfaceNode parentNode, NodeElementArchetype arch)
-        {
-            if (arch.ValueIndex < 0)
-                return Color.White;
-
-            Color result;
-            var value = parentNode.Values[arch.ValueIndex];
-
-            if (value is Color valueColor)
-            {
-                result = valueColor;
-            }
-            else if (value is Vector3 valueVec3)
-            {
-                result = valueVec3;
-            }
-            else if (value is Vector4 valueVec4)
-            {
-                result = valueVec4;
-            }
-            else
-            {
-                result = Color.White;
-            }
-
-            return result;
-        }
-
-        private static void Set(SurfaceNode parentNode, NodeElementArchetype arch, ref Color toSet)
-        {
-            if (arch.ValueIndex < 0)
-                return;
-
-            var value = parentNode.Values[arch.ValueIndex];
-
-            if (value is Color)
-            {
-                value = toSet;
-            }
-            else if (value is Vector3)
-            {
-                value = (Vector3)toSet;
-            }
-            else if (value is Vector4)
-            {
-                value = (Vector4)toSet;
-            }
-
-            parentNode.SetValue(arch.ValueIndex, value);
-        }
+        parentNode.SetValue(arch.ValueIndex, value);
     }
 }

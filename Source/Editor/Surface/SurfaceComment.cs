@@ -7,354 +7,353 @@ using FlaxEngine;
 using FlaxEngine.GUI;
 using FlaxEngine.Utilities;
 
-namespace FlaxEditor.Surface
+namespace FlaxEditor.Surface;
+
+/// <summary>
+/// Visject Surface comment control.
+/// </summary>
+/// <seealso cref="SurfaceNode" />
+[HideInEditor]
+public class SurfaceComment : ResizableSurfaceNode
 {
+    private Rectangle _colorButtonRect;
+    private readonly TextBox _renameTextBox;
+
     /// <summary>
-    /// Visject Surface comment control.
+    /// True if rename textbox is active in order to rename comment
     /// </summary>
-    /// <seealso cref="SurfaceNode" />
-    [HideInEditor]
-    public class SurfaceComment : ResizableSurfaceNode
+    protected bool _isRenaming;
+
+    /// <summary>
+    /// Gets or sets the color of the comment.
+    /// </summary>
+    public Color Color
     {
-        private Rectangle _colorButtonRect;
-        private readonly TextBox _renameTextBox;
+        get => BackgroundColor;
+        set => BackgroundColor = value;
+    }
 
-        /// <summary>
-        /// True if rename textbox is active in order to rename comment
-        /// </summary>
-        protected bool _isRenaming;
+    private string TitleValue
+    {
+        get => (string)Values[0];
+        set => SetValue(0, value, false);
+    }
 
-        /// <summary>
-        /// Gets or sets the color of the comment.
-        /// </summary>
-        public Color Color
+    private Color ColorValue
+    {
+        get => (Color)Values[1];
+        set => SetValue(1, value, false);
+    }
+
+    private int OrderValue
+    {
+        get => (int)Values[3];
+        set => SetValue(3, value, false);
+    }
+
+    /// <inheritdoc />
+    public SurfaceComment(uint id, VisjectSurfaceContext context, NodeArchetype nodeArch, GroupArchetype groupArch)
+    : base(id, context, nodeArch, groupArch)
+    {
+        _sizeValueIndex = 2; // Index of the Size stored in Values array
+        _sizeMin = new Float2(140.0f, Constants.NodeHeaderSize);
+        _renameTextBox = new TextBox(false, 0, 0, Width)
         {
-            get => BackgroundColor;
-            set => BackgroundColor = value;
+            Height = Constants.NodeHeaderSize,
+            Visible = false,
+            Parent = this,
+            EndEditOnClick = false, // We have to handle this ourselves, otherwise the textbox instantly loses focus when double-clicking the header
+            HorizontalAlignment = TextAlignment.Center,
+        };
+    }
+
+    /// <inheritdoc />
+    public override void OnSurfaceLoaded(SurfaceNodeActions action)
+    {
+        base.OnSurfaceLoaded(action);
+
+        // Read node data
+        Title = TitleValue;
+        Color = ColorValue;
+
+        // Order
+        // Backwards compatibility - When opening with an older version send the old comments to the back
+        if (Values.Length < 4)
+        {
+            if (IndexInParent > 0)
+                IndexInParent = 0;
+            OrderValue = IndexInParent;
         }
-
-        private string TitleValue
+        else if (OrderValue != -1)
         {
-            get => (string)Values[0];
-            set => SetValue(0, value, false);
-        }
-
-        private Color ColorValue
-        {
-            get => (Color)Values[1];
-            set => SetValue(1, value, false);
-        }
-
-        private int OrderValue
-        {
-            get => (int)Values[3];
-            set => SetValue(3, value, false);
-        }
-
-        /// <inheritdoc />
-        public SurfaceComment(uint id, VisjectSurfaceContext context, NodeArchetype nodeArch, GroupArchetype groupArch)
-        : base(id, context, nodeArch, groupArch)
-        {
-            _sizeValueIndex = 2; // Index of the Size stored in Values array
-            _sizeMin = new Float2(140.0f, Constants.NodeHeaderSize);
-            _renameTextBox = new TextBox(false, 0, 0, Width)
-            {
-                Height = Constants.NodeHeaderSize,
-                Visible = false,
-                Parent = this,
-                EndEditOnClick = false, // We have to handle this ourselves, otherwise the textbox instantly loses focus when double-clicking the header
-                HorizontalAlignment = TextAlignment.Center,
-            };
-        }
-
-        /// <inheritdoc />
-        public override void OnSurfaceLoaded(SurfaceNodeActions action)
-        {
-            base.OnSurfaceLoaded(action);
-
-            // Read node data
-            Title = TitleValue;
-            Color = ColorValue;
-
-            // Order
-            // Backwards compatibility - When opening with an older version send the old comments to the back
-            if (Values.Length < 4)
-            {
-                if (IndexInParent > 0)
-                    IndexInParent = 0;
-                OrderValue = IndexInParent;
-            }
-            else if (OrderValue != -1)
-            {
-                IndexInParent = OrderValue;
-            }
-        }
-
-        /// <inheritdoc />
-        public override void OnSpawned(SurfaceNodeActions action)
-        {
-            base.OnSpawned(action);
-
-            // Randomize color
-            Color = ColorValue = Color.FromHSV(new Random().NextFloat(0, 360), 0.7f, 0.25f, 0.8f);
-
-            if (OrderValue == -1)
-                OrderValue = Context.CommentCount - 1;
             IndexInParent = OrderValue;
         }
+    }
 
-        /// <inheritdoc />
-        public override void OnValuesChanged()
+    /// <inheritdoc />
+    public override void OnSpawned(SurfaceNodeActions action)
+    {
+        base.OnSpawned(action);
+
+        // Randomize color
+        Color = ColorValue = Color.FromHSV(new Random().NextFloat(0, 360), 0.7f, 0.25f, 0.8f);
+
+        if (OrderValue == -1)
+            OrderValue = Context.CommentCount - 1;
+        IndexInParent = OrderValue;
+    }
+
+    /// <inheritdoc />
+    public override void OnValuesChanged()
+    {
+        base.OnValuesChanged();
+
+        // Read node data
+        Title = TitleValue;
+        Color = ColorValue;
+    }
+
+    /// <inheritdoc />
+    public override bool IsSelectionIntersecting(ref Rectangle selectionRect)
+    {
+        return _headerRect.MakeOffsetted(Location).Intersects(ref selectionRect);
+    }
+
+    /// <inheritdoc />
+    protected override void UpdateRectangles()
+    {
+        base.UpdateRectangles();
+
+        const float headerSize = Constants.NodeHeaderSize;
+        const float buttonMargin = Constants.NodeCloseButtonMargin;
+        const float buttonSize = Constants.NodeCloseButtonSize;
+        _headerRect = new Rectangle(0, 0, Width, headerSize);
+        _closeButtonRect = new Rectangle(Width - buttonSize - buttonMargin, buttonMargin, buttonSize, buttonSize);
+        _colorButtonRect = new Rectangle(_closeButtonRect.Left - buttonSize - buttonMargin, buttonMargin, buttonSize, buttonSize);
+        _resizeButtonRect = new Rectangle(_closeButtonRect.Left, Height - buttonSize - buttonMargin, buttonSize, buttonSize);
+        _renameTextBox.Width = Width;
+        _renameTextBox.Height = headerSize;
+    }
+
+    /// <inheritdoc />
+    public override void Update(float deltaTime)
+    {
+        if (_isRenaming)
         {
-            base.OnValuesChanged();
-
-            // Read node data
-            Title = TitleValue;
-            Color = ColorValue;
-        }
-
-        /// <inheritdoc />
-        public override bool IsSelectionIntersecting(ref Rectangle selectionRect)
-        {
-            return _headerRect.MakeOffsetted(Location).Intersects(ref selectionRect);
-        }
-
-        /// <inheritdoc />
-        protected override void UpdateRectangles()
-        {
-            base.UpdateRectangles();
-
-            const float headerSize = Constants.NodeHeaderSize;
-            const float buttonMargin = Constants.NodeCloseButtonMargin;
-            const float buttonSize = Constants.NodeCloseButtonSize;
-            _headerRect = new Rectangle(0, 0, Width, headerSize);
-            _closeButtonRect = new Rectangle(Width - buttonSize - buttonMargin, buttonMargin, buttonSize, buttonSize);
-            _colorButtonRect = new Rectangle(_closeButtonRect.Left - buttonSize - buttonMargin, buttonMargin, buttonSize, buttonSize);
-            _resizeButtonRect = new Rectangle(_closeButtonRect.Left, Height - buttonSize - buttonMargin, buttonSize, buttonSize);
-            _renameTextBox.Width = Width;
-            _renameTextBox.Height = headerSize;
-        }
-
-        /// <inheritdoc />
-        public override void Update(float deltaTime)
-        {
-            if (_isRenaming)
-            {
-                // Stop renaming when clicking anywhere else
-                if (!_renameTextBox.IsFocused || !RootWindow.IsFocused)
-                {
-                    Rename(_renameTextBox.Text);
-                    StopRenaming();
-                }
-            }
-            else
-            {
-                // Rename on F2
-                if (IsSelected && Editor.Instance.Options.Options.Input.Rename.Process(this))
-                {
-                    StartRenaming();
-                }
-            }
-
-            base.Update(deltaTime);
-        }
-
-        /// <inheritdoc />
-        public override void Draw()
-        {
-            var style = Style.Current;
-            var color = Color;
-            var backgroundRect = new Rectangle(Float2.Zero, Size);
-            var headerColor = new Color(Mathf.Clamp(color.R, 0.1f, 0.3f), Mathf.Clamp(color.G, 0.1f, 0.3f), Mathf.Clamp(color.B, 0.1f, 0.3f), 0.4f);
-            if (IsSelected && !_isRenaming)
-                headerColor *= 2.0f;
-
-            // Paint background
-            Render2D.FillRectangle(new Rectangle(Float2.Zero, Size), BackgroundColor);
-
-            // Draw child controls
-            DrawChildren();
-
-            // Header
-            Render2D.FillRectangle(_headerRect, headerColor);
-            if (!_isRenaming)
-                Render2D.DrawText(style.FontLarge, Title, _headerRect, style.Foreground, TextAlignment.Center, TextAlignment.Center);
-
-            if (Surface.CanEdit)
-            {
-                // Close button
-                Render2D.DrawSprite(style.Cross, _closeButtonRect, _closeButtonRect.Contains(_mousePosition) && Surface.CanEdit ? style.Foreground : style.ForegroundGrey);
-
-                // Color button
-                Render2D.DrawSprite(style.Settings, _colorButtonRect, _colorButtonRect.Contains(_mousePosition) && Surface.CanEdit ? style.Foreground : style.ForegroundGrey);
-
-                // Resize button
-                if (_isResizing)
-                {
-                    Render2D.FillRectangle(_resizeButtonRect, style.Selection);
-                    Render2D.DrawRectangle(_resizeButtonRect, style.SelectionBorder);
-                }
-                Render2D.DrawSprite(style.Scale, _resizeButtonRect, _resizeButtonRect.Contains(_mousePosition) ? style.Foreground : style.ForegroundGrey);
-            }
-
-            // Selection outline
-            if (_isSelected)
-            {
-                backgroundRect.Expand(1.5f);
-                var colorTop = Color.Orange;
-                var colorBottom = Color.OrangeRed;
-                Render2D.DrawRectangle(backgroundRect, colorTop, colorTop, colorBottom, colorBottom);
-            }
-        }
-
-        /// <inheritdoc />
-        protected override Float2 CalculateNodeSize(float width, float height)
-        {
-            // No margins or headers
-            return new Float2(width, height);
-        }
-
-        /// <inheritdoc />
-        public override void OnLostFocus()
-        {
-            if (_isRenaming)
+            // Stop renaming when clicking anywhere else
+            if (!_renameTextBox.IsFocused || !RootWindow.IsFocused)
             {
                 Rename(_renameTextBox.Text);
                 StopRenaming();
             }
-
-            base.OnLostFocus();
         }
-
-        /// <inheritdoc />
-        public override bool ContainsPoint(ref Float2 location, bool precise)
+        else
         {
-            return _headerRect.Contains(ref location) || _resizeButtonRect.Contains(ref location);
-        }
-
-        /// <inheritdoc />
-        public override bool OnMouseDoubleClick(Float2 location, MouseButton button)
-        {
-            if (base.OnMouseDoubleClick(location, button))
-                return true;
-
-            // Rename
-            if (_headerRect.Contains(ref location) && Surface.CanEdit)
+            // Rename on F2
+            if (IsSelected && Editor.Instance.Options.Options.Input.Rename.Process(this))
             {
                 StartRenaming();
-                return true;
             }
-
-            return false;
         }
 
-        /// <summary>
-        /// Starts the renaming of the comment. Shows the UI for the user.
-        /// </summary>
-        public void StartRenaming()
-        {
-            _isRenaming = true;
-            _renameTextBox.Visible = true;
-            _renameTextBox.SetText(Title);
-            _renameTextBox.Focus();
-            _renameTextBox.SelectAll();
-        }
+        base.Update(deltaTime);
+    }
 
-        private void StopRenaming()
-        {
-            _isRenaming = false;
-            _renameTextBox.Visible = false;
-        }
+    /// <inheritdoc />
+    public override void Draw()
+    {
+        var style = Style.Current;
+        var color = Color;
+        var backgroundRect = new Rectangle(Float2.Zero, Size);
+        var headerColor = new Color(Mathf.Clamp(color.R, 0.1f, 0.3f), Mathf.Clamp(color.G, 0.1f, 0.3f), Mathf.Clamp(color.B, 0.1f, 0.3f), 0.4f);
+        if (IsSelected && !_isRenaming)
+            headerColor *= 2.0f;
 
-        private void Rename(string newTitle)
-        {
-            if (string.Equals(Title, newTitle, StringComparison.Ordinal))
-                return;
+        // Paint background
+        Render2D.FillRectangle(new Rectangle(Float2.Zero, Size), BackgroundColor);
 
-            Title = TitleValue = newTitle;
-            Surface.MarkAsEdited(false);
-        }
+        // Draw child controls
+        DrawChildren();
 
-        /// <inheritdoc />
-        public override bool OnKeyDown(KeyboardKeys key)
+        // Header
+        Render2D.FillRectangle(_headerRect, headerColor);
+        if (!_isRenaming)
+            Render2D.DrawText(style.FontLarge, Title, _headerRect, style.Foreground, TextAlignment.Center, TextAlignment.Center);
+
+        if (Surface.CanEdit)
         {
-            if (key == KeyboardKeys.Return)
+            // Close button
+            Render2D.DrawSprite(style.Cross, _closeButtonRect, _closeButtonRect.Contains(_mousePosition) && Surface.CanEdit ? style.Foreground : style.ForegroundGrey);
+
+            // Color button
+            Render2D.DrawSprite(style.Settings, _colorButtonRect, _colorButtonRect.Contains(_mousePosition) && Surface.CanEdit ? style.Foreground : style.ForegroundGrey);
+
+            // Resize button
+            if (_isResizing)
             {
-                Rename(_renameTextBox.Text);
-                StopRenaming();
-                return true;
+                Render2D.FillRectangle(_resizeButtonRect, style.Selection);
+                Render2D.DrawRectangle(_resizeButtonRect, style.SelectionBorder);
             }
-
-            if (key == KeyboardKeys.Escape)
-            {
-                StopRenaming();
-                return true;
-            }
-
-            return base.OnKeyDown(key);
+            Render2D.DrawSprite(style.Scale, _resizeButtonRect, _resizeButtonRect.Contains(_mousePosition) ? style.Foreground : style.ForegroundGrey);
         }
 
-        /// <inheritdoc />
-        public override bool OnMouseUp(Float2 location, MouseButton button)
+        // Selection outline
+        if (_isSelected)
         {
-            if (base.OnMouseUp(location, button))
-                return true;
+            backgroundRect.Expand(1.5f);
+            var colorTop = Color.Orange;
+            var colorBottom = Color.OrangeRed;
+            Render2D.DrawRectangle(backgroundRect, colorTop, colorTop, colorBottom, colorBottom);
+        }
+    }
 
-            // Close
-            if (_closeButtonRect.Contains(ref location) && Surface.CanEdit)
-            {
-                Surface.Delete(this);
-                return true;
-            }
+    /// <inheritdoc />
+    protected override Float2 CalculateNodeSize(float width, float height)
+    {
+        // No margins or headers
+        return new Float2(width, height);
+    }
 
-            // Color
-            if (_colorButtonRect.Contains(ref location) && Surface.CanEdit)
-            {
-                ColorValueBox.ShowPickColorDialog?.Invoke(this, Color, OnColorChanged);
-                return true;
-            }
-
-            return false;
+    /// <inheritdoc />
+    public override void OnLostFocus()
+    {
+        if (_isRenaming)
+        {
+            Rename(_renameTextBox.Text);
+            StopRenaming();
         }
 
-        private void OnColorChanged(Color color, bool sliding)
+        base.OnLostFocus();
+    }
+
+    /// <inheritdoc />
+    public override bool ContainsPoint(ref Float2 location, bool precise)
+    {
+        return _headerRect.Contains(ref location) || _resizeButtonRect.Contains(ref location);
+    }
+
+    /// <inheritdoc />
+    public override bool OnMouseDoubleClick(Float2 location, MouseButton button)
+    {
+        if (base.OnMouseDoubleClick(location, button))
+            return true;
+
+        // Rename
+        if (_headerRect.Contains(ref location) && Surface.CanEdit)
         {
-            Color = ColorValue = color;
-            Surface.MarkAsEdited(false);
+            StartRenaming();
+            return true;
         }
 
-        /// <inheritdoc />
-        public override void OnShowSecondaryContextMenu(FlaxEditor.GUI.ContextMenu.ContextMenu menu, Float2 location)
-        {
-            base.OnShowSecondaryContextMenu(menu, location);
+        return false;
+    }
 
-            menu.AddSeparator();
-            menu.AddButton("Rename", StartRenaming);
-            ContextMenuChildMenu cmOrder = menu.AddChildMenu("Order");
+    /// <summary>
+    /// Starts the renaming of the comment. Shows the UI for the user.
+    /// </summary>
+    public void StartRenaming()
+    {
+        _isRenaming = true;
+        _renameTextBox.Visible = true;
+        _renameTextBox.SetText(Title);
+        _renameTextBox.Focus();
+        _renameTextBox.SelectAll();
+    }
+
+    private void StopRenaming()
+    {
+        _isRenaming = false;
+        _renameTextBox.Visible = false;
+    }
+
+    private void Rename(string newTitle)
+    {
+        if (string.Equals(Title, newTitle, StringComparison.Ordinal))
+            return;
+
+        Title = TitleValue = newTitle;
+        Surface.MarkAsEdited(false);
+    }
+
+    /// <inheritdoc />
+    public override bool OnKeyDown(KeyboardKeys key)
+    {
+        if (key == KeyboardKeys.Return)
+        {
+            Rename(_renameTextBox.Text);
+            StopRenaming();
+            return true;
+        }
+
+        if (key == KeyboardKeys.Escape)
+        {
+            StopRenaming();
+            return true;
+        }
+
+        return base.OnKeyDown(key);
+    }
+
+    /// <inheritdoc />
+    public override bool OnMouseUp(Float2 location, MouseButton button)
+    {
+        if (base.OnMouseUp(location, button))
+            return true;
+
+        // Close
+        if (_closeButtonRect.Contains(ref location) && Surface.CanEdit)
+        {
+            Surface.Delete(this);
+            return true;
+        }
+
+        // Color
+        if (_colorButtonRect.Contains(ref location) && Surface.CanEdit)
+        {
+            ColorValueBox.ShowPickColorDialog?.Invoke(this, Color, OnColorChanged);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void OnColorChanged(Color color, bool sliding)
+    {
+        Color = ColorValue = color;
+        Surface.MarkAsEdited(false);
+    }
+
+    /// <inheritdoc />
+    public override void OnShowSecondaryContextMenu(FlaxEditor.GUI.ContextMenu.ContextMenu menu, Float2 location)
+    {
+        base.OnShowSecondaryContextMenu(menu, location);
+
+        menu.AddSeparator();
+        menu.AddButton("Rename", StartRenaming);
+        ContextMenuChildMenu cmOrder = menu.AddChildMenu("Order");
+        {
+            cmOrder.ContextMenu.AddButton("Bring Forward", () =>
             {
-                cmOrder.ContextMenu.AddButton("Bring Forward", () =>
-                {
-                    if (IndexInParent < Context.CommentCount - 1)
-                        IndexInParent++;
-                    OrderValue = IndexInParent;
-                });
-                cmOrder.ContextMenu.AddButton("Bring to Front", () =>
-                {
-                    IndexInParent = Context.CommentCount - 1;
-                    OrderValue = IndexInParent;
-                });
-                cmOrder.ContextMenu.AddButton("Send Backward", () =>
-                {
-                    if (IndexInParent > 0)
-                        IndexInParent--;
-                    OrderValue = IndexInParent;
-                });
-                cmOrder.ContextMenu.AddButton("Send to Back", () =>
-                {
-                    IndexInParent = 0;
-                    OrderValue = IndexInParent;
-                });
-            }
+                if (IndexInParent < Context.CommentCount - 1)
+                    IndexInParent++;
+                OrderValue = IndexInParent;
+            });
+            cmOrder.ContextMenu.AddButton("Bring to Front", () =>
+            {
+                IndexInParent = Context.CommentCount - 1;
+                OrderValue = IndexInParent;
+            });
+            cmOrder.ContextMenu.AddButton("Send Backward", () =>
+            {
+                if (IndexInParent > 0)
+                    IndexInParent--;
+                OrderValue = IndexInParent;
+            });
+            cmOrder.ContextMenu.AddButton("Send to Back", () =>
+            {
+                IndexInParent = 0;
+                OrderValue = IndexInParent;
+            });
         }
     }
 }

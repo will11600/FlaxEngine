@@ -2,23 +2,22 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+internal class PostProcessSettingAttribute : Attribute
 {
-    internal class PostProcessSettingAttribute : Attribute
-    {
-        public int Bit;
+    public int Bit;
 
-        public PostProcessSettingAttribute(int bit)
-        {
-            Bit = bit;
-        }
-    }
-
-    public partial struct AntiAliasingSettings
+    public PostProcessSettingAttribute(int bit)
     {
-        /// <summary>
-        /// Whether or not to show the TAA settings.
-        /// </summary>
-        public bool ShowTAASettings => (Mode == AntialiasingMode.TemporalAntialiasing);
+        Bit = bit;
     }
+}
+
+public partial struct AntiAliasingSettings
+{
+    /// <summary>
+    /// Whether or not to show the TAA settings.
+    /// </summary>
+    public bool ShowTAASettings => (Mode == AntialiasingMode.TemporalAntialiasing);
 }

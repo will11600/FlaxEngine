@@ -14,532 +14,531 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace FlaxEngine.Utilities
+namespace FlaxEngine.Utilities;
+
+/// <summary>
+/// Collection of various extension methods.
+/// </summary>
+public static partial class Extensions
 {
+    const int MinArrayCapacity = 8;
+
+    private static readonly string[] _newlineSearchValues = ["\r\n", "\r", "\n"];
+
     /// <summary>
-    /// Collection of various extension methods.
+    /// Creates deep clone for a class if all members of this class are marked as serializable (uses Json serialization).
     /// </summary>
-    public static partial class Extensions
+    /// <param name="instance">The input instance of an object.</param>
+    /// <typeparam name="T">The instance type of an object.</typeparam>
+    /// <returns>Returns new object of provided class.</returns>
+    public static T DeepClone<T>(this T instance)
+    where T : new()
     {
-        const int MinArrayCapacity = 8;
+        var json = Json.JsonSerializer.Serialize(instance);
+        return (T)Json.JsonSerializer.Deserialize(json, instance.GetType());
+    }
 
-        private static readonly string[] _newlineSearchValues = ["\r\n", "\r", "\n"];
-
-        /// <summary>
-        /// Creates deep clone for a class if all members of this class are marked as serializable (uses Json serialization).
-        /// </summary>
-        /// <param name="instance">The input instance of an object.</param>
-        /// <typeparam name="T">The instance type of an object.</typeparam>
-        /// <returns>Returns new object of provided class.</returns>
-        public static T DeepClone<T>(this T instance)
-        where T : new()
+    /// <summary>
+    /// Creates raw clone for a structure using memory copy. Valid only for value types.
+    /// </summary>
+    /// <param name="instance">The input instance of an object.</param>
+    /// <typeparam name="T">The instance type of an object.</typeparam>
+    /// <returns>Returns new object of provided structure.</returns>
+    public static T RawClone<T>(this T instance)
+    {
+        IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(instance));
+        try
         {
-            var json = Json.JsonSerializer.Serialize(instance);
-            return (T)Json.JsonSerializer.Deserialize(json, instance.GetType());
+            Marshal.StructureToPtr(instance, ptr, false);
+            return (T)Marshal.PtrToStructure(ptr, instance.GetType());
         }
-
-        /// <summary>
-        /// Creates raw clone for a structure using memory copy. Valid only for value types.
-        /// </summary>
-        /// <param name="instance">The input instance of an object.</param>
-        /// <typeparam name="T">The instance type of an object.</typeparam>
-        /// <returns>Returns new object of provided structure.</returns>
-        public static T RawClone<T>(this T instance)
+        finally
         {
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(instance));
-            try
-            {
-                Marshal.StructureToPtr(instance, ptr, false);
-                return (T)Marshal.PtrToStructure(ptr, instance.GetType());
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(ptr);
-            }
+            Marshal.FreeHGlobal(ptr);
         }
-        /// <see cref="IsMultiline(ReadOnlySpan{char})"/>
-        public static bool IsMultiline(this string chars) => IsMultiline(chars.AsSpan());
+    }
+    /// <see cref="IsMultiline(ReadOnlySpan{char})"/>
+    public static bool IsMultiline(this string chars) => IsMultiline(chars.AsSpan());
 
-        /// <summary>
-        /// Determines whether the specified characters contains more than one line.
-        /// </summary>
-        /// <param name="chars">The characters to examine for line breaks.</param>
-        /// <returns>
-        /// <see langword="true"/> if the span contains at least one newline character; 
-        /// otherwise, <see langword="false"/>.
-        /// </returns>
-        public static bool IsMultiline(this ReadOnlySpan<char> chars) => chars.IndexOf('\n') != -1;
+    /// <summary>
+    /// Determines whether the specified characters contains more than one line.
+    /// </summary>
+    /// <param name="chars">The characters to examine for line breaks.</param>
+    /// <returns>
+    /// <see langword="true"/> if the span contains at least one newline character; 
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool IsMultiline(this ReadOnlySpan<char> chars) => chars.IndexOf('\n') != -1;
 
-        /// <inheritdoc cref="GetLines(ReadOnlySpan{char}, bool)"/>
-        public static string[] GetLines(this string str, bool removeEmptyLines = false) => GetLines(str.AsSpan(), removeEmptyLines);
+    /// <inheritdoc cref="GetLines(ReadOnlySpan{char}, bool)"/>
+    public static string[] GetLines(this string str, bool removeEmptyLines = false) => GetLines(str.AsSpan(), removeEmptyLines);
 
-        /// <summary>
-        /// Splits the specified characters into an array of strings, each representing a line of
-        /// text.
-        /// </summary>
-        /// <param name="chars">The characters to be split into lines.</param>
-        /// <param name="removeEmpty">
-        /// Specifies whether to remove empty lines from the resulting array. If set to <see langword="true"/>, empty
-        /// lines are excluded; otherwise, they are included.
-        /// </param>
-        /// <returns>
-        /// An array of strings containing the lines extracted from the input span. The array will be empty if no lines
-        /// are found.
-        /// </returns>
-        public static string[] GetLines(this ReadOnlySpan<char> chars, bool removeEmpty = false)
+    /// <summary>
+    /// Splits the specified characters into an array of strings, each representing a line of
+    /// text.
+    /// </summary>
+    /// <param name="chars">The characters to be split into lines.</param>
+    /// <param name="removeEmpty">
+    /// Specifies whether to remove empty lines from the resulting array. If set to <see langword="true"/>, empty
+    /// lines are excluded; otherwise, they are included.
+    /// </param>
+    /// <returns>
+    /// An array of strings containing the lines extracted from the input span. The array will be empty if no lines
+    /// are found.
+    /// </returns>
+    public static string[] GetLines(this ReadOnlySpan<char> chars, bool removeEmpty = false)
+    {
+        StringSplitOptions options = removeEmpty ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None;
+
+        Span<string> lines = Rent(0, out string[] rentedArray);
+
+        try
         {
-            StringSplitOptions options = removeEmpty ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None;
+            Span<Range> ranges = stackalloc Range[3];
 
-            Span<string> lines = Rent(0, out string[] rentedArray);
+            ReadOnlySpan<char> currentSegment;
+            ReadOnlySpan<char> nextSegment = chars;
 
-            try
+            while (!nextSegment.IsEmpty)
             {
-                Span<Range> ranges = stackalloc Range[3];
-
-                ReadOnlySpan<char> currentSegment;
-                ReadOnlySpan<char> nextSegment = chars;
-
-                while (!nextSegment.IsEmpty)
+                currentSegment = nextSegment;
+                int rangesWritten = currentSegment.SplitAny(ranges, _newlineSearchValues, options);
+                if (rangesWritten == ranges.Length)
                 {
-                    currentSegment = nextSegment;
-                    int rangesWritten = currentSegment.SplitAny(ranges, _newlineSearchValues, options);
-                    if (rangesWritten == ranges.Length)
-                    {
-                        rangesWritten -= 1;
-                        Range range = ranges[rangesWritten];
-                        nextSegment = currentSegment[range];
-                    }
-                    else
-                    {
-                        nextSegment = [];
-                    }
-
-                    int li = lines.Length;
-                    lines = Grow(ref rentedArray, li + rangesWritten);
-                    Span<string> additionalLines = lines[li..];
-                    for (int ri = 0; ri < rangesWritten; ri++)
-                    {
-                        Range range = ranges[ri];
-                        additionalLines[ri] = currentSegment[range].ToString();
-                    }
+                    rangesWritten -= 1;
+                    Range range = ranges[rangesWritten];
+                    nextSegment = currentSegment[range];
+                }
+                else
+                {
+                    nextSegment = [];
                 }
 
-                return [.. lines];
-            }
-            finally
-            {
-                Return(ref rentedArray);
-            }
-        }
-
-        /// <summary>
-        /// Adds the elements of the specified collection to the end of the <see cref="ICollection{T}"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of elements in the collection.</typeparam>
-        /// <param name="destination">The <see cref="ICollection{T}"/> to add items to.</param>
-        /// <param name="collection">The collection whose elements should be added to the end of the <paramref name="destination"/>. It can contain elements that are <see langword="null"/>, if type <typeparamref name="T"/> is a reference type.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="destination"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
-        public static void AddRange<T>(this ICollection<T> destination, IEnumerable<T> collection)
-        {
-            ArgumentNullException.ThrowIfNull(destination);
-            ArgumentNullException.ThrowIfNull(collection);
-            foreach (T item in collection)
-            {
-                destination.Add(item);
-            }
-        }
-
-        /// <summary>
-        /// Enqueues the elements of the specified collection to the <see cref="Queue{T}"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of elements in the collection.</typeparam>
-        /// <param name="queue">The <see cref="Queue{T}"/> to add items to.</param>
-        /// <param name="collection">The collection whose elements should be added to the <paramref name="queue"/>. It can contain elements that are <see langword="null"/>, if type <typeparamref name="T"/> is a reference type.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="queue"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
-        public static void EnqueueRange<T>(this Queue<T> queue, IEnumerable<T> collection)
-        {
-            ArgumentNullException.ThrowIfNull(queue);
-            ArgumentNullException.ThrowIfNull(collection);
-
-            if (collection.TryGetNonEnumeratedCount(out int count))
-            {
-                queue.EnsureCapacity(queue.Count + count);
+                int li = lines.Length;
+                lines = Grow(ref rentedArray, li + rangesWritten);
+                Span<string> additionalLines = lines[li..];
+                for (int ri = 0; ri < rangesWritten; ri++)
+                {
+                    Range range = ranges[ri];
+                    additionalLines[ri] = currentSegment[range].ToString();
+                }
             }
 
-            foreach (T item in collection)
-            {
-                queue.Enqueue(item);
-            }
+            return [.. lines];
+        }
+        finally
+        {
+            Return(ref rentedArray);
+        }
+    }
+
+    /// <summary>
+    /// Adds the elements of the specified collection to the end of the <see cref="ICollection{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the collection.</typeparam>
+    /// <param name="destination">The <see cref="ICollection{T}"/> to add items to.</param>
+    /// <param name="collection">The collection whose elements should be added to the end of the <paramref name="destination"/>. It can contain elements that are <see langword="null"/>, if type <typeparamref name="T"/> is a reference type.</param>
+    /// <exception cref="ArgumentNullException">If <paramref name="destination"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
+    public static void AddRange<T>(this ICollection<T> destination, IEnumerable<T> collection)
+    {
+        ArgumentNullException.ThrowIfNull(destination);
+        ArgumentNullException.ThrowIfNull(collection);
+        foreach (T item in collection)
+        {
+            destination.Add(item);
+        }
+    }
+
+    /// <summary>
+    /// Enqueues the elements of the specified collection to the <see cref="Queue{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the collection.</typeparam>
+    /// <param name="queue">The <see cref="Queue{T}"/> to add items to.</param>
+    /// <param name="collection">The collection whose elements should be added to the <paramref name="queue"/>. It can contain elements that are <see langword="null"/>, if type <typeparamref name="T"/> is a reference type.</param>
+    /// <exception cref="ArgumentNullException">If <paramref name="queue"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
+    public static void EnqueueRange<T>(this Queue<T> queue, IEnumerable<T> collection)
+    {
+        ArgumentNullException.ThrowIfNull(queue);
+        ArgumentNullException.ThrowIfNull(collection);
+
+        if (collection.TryGetNonEnumeratedCount(out int count))
+        {
+            queue.EnsureCapacity(queue.Count + count);
         }
 
-        /// <summary>
-        /// Pushes the elements of the specified collection to the <see cref="Stack{T}"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of elements in the collection.</typeparam>
-        /// <param name="stack">The <see cref="Stack{T}"/> to add items to.</param>
-        /// <param name="collection">The collection whose elements should be pushed on to the <paramref name="stack"/>. It can contain elements that are <see langword="null"/>, if type <typeparamref name="T"/> is a reference type.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="stack"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
-        public static void PushRange<T>(this Stack<T> stack, IEnumerable<T> collection)
+        foreach (T item in collection)
         {
-            ArgumentNullException.ThrowIfNull(stack);
-            ArgumentNullException.ThrowIfNull(collection);
+            queue.Enqueue(item);
+        }
+    }
 
-            if (collection.TryGetNonEnumeratedCount(out int count))
-            {
-                stack.EnsureCapacity(stack.Count + count);
-            }
+    /// <summary>
+    /// Pushes the elements of the specified collection to the <see cref="Stack{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the collection.</typeparam>
+    /// <param name="stack">The <see cref="Stack{T}"/> to add items to.</param>
+    /// <param name="collection">The collection whose elements should be pushed on to the <paramref name="stack"/>. It can contain elements that are <see langword="null"/>, if type <typeparamref name="T"/> is a reference type.</param>
+    /// <exception cref="ArgumentNullException">If <paramref name="stack"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
+    public static void PushRange<T>(this Stack<T> stack, IEnumerable<T> collection)
+    {
+        ArgumentNullException.ThrowIfNull(stack);
+        ArgumentNullException.ThrowIfNull(collection);
 
-            foreach (T item in collection)
-            {
-                stack.Push(item);
-            }
+        if (collection.TryGetNonEnumeratedCount(out int count))
+        {
+            stack.EnsureCapacity(stack.Count + count);
         }
 
-        /// <summary>
-        /// Performs the specified action on each element of the <see cref="IEnumerable{T}"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of the input sequence.</typeparam>
-        /// <param name="source">The sequence of elements to execute the <see cref="IEnumerable{T}"/>.</param>
-        /// <param name="action">The <see cref="Action{T}"/> delegate to perform on each element of the <see cref="IEnumerable{T}"/>1.</param>
-        /// <exception cref="ArgumentException"><paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
-        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        foreach (T item in collection)
         {
-            ArgumentNullException.ThrowIfNull(source);
-            ArgumentNullException.ThrowIfNull(action);
-            foreach (T item in source)
-            {
-                action(item);
-            }
+            stack.Push(item);
         }
+    }
 
-        /// <summary>
-        /// Chooses a random item from the collection.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of the input sequence.</typeparam>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="collection">Collection to choose item from.</param>
-        /// <returns>A random item from collection</returns>
-        /// <exception cref="ArgumentNullException">If the random argument is null.</exception>
-        /// <exception cref="ArgumentNullException">If the collection is null.</exception>
-        public static T Choose<T>(this Random random, IList<T> collection)
+    /// <summary>
+    /// Performs the specified action on each element of the <see cref="IEnumerable{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements of the input sequence.</typeparam>
+    /// <param name="source">The sequence of elements to execute the <see cref="IEnumerable{T}"/>.</param>
+    /// <param name="action">The <see cref="Action{T}"/> delegate to perform on each element of the <see cref="IEnumerable{T}"/>1.</param>
+    /// <exception cref="ArgumentException"><paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
+    public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(action);
+        foreach (T item in source)
         {
-            ArgumentNullException.ThrowIfNull(random);
-            ArgumentNullException.ThrowIfNull(collection);
-            return collection[random.Next(collection.Count)];
+            action(item);
         }
+    }
 
-        /// <summary>
-        /// Chooses a random item.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of the input sequence.</typeparam>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="collection">Collection to choose item from.</param>
-        /// <returns>A random item from collection</returns>
-        /// <exception cref="ArgumentNullException">If the random  is null.</exception>
-        /// <exception cref="ArgumentNullException">If the collection is null.</exception>
-        public static T Choose<T>(this Random random, params T[] collection)
+    /// <summary>
+    /// Chooses a random item from the collection.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements of the input sequence.</typeparam>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="collection">Collection to choose item from.</param>
+    /// <returns>A random item from collection</returns>
+    /// <exception cref="ArgumentNullException">If the random argument is null.</exception>
+    /// <exception cref="ArgumentNullException">If the collection is null.</exception>
+    public static T Choose<T>(this Random random, IList<T> collection)
+    {
+        ArgumentNullException.ThrowIfNull(random);
+        ArgumentNullException.ThrowIfNull(collection);
+        return collection[random.Next(collection.Count)];
+    }
+
+    /// <summary>
+    /// Chooses a random item.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements of the input sequence.</typeparam>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="collection">Collection to choose item from.</param>
+    /// <returns>A random item from collection</returns>
+    /// <exception cref="ArgumentNullException">If the random  is null.</exception>
+    /// <exception cref="ArgumentNullException">If the collection is null.</exception>
+    public static T Choose<T>(this Random random, params T[] collection)
+    {
+        ArgumentNullException.ThrowIfNull(random);
+        ArgumentNullException.ThrowIfNull(collection);
+        return collection[random.Next(collection.Length)];
+    }
+
+    /// <summary>
+    /// Shuffles the collection in place.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements of the input sequence.</typeparam>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="collection">Collection to shuffle.</param>
+    /// <exception cref="ArgumentNullException">If the random argument is null.</exception>
+    /// <exception cref="ArgumentNullException">If the random collection is null.</exception>
+    public static void Shuffle<T>(this Random random, IList<T> collection)
+    {
+        ArgumentNullException.ThrowIfNull(random);
+        ArgumentNullException.ThrowIfNull(collection);
+        int n = collection.Count;
+        while (n > 1)
         {
-            ArgumentNullException.ThrowIfNull(random);
-            ArgumentNullException.ThrowIfNull(collection);
-            return collection[random.Next(collection.Length)];
+            n--;
+            int k = random.Next(n + 1);
+            T value = collection[k];
+            collection[k] = collection[n];
+            collection[n] = value;
         }
+    }
 
-        /// <summary>
-        /// Shuffles the collection in place.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of the input sequence.</typeparam>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="collection">Collection to shuffle.</param>
-        /// <exception cref="ArgumentNullException">If the random argument is null.</exception>
-        /// <exception cref="ArgumentNullException">If the random collection is null.</exception>
-        public static void Shuffle<T>(this Random random, IList<T> collection)
+    /// <summary>
+    /// Generates a random <see cref="bool"/>.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="weight">Normalized value that determines the chance to return true.</param>
+    /// <returns>A <see cref="bool"/> thats either true or false.</returns>
+    public static bool NextBool(this Random random, float weight = 0.5f) => random.NextDouble() < weight;
+
+    /// <summary>
+    /// Generates a random <see cref="byte"/> value up until an exclusive maximum.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="max">The maximum value. If it's zero, a maximum of 256 is used</param>
+    /// <returns>A random <see cref="byte"/> between min and max.</returns>
+    public static byte NextByte(this Random random, byte max = 0)
+    {
+        return max == 0 ? (byte)(random.Next() % 256) : (byte)random.Next(max);
+    }
+
+    /// <summary>
+    /// Generates a random <see cref="byte"/> value between min and max.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>A random <see cref="byte"/> between min and max.</returns>
+    public static byte NextByte(this Random random, byte min, byte max)
+    {
+        return (byte)random.Next(min, max);
+    }
+
+    /// <summary>
+    /// Generates a random <see cref="float"/> value between min and max.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>A random <see cref="float"/> between min and max.</returns>
+    public static float NextFloat(this Random random, float min = 0.0f, float max = 1.0f)
+    {
+        return (float)random.NextDouble() * (max - min) + min;
+    }
+
+    /// <summary>
+    /// Generates a random <see cref="float"/>  value between 0 and max.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>A random <see cref="float"/> between min and max.</returns>
+    public static float NextFloat(this Random random, float max)
+    {
+        return (float)random.NextDouble() * max;
+    }
+
+    /// <summary>
+    /// Generates a random <see cref="Quaternion"/>.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="randomRoll">Should the roll value be randomized.</param>
+    /// <returns>A random <see cref="Quaternion"/>.</returns>
+    public static Quaternion NextQuaternion(this Random random, bool randomRoll = false)
+    {
+        return Quaternion.Euler(NextFloat(random, -180.0f, 180.0f), NextFloat(random, -180.0f, 180.0f), randomRoll ? NextFloat(random, -180.0f, 180.0f) : 0.0f);
+    }
+
+    /// <summary>
+    /// Generates a random <see cref="Vector2"/> point in a circle of a given radius.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="radius">Radius of circle. Default 1.0f./>.</param>
+    /// <returns>A random <see cref="Vector2"/>.</returns>
+    public static Vector2 NextUnitVector2(this Random random, float radius = 1.0f)
+    {
+        float magnitude = (float)random.NextDouble() * radius;
+        double randomRadian = random.NextDouble() * Mathf.RevolutionsToRadians;
+        return new Vector2((float)Math.Cos(randomRadian) * magnitude, (float)Math.Sin(randomRadian) * magnitude);
+    }
+    
+    /// <summary>
+    /// Generates a random <see cref="Vector2"/> point on a circle of a given radius.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="radius">Radius of circle. Default 1.0f./>.</param>
+    /// <returns>A random <see cref="Vector2"/>.</returns>
+    public static Vector2 NextUnitCircleVector2(this Random random, float radius = 1.0f)
+    {
+        double randomRadian = random.NextDouble() * Mathf.RevolutionsToRadians;
+        return new Vector2((float)Math.Cos(randomRadian) * radius, (float)Math.Sin(randomRadian) * radius);
+    }
+
+    /// <summary>
+    /// Generates a uniformly distributed random unit length vector point on a unit sphere.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <returns>A random <see cref="Vector3"/>.</returns>
+    public static Vector3 NextUnitVector3(this Random random)
+    {
+        Vector3 output;
+        Real l;
+
+        do
         {
-            ArgumentNullException.ThrowIfNull(random);
-            ArgumentNullException.ThrowIfNull(collection);
-            int n = collection.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = random.Next(n + 1);
-                T value = collection[k];
-                collection[k] = collection[n];
-                collection[n] = value;
-            }
+            // Create random float with a mean of 0 and deviation of ±1
+            output.X = NextFloat(random) * 2.0f - 1.0f;
+            output.Y = NextFloat(random) * 2.0f - 1.0f;
+            output.Z = NextFloat(random) * 2.0f - 1.0f;
+
+            l = output.LengthSquared;
+        } while (l > 1 || l < Mathf.Epsilon);
+
+        output.Normalize();
+
+        return output;
+    }
+
+    /// <summary>
+    /// Gets a random <see cref="Vector2"/> with components in a given range.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>A random <see cref="Vector2"/>.</returns>
+    public static Vector2 NextVector2(this Random random, float min = 0.0f, float max = 1.0f)
+    {
+        return new Vector2(NextFloat(random, min, max), NextFloat(random, min, max));
+    }
+
+    /// <summary>
+    /// Gets a random <see cref="Vector3"/> with components in a given range.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>A random <see cref="Vector3"/>.</returns>
+    public static Vector3 NextVector3(this Random random, float min = 0.0f, float max = 1.0f)
+    {
+        return new Vector3(NextFloat(random, min, max), NextFloat(random, min, max), NextFloat(random, min, max));
+    }
+
+    /// <summary>
+    /// Gets a random <see cref="Vector4"/> with components in a given range.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>A random <see cref="Vector4"/>.</returns>
+    public static Vector4 NextVector4(this Random random, float min = 0.0f, float max = 1.0f)
+    {
+        return new Vector4(NextFloat(random, min, max), NextFloat(random, min, max), NextFloat(random, min, max), NextFloat(random, min, max));
+    }
+
+    /// <summary>
+    /// Generates a random <see cref="Color"/>.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="randomAlpha">Randomize the alpha value.</param>
+    /// <returns>A nice random <see cref="Color"/>.</returns>
+    public static Color NextColor(this Random random, bool randomAlpha = false)
+    {
+        return new Color(NextFloat(random), NextFloat(random), NextFloat(random), randomAlpha ? NextFloat(random) : 1.0f);
+    }
+
+    /// <summary>
+    /// Generates a random <see cref="ColorHSV"/>.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="randomAlpha">Randomize the alpha value.</param>
+    /// <returns>A nice random <see cref="ColorHSV"/>.</returns>
+    public static ColorHSV NextColorHSV(this Random random, bool randomAlpha = false)
+    {
+        return new ColorHSV(NextFloat(random, 0.0f, 360.0f), 1.0f, 1.0f, randomAlpha ? NextFloat(random) : 1.0f);
+    }
+
+    /// <summary>
+    /// Gets a random <see cref="double"/>.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>A random <see cref="double"/>.</returns>
+    public static double NextDouble(this Random random, double min = 0.0d, double max = 1.0d)
+    {
+        return random.NextDouble() * (max - min) + min;
+    }
+
+    /// <summary>
+    /// Gets a random <see cref="double"/>.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>A random <see cref="double"/>.</returns>
+    public static double NextDouble(this Random random, double max = 1.0d)
+    {
+        return random.NextDouble() * max;
+    }
+
+    /// <summary>
+    /// Gets a random <see cref="long"/>.
+    /// </summary>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <returns>A random <see cref="long"/>.</returns>
+    internal static long NextLong(this Random random)
+    {
+        var numArray = new byte[8];
+        random.NextBytes(numArray);
+        return (long)(BitConverter.ToUInt64(numArray, 0) & long.MaxValue);
+    }
+
+    /// <summary>
+    /// Returns a random value of the given enum.
+    /// </summary>
+    /// <typeparam name="TEnum">The enum to get the value from.</typeparam>
+    /// <param name="random">An instance of <see cref="Random"/>.</param>
+    /// <returns>A random enum value.</returns>
+    public static TEnum NextEnum<TEnum>(this Random random)
+    {
+        Array values = Enum.GetValues(typeof(TEnum));
+        return (TEnum)values.GetValue(random.Next(values.Length));
+    }
+
+    private static Span<T> Rent<T>(int desiredLength, out T[] rentedArray)
+    {
+        int minLength = desiredLength < MinArrayCapacity ? MinArrayCapacity : desiredLength;
+        rentedArray = ArrayPool<T>.Shared.Rent(minLength);
+        try
+        {
+            return new Span<T>(rentedArray, 0, desiredLength);
         }
-
-        /// <summary>
-        /// Generates a random <see cref="bool"/>.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="weight">Normalized value that determines the chance to return true.</param>
-        /// <returns>A <see cref="bool"/> thats either true or false.</returns>
-        public static bool NextBool(this Random random, float weight = 0.5f) => random.NextDouble() < weight;
-
-        /// <summary>
-        /// Generates a random <see cref="byte"/> value up until an exclusive maximum.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="max">The maximum value. If it's zero, a maximum of 256 is used</param>
-        /// <returns>A random <see cref="byte"/> between min and max.</returns>
-        public static byte NextByte(this Random random, byte max = 0)
+        catch
         {
-            return max == 0 ? (byte)(random.Next() % 256) : (byte)random.Next(max);
+            Return(ref rentedArray);
+            throw;
         }
+    }
 
-        /// <summary>
-        /// Generates a random <see cref="byte"/> value between min and max.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="min">The minimum value.</param>
-        /// <param name="max">The maximum value.</param>
-        /// <returns>A random <see cref="byte"/> between min and max.</returns>
-        public static byte NextByte(this Random random, byte min, byte max)
+    private static Span<T> Grow<T>(scoped ref T[] rentedArray, int newLength)
+    {
+        int currentLength = rentedArray.Length;
+        if (newLength > currentLength)
         {
-            return (byte)random.Next(min, max);
-        }
+            int optimumLength = currentLength;
+            do { optimumLength *= 2; }
+            while (optimumLength < newLength);
 
-        /// <summary>
-        /// Generates a random <see cref="float"/> value between min and max.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="min">The minimum value.</param>
-        /// <param name="max">The maximum value.</param>
-        /// <returns>A random <see cref="float"/> between min and max.</returns>
-        public static float NextFloat(this Random random, float min = 0.0f, float max = 1.0f)
-        {
-            return (float)random.NextDouble() * (max - min) + min;
-        }
-
-        /// <summary>
-        /// Generates a random <see cref="float"/>  value between 0 and max.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="max">The maximum value.</param>
-        /// <returns>A random <see cref="float"/> between min and max.</returns>
-        public static float NextFloat(this Random random, float max)
-        {
-            return (float)random.NextDouble() * max;
-        }
-
-        /// <summary>
-        /// Generates a random <see cref="Quaternion"/>.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="randomRoll">Should the roll value be randomized.</param>
-        /// <returns>A random <see cref="Quaternion"/>.</returns>
-        public static Quaternion NextQuaternion(this Random random, bool randomRoll = false)
-        {
-            return Quaternion.Euler(NextFloat(random, -180.0f, 180.0f), NextFloat(random, -180.0f, 180.0f), randomRoll ? NextFloat(random, -180.0f, 180.0f) : 0.0f);
-        }
-
-        /// <summary>
-        /// Generates a random <see cref="Vector2"/> point in a circle of a given radius.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="radius">Radius of circle. Default 1.0f./>.</param>
-        /// <returns>A random <see cref="Vector2"/>.</returns>
-        public static Vector2 NextUnitVector2(this Random random, float radius = 1.0f)
-        {
-            float magnitude = (float)random.NextDouble() * radius;
-            double randomRadian = random.NextDouble() * Mathf.RevolutionsToRadians;
-            return new Vector2((float)Math.Cos(randomRadian) * magnitude, (float)Math.Sin(randomRadian) * magnitude);
-        }
-        
-        /// <summary>
-        /// Generates a random <see cref="Vector2"/> point on a circle of a given radius.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="radius">Radius of circle. Default 1.0f./>.</param>
-        /// <returns>A random <see cref="Vector2"/>.</returns>
-        public static Vector2 NextUnitCircleVector2(this Random random, float radius = 1.0f)
-        {
-            double randomRadian = random.NextDouble() * Mathf.RevolutionsToRadians;
-            return new Vector2((float)Math.Cos(randomRadian) * radius, (float)Math.Sin(randomRadian) * radius);
-        }
-
-        /// <summary>
-        /// Generates a uniformly distributed random unit length vector point on a unit sphere.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <returns>A random <see cref="Vector3"/>.</returns>
-        public static Vector3 NextUnitVector3(this Random random)
-        {
-            Vector3 output;
-            Real l;
-
-            do
-            {
-                // Create random float with a mean of 0 and deviation of ±1
-                output.X = NextFloat(random) * 2.0f - 1.0f;
-                output.Y = NextFloat(random) * 2.0f - 1.0f;
-                output.Z = NextFloat(random) * 2.0f - 1.0f;
-
-                l = output.LengthSquared;
-            } while (l > 1 || l < Mathf.Epsilon);
-
-            output.Normalize();
-
-            return output;
-        }
-
-        /// <summary>
-        /// Gets a random <see cref="Vector2"/> with components in a given range.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="min">The minimum value.</param>
-        /// <param name="max">The maximum value.</param>
-        /// <returns>A random <see cref="Vector2"/>.</returns>
-        public static Vector2 NextVector2(this Random random, float min = 0.0f, float max = 1.0f)
-        {
-            return new Vector2(NextFloat(random, min, max), NextFloat(random, min, max));
-        }
-
-        /// <summary>
-        /// Gets a random <see cref="Vector3"/> with components in a given range.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="min">The minimum value.</param>
-        /// <param name="max">The maximum value.</param>
-        /// <returns>A random <see cref="Vector3"/>.</returns>
-        public static Vector3 NextVector3(this Random random, float min = 0.0f, float max = 1.0f)
-        {
-            return new Vector3(NextFloat(random, min, max), NextFloat(random, min, max), NextFloat(random, min, max));
-        }
-
-        /// <summary>
-        /// Gets a random <see cref="Vector4"/> with components in a given range.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="min">The minimum value.</param>
-        /// <param name="max">The maximum value.</param>
-        /// <returns>A random <see cref="Vector4"/>.</returns>
-        public static Vector4 NextVector4(this Random random, float min = 0.0f, float max = 1.0f)
-        {
-            return new Vector4(NextFloat(random, min, max), NextFloat(random, min, max), NextFloat(random, min, max), NextFloat(random, min, max));
-        }
-
-        /// <summary>
-        /// Generates a random <see cref="Color"/>.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="randomAlpha">Randomize the alpha value.</param>
-        /// <returns>A nice random <see cref="Color"/>.</returns>
-        public static Color NextColor(this Random random, bool randomAlpha = false)
-        {
-            return new Color(NextFloat(random), NextFloat(random), NextFloat(random), randomAlpha ? NextFloat(random) : 1.0f);
-        }
-
-        /// <summary>
-        /// Generates a random <see cref="ColorHSV"/>.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="randomAlpha">Randomize the alpha value.</param>
-        /// <returns>A nice random <see cref="ColorHSV"/>.</returns>
-        public static ColorHSV NextColorHSV(this Random random, bool randomAlpha = false)
-        {
-            return new ColorHSV(NextFloat(random, 0.0f, 360.0f), 1.0f, 1.0f, randomAlpha ? NextFloat(random) : 1.0f);
-        }
-
-        /// <summary>
-        /// Gets a random <see cref="double"/>.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="min">The minimum value.</param>
-        /// <param name="max">The maximum value.</param>
-        /// <returns>A random <see cref="double"/>.</returns>
-        public static double NextDouble(this Random random, double min = 0.0d, double max = 1.0d)
-        {
-            return random.NextDouble() * (max - min) + min;
-        }
-
-        /// <summary>
-        /// Gets a random <see cref="double"/>.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <param name="max">The maximum value.</param>
-        /// <returns>A random <see cref="double"/>.</returns>
-        public static double NextDouble(this Random random, double max = 1.0d)
-        {
-            return random.NextDouble() * max;
-        }
-
-        /// <summary>
-        /// Gets a random <see cref="long"/>.
-        /// </summary>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <returns>A random <see cref="long"/>.</returns>
-        internal static long NextLong(this Random random)
-        {
-            var numArray = new byte[8];
-            random.NextBytes(numArray);
-            return (long)(BitConverter.ToUInt64(numArray, 0) & long.MaxValue);
-        }
-
-        /// <summary>
-        /// Returns a random value of the given enum.
-        /// </summary>
-        /// <typeparam name="TEnum">The enum to get the value from.</typeparam>
-        /// <param name="random">An instance of <see cref="Random"/>.</param>
-        /// <returns>A random enum value.</returns>
-        public static TEnum NextEnum<TEnum>(this Random random)
-        {
-            Array values = Enum.GetValues(typeof(TEnum));
-            return (TEnum)values.GetValue(random.Next(values.Length));
-        }
-
-        private static Span<T> Rent<T>(int desiredLength, out T[] rentedArray)
-        {
-            int minLength = desiredLength < MinArrayCapacity ? MinArrayCapacity : desiredLength;
-            rentedArray = ArrayPool<T>.Shared.Rent(minLength);
+            T[] newArray = ArrayPool<T>.Shared.Rent(optimumLength);
             try
             {
-                return new Span<T>(rentedArray, 0, desiredLength);
+                Array.Copy(rentedArray, newArray, currentLength);
+                Return(ref rentedArray);
+                rentedArray = newArray;
             }
             catch
             {
-                Return(ref rentedArray);
+                Return(ref newArray);
                 throw;
             }
         }
 
-        private static Span<T> Grow<T>(scoped ref T[] rentedArray, int newLength)
+        return new Span<T>(rentedArray, 0, newLength);
+    }
+
+    private static bool Return<T>([AllowNull, MaybeNullWhen(true)] ref T[] rentedArray)
+    {
+        if (rentedArray is null)
         {
-            int currentLength = rentedArray.Length;
-            if (newLength > currentLength)
-            {
-                int optimumLength = currentLength;
-                do { optimumLength *= 2; }
-                while (optimumLength < newLength);
-
-                T[] newArray = ArrayPool<T>.Shared.Rent(optimumLength);
-                try
-                {
-                    Array.Copy(rentedArray, newArray, currentLength);
-                    Return(ref rentedArray);
-                    rentedArray = newArray;
-                }
-                catch
-                {
-                    Return(ref newArray);
-                    throw;
-                }
-            }
-
-            return new Span<T>(rentedArray, 0, newLength);
+            return false;
         }
 
-        private static bool Return<T>([AllowNull, MaybeNullWhen(true)] ref T[] rentedArray)
-        {
-            if (rentedArray is null)
-            {
-                return false;
-            }
+        bool clearArray = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
+        ArrayPool<T>.Shared.Return(rentedArray, clearArray);
+        rentedArray = null;
 
-            bool clearArray = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
-            ArrayPool<T>.Shared.Return(rentedArray, clearArray);
-            rentedArray = null;
-
-            return true;
-        }
+        return true;
     }
 }

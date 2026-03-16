@@ -2,13 +2,12 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// Indicates that a field or a property should be replicated over network.
+/// </summary>
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+public sealed class NetworkReplicatedAttribute : Attribute
 {
-    /// <summary>
-    /// Indicates that a field or a property should be replicated over network.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public sealed class NetworkReplicatedAttribute : Attribute
-    {
-    }
 }

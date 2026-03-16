@@ -3,20 +3,19 @@
 
 using FlaxEngine.Json;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+partial class ModelInstanceActor
 {
-    partial class ModelInstanceActor
+    partial struct MeshReference : ICustomValueEquals
     {
-        partial struct MeshReference : ICustomValueEquals
+        /// <inheritdoc />
+        public bool ValueEquals(object other)
         {
-            /// <inheritdoc />
-            public bool ValueEquals(object other)
-            {
-                var o = (MeshReference)other;
-                return JsonSerializer.SceneObjectEquals(Actor, o.Actor) &&
-                       LODIndex == o.LODIndex &&
-                       MeshIndex == o.MeshIndex;
-            }
+            var o = (MeshReference)other;
+            return JsonSerializer.SceneObjectEquals(Actor, o.Actor) &&
+                   LODIndex == o.LODIndex &&
+                   MeshIndex == o.MeshIndex;
         }
     }
 }

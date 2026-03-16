@@ -2,18 +2,17 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// Makes a script execute in edit mode.
+/// </summary>
+public sealed class ExecuteInEditModeAttribute : Attribute
 {
     /// <summary>
-    /// Makes a script execute in edit mode.
+    /// Initializes a new instance of the <see cref="ExecuteInEditModeAttribute"/> class.
     /// </summary>
-    public sealed class ExecuteInEditModeAttribute : Attribute
+    public ExecuteInEditModeAttribute()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExecuteInEditModeAttribute"/> class.
-        /// </summary>
-        public ExecuteInEditModeAttribute()
-        {
-        }
     }
 }

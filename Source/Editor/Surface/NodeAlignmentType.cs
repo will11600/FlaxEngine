@@ -2,8 +2,8 @@
 
 using FlaxEngine;
 
-namespace FlaxEditor.Surface
-{
+namespace FlaxEditor.Surface;
+
 	/// <summary>
 	/// Node Alignment type.
 	/// </summary>
@@ -40,4 +40,3 @@ namespace FlaxEditor.Surface
 		/// </summary>
 		Right,
 	}
-}

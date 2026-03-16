@@ -21,1294 +21,1293 @@ using PlatformType = FlaxEngine.PlatformType;
 // ReSharper disable MemberCanBePrivate.Local
 #pragma warning disable 649
 
-namespace FlaxEditor.Windows
+namespace FlaxEditor.Windows;
+
+/// <summary>
+/// Editor tool window for building games using <see cref="GameCooker"/>.
+/// </summary>
+/// <seealso cref="FlaxEditor.Windows.EditorWindow" />
+public sealed class GameCookerWindow : EditorWindow
 {
     /// <summary>
-    /// Editor tool window for building games using <see cref="GameCooker"/>.
+    /// Proxy object for the Build tab.
     /// </summary>
-    /// <seealso cref="FlaxEditor.Windows.EditorWindow" />
-    public sealed class GameCookerWindow : EditorWindow
+    [HideInEditor]
+    [CustomEditor(typeof(BuildTabProxy.Editor))]
+    private class BuildTabProxy
     {
-        /// <summary>
-        /// Proxy object for the Build tab.
-        /// </summary>
-        [HideInEditor]
-        [CustomEditor(typeof(BuildTabProxy.Editor))]
-        private class BuildTabProxy
+        public readonly GameCookerWindow GameCookerWin;
+        public readonly PlatformSelector Selector;
+
+        internal readonly Dictionary<PlatformType, Platform> PerPlatformOptions = new Dictionary<PlatformType, Platform>
         {
-            public readonly GameCookerWindow GameCookerWin;
-            public readonly PlatformSelector Selector;
+            { PlatformType.Windows, new Windows() },
+            { PlatformType.XboxOne, new XboxOne() },
+            { PlatformType.UWP, new UWP() },
+            { PlatformType.Linux, new Linux() },
+            { PlatformType.PS4, new PS4() },
+            { PlatformType.XboxScarlett, new XboxScarlett() },
+            { PlatformType.Android, new Android() },
+            { PlatformType.Switch, new Switch() },
+            { PlatformType.PS5, new PS5() },
+            { PlatformType.Mac, new Mac() },
+            { PlatformType.iOS, new iOS() },
+        };
 
-            internal readonly Dictionary<PlatformType, Platform> PerPlatformOptions = new Dictionary<PlatformType, Platform>
+        public BuildTabProxy(GameCookerWindow win, PlatformSelector platformSelector)
+        {
+            GameCookerWin = win;
+            Selector = platformSelector;
+
+            foreach (var e in PerPlatformOptions)
             {
-                { PlatformType.Windows, new Windows() },
-                { PlatformType.XboxOne, new XboxOne() },
-                { PlatformType.UWP, new UWP() },
-                { PlatformType.Linux, new Linux() },
-                { PlatformType.PS4, new PS4() },
-                { PlatformType.XboxScarlett, new XboxScarlett() },
-                { PlatformType.Android, new Android() },
-                { PlatformType.Switch, new Switch() },
-                { PlatformType.PS5, new PS5() },
-                { PlatformType.Mac, new Mac() },
-                { PlatformType.iOS, new iOS() },
-            };
+                var str = e.Key.ToString();
+                e.Value.Init("Output/" + str, str);
+            }
+        }
 
-            public BuildTabProxy(GameCookerWindow win, PlatformSelector platformSelector)
+        [HideInEditor]
+        internal abstract class Platform
+        {
+            [HideInEditor]
+            public bool IsSupported;
+
+            [HideInEditor]
+            public bool IsAvailable;
+
+            [EditorOrder(10), Tooltip("Output folder path")]
+            public string Output;
+
+            [EditorOrder(11), Tooltip("Show output folder in Explorer after build")]
+            public bool ShowOutput = true;
+
+            [EditorOrder(20), Tooltip("Configuration build mode")]
+            public BuildConfiguration ConfigurationMode = BuildConfiguration.Development;
+
+            [EditorOrder(90), Tooltip("The list of custom defines passed to the build tool when compiling project scripts. Can be used in build scripts for configuration (Configuration.CustomDefines).")]
+            public string[] CustomDefines;
+
+            protected abstract BuildPlatform BuildPlatform { get; }
+
+            protected virtual BuildOptions Options
             {
-                GameCookerWin = win;
-                Selector = platformSelector;
-
-                foreach (var e in PerPlatformOptions)
+                get
                 {
-                    var str = e.Key.ToString();
-                    e.Value.Init("Output/" + str, str);
+                    BuildOptions options = BuildOptions.None;
+                    if (ShowOutput)
+                        options |= BuildOptions.ShowOutput;
+                    return options;
                 }
             }
 
-            [HideInEditor]
-            internal abstract class Platform
+            public virtual void Init(string output, string platformDataSubDir)
             {
-                [HideInEditor]
-                public bool IsSupported;
+                Output = output;
 
-                [HideInEditor]
-                public bool IsAvailable;
-
-                [EditorOrder(10), Tooltip("Output folder path")]
-                public string Output;
-
-                [EditorOrder(11), Tooltip("Show output folder in Explorer after build")]
-                public bool ShowOutput = true;
-
-                [EditorOrder(20), Tooltip("Configuration build mode")]
-                public BuildConfiguration ConfigurationMode = BuildConfiguration.Development;
-
-                [EditorOrder(90), Tooltip("The list of custom defines passed to the build tool when compiling project scripts. Can be used in build scripts for configuration (Configuration.CustomDefines).")]
-                public string[] CustomDefines;
-
-                protected abstract BuildPlatform BuildPlatform { get; }
-
-                protected virtual BuildOptions Options
-                {
-                    get
-                    {
-                        BuildOptions options = BuildOptions.None;
-                        if (ShowOutput)
-                            options |= BuildOptions.ShowOutput;
-                        return options;
-                    }
-                }
-
-                public virtual void Init(string output, string platformDataSubDir)
-                {
-                    Output = output;
-
-                    // Check if can build on that platform
+                // Check if can build on that platform
 #if PLATFORM_WINDOWS
-                    switch (BuildPlatform)
-                    {
-                    case BuildPlatform.MacOSx64:
-                    case BuildPlatform.MacOSARM64:
-                    case BuildPlatform.iOSARM64:
-                        IsSupported = false;
-                        break;
-                    default:
-                        IsSupported = true;
-                        break;
-                    }
+                switch (BuildPlatform)
+                {
+                case BuildPlatform.MacOSx64:
+                case BuildPlatform.MacOSARM64:
+                case BuildPlatform.iOSARM64:
+                    IsSupported = false;
+                    break;
+                default:
+                    IsSupported = true;
+                    break;
+                }
 #elif PLATFORM_LINUX
-                    switch (BuildPlatform)
-                    {
-                    case BuildPlatform.LinuxX64:
-                    case BuildPlatform.AndroidARM64:
-                        IsSupported = true;
-                        break;
-                    default:
-                        IsSupported = false;
-                        break;
-                    }
+                switch (BuildPlatform)
+                {
+                case BuildPlatform.LinuxX64:
+                case BuildPlatform.AndroidARM64:
+                    IsSupported = true;
+                    break;
+                default:
+                    IsSupported = false;
+                    break;
+                }
 #elif PLATFORM_MAC
-                    switch (BuildPlatform)
-                    {
-                    case BuildPlatform.MacOSx64:
-                    case BuildPlatform.MacOSARM64:
-                    case BuildPlatform.iOSARM64:
-                    case BuildPlatform.AndroidARM64:
-                        IsSupported = true;
-                        break;
-                    default:
-                        IsSupported = false;
-                        break;
-                    }
+                switch (BuildPlatform)
+                {
+                case BuildPlatform.MacOSx64:
+                case BuildPlatform.MacOSARM64:
+                case BuildPlatform.iOSARM64:
+                case BuildPlatform.AndroidARM64:
+                    IsSupported = true;
+                    break;
+                default:
+                    IsSupported = false;
+                    break;
+                }
 #else
 #error "Unknown platform."
 #endif
 
-                    // TODO: restore build settings from the Editor cache!
+                // TODO: restore build settings from the Editor cache!
 
-                    // Check if can find installed tools for this platform
-                    IsAvailable = Directory.Exists(Path.Combine(Globals.StartupFolder, "Source", "Platforms", platformDataSubDir, "Binaries"));
-                }
+                // Check if can find installed tools for this platform
+                IsAvailable = Directory.Exists(Path.Combine(Globals.StartupFolder, "Source", "Platforms", platformDataSubDir, "Binaries"));
+            }
 
-                public virtual void OnNotAvailableLayout(LayoutElementsContainer layout)
+            public virtual void OnNotAvailableLayout(LayoutElementsContainer layout)
+            {
+                string text = "Missing platform data tools for the target platform.";
+                if (FlaxEditor.Editor.IsOfficialBuild())
                 {
-                    string text = "Missing platform data tools for the target platform.";
-                    if (FlaxEditor.Editor.IsOfficialBuild())
+                    switch (BuildPlatform)
                     {
-                        switch (BuildPlatform)
-                        {
 #if PLATFORM_WINDOWS
-                        case BuildPlatform.Windows32:
-                        case BuildPlatform.Windows64:
-                        case BuildPlatform.UWPx86:
-                        case BuildPlatform.UWPx64:
-                        case BuildPlatform.LinuxX64:
-                        case BuildPlatform.AndroidARM64:
-                            text += "\nUse Flax Launcher and download the required package.";
-                            break;
+                    case BuildPlatform.Windows32:
+                    case BuildPlatform.Windows64:
+                    case BuildPlatform.UWPx86:
+                    case BuildPlatform.UWPx64:
+                    case BuildPlatform.LinuxX64:
+                    case BuildPlatform.AndroidARM64:
+                        text += "\nUse Flax Launcher and download the required package.";
+                        break;
 #endif
-                        default:
-                            text += "\nEngine source is required to target this platform.";
-                            break;
-                        }
+                    default:
+                        text += "\nEngine source is required to target this platform.";
+                        break;
                     }
-                    else
+                }
+                else
+                {
+                    text += "\nTo target this platform separate engine source package is required.";
+                    switch (BuildPlatform)
                     {
-                        text += "\nTo target this platform separate engine source package is required.";
-                        switch (BuildPlatform)
-                        {
-                        case BuildPlatform.XboxOne:
-                        case BuildPlatform.XboxScarlett:
-                        case BuildPlatform.PS4:
-                        case BuildPlatform.PS5:
-                        case BuildPlatform.Switch:
-                            text += "\nTo get access please contact via https://flaxengine.com/contact";
-                            break;
-                        }
+                    case BuildPlatform.XboxOne:
+                    case BuildPlatform.XboxScarlett:
+                    case BuildPlatform.PS4:
+                    case BuildPlatform.PS5:
+                    case BuildPlatform.Switch:
+                        text += "\nTo get access please contact via https://flaxengine.com/contact";
+                        break;
                     }
-                    var label = layout.Label(text, TextAlignment.Center);
-                    label.Label.AutoHeight = true;
                 }
+                var label = layout.Label(text, TextAlignment.Center);
+                label.Label.AutoHeight = true;
+            }
 
-                /// <summary>
-                /// Used to add platform specific tools if available.
-                /// </summary>
-                /// <param name="layout">The layout to start the tools at.</param>
-                public virtual void OnCustomToolsLayout(LayoutElementsContainer layout)
+            /// <summary>
+            /// Used to add platform specific tools if available.
+            /// </summary>
+            /// <param name="layout">The layout to start the tools at.</param>
+            public virtual void OnCustomToolsLayout(LayoutElementsContainer layout)
+            {
+            }
+
+            public virtual void Build()
+            {
+                var output = StringUtils.ConvertRelativePathToAbsolute(Globals.ProjectFolder, StringUtils.NormalizePath(Output));
+                GameCooker.Build(BuildPlatform, ConfigurationMode, output, Options, CustomDefines);
+            }
+        }
+
+        class Windows : Platform
+        {
+            protected override BuildPlatform BuildPlatform => BuildPlatform.Windows64;
+        }
+
+        class UWP : Platform
+        {
+            protected override BuildPlatform BuildPlatform => BuildPlatform.UWPx64;
+        }
+
+        class XboxOne : Platform
+        {
+            protected override BuildPlatform BuildPlatform => BuildPlatform.XboxOne;
+        }
+
+        class Linux : Platform
+        {
+            protected override BuildPlatform BuildPlatform => BuildPlatform.LinuxX64;
+        }
+
+        class PS4 : Platform
+        {
+            protected override BuildPlatform BuildPlatform => BuildPlatform.PS4;
+        }
+
+        class XboxScarlett : Platform
+        {
+            protected override BuildPlatform BuildPlatform => BuildPlatform.XboxScarlett;
+        }
+
+        class Android : Platform
+        {
+            protected override BuildPlatform BuildPlatform => BuildPlatform.AndroidARM64;
+
+            /// <inheritdoc />
+            public override void OnCustomToolsLayout(LayoutElementsContainer layout)
+            {
+                base.OnCustomToolsLayout(layout);
+
+                // Add emulation options to android tab.
+                layout.Space(5);
+                var emulatorGroup = layout.Group("Tools");
+                var sdkPath = Environment.GetEnvironmentVariable("ANDROID_HOME");
+                if (string.IsNullOrEmpty(sdkPath))
+                    sdkPath = Environment.GetEnvironmentVariable("ANDROID_SDK");
+                emulatorGroup.Label($"SDK path: {sdkPath}");
+
+                // AVD and starting emulator
+                var avdGroup = emulatorGroup.Group("AVD Emulator");
+                avdGroup.Label("Note: Create AVDs using Android Studio.");
+                avdGroup.Panel.IsClosed = false;
+                var refreshAVDListButton = avdGroup.Button("Refresh AVD list").Button;
+                var avdListGroup = avdGroup.Group("AVD List");
+                avdListGroup.Panel.IsClosed = false;
+                var noAvdLabel = avdListGroup.Label("No AVDs detected. Click Refresh.", TextAlignment.Center).Label;
+                var avdListTree = new Tree(false)
                 {
-                }
-
-                public virtual void Build()
+                    Parent = avdListGroup.Panel,
+                };
+                refreshAVDListButton.Clicked += () =>
                 {
-                    var output = StringUtils.ConvertRelativePathToAbsolute(Globals.ProjectFolder, StringUtils.NormalizePath(Output));
-                    GameCooker.Build(BuildPlatform, ConfigurationMode, output, Options, CustomDefines);
-                }
-            }
+                    if (avdListTree.Children.Count > 0)
+                        avdListTree.DisposeChildren();
 
-            class Windows : Platform
-            {
-                protected override BuildPlatform BuildPlatform => BuildPlatform.Windows64;
-            }
-
-            class UWP : Platform
-            {
-                protected override BuildPlatform BuildPlatform => BuildPlatform.UWPx64;
-            }
-
-            class XboxOne : Platform
-            {
-                protected override BuildPlatform BuildPlatform => BuildPlatform.XboxOne;
-            }
-
-            class Linux : Platform
-            {
-                protected override BuildPlatform BuildPlatform => BuildPlatform.LinuxX64;
-            }
-
-            class PS4 : Platform
-            {
-                protected override BuildPlatform BuildPlatform => BuildPlatform.PS4;
-            }
-
-            class XboxScarlett : Platform
-            {
-                protected override BuildPlatform BuildPlatform => BuildPlatform.XboxScarlett;
-            }
-
-            class Android : Platform
-            {
-                protected override BuildPlatform BuildPlatform => BuildPlatform.AndroidARM64;
-
-                /// <inheritdoc />
-                public override void OnCustomToolsLayout(LayoutElementsContainer layout)
-                {
-                    base.OnCustomToolsLayout(layout);
-
-                    // Add emulation options to android tab.
-                    layout.Space(5);
-                    var emulatorGroup = layout.Group("Tools");
-                    var sdkPath = Environment.GetEnvironmentVariable("ANDROID_HOME");
-                    if (string.IsNullOrEmpty(sdkPath))
-                        sdkPath = Environment.GetEnvironmentVariable("ANDROID_SDK");
-                    emulatorGroup.Label($"SDK path: {sdkPath}");
-
-                    // AVD and starting emulator
-                    var avdGroup = emulatorGroup.Group("AVD Emulator");
-                    avdGroup.Label("Note: Create AVDs using Android Studio.");
-                    avdGroup.Panel.IsClosed = false;
-                    var refreshAVDListButton = avdGroup.Button("Refresh AVD list").Button;
-                    var avdListGroup = avdGroup.Group("AVD List");
-                    avdListGroup.Panel.IsClosed = false;
-                    var noAvdLabel = avdListGroup.Label("No AVDs detected. Click Refresh.", TextAlignment.Center).Label;
-                    var avdListTree = new Tree(false)
+                    var processStartInfo = new System.Diagnostics.ProcessStartInfo
                     {
-                        Parent = avdListGroup.Panel,
+                        FileName = Path.Combine(sdkPath, "emulator", "emulator.exe"),
+                        Arguments = "-list-avds",
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true,
                     };
-                    refreshAVDListButton.Clicked += () =>
+
+                    var process = new System.Diagnostics.Process
                     {
-                        if (avdListTree.Children.Count > 0)
-                            avdListTree.DisposeChildren();
+                        StartInfo = processStartInfo
+                    };
+                    process.Start();
+                    var output = new string(process.StandardOutput.ReadToEnd());
+                    /*
+                    CreateProcessSettings processSettings = new CreateProcessSettings
+                    {
+                        FileName = Path.Combine(sdkPath, "emulator", "emulator.exe"),
+                        Arguments = "-list-avds",
+                        HiddenWindow = false,
+                        SaveOutput = true,
+                        WaitForEnd = true,
+                    };
+                    //processSettings.ShellExecute = true;
+                    FlaxEngine.Platform.CreateProcess(ref processSettings);
 
-                        var processStartInfo = new System.Diagnostics.ProcessStartInfo
+                    var output = new string(processSettings.Output);*/
+                    if (output.Length == 0)
+                    {
+                        noAvdLabel.Visible = true;
+                        FlaxEditor.Editor.LogWarning("No AVDs detected.");
+                        return;
+                    }
+                    noAvdLabel.Visible = false;
+                    var splitOutput = output.Split('\n');
+                    foreach (var line in splitOutput)
+                    {
+                        if (string.IsNullOrEmpty(line.Trim()))
+                            continue;
+                        var item = new TreeNode
                         {
-                            FileName = Path.Combine(sdkPath, "emulator", "emulator.exe"),
-                            Arguments = "-list-avds",
-                            RedirectStandardOutput = true,
-                            CreateNoWindow = true,
+                            Text = line.Trim(),
+                            Parent = avdListTree,
                         };
+                    }
+                    avdListGroup.Panel.IsClosed = false;
+                };
 
-                        var process = new System.Diagnostics.Process
-                        {
-                            StartInfo = processStartInfo
-                        };
-                        process.Start();
-                        var output = new string(process.StandardOutput.ReadToEnd());
-                        /*
-                        CreateProcessSettings processSettings = new CreateProcessSettings
-                        {
-                            FileName = Path.Combine(sdkPath, "emulator", "emulator.exe"),
-                            Arguments = "-list-avds",
-                            HiddenWindow = false,
-                            SaveOutput = true,
-                            WaitForEnd = true,
-                        };
-                        //processSettings.ShellExecute = true;
-                        FlaxEngine.Platform.CreateProcess(ref processSettings);
+                avdGroup.Label("Emulator AVD Commands:");
+                var commandsTextBox = avdGroup.TextBox().TextBox;
+                commandsTextBox.IsMultiline = false;
+                commandsTextBox.Text = "-no-snapshot-load -no-boot-anim"; // TODO: save user changes
 
-                        var output = new string(processSettings.Output);*/
-                        if (output.Length == 0)
+                var startEmulatorButton = avdGroup.Button("Start AVD Emulator").Button;
+                startEmulatorButton.TooltipText = "Starts selected AVD from list.";
+                startEmulatorButton.Clicked += () =>
+                {
+                    if (avdListTree.Selection.Count == 0)
+                        return;
+
+                    CreateProcessSettings processSettings = new CreateProcessSettings
+                    {
+                        FileName = Path.Combine(sdkPath, "emulator", "emulator.exe"),
+                        Arguments = $"-avd {avdListTree.Selection[0].Text} {commandsTextBox.Text}",
+                        HiddenWindow = true,
+                        SaveOutput = false,
+                        WaitForEnd = false,
+                    };
+                    processSettings.ShellExecute = true;
+                    FlaxEngine.Platform.CreateProcess(ref processSettings);
+                };
+
+                emulatorGroup.Space(2);
+
+                // Device
+                var installGroup = emulatorGroup.Group("Install");
+                installGroup.Panel.IsClosed = false;
+                installGroup.Label("Note: Used to install to AVD or physical devices.");
+                var refreshDeviceListButton = installGroup.Button("Refresh device list").Button;
+                var deviceListGroup = installGroup.Group("List of devices");
+                deviceListGroup.Panel.IsClosed = false;
+                var noDevicesLabel = deviceListGroup.Label("No devices found. Click Refresh.", TextAlignment.Center).Label;
+                var deviceListTree = new Tree(false)
+                {
+                    Parent = deviceListGroup.Panel,
+                };
+                refreshDeviceListButton.Clicked += () =>
+                {
+                    if (deviceListTree.Children.Count > 0)
+                        deviceListTree.DisposeChildren();
+
+                    var processStartInfo = new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
+                        Arguments = "devices -l",
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true,
+                    };
+
+                    var process = new System.Diagnostics.Process
+                    {
+                        StartInfo = processStartInfo
+                    };
+                    process.Start();
+                    var output = new string(process.StandardOutput.ReadToEnd());
+                    /*
+                    CreateProcessSettings processSettings = new CreateProcessSettings
+                    {
+                        FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
+                        Arguments = "devices -l",
+                        HiddenWindow = false,
+                        //SaveOutput = true,
+                        WaitForEnd = true,
+                    };
+                    processSettings.SaveOutput = true;
+                    processSettings.ShellExecute = false;
+                    FlaxEngine.Platform.CreateProcess(ref processSettings);
+
+                    var output = new string(processSettings.Output);
+                    */
+
+                    if (output.Length > 0 && !output.Equals("List of devices attached", StringComparison.Ordinal))
+                    {
+                        noDevicesLabel.Visible = false;
+                        var splitLines = output.Split('\n');
+                        foreach (var line in splitLines)
                         {
-                            noAvdLabel.Visible = true;
-                            FlaxEditor.Editor.LogWarning("No AVDs detected.");
-                            return;
-                        }
-                        noAvdLabel.Visible = false;
-                        var splitOutput = output.Split('\n');
-                        foreach (var line in splitOutput)
-                        {
-                            if (string.IsNullOrEmpty(line.Trim()))
+                            if (line.Trim().Equals("List of devices attached", StringComparison.Ordinal) || string.IsNullOrEmpty(line.Trim()))
+                                continue;
+
+                            var tab = line.Split("device ");
+                            if (tab.Length < 2)
                                 continue;
                             var item = new TreeNode
                             {
-                                Text = line.Trim(),
-                                Parent = avdListTree,
+                                Text = $"{tab[0].Trim()} - {tab[1].Trim()}",
+                                Tag = tab[0].Trim(),
+                                Parent = deviceListTree,
                             };
                         }
-                        avdListGroup.Panel.IsClosed = false;
-                    };
-
-                    avdGroup.Label("Emulator AVD Commands:");
-                    var commandsTextBox = avdGroup.TextBox().TextBox;
-                    commandsTextBox.IsMultiline = false;
-                    commandsTextBox.Text = "-no-snapshot-load -no-boot-anim"; // TODO: save user changes
-
-                    var startEmulatorButton = avdGroup.Button("Start AVD Emulator").Button;
-                    startEmulatorButton.TooltipText = "Starts selected AVD from list.";
-                    startEmulatorButton.Clicked += () =>
-                    {
-                        if (avdListTree.Selection.Count == 0)
-                            return;
-
-                        CreateProcessSettings processSettings = new CreateProcessSettings
-                        {
-                            FileName = Path.Combine(sdkPath, "emulator", "emulator.exe"),
-                            Arguments = $"-avd {avdListTree.Selection[0].Text} {commandsTextBox.Text}",
-                            HiddenWindow = true,
-                            SaveOutput = false,
-                            WaitForEnd = false,
-                        };
-                        processSettings.ShellExecute = true;
-                        FlaxEngine.Platform.CreateProcess(ref processSettings);
-                    };
-
-                    emulatorGroup.Space(2);
-
-                    // Device
-                    var installGroup = emulatorGroup.Group("Install");
-                    installGroup.Panel.IsClosed = false;
-                    installGroup.Label("Note: Used to install to AVD or physical devices.");
-                    var refreshDeviceListButton = installGroup.Button("Refresh device list").Button;
-                    var deviceListGroup = installGroup.Group("List of devices");
-                    deviceListGroup.Panel.IsClosed = false;
-                    var noDevicesLabel = deviceListGroup.Label("No devices found. Click Refresh.", TextAlignment.Center).Label;
-                    var deviceListTree = new Tree(false)
-                    {
-                        Parent = deviceListGroup.Panel,
-                    };
-                    refreshDeviceListButton.Clicked += () =>
-                    {
-                        if (deviceListTree.Children.Count > 0)
-                            deviceListTree.DisposeChildren();
-
-                        var processStartInfo = new System.Diagnostics.ProcessStartInfo
-                        {
-                            FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
-                            Arguments = "devices -l",
-                            RedirectStandardOutput = true,
-                            CreateNoWindow = true,
-                        };
-
-                        var process = new System.Diagnostics.Process
-                        {
-                            StartInfo = processStartInfo
-                        };
-                        process.Start();
-                        var output = new string(process.StandardOutput.ReadToEnd());
-                        /*
-                        CreateProcessSettings processSettings = new CreateProcessSettings
-                        {
-                            FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
-                            Arguments = "devices -l",
-                            HiddenWindow = false,
-                            //SaveOutput = true,
-                            WaitForEnd = true,
-                        };
-                        processSettings.SaveOutput = true;
-                        processSettings.ShellExecute = false;
-                        FlaxEngine.Platform.CreateProcess(ref processSettings);
-
-                        var output = new string(processSettings.Output);
-                        */
-
-                        if (output.Length > 0 && !output.Equals("List of devices attached", StringComparison.Ordinal))
-                        {
-                            noDevicesLabel.Visible = false;
-                            var splitLines = output.Split('\n');
-                            foreach (var line in splitLines)
-                            {
-                                if (line.Trim().Equals("List of devices attached", StringComparison.Ordinal) || string.IsNullOrEmpty(line.Trim()))
-                                    continue;
-
-                                var tab = line.Split("device ");
-                                if (tab.Length < 2)
-                                    continue;
-                                var item = new TreeNode
-                                {
-                                    Text = $"{tab[0].Trim()} - {tab[1].Trim()}",
-                                    Tag = tab[0].Trim(),
-                                    Parent = deviceListTree,
-                                };
-                            }
-                        }
-                        else
-                        {
-                            noDevicesLabel.Visible = true;
-                        }
-
-                        deviceListGroup.Panel.IsClosed = false;
-                    };
-
-                    var autoStart = installGroup.Checkbox("Try to auto start activity on device.");
-                    var installButton = installGroup.Button("Install APK to Device").Button;
-                    installButton.TooltipText = "Installs APK from the output folder to the selected device.";
-                    installButton.Clicked += () =>
-                    {
-                        if (deviceListTree.Selection.Count == 0)
-                            return;
-
-                        // Get built APK at output path
-                        string output = StringUtils.ConvertRelativePathToAbsolute(Globals.ProjectFolder, StringUtils.NormalizePath(Output));
-                        if (!Directory.Exists(output))
-                        {
-                            FlaxEditor.Editor.LogWarning("Can not copy APK because output folder does not exist.");
-                            return;
-                        }
-
-                        var apkFiles = Directory.GetFiles(output, "*.apk");
-                        if (apkFiles.Length == 0)
-                        {
-                            FlaxEditor.Editor.LogWarning("Can not copy APK because no .apk files were found in output folder.");
-                            return;
-                        }
-
-                        string apkFilesString = string.Empty;
-                        for (int i = 0; i < apkFiles.Length; i++)
-                        {
-                            var file = apkFiles[i];
-                            if (i == 0)
-                            {
-                                apkFilesString = $"\"{file}\"";
-                                continue;
-                            }
-                            apkFilesString += $" \"{file}\"";
-                        }
-
-                        CreateProcessSettings processSettings = new CreateProcessSettings
-                        {
-                            FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
-                            Arguments = $"-s {deviceListTree.Selection[0].Tag} {(apkFiles.Length > 1 ? "install-multiple" : "install")} {apkFilesString}",
-                            LogOutput = true,
-                        };
-                        FlaxEngine.Platform.CreateProcess(ref processSettings);
-
-                        if (autoStart.CheckBox.Checked)
-                        {
-                            var gameSettings = GameSettings.Load();
-                            var productName = gameSettings.ProductName.Replace(" ", "").ToLower();
-                            var companyName = gameSettings.CompanyName.Replace(" ", "").ToLower();
-                            CreateProcessSettings processSettings1 = new CreateProcessSettings
-                            {
-                                FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
-                                Arguments = $"shell am start -n com.{companyName}.{productName}/com.flaxengine.GameActivity",
-                                LogOutput = true,
-                            };
-                            FlaxEngine.Platform.CreateProcess(ref processSettings1);
-                        }
-                    };
-
-                    var adbLogButton = emulatorGroup.Button("Start adb log collecting").Button;
-                    adbLogButton.TooltipText = "In debug and development builds the engine and game logs can be output directly to the adb.";
-                    adbLogButton.Clicked += () =>
-                    {
-                        var processStartInfo = new System.Diagnostics.ProcessStartInfo
-                        {
-                            FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
-                            Arguments = "logcat Flax:I *:S",
-                            CreateNoWindow = false,
-                            WindowStyle = ProcessWindowStyle.Normal,
-                        };
-
-                        var process = new System.Diagnostics.Process
-                        {
-                            StartInfo = processStartInfo
-                        };
-                        process.Start();
-                        /*
-                        CreateProcessSettings processSettings = new CreateProcessSettings
-                        {
-                            FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
-                            Arguments = $"logcat Flax:I *:S",
-                            WaitForEnd = false,
-                        };
-                        FlaxEngine.Platform.CreateProcess(ref processSettings);
-                        */
-                    };
-                }
-            }
-
-            class Switch : Platform
-            {
-                protected override BuildPlatform BuildPlatform => BuildPlatform.Switch;
-            }
-
-            class PS5 : Platform
-            {
-                protected override BuildPlatform BuildPlatform => BuildPlatform.PS5;
-            }
-
-            class Mac : Platform
-            {
-                public enum Archs
-                {
-                    [EditorDisplay(null, "arm64")]
-                    ARM64,
-
-                    [EditorDisplay(null, "x64")]
-                    x64,
-                }
-
-                public Archs CPU = Archs.ARM64;
-
-                protected override BuildPlatform BuildPlatform => CPU == Archs.ARM64 ? BuildPlatform.MacOSARM64 : BuildPlatform.MacOSx64;
-            }
-
-            class iOS : Platform
-            {
-                protected override BuildPlatform BuildPlatform => BuildPlatform.iOSARM64;
-            }
-
-            class Editor : CustomEditor
-            {
-                private PlatformType _platform;
-                private Button _buildButton;
-
-                public override void Initialize(LayoutElementsContainer layout)
-                {
-                    var proxy = (BuildTabProxy)Values[0];
-                    _platform = proxy.Selector.Selected;
-                    var platformObj = proxy.PerPlatformOptions[_platform];
-
-                    if (!platformObj.IsSupported)
-                    {
-                        layout.Label("This platform is not supported on this system.", TextAlignment.Center);
-                    }
-                    else if (platformObj.IsAvailable)
-                    {
-                        string name;
-                        switch (_platform)
-                        {
-                        case PlatformType.Windows:
-                            name = "Windows";
-                            break;
-                        case PlatformType.XboxOne:
-                            name = "Xbox One";
-                            break;
-                        case PlatformType.UWP:
-                            name = "Windows Store";
-                            layout.Label("UWP (Windows Store) platform has been deprecated and is no longer supported", TextAlignment.Center).Label.TextColor = Color.Red;
-                            break;
-                        case PlatformType.Linux:
-                            name = "Linux";
-                            break;
-                        case PlatformType.PS4:
-                            name = "PlayStation 4";
-                            break;
-                        case PlatformType.XboxScarlett:
-                            name = "Xbox Scarlett";
-                            break;
-                        case PlatformType.Android:
-                            name = "Android";
-                            break;
-                        case PlatformType.Switch:
-                            name = "Switch";
-                            break;
-                        case PlatformType.PS5:
-                            name = "PlayStation 5";
-                            break;
-                        case PlatformType.Mac:
-                            name = "Mac";
-                            break;
-                        case PlatformType.iOS:
-                            name = "iOS";
-                            break;
-                        default:
-                            name = Utilities.Utils.GetPropertyNameUI(_platform.ToString());
-                            break;
-                        }
-                        var group = layout.Group(name);
-
-                        group.Object(new ReadOnlyValueContainer(platformObj));
-
-                        layout.Space(2);
-                        var openOutputButton = layout.Button("Open output folder").Button;
-                        openOutputButton.TooltipText = "Opens the defined out folder if the path exists.";
-                        openOutputButton.Clicked += () =>
-                        {
-                            string output = StringUtils.ConvertRelativePathToAbsolute(Globals.ProjectFolder, StringUtils.NormalizePath(proxy.PerPlatformOptions[_platform].Output));
-                            if (Directory.Exists(output))
-                                FlaxEngine.FileSystem.ShowFileExplorer(output);
-                            else
-                                FlaxEditor.Editor.LogWarning($"Can not open path: {output} because it does not exist.");
-                        };
-                        layout.Space(2);
-
-                        _buildButton = layout.Button("Build").Button;
-                        _buildButton.Clicked += OnBuildClicked;
-                        platformObj.OnCustomToolsLayout(layout);
                     }
                     else
                     {
-                        platformObj.OnNotAvailableLayout(layout);
+                        noDevicesLabel.Visible = true;
                     }
-                }
 
-                private void OnBuildClicked()
+                    deviceListGroup.Panel.IsClosed = false;
+                };
+
+                var autoStart = installGroup.Checkbox("Try to auto start activity on device.");
+                var installButton = installGroup.Button("Install APK to Device").Button;
+                installButton.TooltipText = "Installs APK from the output folder to the selected device.";
+                installButton.Clicked += () =>
                 {
-                    var proxy = (BuildTabProxy)Values[0];
-                    var platformObj = proxy.PerPlatformOptions[_platform];
-                    platformObj.Build();
-                }
+                    if (deviceListTree.Selection.Count == 0)
+                        return;
 
-                public override void Refresh()
+                    // Get built APK at output path
+                    string output = StringUtils.ConvertRelativePathToAbsolute(Globals.ProjectFolder, StringUtils.NormalizePath(Output));
+                    if (!Directory.Exists(output))
+                    {
+                        FlaxEditor.Editor.LogWarning("Can not copy APK because output folder does not exist.");
+                        return;
+                    }
+
+                    var apkFiles = Directory.GetFiles(output, "*.apk");
+                    if (apkFiles.Length == 0)
+                    {
+                        FlaxEditor.Editor.LogWarning("Can not copy APK because no .apk files were found in output folder.");
+                        return;
+                    }
+
+                    string apkFilesString = string.Empty;
+                    for (int i = 0; i < apkFiles.Length; i++)
+                    {
+                        var file = apkFiles[i];
+                        if (i == 0)
+                        {
+                            apkFilesString = $"\"{file}\"";
+                            continue;
+                        }
+                        apkFilesString += $" \"{file}\"";
+                    }
+
+                    CreateProcessSettings processSettings = new CreateProcessSettings
+                    {
+                        FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
+                        Arguments = $"-s {deviceListTree.Selection[0].Tag} {(apkFiles.Length > 1 ? "install-multiple" : "install")} {apkFilesString}",
+                        LogOutput = true,
+                    };
+                    FlaxEngine.Platform.CreateProcess(ref processSettings);
+
+                    if (autoStart.CheckBox.Checked)
+                    {
+                        var gameSettings = GameSettings.Load();
+                        var productName = gameSettings.ProductName.Replace(" ", "").ToLower();
+                        var companyName = gameSettings.CompanyName.Replace(" ", "").ToLower();
+                        CreateProcessSettings processSettings1 = new CreateProcessSettings
+                        {
+                            FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
+                            Arguments = $"shell am start -n com.{companyName}.{productName}/com.flaxengine.GameActivity",
+                            LogOutput = true,
+                        };
+                        FlaxEngine.Platform.CreateProcess(ref processSettings1);
+                    }
+                };
+
+                var adbLogButton = emulatorGroup.Button("Start adb log collecting").Button;
+                adbLogButton.TooltipText = "In debug and development builds the engine and game logs can be output directly to the adb.";
+                adbLogButton.Clicked += () =>
                 {
-                    base.Refresh();
-
-                    if (_buildButton != null)
+                    var processStartInfo = new System.Diagnostics.ProcessStartInfo
                     {
-                        _buildButton.Enabled = !GameCooker.IsRunning;
-                    }
+                        FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
+                        Arguments = "logcat Flax:I *:S",
+                        CreateNoWindow = false,
+                        WindowStyle = ProcessWindowStyle.Normal,
+                    };
 
-                    if (Values.Count > 0 && Values[0] is BuildTabProxy proxy && proxy.Selector.Selected != _platform)
+                    var process = new System.Diagnostics.Process
                     {
-                        RebuildLayout();
-                    }
-                }
+                        StartInfo = processStartInfo
+                    };
+                    process.Start();
+                    /*
+                    CreateProcessSettings processSettings = new CreateProcessSettings
+                    {
+                        FileName = Path.Combine(sdkPath, "platform-tools", "adb.exe"),
+                        Arguments = $"logcat Flax:I *:S",
+                        WaitForEnd = false,
+                    };
+                    FlaxEngine.Platform.CreateProcess(ref processSettings);
+                    */
+                };
             }
         }
 
-        private class PresetsTargetsColumnBase : ContainerControl
+        class Switch : Platform
         {
-            protected GameCookerWindow _cooker;
+            protected override BuildPlatform BuildPlatform => BuildPlatform.Switch;
+        }
 
-            protected PresetsTargetsColumnBase(ContainerControl parent, GameCookerWindow cooker, bool isPresets, Action addClicked)
+        class PS5 : Platform
+        {
+            protected override BuildPlatform BuildPlatform => BuildPlatform.PS5;
+        }
+
+        class Mac : Platform
+        {
+            public enum Archs
             {
-                AnchorPreset = AnchorPresets.VerticalStretchLeft;
-                Parent = parent;
-                Offsets = new Margin(isPresets ? 0 : 140, 140, 0, 0);
+                [EditorDisplay(null, "arm64")]
+                ARM64,
 
-                _cooker = cooker;
-                var title = new Label
-                {
-                    Bounds = new Rectangle(0, 0, Width, 19),
-                    Text = isPresets ? "Presets" : "Targets",
-                    Parent = this,
-                };
-                var addButton = new Button
-                {
-                    Text = isPresets ? "New preset" : "Add target",
-                    Bounds = new Rectangle(6, 22, Width - 12, title.Bottom),
-                    Parent = this,
-                };
-                addButton.Clicked += addClicked;
+                [EditorDisplay(null, "x64")]
+                x64,
             }
 
-            protected void RemoveButtons()
+            public Archs CPU = Archs.ARM64;
+
+            protected override BuildPlatform BuildPlatform => CPU == Archs.ARM64 ? BuildPlatform.MacOSARM64 : BuildPlatform.MacOSx64;
+        }
+
+        class iOS : Platform
+        {
+            protected override BuildPlatform BuildPlatform => BuildPlatform.iOSARM64;
+        }
+
+        class Editor : CustomEditor
+        {
+            private PlatformType _platform;
+            private Button _buildButton;
+
+            public override void Initialize(LayoutElementsContainer layout)
             {
-                for (int i = ChildrenCount - 1; i >= 0; i--)
+                var proxy = (BuildTabProxy)Values[0];
+                _platform = proxy.Selector.Selected;
+                var platformObj = proxy.PerPlatformOptions[_platform];
+
+                if (!platformObj.IsSupported)
                 {
-                    if (Children[i].Tag != null)
+                    layout.Label("This platform is not supported on this system.", TextAlignment.Center);
+                }
+                else if (platformObj.IsAvailable)
+                {
+                    string name;
+                    switch (_platform)
                     {
-                        Children[i].Dispose();
+                    case PlatformType.Windows:
+                        name = "Windows";
+                        break;
+                    case PlatformType.XboxOne:
+                        name = "Xbox One";
+                        break;
+                    case PlatformType.UWP:
+                        name = "Windows Store";
+                        layout.Label("UWP (Windows Store) platform has been deprecated and is no longer supported", TextAlignment.Center).Label.TextColor = Color.Red;
+                        break;
+                    case PlatformType.Linux:
+                        name = "Linux";
+                        break;
+                    case PlatformType.PS4:
+                        name = "PlayStation 4";
+                        break;
+                    case PlatformType.XboxScarlett:
+                        name = "Xbox Scarlett";
+                        break;
+                    case PlatformType.Android:
+                        name = "Android";
+                        break;
+                    case PlatformType.Switch:
+                        name = "Switch";
+                        break;
+                    case PlatformType.PS5:
+                        name = "PlayStation 5";
+                        break;
+                    case PlatformType.Mac:
+                        name = "Mac";
+                        break;
+                    case PlatformType.iOS:
+                        name = "iOS";
+                        break;
+                    default:
+                        name = Utilities.Utils.GetPropertyNameUI(_platform.ToString());
+                        break;
                     }
+                    var group = layout.Group(name);
+
+                    group.Object(new ReadOnlyValueContainer(platformObj));
+
+                    layout.Space(2);
+                    var openOutputButton = layout.Button("Open output folder").Button;
+                    openOutputButton.TooltipText = "Opens the defined out folder if the path exists.";
+                    openOutputButton.Clicked += () =>
+                    {
+                        string output = StringUtils.ConvertRelativePathToAbsolute(Globals.ProjectFolder, StringUtils.NormalizePath(proxy.PerPlatformOptions[_platform].Output));
+                        if (Directory.Exists(output))
+                            FlaxEngine.FileSystem.ShowFileExplorer(output);
+                        else
+                            FlaxEditor.Editor.LogWarning($"Can not open path: {output} because it does not exist.");
+                    };
+                    layout.Space(2);
+
+                    _buildButton = layout.Button("Build").Button;
+                    _buildButton.Clicked += OnBuildClicked;
+                    platformObj.OnCustomToolsLayout(layout);
+                }
+                else
+                {
+                    platformObj.OnNotAvailableLayout(layout);
                 }
             }
 
-            protected void AddButton(string name, int index, int selectedIndex, Action<Button> select, Action<Button> remove)
+            private void OnBuildClicked()
             {
-                var height = 26;
-                var y = 52 + index * height;
-                var selectButton = new Button
-                {
-                    Text = name,
-                    Tag = index,
-                    Parent = this,
-                    Bounds = new Rectangle(6, y + 2, Width - 12 - 20, 22),
-                };
-                if (selectedIndex == index)
-                    selectButton.SetColors(Color.FromBgra(0xFFAB8400));
-                selectButton.ButtonClicked += select;
-                var removeButton = new Button
-                {
-                    Text = "x",
-                    Tag = index,
-                    Parent = this,
-                    Bounds = new Rectangle(selectButton.Right + 4, y + 4, 18, 18),
-                };
-                removeButton.ButtonClicked += remove;
+                var proxy = (BuildTabProxy)Values[0];
+                var platformObj = proxy.PerPlatformOptions[_platform];
+                platformObj.Build();
             }
 
-            /// <inheritdoc />
-            public override void Draw()
+            public override void Refresh()
             {
-                base.Draw();
+                base.Refresh();
 
-                var color = Style.Current.Background * 0.8f;
-                Render2D.DrawLine(new Float2(Width, 0), new Float2(Width, Height), color);
-                Render2D.DrawLine(new Float2(0, 48), new Float2(Width, 48), color);
-            }
-        }
-
-        private sealed class PresetsColumn : PresetsTargetsColumnBase
-        {
-            public PresetsColumn(ContainerControl parent, GameCookerWindow cooker)
-            : base(parent, cooker, true, cooker.AddPreset)
-            {
-                _cooker = cooker;
-            }
-
-            public void RefreshColumn(BuildPreset[] presets, int selectedIndex)
-            {
-                RemoveButtons();
-
-                if (presets != null)
+                if (_buildButton != null)
                 {
-                    for (int i = 0; i < presets.Length; i++)
-                    {
-                        if (presets[i] == null)
-                            return;
-                        AddButton(presets[i].Name, i, selectedIndex,
-                                  b => _cooker.SelectPreset((int)b.Tag),
-                                  b => _cooker.RemovePreset((int)b.Tag));
-                    }
+                    _buildButton.Enabled = !GameCooker.IsRunning;
+                }
+
+                if (Values.Count > 0 && Values[0] is BuildTabProxy proxy && proxy.Selector.Selected != _platform)
+                {
+                    RebuildLayout();
                 }
             }
         }
+    }
 
-        private sealed class TargetsColumn : PresetsTargetsColumnBase
+    private class PresetsTargetsColumnBase : ContainerControl
+    {
+        protected GameCookerWindow _cooker;
+
+        protected PresetsTargetsColumnBase(ContainerControl parent, GameCookerWindow cooker, bool isPresets, Action addClicked)
         {
-            public TargetsColumn(ContainerControl parent, GameCookerWindow cooker)
-            : base(parent, cooker, false, cooker.AddTarget)
+            AnchorPreset = AnchorPresets.VerticalStretchLeft;
+            Parent = parent;
+            Offsets = new Margin(isPresets ? 0 : 140, 140, 0, 0);
+
+            _cooker = cooker;
+            var title = new Label
             {
-                _cooker = cooker;
-
-                var height = 26;
-                var helpButton = new Button
-                {
-                    Text = "Help",
-                    Parent = this,
-                    AnchorPreset = AnchorPresets.BottomLeft,
-                    Bounds = new Rectangle(6, Height - height, Width - 12, 22),
-                };
-                helpButton.Clicked += () => Platform.OpenUrl(Constants.DocsUrl + "manual/editor/game-cooker/");
-                var buildAllButton = new Button
-                {
-                    Text = "Build All",
-                    Parent = this,
-                    AnchorPreset = AnchorPresets.BottomLeft,
-                    Bounds = new Rectangle(6, helpButton.Top - height, Width - 12, 22),
-                };
-                buildAllButton.Clicked += _cooker.BuildAllTargets;
-                var buildButton = new Button
-                {
-                    Text = "Build",
-                    Parent = this,
-                    AnchorPreset = AnchorPresets.BottomLeft,
-                    Bounds = new Rectangle(6, buildAllButton.Top - height, Width - 12, 22),
-                };
-                buildButton.Clicked += _cooker.BuildTarget;
-                var discardButton = new Button
-                {
-                    Text = "Discard",
-                    Parent = this,
-                    AnchorPreset = AnchorPresets.BottomLeft,
-                    Bounds = new Rectangle(6, buildButton.Top - height, Width - 12, 22),
-                };
-                discardButton.Clicked += _cooker.GatherData;
-                var saveButton = new Button
-                {
-                    Text = "Save",
-                    Parent = this,
-                    AnchorPreset = AnchorPresets.BottomLeft,
-                    Bounds = new Rectangle(6, discardButton.Top - height, Width - 12, 22),
-                };
-                saveButton.Clicked += _cooker.SaveData;
-            }
-
-            public void RefreshColumn(BuildTarget[] targets, int selectedIndex)
-            {
-                RemoveButtons();
-
-                if (targets != null)
-                {
-                    for (int i = 0; i < targets.Length; i++)
-                    {
-                        if (targets[i] == null)
-                            return;
-                        AddButton(targets[i].Name, i, selectedIndex,
-                                  b => _cooker.SelectTarget((int)b.Tag),
-                                  b => _cooker.RemoveTarget((int)b.Tag));
-                    }
-                }
-            }
-        }
-
-        private struct QueueItem
-        {
-            public string PresetName;
-            public BuildTarget Target;
-            public BuildOptions Options;
-        }
-
-        private PresetsColumn _presets;
-        private TargetsColumn _targets;
-        private BuildTabProxy _buildTabProxy;
-        private int _selectedPresetIndex = -1;
-        private int _selectedTargetIndex = -1;
-        private CustomEditorPresenter _targetSettings;
-        private readonly Queue<QueueItem> _buildingQueue = new Queue<QueueItem>();
-        private string _preBuildAction;
-        private string _postBuildAction;
-        private BuildPreset[] _data;
-        private bool _isDataDirty, _exitOnBuildEnd, _lastBuildFailed;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameCookerWindow"/> class.
-        /// </summary>
-        /// <param name="editor">The editor.</param>
-        public GameCookerWindow(Editor editor)
-        : base(editor, true, ScrollBars.None)
-        {
-            Title = "Game Cooker";
-
-            var sections = new Tabs
-            {
-                Orientation = Orientation.Vertical,
-                AnchorPreset = AnchorPresets.StretchAll,
-                Offsets = Margin.Zero,
-                TabsSize = new Float2(120, 32),
-                Parent = this
+                Bounds = new Rectangle(0, 0, Width, 19),
+                Text = isPresets ? "Presets" : "Targets",
+                Parent = this,
             };
-
-            CreatePresetsTab(sections);
-            CreateBuildTab(sections);
-
-            GameCooker.Event += OnGameCookerEvent;
-
-            sections.SelectedTabIndex = 1;
+            var addButton = new Button
+            {
+                Text = isPresets ? "New preset" : "Add target",
+                Bounds = new Rectangle(6, 22, Width - 12, title.Bottom),
+                Parent = this,
+            };
+            addButton.Clicked += addClicked;
         }
 
-        private void OnGameCookerEvent(GameCooker.EventType type)
+        protected void RemoveButtons()
         {
-            if (type == GameCooker.EventType.BuildStarted)
+            for (int i = ChildrenCount - 1; i >= 0; i--)
             {
-                // Execute pre-build action
-                if (!string.IsNullOrEmpty(_preBuildAction))
-                    ExecuteAction(_preBuildAction);
-                _preBuildAction = null;
-            }
-            else if (type == GameCooker.EventType.BuildDone)
-            {
-                // Execute post-build action
-                if (!string.IsNullOrEmpty(_postBuildAction))
-                    ExecuteAction(_postBuildAction);
-                _postBuildAction = null;
-            }
-            else if (type == GameCooker.EventType.BuildFailed)
-            {
-                _postBuildAction = null;
-                _lastBuildFailed = true;
-            }
-        }
-
-        private void ExecuteAction(string action)
-        {
-            string command = "echo off\ncd \"" + Globals.ProjectFolder.Replace('/', '\\') + "\"\necho on\n" + action;
-            command = command.Replace("\n", "\r\n");
-
-            // TODO: postprocess text using $(OutputPath) etc. macros
-            // TODO: capture std out of the action (maybe call system() to execute it)
-
-            try
-            {
-                var tmpBat = StringUtils.CombinePaths(Globals.TemporaryFolder, Guid.NewGuid().ToString("N") + ".bat");
-                File.WriteAllText(tmpBat, command);
-                var procSettings = new CreateProcessSettings
+                if (Children[i].Tag != null)
                 {
-                    FileName = tmpBat,
-                    HiddenWindow = true,
-                    WaitForEnd = true,
-                };
-                Platform.CreateProcess(ref procSettings);
-                File.Delete(tmpBat);
-            }
-            catch (Exception ex)
-            {
-                Editor.LogWarning(ex);
-                Debug.LogError("Failed to execute build action.");
+                    Children[i].Dispose();
+                }
             }
         }
 
-        internal void ExitOnBuildQueueEnd()
+        protected void AddButton(string name, int index, int selectedIndex, Action<Button> select, Action<Button> remove)
         {
-            _exitOnBuildEnd = true;
-        }
-
-        /// <summary>
-        /// Returns true if can build for the given platform (both supported and available).
-        /// </summary>
-        /// <param name="platformType">The platform.</param>
-        /// <returns>True if can build, otherwise false.</returns>
-        public bool CanBuild(PlatformType platformType)
-        {
-            if (_buildTabProxy != null && _buildTabProxy.PerPlatformOptions.TryGetValue(platformType, out var platform))
-                return platform.IsAvailable && platform.IsSupported;
-            return false;
-        }
-
-        /// <summary>
-        /// Builds all the targets from the given preset.
-        /// </summary>
-        /// <param name="preset">The preset.</param>
-        public void BuildAll(BuildPreset preset)
-        {
-            if (preset == null)
-                throw new ArgumentNullException(nameof(preset));
-
-            Editor.Log("Building all targets");
-            foreach (var e in preset.Targets)
+            var height = 26;
+            var y = 52 + index * height;
+            var selectButton = new Button
             {
-                _buildingQueue.Enqueue(new QueueItem
+                Text = name,
+                Tag = index,
+                Parent = this,
+                Bounds = new Rectangle(6, y + 2, Width - 12 - 20, 22),
+            };
+            if (selectedIndex == index)
+                selectButton.SetColors(Color.FromBgra(0xFFAB8400));
+            selectButton.ButtonClicked += select;
+            var removeButton = new Button
+            {
+                Text = "x",
+                Tag = index,
+                Parent = this,
+                Bounds = new Rectangle(selectButton.Right + 4, y + 4, 18, 18),
+            };
+            removeButton.ButtonClicked += remove;
+        }
+
+        /// <inheritdoc />
+        public override void Draw()
+        {
+            base.Draw();
+
+            var color = Style.Current.Background * 0.8f;
+            Render2D.DrawLine(new Float2(Width, 0), new Float2(Width, Height), color);
+            Render2D.DrawLine(new Float2(0, 48), new Float2(Width, 48), color);
+        }
+    }
+
+    private sealed class PresetsColumn : PresetsTargetsColumnBase
+    {
+        public PresetsColumn(ContainerControl parent, GameCookerWindow cooker)
+        : base(parent, cooker, true, cooker.AddPreset)
+        {
+            _cooker = cooker;
+        }
+
+        public void RefreshColumn(BuildPreset[] presets, int selectedIndex)
+        {
+            RemoveButtons();
+
+            if (presets != null)
+            {
+                for (int i = 0; i < presets.Length; i++)
                 {
-                    PresetName = preset.Name,
-                    Target = e.DeepClone(),
-                });
+                    if (presets[i] == null)
+                        return;
+                    AddButton(presets[i].Name, i, selectedIndex,
+                              b => _cooker.SelectPreset((int)b.Tag),
+                              b => _cooker.RemovePreset((int)b.Tag));
+                }
             }
         }
+    }
 
-        /// <summary>
-        /// Builds the target.
-        /// </summary>
-        /// <param name="preset">The preset.</param>
-        /// <param name="target">The target.</param>
-        public void Build(BuildPreset preset, BuildTarget target)
+    private sealed class TargetsColumn : PresetsTargetsColumnBase
+    {
+        public TargetsColumn(ContainerControl parent, GameCookerWindow cooker)
+        : base(parent, cooker, false, cooker.AddTarget)
         {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
+            _cooker = cooker;
 
-            Editor.Log("Building target");
+            var height = 26;
+            var helpButton = new Button
+            {
+                Text = "Help",
+                Parent = this,
+                AnchorPreset = AnchorPresets.BottomLeft,
+                Bounds = new Rectangle(6, Height - height, Width - 12, 22),
+            };
+            helpButton.Clicked += () => Platform.OpenUrl(Constants.DocsUrl + "manual/editor/game-cooker/");
+            var buildAllButton = new Button
+            {
+                Text = "Build All",
+                Parent = this,
+                AnchorPreset = AnchorPresets.BottomLeft,
+                Bounds = new Rectangle(6, helpButton.Top - height, Width - 12, 22),
+            };
+            buildAllButton.Clicked += _cooker.BuildAllTargets;
+            var buildButton = new Button
+            {
+                Text = "Build",
+                Parent = this,
+                AnchorPreset = AnchorPresets.BottomLeft,
+                Bounds = new Rectangle(6, buildAllButton.Top - height, Width - 12, 22),
+            };
+            buildButton.Clicked += _cooker.BuildTarget;
+            var discardButton = new Button
+            {
+                Text = "Discard",
+                Parent = this,
+                AnchorPreset = AnchorPresets.BottomLeft,
+                Bounds = new Rectangle(6, buildButton.Top - height, Width - 12, 22),
+            };
+            discardButton.Clicked += _cooker.GatherData;
+            var saveButton = new Button
+            {
+                Text = "Save",
+                Parent = this,
+                AnchorPreset = AnchorPresets.BottomLeft,
+                Bounds = new Rectangle(6, discardButton.Top - height, Width - 12, 22),
+            };
+            saveButton.Clicked += _cooker.SaveData;
+        }
+
+        public void RefreshColumn(BuildTarget[] targets, int selectedIndex)
+        {
+            RemoveButtons();
+
+            if (targets != null)
+            {
+                for (int i = 0; i < targets.Length; i++)
+                {
+                    if (targets[i] == null)
+                        return;
+                    AddButton(targets[i].Name, i, selectedIndex,
+                              b => _cooker.SelectTarget((int)b.Tag),
+                              b => _cooker.RemoveTarget((int)b.Tag));
+                }
+            }
+        }
+    }
+
+    private struct QueueItem
+    {
+        public string PresetName;
+        public BuildTarget Target;
+        public BuildOptions Options;
+    }
+
+    private PresetsColumn _presets;
+    private TargetsColumn _targets;
+    private BuildTabProxy _buildTabProxy;
+    private int _selectedPresetIndex = -1;
+    private int _selectedTargetIndex = -1;
+    private CustomEditorPresenter _targetSettings;
+    private readonly Queue<QueueItem> _buildingQueue = new Queue<QueueItem>();
+    private string _preBuildAction;
+    private string _postBuildAction;
+    private BuildPreset[] _data;
+    private bool _isDataDirty, _exitOnBuildEnd, _lastBuildFailed;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GameCookerWindow"/> class.
+    /// </summary>
+    /// <param name="editor">The editor.</param>
+    public GameCookerWindow(Editor editor)
+    : base(editor, true, ScrollBars.None)
+    {
+        Title = "Game Cooker";
+
+        var sections = new Tabs
+        {
+            Orientation = Orientation.Vertical,
+            AnchorPreset = AnchorPresets.StretchAll,
+            Offsets = Margin.Zero,
+            TabsSize = new Float2(120, 32),
+            Parent = this
+        };
+
+        CreatePresetsTab(sections);
+        CreateBuildTab(sections);
+
+        GameCooker.Event += OnGameCookerEvent;
+
+        sections.SelectedTabIndex = 1;
+    }
+
+    private void OnGameCookerEvent(GameCooker.EventType type)
+    {
+        if (type == GameCooker.EventType.BuildStarted)
+        {
+            // Execute pre-build action
+            if (!string.IsNullOrEmpty(_preBuildAction))
+                ExecuteAction(_preBuildAction);
+            _preBuildAction = null;
+        }
+        else if (type == GameCooker.EventType.BuildDone)
+        {
+            // Execute post-build action
+            if (!string.IsNullOrEmpty(_postBuildAction))
+                ExecuteAction(_postBuildAction);
+            _postBuildAction = null;
+        }
+        else if (type == GameCooker.EventType.BuildFailed)
+        {
+            _postBuildAction = null;
+            _lastBuildFailed = true;
+        }
+    }
+
+    private void ExecuteAction(string action)
+    {
+        string command = "echo off\ncd \"" + Globals.ProjectFolder.Replace('/', '\\') + "\"\necho on\n" + action;
+        command = command.Replace("\n", "\r\n");
+
+        // TODO: postprocess text using $(OutputPath) etc. macros
+        // TODO: capture std out of the action (maybe call system() to execute it)
+
+        try
+        {
+            var tmpBat = StringUtils.CombinePaths(Globals.TemporaryFolder, Guid.NewGuid().ToString("N") + ".bat");
+            File.WriteAllText(tmpBat, command);
+            var procSettings = new CreateProcessSettings
+            {
+                FileName = tmpBat,
+                HiddenWindow = true,
+                WaitForEnd = true,
+            };
+            Platform.CreateProcess(ref procSettings);
+            File.Delete(tmpBat);
+        }
+        catch (Exception ex)
+        {
+            Editor.LogWarning(ex);
+            Debug.LogError("Failed to execute build action.");
+        }
+    }
+
+    internal void ExitOnBuildQueueEnd()
+    {
+        _exitOnBuildEnd = true;
+    }
+
+    /// <summary>
+    /// Returns true if can build for the given platform (both supported and available).
+    /// </summary>
+    /// <param name="platformType">The platform.</param>
+    /// <returns>True if can build, otherwise false.</returns>
+    public bool CanBuild(PlatformType platformType)
+    {
+        if (_buildTabProxy != null && _buildTabProxy.PerPlatformOptions.TryGetValue(platformType, out var platform))
+            return platform.IsAvailable && platform.IsSupported;
+        return false;
+    }
+
+    /// <summary>
+    /// Builds all the targets from the given preset.
+    /// </summary>
+    /// <param name="preset">The preset.</param>
+    public void BuildAll(BuildPreset preset)
+    {
+        if (preset == null)
+            throw new ArgumentNullException(nameof(preset));
+
+        Editor.Log("Building all targets");
+        foreach (var e in preset.Targets)
+        {
             _buildingQueue.Enqueue(new QueueItem
             {
                 PresetName = preset.Name,
-                Target = target.DeepClone(),
+                Target = e.DeepClone(),
             });
         }
+    }
 
-        /// <summary>
-        /// Builds the target for this platform and runs it on this device.
-        /// </summary>
-        public void BuildAndRun()
+    /// <summary>
+    /// Builds the target.
+    /// </summary>
+    /// <param name="preset">The preset.</param>
+    /// <param name="target">The target.</param>
+    public void Build(BuildPreset preset, BuildTarget target)
+    {
+        if (target == null)
+            throw new ArgumentNullException(nameof(target));
+
+        Editor.Log("Building target");
+        _buildingQueue.Enqueue(new QueueItem
         {
-            Editor.Log("Building and running");
-            GameCooker.GetCurrentPlatform(out var platform, out var buildPlatform, out _);
-            var numberOfClients = Editor.Options.Options.Interface.NumberOfGameClientsToLaunch;
-            var buildConfig = Editor.Options.Options.Interface.CookAndRunBuildConfiguration;
-            for (int i = 0; i < numberOfClients; i++)
-            {
-                var buildOptions = BuildOptions.AutoRun;
-                if (i > 0)
-                    buildOptions |= BuildOptions.NoCook;
+            PresetName = preset.Name,
+            Target = target.DeepClone(),
+        });
+    }
 
-                _buildingQueue.Enqueue(new QueueItem
+    /// <summary>
+    /// Builds the target for this platform and runs it on this device.
+    /// </summary>
+    public void BuildAndRun()
+    {
+        Editor.Log("Building and running");
+        GameCooker.GetCurrentPlatform(out var platform, out var buildPlatform, out _);
+        var numberOfClients = Editor.Options.Options.Interface.NumberOfGameClientsToLaunch;
+        var buildConfig = Editor.Options.Options.Interface.CookAndRunBuildConfiguration;
+        for (int i = 0; i < numberOfClients; i++)
+        {
+            var buildOptions = BuildOptions.AutoRun;
+            if (i > 0)
+                buildOptions |= BuildOptions.NoCook;
+
+            _buildingQueue.Enqueue(new QueueItem
+            {
+                Target = new BuildTarget
                 {
-                    Target = new BuildTarget
-                    {
-                        Output = _buildTabProxy.PerPlatformOptions[platform].Output,
-                        Platform = buildPlatform,
-                        Mode = buildConfig,
-                    },
-                    Options = buildOptions,
-                });
-            }
+                    Output = _buildTabProxy.PerPlatformOptions[platform].Output,
+                    Platform = buildPlatform,
+                    Mode = buildConfig,
+                },
+                Options = buildOptions,
+            });
         }
+    }
 
-        /// <summary>
-        /// Runs the cooked game for this platform on this device.
-        /// </summary>
-        public void RunCooked()
+    /// <summary>
+    /// Runs the cooked game for this platform on this device.
+    /// </summary>
+    public void RunCooked()
+    {
+        Editor.Log("Running cooked build");
+        GameCooker.GetCurrentPlatform(out var platform, out var buildPlatform, out _);
+        var numberOfClients = Editor.Options.Options.Interface.NumberOfGameClientsToLaunch;
+        var buildConfig = Editor.Options.Options.Interface.CookAndRunBuildConfiguration;
+        for (int i = 0; i < numberOfClients; i++)
         {
-            Editor.Log("Running cooked build");
-            GameCooker.GetCurrentPlatform(out var platform, out var buildPlatform, out _);
-            var numberOfClients = Editor.Options.Options.Interface.NumberOfGameClientsToLaunch;
-            var buildConfig = Editor.Options.Options.Interface.CookAndRunBuildConfiguration;
-            for (int i = 0; i < numberOfClients; i++)
+            _buildingQueue.Enqueue(new QueueItem
             {
-                _buildingQueue.Enqueue(new QueueItem
+                Target = new BuildTarget
                 {
-                    Target = new BuildTarget
-                    {
-                        Output = _buildTabProxy.PerPlatformOptions[platform].Output,
-                        Platform = buildPlatform,
-                        Mode = buildConfig,
-                    },
-                    Options = BuildOptions.AutoRun | BuildOptions.NoCook,
-                });
-            }
+                    Output = _buildTabProxy.PerPlatformOptions[platform].Output,
+                    Platform = buildPlatform,
+                    Mode = buildConfig,
+                },
+                Options = BuildOptions.AutoRun | BuildOptions.NoCook,
+            });
         }
+    }
 
-        private void BuildTarget()
+    private void BuildTarget()
+    {
+        if (_data == null || _data.Length <= _selectedPresetIndex || _selectedPresetIndex == -1)
+            return;
+        if (_data[_selectedPresetIndex].Targets == null || _data[_selectedPresetIndex].Targets.Length <= _selectedTargetIndex)
+            return;
+
+        var preset = _data[_selectedPresetIndex];
+        Build(preset, preset.Targets[_selectedTargetIndex]);
+    }
+
+    private void BuildAllTargets()
+    {
+        if (_data == null || _data.Length <= _selectedPresetIndex || _selectedPresetIndex == -1)
+            return;
+        if (_data[_selectedPresetIndex].Targets == null || _data[_selectedPresetIndex].Targets.Length == 0)
+            return;
+
+        BuildAll(_data[_selectedPresetIndex]);
+    }
+
+    private void AddPreset()
+    {
+        var count = _data?.Length ?? 0;
+        var presets = new BuildPreset[count + 1];
+        if (count > 0)
+            Array.Copy(_data, presets, count);
+        presets[count] = new BuildPreset
         {
-            if (_data == null || _data.Length <= _selectedPresetIndex || _selectedPresetIndex == -1)
-                return;
-            if (_data[_selectedPresetIndex].Targets == null || _data[_selectedPresetIndex].Targets.Length <= _selectedTargetIndex)
-                return;
-
-            var preset = _data[_selectedPresetIndex];
-            Build(preset, preset.Targets[_selectedTargetIndex]);
-        }
-
-        private void BuildAllTargets()
-        {
-            if (_data == null || _data.Length <= _selectedPresetIndex || _selectedPresetIndex == -1)
-                return;
-            if (_data[_selectedPresetIndex].Targets == null || _data[_selectedPresetIndex].Targets.Length == 0)
-                return;
-
-            BuildAll(_data[_selectedPresetIndex]);
-        }
-
-        private void AddPreset()
-        {
-            var count = _data?.Length ?? 0;
-            var presets = new BuildPreset[count + 1];
-            if (count > 0)
-                Array.Copy(_data, presets, count);
-            presets[count] = new BuildPreset
+            Name = "Preset " + (count + 1),
+            Targets = new[]
             {
-                Name = "Preset " + (count + 1),
-                Targets = new[]
+                new BuildTarget
                 {
-                    new BuildTarget
-                    {
-                        Name = "Windows 64bit",
-                        Output = "Output\\Win64",
-                        Platform = BuildPlatform.Windows64,
-                        Mode = BuildConfiguration.Development,
-                    },
-                }
-            };
-            _data = presets;
-
-            MarkAsEdited();
-            RefreshColumns();
-        }
-
-        private void AddTarget()
-        {
-            if (_data == null || _data.Length <= _selectedPresetIndex)
-                return;
-
-            var count = _data[_selectedPresetIndex].Targets?.Length ?? 0;
-            var targets = new BuildTarget[count + 1];
-            if (count > 0)
-                Array.Copy(_data[_selectedPresetIndex].Targets, targets, count);
-            targets[count] = new BuildTarget
-            {
-                Name = "Windows 64bit",
-                Output = "Output\\Win64",
-                Platform = BuildPlatform.Windows64,
-                Mode = BuildConfiguration.Development,
-            };
-            _data[_selectedPresetIndex].Targets = targets;
-
-            MarkAsEdited();
-            RefreshColumns();
-        }
-
-        private void SelectPreset(int index)
-        {
-            SelectTarget(index, 0);
-        }
-
-        private void SelectTarget(int index)
-        {
-            SelectTarget(_selectedPresetIndex, index);
-        }
-
-        private void RemovePreset(int index)
-        {
-            if (_data == null || _data.Length <= index)
-                return;
-            var presets = _data.ToList();
-            presets.RemoveAt(index);
-            _data = presets.ToArray();
-            MarkAsEdited();
-
-            if (presets.Count == 0)
-            {
-                SelectTarget(-1, -1);
+                    Name = "Windows 64bit",
+                    Output = "Output\\Win64",
+                    Platform = BuildPlatform.Windows64,
+                    Mode = BuildConfiguration.Development,
+                },
             }
-            else if (_selectedPresetIndex == index)
-            {
-                SelectTarget(0, 0);
-            }
-            else
-            {
-                RefreshColumns();
-            }
-        }
+        };
+        _data = presets;
 
-        private void RemoveTarget(int index)
+        MarkAsEdited();
+        RefreshColumns();
+    }
+
+    private void AddTarget()
+    {
+        if (_data == null || _data.Length <= _selectedPresetIndex)
+            return;
+
+        var count = _data[_selectedPresetIndex].Targets?.Length ?? 0;
+        var targets = new BuildTarget[count + 1];
+        if (count > 0)
+            Array.Copy(_data[_selectedPresetIndex].Targets, targets, count);
+        targets[count] = new BuildTarget
         {
-            if (_selectedPresetIndex == -1 || _data == null || _data.Length <= _selectedPresetIndex)
-                return;
+            Name = "Windows 64bit",
+            Output = "Output\\Win64",
+            Platform = BuildPlatform.Windows64,
+            Mode = BuildConfiguration.Development,
+        };
+        _data[_selectedPresetIndex].Targets = targets;
 
-            var preset = _data[_selectedPresetIndex];
-            var targets = preset.Targets.ToList();
-            targets.RemoveAt(index);
-            preset.Targets = targets.ToArray();
-            MarkAsEdited();
+        MarkAsEdited();
+        RefreshColumns();
+    }
 
-            if (targets.Count == 0)
-            {
-                SelectTarget(_selectedPresetIndex, -1);
-            }
-            else if (_selectedPresetIndex == index)
-            {
-                SelectTarget(_selectedPresetIndex, 0);
-            }
-            else
-            {
-                RefreshColumns();
-            }
-        }
+    private void SelectPreset(int index)
+    {
+        SelectTarget(index, 0);
+    }
 
-        private void RefreshColumns()
+    private void SelectTarget(int index)
+    {
+        SelectTarget(_selectedPresetIndex, index);
+    }
+
+    private void RemovePreset(int index)
+    {
+        if (_data == null || _data.Length <= index)
+            return;
+        var presets = _data.ToList();
+        presets.RemoveAt(index);
+        _data = presets.ToArray();
+        MarkAsEdited();
+
+        if (presets.Count == 0)
         {
-            _presets.RefreshColumn(_data, _selectedPresetIndex);
-            var presets = _data != null && _data.Length > _selectedPresetIndex && _selectedPresetIndex != -1 ? _data[_selectedPresetIndex].Targets : null;
-            _targets.RefreshColumn(presets, _selectedTargetIndex);
+            SelectTarget(-1, -1);
         }
-
-        private void SelectTarget(int presetIndex, int targetIndex)
+        else if (_selectedPresetIndex == index)
         {
-            object obj = null;
-            if (presetIndex != -1 && targetIndex != -1 && _data != null && _data.Length > presetIndex)
-            {
-                var preset = _data[presetIndex];
-                if (preset.Targets != null && preset.Targets.Length > targetIndex)
-                    obj = preset.Targets[targetIndex];
-            }
-
-            _targetSettings.Select(obj);
-            _selectedPresetIndex = presetIndex;
-            _selectedTargetIndex = targetIndex;
-
-            RefreshColumns();
-        }
-
-        private void CreatePresetsTab(Tabs sections)
-        {
-            var tab = sections.AddTab(new Tab("Presets"));
-
-            _presets = new PresetsColumn(tab, this);
-            _targets = new TargetsColumn(tab, this);
-            var panel = new Panel(ScrollBars.Vertical)
-            {
-                AnchorPreset = AnchorPresets.StretchAll,
-                Offsets = new Margin(140 * 2, 0, 0, 0),
-                Parent = tab
-            };
-
-            _targetSettings = new CustomEditorPresenter(null);
-            _targetSettings.Panel.Parent = panel;
-            _targetSettings.Modified += MarkAsEdited;
-        }
-
-        private void MarkAsEdited()
-        {
-            if (!_isDataDirty)
-            {
-                _isDataDirty = true;
-            }
-        }
-
-        private void ClearDirtyFlag()
-        {
-            if (_isDataDirty)
-            {
-                _isDataDirty = false;
-            }
-        }
-
-        private void CreateBuildTab(Tabs sections)
-        {
-            var tab = sections.AddTab(new Tab("Build"));
-
-            var platformSelector = new PlatformSelector
-            {
-                AnchorPreset = AnchorPresets.HorizontalStretchTop,
-                BackgroundColor = Style.Current.LightBackground,
-                Parent = tab,
-            };
-            platformSelector.SizeChanged += OnPlatformSelectorSizeChanged;
-            var panel = new Panel(ScrollBars.Vertical)
-            {
-                AnchorPreset = AnchorPresets.StretchAll,
-                Offsets = new Margin(0, 0, platformSelector.Offsets.Height, 0),
-                Parent = tab,
-            };
-
-            var settings = new CustomEditorPresenter(null);
-            settings.Panel.Parent = panel;
-            _buildTabProxy = new BuildTabProxy(this, platformSelector);
-            settings.Select(_buildTabProxy);
-        }
-
-        private void OnPlatformSelectorSizeChanged(Control platformSelector)
-        {
-            var panel = platformSelector.Parent.Children[platformSelector.IndexInParent + 1];
-            panel.Offsets = new Margin(0, 0, platformSelector.Offsets.Height, 0);
-        }
-
-        /// <summary>
-        /// Load the build presets from the settings.
-        /// </summary>
-        private void GatherData()
-        {
-            _data = null;
-
-            var settings = GameSettings.Load<BuildSettings>();
-            if (settings.Presets != null)
-            {
-                _data = new BuildPreset[settings.Presets.Length];
-                for (int i = 0; i < _data.Length; i++)
-                {
-                    _data[i] = settings.Presets[i].DeepClone();
-                }
-            }
-
-            ClearDirtyFlag();
             SelectTarget(0, 0);
         }
-
-        /// <summary>
-        /// Saves the build presets to the settings.
-        /// </summary>
-        private void SaveData()
+        else
         {
-            if (_data == null)
-                return;
+            RefreshColumns();
+        }
+    }
 
-            var settings = GameSettings.Load<BuildSettings>();
-            settings.Presets = _data;
-            GameSettings.Save(settings);
+    private void RemoveTarget(int index)
+    {
+        if (_selectedPresetIndex == -1 || _data == null || _data.Length <= _selectedPresetIndex)
+            return;
 
-            ClearDirtyFlag();
+        var preset = _data[_selectedPresetIndex];
+        var targets = preset.Targets.ToList();
+        targets.RemoveAt(index);
+        preset.Targets = targets.ToArray();
+        MarkAsEdited();
+
+        if (targets.Count == 0)
+        {
+            SelectTarget(_selectedPresetIndex, -1);
+        }
+        else if (_selectedPresetIndex == index)
+        {
+            SelectTarget(_selectedPresetIndex, 0);
+        }
+        else
+        {
+            RefreshColumns();
+        }
+    }
+
+    private void RefreshColumns()
+    {
+        _presets.RefreshColumn(_data, _selectedPresetIndex);
+        var presets = _data != null && _data.Length > _selectedPresetIndex && _selectedPresetIndex != -1 ? _data[_selectedPresetIndex].Targets : null;
+        _targets.RefreshColumn(presets, _selectedTargetIndex);
+    }
+
+    private void SelectTarget(int presetIndex, int targetIndex)
+    {
+        object obj = null;
+        if (presetIndex != -1 && targetIndex != -1 && _data != null && _data.Length > presetIndex)
+        {
+            var preset = _data[presetIndex];
+            if (preset.Targets != null && preset.Targets.Length > targetIndex)
+                obj = preset.Targets[targetIndex];
         }
 
-        /// <inheritdoc />
-        public override void OnInit()
-        {
-            GatherData();
-        }
+        _targetSettings.Select(obj);
+        _selectedPresetIndex = presetIndex;
+        _selectedTargetIndex = targetIndex;
 
-        /// <inheritdoc />
-        public override void OnUpdate()
+        RefreshColumns();
+    }
+
+    private void CreatePresetsTab(Tabs sections)
+    {
+        var tab = sections.AddTab(new Tab("Presets"));
+
+        _presets = new PresetsColumn(tab, this);
+        _targets = new TargetsColumn(tab, this);
+        var panel = new Panel(ScrollBars.Vertical)
         {
-            // Building queue
-            if (!GameCooker.IsRunning)
+            AnchorPreset = AnchorPresets.StretchAll,
+            Offsets = new Margin(140 * 2, 0, 0, 0),
+            Parent = tab
+        };
+
+        _targetSettings = new CustomEditorPresenter(null);
+        _targetSettings.Panel.Parent = panel;
+        _targetSettings.Modified += MarkAsEdited;
+    }
+
+    private void MarkAsEdited()
+    {
+        if (!_isDataDirty)
+        {
+            _isDataDirty = true;
+        }
+    }
+
+    private void ClearDirtyFlag()
+    {
+        if (_isDataDirty)
+        {
+            _isDataDirty = false;
+        }
+    }
+
+    private void CreateBuildTab(Tabs sections)
+    {
+        var tab = sections.AddTab(new Tab("Build"));
+
+        var platformSelector = new PlatformSelector
+        {
+            AnchorPreset = AnchorPresets.HorizontalStretchTop,
+            BackgroundColor = Style.Current.LightBackground,
+            Parent = tab,
+        };
+        platformSelector.SizeChanged += OnPlatformSelectorSizeChanged;
+        var panel = new Panel(ScrollBars.Vertical)
+        {
+            AnchorPreset = AnchorPresets.StretchAll,
+            Offsets = new Margin(0, 0, platformSelector.Offsets.Height, 0),
+            Parent = tab,
+        };
+
+        var settings = new CustomEditorPresenter(null);
+        settings.Panel.Parent = panel;
+        _buildTabProxy = new BuildTabProxy(this, platformSelector);
+        settings.Select(_buildTabProxy);
+    }
+
+    private void OnPlatformSelectorSizeChanged(Control platformSelector)
+    {
+        var panel = platformSelector.Parent.Children[platformSelector.IndexInParent + 1];
+        panel.Offsets = new Margin(0, 0, platformSelector.Offsets.Height, 0);
+    }
+
+    /// <summary>
+    /// Load the build presets from the settings.
+    /// </summary>
+    private void GatherData()
+    {
+        _data = null;
+
+        var settings = GameSettings.Load<BuildSettings>();
+        if (settings.Presets != null)
+        {
+            _data = new BuildPreset[settings.Presets.Length];
+            for (int i = 0; i < _data.Length; i++)
             {
-                if (_buildingQueue.Count > 0)
-                {
-                    var item = _buildingQueue.Dequeue();
-                    var target = item.Target;
-
-                    _preBuildAction = target.PreBuildAction;
-                    _postBuildAction = target.PostBuildAction;
-
-                    bool failed = GameCooker.Build(target.Platform, target.Mode, target.Output, item.Options, target.CustomDefines, item.PresetName, target.Name);
-                    if (failed && _exitOnBuildEnd)
-                    {
-                        _exitOnBuildEnd = false;
-                        Engine.RequestExit(1);
-                    }
-                }
-                else if (_exitOnBuildEnd)
-                {
-                    _exitOnBuildEnd = false;
-                    Engine.RequestExit(_lastBuildFailed ? 1 : 0);
-                }
+                _data[i] = settings.Presets[i].DeepClone();
             }
         }
 
-        /// <inheritdoc />
-        public override void OnDestroy()
-        {
-            GameCooker.Event -= OnGameCookerEvent;
-            _buildTabProxy = null;
+        ClearDirtyFlag();
+        SelectTarget(0, 0);
+    }
 
-            base.OnDestroy();
+    /// <summary>
+    /// Saves the build presets to the settings.
+    /// </summary>
+    private void SaveData()
+    {
+        if (_data == null)
+            return;
+
+        var settings = GameSettings.Load<BuildSettings>();
+        settings.Presets = _data;
+        GameSettings.Save(settings);
+
+        ClearDirtyFlag();
+    }
+
+    /// <inheritdoc />
+    public override void OnInit()
+    {
+        GatherData();
+    }
+
+    /// <inheritdoc />
+    public override void OnUpdate()
+    {
+        // Building queue
+        if (!GameCooker.IsRunning)
+        {
+            if (_buildingQueue.Count > 0)
+            {
+                var item = _buildingQueue.Dequeue();
+                var target = item.Target;
+
+                _preBuildAction = target.PreBuildAction;
+                _postBuildAction = target.PostBuildAction;
+
+                bool failed = GameCooker.Build(target.Platform, target.Mode, target.Output, item.Options, target.CustomDefines, item.PresetName, target.Name);
+                if (failed && _exitOnBuildEnd)
+                {
+                    _exitOnBuildEnd = false;
+                    Engine.RequestExit(1);
+                }
+            }
+            else if (_exitOnBuildEnd)
+            {
+                _exitOnBuildEnd = false;
+                Engine.RequestExit(_lastBuildFailed ? 1 : 0);
+            }
         }
+    }
+
+    /// <inheritdoc />
+    public override void OnDestroy()
+    {
+        GameCooker.Event -= OnGameCookerEvent;
+        _buildTabProxy = null;
+
+        base.OnDestroy();
     }
 }

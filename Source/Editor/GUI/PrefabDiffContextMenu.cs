@@ -5,123 +5,122 @@ using FlaxEditor.GUI.ContextMenu;
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace FlaxEditor.GUI
+namespace FlaxEditor.GUI;
+
+/// <summary>
+/// The custom context menu that shows a tree of prefab diff items.
+/// </summary>
+/// <seealso cref="ContextMenuBase" />
+public class PrefabDiffContextMenu : ContextMenuBase
 {
     /// <summary>
-    /// The custom context menu that shows a tree of prefab diff items.
+    /// The tree control where you should add your nodes.
     /// </summary>
-    /// <seealso cref="ContextMenuBase" />
-    public class PrefabDiffContextMenu : ContextMenuBase
+    public readonly Tree.Tree Tree;
+
+    /// <summary>
+    /// The event called to revert all the changes applied.
+    /// </summary>
+    public event Action RevertAll;
+
+    /// <summary>
+    /// The event called to apply all the changes.
+    /// </summary>
+    public event Action ApplyAll;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PrefabDiffContextMenu"/> class.
+    /// </summary>
+    /// <param name="width">The control width.</param>
+    /// <param name="height">The control height.</param>
+    public PrefabDiffContextMenu(float width = 280, float height = 260)
     {
-        /// <summary>
-        /// The tree control where you should add your nodes.
-        /// </summary>
-        public readonly Tree.Tree Tree;
+        // Context menu dimensions
+        Size = new Float2(width, height);
 
-        /// <summary>
-        /// The event called to revert all the changes applied.
-        /// </summary>
-        public event Action RevertAll;
+        // Buttons
+        float buttonsWidth = (width - 6.0f) * 0.5f;
+        float buttonsHeight = 20.0f;
 
-        /// <summary>
-        /// The event called to apply all the changes.
-        /// </summary>
-        public event Action ApplyAll;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PrefabDiffContextMenu"/> class.
-        /// </summary>
-        /// <param name="width">The control width.</param>
-        /// <param name="height">The control height.</param>
-        public PrefabDiffContextMenu(float width = 280, float height = 260)
+        var revertAll = new Button(2.0f, 2.0f, buttonsWidth, buttonsHeight)
         {
-            // Context menu dimensions
-            Size = new Float2(width, height);
+            Text = "Revert All",
+            Parent = this
+        };
+        revertAll.Clicked += OnRevertAllClicked;
 
-            // Buttons
-            float buttonsWidth = (width - 6.0f) * 0.5f;
-            float buttonsHeight = 20.0f;
+        var applyAll = new Button(revertAll.Right + 2.0f, 2.0f, buttonsWidth, buttonsHeight)
+        {
+            Text = "Apply All",
+            Parent = this
+        };
+        applyAll.Clicked += OnApplyAllClicked;
 
-            var revertAll = new Button(2.0f, 2.0f, buttonsWidth, buttonsHeight)
-            {
-                Text = "Revert All",
-                Parent = this
-            };
-            revertAll.Clicked += OnRevertAllClicked;
+        // Actual panel
+        var panel1 = new Panel(ScrollBars.Vertical)
+        {
+            Bounds = new Rectangle(0, applyAll.Bottom + 2.0f, Width, Height - applyAll.Bottom - 2.0f),
+            Parent = this
+        };
 
-            var applyAll = new Button(revertAll.Right + 2.0f, 2.0f, buttonsWidth, buttonsHeight)
-            {
-                Text = "Apply All",
-                Parent = this
-            };
-            applyAll.Clicked += OnApplyAllClicked;
+        Tree = new Tree.Tree
+        {
+            AnchorPreset = AnchorPresets.HorizontalStretchTop,
+            IsScrollable = true,
+            Parent = panel1
+        };
+    }
 
-            // Actual panel
-            var panel1 = new Panel(ScrollBars.Vertical)
-            {
-                Bounds = new Rectangle(0, applyAll.Bottom + 2.0f, Width, Height - applyAll.Bottom - 2.0f),
-                Parent = this
-            };
+    private void OnRevertAllClicked()
+    {
+        Hide();
+        RevertAll?.Invoke();
+    }
 
-            Tree = new Tree.Tree
-            {
-                AnchorPreset = AnchorPresets.HorizontalStretchTop,
-                IsScrollable = true,
-                Parent = panel1
-            };
-        }
+    private void OnApplyAllClicked()
+    {
+        Hide();
+        ApplyAll?.Invoke();
+    }
 
-        private void OnRevertAllClicked()
+    /// <inheritdoc />
+    protected override void OnShow()
+    {
+        // Prepare
+        Focus();
+
+        base.OnShow();
+    }
+
+    /// <inheritdoc />
+    public override void Hide()
+    {
+        if (!Visible)
+            return;
+
+        Focus(null);
+
+        base.Hide();
+    }
+
+    /// <inheritdoc />
+    public override bool OnKeyDown(KeyboardKeys key)
+    {
+        if (key == KeyboardKeys.Escape)
         {
             Hide();
-            RevertAll?.Invoke();
+            return true;
         }
 
-        private void OnApplyAllClicked()
-        {
-            Hide();
-            ApplyAll?.Invoke();
-        }
+        return base.OnKeyDown(key);
+    }
 
-        /// <inheritdoc />
-        protected override void OnShow()
-        {
-            // Prepare
-            Focus();
+    /// <inheritdoc />
+    public override void OnDestroy()
+    {
+        RevertAll = null;
+        ApplyAll = null;
 
-            base.OnShow();
-        }
-
-        /// <inheritdoc />
-        public override void Hide()
-        {
-            if (!Visible)
-                return;
-
-            Focus(null);
-
-            base.Hide();
-        }
-
-        /// <inheritdoc />
-        public override bool OnKeyDown(KeyboardKeys key)
-        {
-            if (key == KeyboardKeys.Escape)
-            {
-                Hide();
-                return true;
-            }
-
-            return base.OnKeyDown(key);
-        }
-
-        /// <inheritdoc />
-        public override void OnDestroy()
-        {
-            RevertAll = null;
-            ApplyAll = null;
-
-            base.OnDestroy();
-        }
+        base.OnDestroy();
     }
 }

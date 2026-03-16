@@ -1,13 +1,12 @@
 // Copyright (c) Wojciech Figat. All rights reserved.
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+partial class Asset
 {
-    partial class Asset
+    /// <inheritdoc />
+    public override string ToString()
     {
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"{Path} ({GetType().Name})";
-        }
+        return $"{Path} ({GetType().Name})";
     }
 }

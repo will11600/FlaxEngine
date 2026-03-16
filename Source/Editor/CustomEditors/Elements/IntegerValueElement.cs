@@ -6,154 +6,153 @@ using FlaxEditor.GUI.Input;
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace FlaxEditor.CustomEditors.Elements
+namespace FlaxEditor.CustomEditors.Elements;
+
+/// <summary>
+/// The integer value element.
+/// </summary>
+/// <seealso cref="FlaxEditor.CustomEditors.LayoutElement" />
+public class IntegerValueElement : LayoutElement, IIntegerValueEditor
 {
     /// <summary>
-    /// The integer value element.
+    /// The integer value box.
     /// </summary>
-    /// <seealso cref="FlaxEditor.CustomEditors.LayoutElement" />
-    public class IntegerValueElement : LayoutElement, IIntegerValueEditor
+    public readonly IntValueBox IntValue;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IntegerValueElement"/> class.
+    /// </summary>
+    public IntegerValueElement()
     {
-        /// <summary>
-        /// The integer value box.
-        /// </summary>
-        public readonly IntValueBox IntValue;
+        IntValue = new IntValueBox(0);
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IntegerValueElement"/> class.
-        /// </summary>
-        public IntegerValueElement()
+    /// <summary>
+    /// Sets the editor limits from member <see cref="LimitAttribute"/>.
+    /// </summary>
+    /// <param name="member">The member.</param>
+    public void SetLimits(MemberInfo member)
+    {
+        // Try get limit attribute for value min/max range setting and slider speed
+        if (member != null)
         {
-            IntValue = new IntValueBox(0);
-        }
-
-        /// <summary>
-        /// Sets the editor limits from member <see cref="LimitAttribute"/>.
-        /// </summary>
-        /// <param name="member">The member.</param>
-        public void SetLimits(MemberInfo member)
-        {
-            // Try get limit attribute for value min/max range setting and slider speed
-            if (member != null)
-            {
-                var attributes = member.GetCustomAttributes(true);
-                var limit = attributes.FirstOrDefault(x => x is LimitAttribute);
-                if (limit != null)
-                {
-                    IntValue.SetLimits((LimitAttribute)limit);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets the editor limits from member <see cref="LimitAttribute"/>.
-        /// </summary>
-        /// <param name="limit">The limit.</param>
-        public void SetLimits(LimitAttribute limit)
-        {
+            var attributes = member.GetCustomAttributes(true);
+            var limit = attributes.FirstOrDefault(x => x is LimitAttribute);
             if (limit != null)
             {
-                IntValue.SetLimits(limit);
+                IntValue.SetLimits((LimitAttribute)limit);
             }
         }
-
-        /// <summary>
-        /// Sets the editor limits from the other <see cref="IntegerValueElement"/>.
-        /// </summary>
-        /// <param name="other">The other.</param>
-        public void SetLimits(IntegerValueElement other)
-        {
-            if (other != null)
-            {
-                IntValue.SetLimits(other.IntValue);
-            }
-        }
-
-        /// <inheritdoc />
-        public override Control Control => IntValue;
-
-        /// <inheritdoc />
-        public int Value
-        {
-            get => IntValue.Value;
-            set => IntValue.Value = value;
-        }
-
-        /// <inheritdoc />
-        public bool IsSliding => IntValue.IsSliding;
     }
 
     /// <summary>
-    /// The signed integer value element (maps to the full range of long type).
+    /// Sets the editor limits from member <see cref="LimitAttribute"/>.
     /// </summary>
-    /// <seealso cref="FlaxEditor.CustomEditors.LayoutElement" />
-    public class SignedIntegerValueElement : LayoutElement
+    /// <param name="limit">The limit.</param>
+    public void SetLimits(LimitAttribute limit)
     {
-        /// <summary>
-        /// The signed integer (long) value box.
-        /// </summary>
-        public readonly LongValueBox LongValue;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SignedIntegerValueElement"/> class.
-        /// </summary>
-        public SignedIntegerValueElement()
+        if (limit != null)
         {
-            LongValue = new LongValueBox(0);
+            IntValue.SetLimits(limit);
         }
-
-        /// <inheritdoc />
-        public override Control Control => LongValue;
-
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        public long Value
-        {
-            get => LongValue.Value;
-            set => LongValue.Value = value;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether user is using a slider.
-        /// </summary>
-        public bool IsSliding => LongValue.IsSliding;
     }
 
     /// <summary>
-    /// The unsigned integer value element (maps to the full range of ulong type).
+    /// Sets the editor limits from the other <see cref="IntegerValueElement"/>.
     /// </summary>
-    /// <seealso cref="FlaxEditor.CustomEditors.LayoutElement" />
-    public class UnsignedIntegerValueElement : LayoutElement
+    /// <param name="other">The other.</param>
+    public void SetLimits(IntegerValueElement other)
     {
-        /// <summary>
-        /// The unsigned integer (ulong) value box.
-        /// </summary>
-        public readonly ULongValueBox ULongValue;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnsignedIntegerValueElement"/> class.
-        /// </summary>
-        public UnsignedIntegerValueElement()
+        if (other != null)
         {
-            ULongValue = new ULongValueBox(0);
+            IntValue.SetLimits(other.IntValue);
         }
-
-        /// <inheritdoc />
-        public override Control Control => ULongValue;
-
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        public ulong Value
-        {
-            get => ULongValue.Value;
-            set => ULongValue.Value = value;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether user is using a slider.
-        /// </summary>
-        public bool IsSliding => ULongValue.IsSliding;
     }
+
+    /// <inheritdoc />
+    public override Control Control => IntValue;
+
+    /// <inheritdoc />
+    public int Value
+    {
+        get => IntValue.Value;
+        set => IntValue.Value = value;
+    }
+
+    /// <inheritdoc />
+    public bool IsSliding => IntValue.IsSliding;
+}
+
+/// <summary>
+/// The signed integer value element (maps to the full range of long type).
+/// </summary>
+/// <seealso cref="FlaxEditor.CustomEditors.LayoutElement" />
+public class SignedIntegerValueElement : LayoutElement
+{
+    /// <summary>
+    /// The signed integer (long) value box.
+    /// </summary>
+    public readonly LongValueBox LongValue;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SignedIntegerValueElement"/> class.
+    /// </summary>
+    public SignedIntegerValueElement()
+    {
+        LongValue = new LongValueBox(0);
+    }
+
+    /// <inheritdoc />
+    public override Control Control => LongValue;
+
+    /// <summary>
+    /// Gets or sets the value.
+    /// </summary>
+    public long Value
+    {
+        get => LongValue.Value;
+        set => LongValue.Value = value;
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether user is using a slider.
+    /// </summary>
+    public bool IsSliding => LongValue.IsSliding;
+}
+
+/// <summary>
+/// The unsigned integer value element (maps to the full range of ulong type).
+/// </summary>
+/// <seealso cref="FlaxEditor.CustomEditors.LayoutElement" />
+public class UnsignedIntegerValueElement : LayoutElement
+{
+    /// <summary>
+    /// The unsigned integer (ulong) value box.
+    /// </summary>
+    public readonly ULongValueBox ULongValue;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UnsignedIntegerValueElement"/> class.
+    /// </summary>
+    public UnsignedIntegerValueElement()
+    {
+        ULongValue = new ULongValueBox(0);
+    }
+
+    /// <inheritdoc />
+    public override Control Control => ULongValue;
+
+    /// <summary>
+    /// Gets or sets the value.
+    /// </summary>
+    public ulong Value
+    {
+        get => ULongValue.Value;
+        set => ULongValue.Value = value;
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether user is using a slider.
+    /// </summary>
+    public bool IsSliding => ULongValue.IsSliding;
 }

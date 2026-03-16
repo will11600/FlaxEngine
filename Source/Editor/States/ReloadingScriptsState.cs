@@ -3,42 +3,41 @@
 using FlaxEngine;
 using FlaxEngine.Utilities;
 
-namespace FlaxEditor.States
+namespace FlaxEditor.States;
+
+/// <summary>
+/// In this state editor is reloading user scripts.
+/// </summary>
+/// <seealso cref="FlaxEditor.States.EditorState" />
+[HideInEditor]
+public sealed class ReloadingScriptsState : EditorState
 {
-    /// <summary>
-    /// In this state editor is reloading user scripts.
-    /// </summary>
-    /// <seealso cref="FlaxEditor.States.EditorState" />
-    [HideInEditor]
-    public sealed class ReloadingScriptsState : EditorState
+    /// <inheritdoc />
+    public override string Status => "Reloading scripts...";
+
+    internal ReloadingScriptsState(Editor editor)
+    : base(editor)
     {
-        /// <inheritdoc />
-        public override string Status => "Reloading scripts...";
+    }
 
-        internal ReloadingScriptsState(Editor editor)
-        : base(editor)
-        {
-        }
+    /// <inheritdoc />
+    public override void OnEnter()
+    {
+        base.OnEnter();
 
-        /// <inheritdoc />
-        public override void OnEnter()
-        {
-            base.OnEnter();
+        ScriptsBuilder.ScriptsReloadEnd += OnScriptsReloadEnd;
+    }
 
-            ScriptsBuilder.ScriptsReloadEnd += OnScriptsReloadEnd;
-        }
+    /// <inheritdoc />
+    public override void OnExit(State nextState)
+    {
+        ScriptsBuilder.ScriptsReloadEnd -= OnScriptsReloadEnd;
 
-        /// <inheritdoc />
-        public override void OnExit(State nextState)
-        {
-            ScriptsBuilder.ScriptsReloadEnd -= OnScriptsReloadEnd;
+        base.OnExit(nextState);
+    }
 
-            base.OnExit(nextState);
-        }
-
-        private void OnScriptsReloadEnd()
-        {
-            StateMachine.GoToState<EditingSceneState>();
-        }
+    private void OnScriptsReloadEnd()
+    {
+        StateMachine.GoToState<EditingSceneState>();
     }
 }

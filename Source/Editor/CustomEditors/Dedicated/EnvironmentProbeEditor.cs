@@ -3,51 +3,50 @@
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace FlaxEditor.CustomEditors.Dedicated
+namespace FlaxEditor.CustomEditors.Dedicated;
+
+/// <summary>
+/// Custom editor for <see cref="EnvironmentProbe"/>.
+/// </summary>
+/// <seealso cref="ActorEditor" />
+[CustomEditor(typeof(EnvironmentProbe)), DefaultEditor]
+public class EnvironmentProbeEditor : ActorEditor
 {
-    /// <summary>
-    /// Custom editor for <see cref="EnvironmentProbe"/>.
-    /// </summary>
-    /// <seealso cref="ActorEditor" />
-    [CustomEditor(typeof(EnvironmentProbe)), DefaultEditor]
-    public class EnvironmentProbeEditor : ActorEditor
+    private Button _bake;
+
+    /// <inheritdoc />
+    public override void Initialize(LayoutElementsContainer layout)
     {
-        private Button _bake;
+        base.Initialize(layout);
 
-        /// <inheritdoc />
-        public override void Initialize(LayoutElementsContainer layout)
+        if (Values.HasDifferentTypes == false)
         {
-            base.Initialize(layout);
-
-            if (Values.HasDifferentTypes == false)
-            {
-                var group = layout.Group("Bake");
-                group.Panel.ItemsMargin = new Margin(Utilities.Constants.UIMargin * 2);
-                _bake = group.Button("Bake").Button;
-                _bake.Clicked += BakeButtonClicked;
-            }
+            var group = layout.Group("Bake");
+            group.Panel.ItemsMargin = new Margin(Utilities.Constants.UIMargin * 2);
+            _bake = group.Button("Bake").Button;
+            _bake.Clicked += BakeButtonClicked;
         }
+    }
 
-        /// <inheritdoc />
-        public override void Refresh()
+    /// <inheritdoc />
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        if (_bake != null)
         {
-            base.Refresh();
-
-            if (_bake != null)
-            {
-                _bake.Enabled = Values.Count != 0 && Values[0] is EnvironmentProbe probe && !probe.IsUsingCustomProbe;
-            }
+            _bake.Enabled = Values.Count != 0 && Values[0] is EnvironmentProbe probe && !probe.IsUsingCustomProbe;
         }
+    }
 
-        private void BakeButtonClicked()
+    private void BakeButtonClicked()
+    {
+        for (int i = 0; i < Values.Count; i++)
         {
-            for (int i = 0; i < Values.Count; i++)
+            if (Values[i] is EnvironmentProbe envProbe && !envProbe.IsUsingCustomProbe)
             {
-                if (Values[i] is EnvironmentProbe envProbe && !envProbe.IsUsingCustomProbe)
-                {
-                    envProbe.Bake();
-                    Editor.Instance.Scene.MarkSceneEdited(envProbe.Scene);
-                }
+                envProbe.Bake();
+                Editor.Instance.Scene.MarkSceneEdited(envProbe.Scene);
             }
         }
     }

@@ -2,33 +2,32 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// Inserts an empty space between controls in the editor.
+/// </summary>
+/// <seealso cref="System.Attribute" />
+[Serializable]
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+public sealed class SpaceAttribute : Attribute
 {
     /// <summary>
-    /// Inserts an empty space between controls in the editor.
+    /// The spacing in pixel (vertically).
     /// </summary>
-    /// <seealso cref="System.Attribute" />
-    [Serializable]
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public sealed class SpaceAttribute : Attribute
+    public float Height;
+
+    private SpaceAttribute()
     {
-        /// <summary>
-        /// The spacing in pixel (vertically).
-        /// </summary>
-        public float Height;
+        Height = 10.0f;
+    }
 
-        private SpaceAttribute()
-        {
-            Height = 10.0f;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpaceAttribute"/> class.
-        /// </summary>
-        /// <param name="height">The spacing.</param>
-        public SpaceAttribute(float height)
-        {
-            Height = height;
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SpaceAttribute"/> class.
+    /// </summary>
+    /// <param name="height">The spacing.</param>
+    public SpaceAttribute(float height)
+    {
+        Height = height;
     }
 }

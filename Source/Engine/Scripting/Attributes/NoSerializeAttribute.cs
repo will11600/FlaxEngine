@@ -2,13 +2,12 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// Indicates that a field or a property of a serializable class should not be serialized. This class cannot be inherited.
+/// </summary>
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+public sealed class NoSerializeAttribute : Attribute
 {
-    /// <summary>
-    /// Indicates that a field or a property of a serializable class should not be serialized. This class cannot be inherited.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public sealed class NoSerializeAttribute : Attribute
-    {
-    }
 }

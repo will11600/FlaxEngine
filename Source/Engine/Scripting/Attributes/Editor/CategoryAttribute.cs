@@ -2,26 +2,25 @@
 
 using System;
 
-namespace FlaxEngine
+namespace FlaxEngine;
+
+/// <summary>
+/// Describes the category name for a type.
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
+public sealed class CategoryAttribute : Attribute
 {
     /// <summary>
-    /// Describes the category name for a type.
+    /// The category name.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-    public sealed class CategoryAttribute : Attribute
-    {
-        /// <summary>
-        /// The category name.
-        /// </summary>
-        public string Name;
+    public string Name;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CategoryAttribute"/> class.
-        /// </summary>
-        /// <param name="name">The category name.</param>
-        public CategoryAttribute(string name)
-        {
-            Name = name;
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CategoryAttribute"/> class.
+    /// </summary>
+    /// <param name="name">The category name.</param>
+    public CategoryAttribute(string name)
+    {
+        Name = name;
     }
 }

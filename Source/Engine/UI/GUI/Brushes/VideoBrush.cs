@@ -2,86 +2,85 @@
 
 using System;
 
-namespace FlaxEngine.GUI
+namespace FlaxEngine.GUI;
+
+/// <summary>
+/// Implementation of <see cref="IBrush"/> for <see cref="FlaxEngine.VideoPlayer"/> frame displaying.
+/// </summary>
+/// <seealso cref="IBrush" />
+public sealed class VideoBrush : IBrush, IEquatable<VideoBrush>
 {
     /// <summary>
-    /// Implementation of <see cref="IBrush"/> for <see cref="FlaxEngine.VideoPlayer"/> frame displaying.
+    /// The video player to display frame from it.
     /// </summary>
-    /// <seealso cref="IBrush" />
-    public sealed class VideoBrush : IBrush, IEquatable<VideoBrush>
+    public VideoPlayer Player;
+
+    /// <summary>
+    /// The texture sampling filter mode.
+    /// </summary>
+    [ExpandGroups]
+    public BrushFilter Filter = BrushFilter.Linear;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VideoBrush"/> class.
+    /// </summary>
+    public VideoBrush()
     {
-        /// <summary>
-        /// The video player to display frame from it.
-        /// </summary>
-        public VideoPlayer Player;
+    }
 
-        /// <summary>
-        /// The texture sampling filter mode.
-        /// </summary>
-        [ExpandGroups]
-        public BrushFilter Filter = BrushFilter.Linear;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VideoBrush"/> struct.
+    /// </summary>
+    /// <param name="player">The video player to preview.</param>
+    public VideoBrush(VideoPlayer player)
+    {
+        Player = player;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VideoBrush"/> class.
-        /// </summary>
-        public VideoBrush()
+    /// <inheritdoc />
+    public Float2 Size
+    {
+        get
         {
+            if (Player && Player.Size.LengthSquared > 0)
+                return (Float2)Player.Size;
+            return new Float2(1920, 1080);
         }
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VideoBrush"/> struct.
-        /// </summary>
-        /// <param name="player">The video player to preview.</param>
-        public VideoBrush(VideoPlayer player)
-        {
-            Player = player;
-        }
+    /// <inheritdoc />
+    public void Draw(Rectangle rect, Color color)
+    {
+        var texture = Player?.Frame;
+        if (texture == null || !texture.IsAllocated)
+            texture = GPUDevice.Instance.DefaultBlackTexture;
+        if (Filter == BrushFilter.Point)
+            Render2D.DrawTexturePoint(texture, rect, color);
+        else
+            Render2D.DrawTexture(texture, rect, color);
+    }
 
-        /// <inheritdoc />
-        public Float2 Size
-        {
-            get
-            {
-                if (Player && Player.Size.LengthSquared > 0)
-                    return (Float2)Player.Size;
-                return new Float2(1920, 1080);
-            }
-        }
+    /// <inheritdoc />
+    public bool Equals(VideoBrush other)
+    {
+        return other != null && Player == other.Player && Filter == other.Filter;
+    }
 
-        /// <inheritdoc />
-        public void Draw(Rectangle rect, Color color)
-        {
-            var texture = Player?.Frame;
-            if (texture == null || !texture.IsAllocated)
-                texture = GPUDevice.Instance.DefaultBlackTexture;
-            if (Filter == BrushFilter.Point)
-                Render2D.DrawTexturePoint(texture, rect, color);
-            else
-                Render2D.DrawTexture(texture, rect, color);
-        }
+    /// <inheritdoc />
+    public override bool Equals(object obj)
+    {
+        return obj is VideoBrush other && Equals(other);
+    }
 
-        /// <inheritdoc />
-        public bool Equals(VideoBrush other)
-        {
-            return other != null && Player == other.Player && Filter == other.Filter;
-        }
+    /// <inheritdoc />
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Player, (int)Filter);
+    }
 
-        /// <inheritdoc />
-        public override bool Equals(object obj)
-        {
-            return obj is VideoBrush other && Equals(other);
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Player, (int)Filter);
-        }
-
-        /// <inheritdoc />
-        public int CompareTo(object obj)
-        {
-            return Equals(obj) ? 1 : 0;
-        }
+    /// <inheritdoc />
+    public int CompareTo(object obj)
+    {
+        return Equals(obj) ? 1 : 0;
     }
 }

@@ -3,50 +3,49 @@
 using System;
 using FlaxEngine;
 
-namespace FlaxEditor.Tools.Foliage.Undo
+namespace FlaxEditor.Tools.Foliage.Undo;
+
+/// <summary>
+/// The foliage editing action that handles changing selected foliage actor instance index.
+/// </summary>
+/// <seealso cref="FlaxEditor.IUndoAction" />
+[Serializable]
+public sealed class EditSelectedInstanceIndexAction : IUndoAction
 {
+    [Serialize]
+    private int _before;
+
+    [Serialize]
+    private int _after;
+
     /// <summary>
-    /// The foliage editing action that handles changing selected foliage actor instance index.
+    /// Initializes a new instance of the <see cref="EditSelectedInstanceIndexAction"/> class.
     /// </summary>
-    /// <seealso cref="FlaxEditor.IUndoAction" />
-    [Serializable]
-    public sealed class EditSelectedInstanceIndexAction : IUndoAction
+    /// <param name="before">The selected index before.</param>
+    /// <param name="after">The selected index after.</param>
+    public EditSelectedInstanceIndexAction(int before, int after)
     {
-        [Serialize]
-        private int _before;
+        _before = before;
+        _after = after;
+    }
 
-        [Serialize]
-        private int _after;
+    /// <inheritdoc />
+    public string ActionString => "Edit selected foliage instance index";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditSelectedInstanceIndexAction"/> class.
-        /// </summary>
-        /// <param name="before">The selected index before.</param>
-        /// <param name="after">The selected index after.</param>
-        public EditSelectedInstanceIndexAction(int before, int after)
-        {
-            _before = before;
-            _after = after;
-        }
+    /// <inheritdoc />
+    public void Dispose()
+    {
+    }
 
-        /// <inheritdoc />
-        public string ActionString => "Edit selected foliage instance index";
+    /// <inheritdoc />
+    public void Do()
+    {
+        Editor.Instance.Windows.ToolboxWin.Foliage.Edit.Mode.SelectedInstanceIndex = _after;
+    }
 
-        /// <inheritdoc />
-        public void Dispose()
-        {
-        }
-
-        /// <inheritdoc />
-        public void Do()
-        {
-            Editor.Instance.Windows.ToolboxWin.Foliage.Edit.Mode.SelectedInstanceIndex = _after;
-        }
-
-        /// <inheritdoc />
-        public void Undo()
-        {
-            Editor.Instance.Windows.ToolboxWin.Foliage.Edit.Mode.SelectedInstanceIndex = _before;
-        }
+    /// <inheritdoc />
+    public void Undo()
+    {
+        Editor.Instance.Windows.ToolboxWin.Foliage.Edit.Mode.SelectedInstanceIndex = _before;
     }
 }
