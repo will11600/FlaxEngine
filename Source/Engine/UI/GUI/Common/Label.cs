@@ -37,12 +37,7 @@ public class Label : ContainerControl
     /// </summary>
     protected LocalizedString _text = new();
 
-    private bool _autoWidth;
-    private bool _autoHeight;
-    private bool _autoFitText;
     private Float2 _textSize;
-    private Float2 _autoFitTextRange = new(0.1f, 100.0f);
-    private Margin _margin;
 
     /// <summary>
     /// The font.
@@ -59,7 +54,7 @@ public class Label : ContainerControl
         set
         {
             _text = value;
-            if (_autoWidth || _autoHeight || _autoFitText)
+            if (AutoWidth || AutoHeight || AutoFitText)
             {
                 _textSize = Float2.Zero;
                 PerformLayout();
@@ -131,7 +126,7 @@ public class Label : ContainerControl
         set
         {
             _font = value;
-            if (_autoWidth || _autoHeight || _autoFitText)
+            if (AutoWidth || AutoHeight || AutoFitText)
             {
                 _textSize = Float2.Zero;
                 PerformLayout();
@@ -151,11 +146,11 @@ public class Label : ContainerControl
     [EditorOrder(70), Tooltip("The margin for the text within the control bounds.")]
     public Margin Margin
     {
-        get => _margin;
+        get;
         set
         {
-            _margin = value;
-            if (_autoWidth || _autoHeight)
+            field = value;
+            if (AutoWidth || AutoHeight)
             {
                 PerformLayout();
             }
@@ -174,12 +169,12 @@ public class Label : ContainerControl
     [EditorOrder(85), DefaultValue(false), Tooltip("If checked, the control width will be based on text contents. Control size is modified relative to the Pivot.")]
     public bool AutoWidth
     {
-        get => _autoWidth;
+        get;
         set
         {
-            if (_autoWidth != value)
+            if (field != value)
             {
-                _autoWidth = value;
+                field = value;
                 PerformLayout();
             }
         }
@@ -191,12 +186,12 @@ public class Label : ContainerControl
     [EditorOrder(90), DefaultValue(false), Tooltip("If checked, the control height will be based on text contents. Control size is modified relative to the Pivot.")]
     public bool AutoHeight
     {
-        get => _autoHeight;
+        get;
         set
         {
-            if (_autoHeight != value)
+            if (field != value)
             {
-                _autoHeight = value;
+                field = value;
                 PerformLayout();
             }
         }
@@ -208,12 +203,12 @@ public class Label : ContainerControl
     [EditorOrder(100), DefaultValue(false), Tooltip("If checked, enables scaling text to fit the label control bounds. Disables using text alignment, automatic width and height.")]
     public bool AutoFitText
     {
-        get => _autoFitText;
+        get;
         set
         {
-            if (_autoFitText != value)
+            if (field != value)
             {
-                _autoFitText = value;
+                field = value;
                 PerformLayout();
             }
         }
@@ -224,11 +219,7 @@ public class Label : ContainerControl
     /// </summary>
     [VisibleIf(nameof(AutoFitText))]
     [EditorOrder(110), DefaultValue(typeof(Float2), "0.1, 100"), Tooltip("The text scale range (min and max) for automatic fit text option. Can be used to constraint the text scale adjustment.")]
-    public Float2 AutoFitTextRange
-    {
-        get => _autoFitTextRange;
-        set => _autoFitTextRange = value;
-    }
+    public Float2 AutoFitTextRange { get; set; } = new(0.1f, 100.0f);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Label"/> class.
@@ -257,7 +248,7 @@ public class Label : ContainerControl
     {
         base.DrawSelf();
 
-        var margin = _margin;
+        var margin = Margin;
         var rect = new Rectangle(margin.Location, Size - margin.Size);
 
         if (ClipText)
@@ -269,10 +260,10 @@ public class Label : ContainerControl
         var scale = 1.0f;
         var hAlignment = HorizontalAlignment;
         var wAlignment = VerticalAlignment;
-        if (_autoFitText && !_textSize.IsZero)
+        if (AutoFitText && !_textSize.IsZero)
         {
             scale = (rect.Size / _textSize).MinValue;
-            scale = Mathf.Clamp(scale, _autoFitTextRange.X, _autoFitTextRange.Y);
+            scale = Mathf.Clamp(scale, AutoFitTextRange.X, AutoFitTextRange.Y);
         }
 
         Font font = GetFont();
@@ -313,7 +304,7 @@ public class Label : ContainerControl
     /// <inheritdoc />
     protected override void PerformLayoutBeforeChildren()
     {
-        if (_autoWidth || _autoHeight || _autoFitText)
+        if (AutoWidth || AutoHeight || AutoFitText)
         {
             Font font = GetFont();
             var text = ConvertedText();
@@ -322,20 +313,20 @@ public class Label : ContainerControl
                 // Calculate text size
                 var layout = TextLayoutOptions.Default;
                 layout.TextWrapping = Wrapping;
-                if (_autoHeight && !_autoWidth)
+                if (AutoHeight && !AutoWidth)
                     layout.Bounds.Size.X = Width - Margin.Width;
-                else if (_autoWidth && !_autoHeight)
+                else if (AutoWidth && !AutoHeight)
                     layout.Bounds.Size.Y = Height - Margin.Height;
                 _textSize = font.MeasureText(text, ref layout);
                 _textSize.Y *= BaseLinesGapScale;
 
                 // Check if size is controlled via text
-                if (_autoWidth || _autoHeight)
+                if (AutoWidth || AutoHeight)
                 {
                     var size = Size;
-                    if (_autoWidth)
+                    if (AutoWidth)
                         size.X = _textSize.X + Margin.Width;
-                    if (_autoHeight)
+                    if (AutoHeight)
                         size.Y = _textSize.Y + Margin.Height;
                     Resize(ref size);
                 }

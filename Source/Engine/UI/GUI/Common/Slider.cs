@@ -86,15 +86,14 @@ public class Slider : ContainerControl
     [EditorOrder(40), Tooltip("Slider Direction.")]
     public SliderDirection Direction
     {
-        get => _direction;
+        get;
         set
         {
-            _direction = value;
+            field = value;
             UpdateThumb();
         }
-    }
+    } = SliderDirection.HorizontalRight;
 
-    private SliderDirection _direction = SliderDirection.HorizontalRight;
     private float _value = 100f;
     private Rectangle _thumbRect;
     private float _thumbCenter;
