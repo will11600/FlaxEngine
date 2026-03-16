@@ -32,7 +32,7 @@ public struct TextBlock
     /// </summary>
     public object Tag;
 
-    internal float GetAscender()
+    internal readonly float GetAscender()
     {
         float ascender = Ascender;
         if (Mathf.IsZero(ascender))

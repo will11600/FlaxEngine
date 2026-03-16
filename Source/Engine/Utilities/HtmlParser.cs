@@ -46,10 +46,10 @@ public struct HtmlTag
     /// <summary>
     /// True if this tag contained a leading or trailing forward slash.
     /// </summary>
-    public bool IsSlash => IsLeadingSlash || IsEndingSlash;
+    public readonly bool IsSlash => IsLeadingSlash || IsEndingSlash;
 
     /// <inheritdoc />
-    public override string ToString()
+    public override readonly string ToString()
     {
         return Name;
     }

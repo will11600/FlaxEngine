@@ -112,27 +112,27 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// <summary>
     /// Gets a value indicting whether this vector is zero
     /// </summary>
-    public bool IsZero => X == 0 && Y == 0;
+    public readonly bool IsZero => X == 0 && Y == 0;
 
     /// <summary>
     /// Gets a minimum component value
     /// </summary>
-    public int MinValue => Mathf.Min(X, Y);
+    public readonly int MinValue => Mathf.Min(X, Y);
 
     /// <summary>
     /// Gets a maximum component value
     /// </summary>
-    public int MaxValue => Mathf.Max(X, Y);
+    public readonly int MaxValue => Mathf.Max(X, Y);
 
     /// <summary>
     /// Gets an arithmetic average value of all vector components.
     /// </summary>
-    public float AvgValue => (X + Y) * (1.0f / 2.0f);
+    public readonly float AvgValue => (X + Y) * (1.0f / 2.0f);
 
     /// <summary>
     /// Gets a sum of the component values.
     /// </summary>
-    public int ValuesSum => X + Y;
+    public readonly int ValuesSum => X + Y;
 
     /// <summary>
     /// Gets or sets the component at the specified index.
@@ -143,7 +143,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0, 1].</exception>
     public int this[int index]
     {
-        get
+        readonly get
         {
             switch (index)
             {
@@ -172,20 +172,20 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// </summary>
     /// <returns>The length of the vector.</returns>
     /// <remarks><see cref="Int2.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-    public float Length => (float)Math.Sqrt(X * X + Y * Y);
+    public readonly float Length => (float)Math.Sqrt(X * X + Y * Y);
 
     /// <summary>
     /// Calculates the squared length of the vector.
     /// </summary>
     /// <returns>The squared length of the vector.</returns>
     /// <remarks>This method may be preferred to <see cref="Int2.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-    public int LengthSquared => X * X + Y * Y;
+    public readonly int LengthSquared => X * X + Y * Y;
 
     /// <summary>
     /// Creates an array containing the elements of the vector.
     /// </summary>
     /// <returns>A two-element array containing the components of the vector.</returns>
-    public int[] ToArray()
+    public readonly int[] ToArray()
     {
         return new[] { X, Y };
     }
@@ -886,7 +886,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format(CultureInfo.CurrentCulture, _formatString, X, Y);
     }
@@ -908,7 +908,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// </summary>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(IFormatProvider formatProvider)
+    public readonly string ToString(IFormatProvider formatProvider)
     {
         return string.Format(formatProvider, _formatString, X, Y);
     }
@@ -930,7 +930,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// Returns a hash code for this instance.
     /// </summary>
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -951,7 +951,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// <param name="other">The <see cref="Int2" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Int2" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(ref Int2 other)
+    public readonly bool Equals(ref Int2 other)
     {
         return other.X == X && other.Y == Y;
     }

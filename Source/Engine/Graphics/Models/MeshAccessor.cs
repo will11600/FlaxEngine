@@ -37,34 +37,34 @@ public class MeshAccessor
         /// <summary>
         /// Gets the raw data block.
         /// </summary>
-        public Span<byte> Data => _data;
+        public readonly Span<byte> Data => _data;
 
         /// <summary>
         /// Gets the format of the data.
         /// </summary>
-        public PixelFormat Format => _format;
+        public readonly PixelFormat Format => _format;
 
         /// <summary>
         /// Gets the stride (in bytes) of the data.
         /// </summary>
-        public int Stride => _stride;
+        public readonly int Stride => _stride;
 
         /// <summary>
         /// Gets the count of the items in the stride.
         /// </summary>
-        public int Count => _data.Length / _stride;
+        public readonly int Count => _data.Length / _stride;
 
         /// <summary>
         /// Returns true if stream is valid.
         /// </summary>
-        public bool IsValid => _format != PixelFormat.Unknown;
+        public readonly bool IsValid => _format != PixelFormat.Unknown;
 
         /// <summary>
         /// Checks if the stream can use <seealso cref="SetLinear"/> via a single memory copy.
         /// </summary>
         /// <param name="expectedFormat">Source data format.</param>
         /// <returns>True if stream is linear and format matches expected input data.</returns>
-        public bool IsLinear(PixelFormat expectedFormat)
+        public readonly bool IsLinear(PixelFormat expectedFormat)
         {
             return _format == expectedFormat && _stride == PixelFormatExtensions.SizeInBytes(_format);
         }
@@ -188,7 +188,7 @@ public class MeshAccessor
         /// </summary>
         /// <remarks>Check input data and stream type with IsLinear before calling.</remarks>
         /// <param name="data">Pointer to the source data.</param>
-        public void SetLinear(IntPtr data)
+        public readonly void SetLinear(IntPtr data)
         {
             new Span<byte>(data.ToPointer(), _data.Length).CopyTo(_data);
         }

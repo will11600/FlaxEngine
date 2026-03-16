@@ -16,7 +16,7 @@ public struct SoftTypeReference : IComparable, IComparable<SoftTypeReference>
     /// </summary>
     public string TypeName
     {
-        get => _typeName;
+        readonly get => _typeName;
         set => _typeName = value;
     }
 
@@ -25,7 +25,7 @@ public struct SoftTypeReference : IComparable, IComparable<SoftTypeReference>
     /// </summary>
     public Type Type
     {
-        get => _typeName != null ? Type.GetType(_typeName) : null;
+        readonly get => _typeName != null ? Type.GetType(_typeName) : null;
         set => _typeName = value?.FullName;
     }
 
@@ -69,13 +69,13 @@ public struct SoftTypeReference : IComparable, IComparable<SoftTypeReference>
     }
 
     /// <inheritdoc />
-    public override string ToString()
+    public override readonly string ToString()
     {
         return _typeName;
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         return _typeName?.GetHashCode() ?? 0;
     }
@@ -89,7 +89,7 @@ public struct SoftTypeReference : IComparable, IComparable<SoftTypeReference>
     }
 
     /// <inheritdoc />
-    public int CompareTo(SoftTypeReference other)
+    public readonly int CompareTo(SoftTypeReference other)
     {
         return string.Compare(_typeName, other._typeName, StringComparison.Ordinal);
     }

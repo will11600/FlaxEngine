@@ -18,7 +18,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     public float X
     {
-        get => Location.X;
+        readonly get => Location.X;
         set => Location.X = value;
     }
 
@@ -27,7 +27,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     public float Y
     {
-        get => Location.Y;
+        readonly get => Location.Y;
         set => Location.Y = value;
     }
 
@@ -36,7 +36,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     public float Width
     {
-        get => Size.X;
+        readonly get => Size.X;
         set => Size.X = value;
     }
 
@@ -45,74 +45,74 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     public float Height
     {
-        get => Size.Y;
+        readonly get => Size.Y;
         set => Size.Y = value;
     }
 
     /// <summary>
     /// Gets Y coordinate of the top edge of the rectangle
     /// </summary>
-    public float Top => Location.Y;
+    public readonly float Top => Location.Y;
 
     /// <summary>
     /// Gets Y coordinate of the bottom edge of the rectangle
     /// </summary>
-    public float Bottom => Location.Y + Size.Y;
+    public readonly float Bottom => Location.Y + Size.Y;
 
     /// <summary>
     /// Gets X coordinate of the left edge of the rectangle
     /// </summary>
-    public float Left => Location.X;
+    public readonly float Left => Location.X;
 
     /// <summary>
     /// Gets X coordinate of the right edge of the rectangle
     /// </summary>
-    public float Right => Location.X + Size.X;
+    public readonly float Right => Location.X + Size.X;
 
     /// <summary>
     /// Gets position of the upper left corner of the rectangle
     /// </summary>
-    public Float2 UpperLeft => Location;
+    public readonly Float2 UpperLeft => Location;
 
     /// <summary>
     /// Gets position of the upper right corner of the rectangle
     /// </summary>
-    public Float2 UpperRight => new(Location.X + Size.X, Location.Y);
+    public readonly Float2 UpperRight => new(Location.X + Size.X, Location.Y);
 
     /// <summary>
     /// Gets position of the bottom right corner of the rectangle
     /// </summary>
-    public Float2 LowerRight => Location + Size;
+    public readonly Float2 LowerRight => Location + Size;
 
     /// <summary>
     /// Gets position of the bottom left corner of the rectangle
     /// </summary>
-    public Float2 LowerLeft => new(Location.X, Location.Y + Size.Y);
+    public readonly Float2 LowerLeft => new(Location.X, Location.Y + Size.Y);
 
     /// <summary>
     /// Gets position of the upper left corner of the rectangle
     /// </summary>
-    public Float2 TopLeft => Location;
+    public readonly Float2 TopLeft => Location;
 
     /// <summary>
     /// Gets position of the upper right corner of the rectangle
     /// </summary>
-    public Float2 TopRight => new(Location.X + Size.X, Location.Y);
+    public readonly Float2 TopRight => new(Location.X + Size.X, Location.Y);
 
     /// <summary>
     /// Gets position of the bottom right corner of the rectangle
     /// </summary>
-    public Float2 BottomRight => Location + Size;
+    public readonly Float2 BottomRight => Location + Size;
 
     /// <summary>
     /// Gets position of the bottom left corner of the rectangle
     /// </summary>
-    public Float2 BottomLeft => new(Location.X, Location.Y + Size.Y);
+    public readonly Float2 BottomLeft => new(Location.X, Location.Y + Size.Y);
 
     /// <summary>
     /// Gets center position of the rectangle
     /// </summary>
-    public Float2 Center => Location + Size * 0.5f;
+    public readonly Float2 Center => Location + Size * 0.5f;
 
     /// <summary>
     /// Init
@@ -167,7 +167,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     /// <param name="location">Point location to check</param>
     /// <returns>True if point is inside rectangle's area</returns>
-    public bool Contains(Float2 location)
+    public readonly bool Contains(Float2 location)
     {
         return (location.X >= Location.X && location.Y >= Location.Y) && (location.X <= Location.X + Size.X && location.Y <= Location.Y + Size.Y);
     }
@@ -177,7 +177,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     /// <param name="location">Point location to check</param>
     /// <returns>True if point is inside rectangle's area</returns>
-    public bool Contains(ref Float2 location)
+    public readonly bool Contains(ref Float2 location)
     {
         return (location.X >= Location.X && location.Y >= Location.Y) && (location.X <= Location.X + Size.X && location.Y <= Location.Y + Size.Y);
     }
@@ -248,7 +248,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// <param name="x">X coordinate offset</param>
     /// <param name="y">Y coordinate offset</param>
     /// <returns>Offseted rectangle</returns>
-    public Rectangle MakeOffsetted(float x, float y)
+    public readonly Rectangle MakeOffsetted(float x, float y)
     {
         return new Rectangle(Location + new Float2(x, y), Size);
     }
@@ -258,7 +258,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     /// <param name="offset">X and Y coordinate offset</param>
     /// <returns>Offseted rectangle</returns>
-    public Rectangle MakeOffsetted(Float2 offset)
+    public readonly Rectangle MakeOffsetted(Float2 offset)
     {
         return new Rectangle(Location + offset, Size);
     }
@@ -278,7 +278,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     /// <param name="toExpand">Amount of units to expand a rectangle</param>
     /// <returns>Expanded rectangle</returns>
-    public Rectangle MakeExpanded(float toExpand)
+    public readonly Rectangle MakeExpanded(float toExpand)
     {
         return new Rectangle(Location - toExpand * 0.5f, Size + toExpand);
     }
@@ -299,7 +299,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     /// <param name="scale">Scale value to expand a rectangle</param>
     /// <returns>Scaled rectangle</returns>
-    public Rectangle MakeScaled(float scale)
+    public readonly Rectangle MakeScaled(float scale)
     {
         Float2 toExpand = Size * (scale - 1.0f) * 0.5f;
         return new Rectangle(Location - toExpand * 0.5f, Size + toExpand);
@@ -497,7 +497,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// <param name="other">The <see cref="Rectangle" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Rectangle" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(ref Rectangle other)
+    public readonly bool Equals(ref Rectangle other)
     {
         return Location == other.Location && Size == other.Size;
     }

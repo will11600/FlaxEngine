@@ -46,7 +46,7 @@ public struct FloatR11G11B10
     /// <summary>
     /// Gets or sets the raw 32 bit value used to back this vector.
     /// </summary>
-    public uint RawValue => rawValue;
+    public readonly uint RawValue => rawValue;
 
     /// <summary>
     /// Performs an explicit conversion from <see cref = "T:FlaxEngine.Float3" /> to <see cref = "T:FlaxEngine.FloatR11G11B10" />.
@@ -94,7 +94,7 @@ public struct FloatR11G11B10
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return ((Float3)this).ToString();
     }
@@ -103,7 +103,7 @@ public struct FloatR11G11B10
     /// Returns the hash code for this instance.
     /// </summary>
     /// <returns>A 32-bit signed integer hash code.</returns>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         return rawValue.GetHashCode();
     }
@@ -124,7 +124,7 @@ public struct FloatR11G11B10
     /// </summary>
     /// <param name="other">Object to make the comparison with.</param>
     /// <returns><c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-    public bool Equals(FloatR11G11B10 other)
+    public readonly bool Equals(FloatR11G11B10 other)
     {
         return other.rawValue == rawValue;
     }
@@ -134,7 +134,7 @@ public struct FloatR11G11B10
     /// </summary>
     /// <param name="obj">Object to make the comparison with.</param>
     /// <returns><c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         return obj is FloatR11G11B10 other && rawValue == other.rawValue;
     }
@@ -280,7 +280,7 @@ public struct FloatR11G11B10
     /// Unpacks vector to Float3.
     /// </summary>
     /// <returns>Float3 value</returns>
-    public unsafe Float3 ToFloat3()
+    public readonly unsafe Float3 ToFloat3()
     {
         int zeroExponent = -112;
 

@@ -114,7 +114,7 @@ partial struct RenderView
     /// </summary>
     /// <param name="transform">The object transformation.</param>
     /// <param name="world">The output matrix.</param>
-    public void GetWorldMatrix(ref Transform transform, out Matrix world)
+    public readonly void GetWorldMatrix(ref Transform transform, out Matrix world)
     {
         Float3 translation = transform.Translation - Origin;
         Matrix.Transformation(ref transform.Scale, ref transform.Orientation, ref translation, out world);

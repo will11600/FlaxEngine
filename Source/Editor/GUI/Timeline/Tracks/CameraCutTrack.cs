@@ -377,7 +377,7 @@ public class CameraCutThumbnailRenderer
         }
 
         /// <inheritdoc />
-        public bool Equals(Request other)
+        public readonly bool Equals(Request other)
         {
             return Equals(Media, other.Media) && ThumbnailIndex == other.ThumbnailIndex;
         }
@@ -389,7 +389,7 @@ public class CameraCutThumbnailRenderer
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             unchecked
             {
@@ -421,7 +421,7 @@ public class CameraCutThumbnailRenderer
         /// <summary>
         /// Gets a value indicating whether this instance is full.
         /// </summary>
-        public bool IsFull => SlotsUsage.Length == Count;
+        public readonly bool IsFull => SlotsUsage.Length == Count;
     }
 
     /// <summary>

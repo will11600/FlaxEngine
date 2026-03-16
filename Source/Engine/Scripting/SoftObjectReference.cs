@@ -17,7 +17,7 @@ public struct SoftObjectReference : IComparable, IComparable<SoftObjectReference
     /// </summary>
     public Guid ID
     {
-        get => _id;
+        readonly get => _id;
         set
         {
             if (_id == value)
@@ -50,7 +50,7 @@ public struct SoftObjectReference : IComparable, IComparable<SoftObjectReference
     }
 
     /// <inheritdoc />
-    public override string ToString()
+    public override readonly string ToString()
     {
         if (_object)
             return _object.ToString();
@@ -58,7 +58,7 @@ public struct SoftObjectReference : IComparable, IComparable<SoftObjectReference
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         return _id.GetHashCode();
     }
@@ -72,7 +72,7 @@ public struct SoftObjectReference : IComparable, IComparable<SoftObjectReference
     }
 
     /// <inheritdoc />
-    public int CompareTo(SoftObjectReference other)
+    public readonly int CompareTo(SoftObjectReference other)
     {
         return _id.CompareTo(other._id);
     }

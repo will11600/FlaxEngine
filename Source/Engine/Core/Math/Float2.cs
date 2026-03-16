@@ -182,42 +182,42 @@ partial struct Float2 : IEquatable<Float2>, IFormattable, Json.ICustomValueEqual
     /// <summary>
     /// Gets a value indicting whether this instance is normalized.
     /// </summary>
-    public bool IsNormalized => Mathf.Abs((X * X + Y * Y) - 1.0f) < 1e-4f;
+    public readonly bool IsNormalized => Mathf.Abs((X * X + Y * Y) - 1.0f) < 1e-4f;
 
     /// <summary>
     /// Gets a value indicting whether this vector is zero
     /// </summary>
-    public bool IsZero => Mathf.IsZero(X) && Mathf.IsZero(Y);
+    public readonly bool IsZero => Mathf.IsZero(X) && Mathf.IsZero(Y);
 
     /// <summary>
     /// Gets a minimum component value
     /// </summary>
-    public float MinValue => Mathf.Min(X, Y);
+    public readonly float MinValue => Mathf.Min(X, Y);
 
     /// <summary>
     /// Gets a maximum component value
     /// </summary>
-    public float MaxValue => Mathf.Max(X, Y);
+    public readonly float MaxValue => Mathf.Max(X, Y);
 
     /// <summary>
     /// Gets an arithmetic average value of all vector components.
     /// </summary>
-    public float AvgValue => (X + Y) * (1.0f / 2.0f);
+    public readonly float AvgValue => (X + Y) * (1.0f / 2.0f);
 
     /// <summary>
     /// Gets a sum of the component values.
     /// </summary>
-    public float ValuesSum => X + Y;
+    public readonly float ValuesSum => X + Y;
 
     /// <summary>
     /// Gets a vector with values being absolute values of that vector.
     /// </summary>
-    public Float2 Absolute => new(Mathf.Abs(X), Mathf.Abs(Y));
+    public readonly Float2 Absolute => new(Mathf.Abs(X), Mathf.Abs(Y));
 
     /// <summary>
     /// Gets a vector with values being opposite to values of that vector.
     /// </summary>
-    public Float2 Negative => new(-X, -Y);
+    public readonly Float2 Negative => new(-X, -Y);
 
     /// <summary>
     /// Gets or sets the component at the specified index.
@@ -228,7 +228,7 @@ partial struct Float2 : IEquatable<Float2>, IFormattable, Json.ICustomValueEqual
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0,1].</exception>
     public float this[int index]
     {
-        get
+        readonly get
         {
             switch (index)
             {
@@ -257,19 +257,19 @@ partial struct Float2 : IEquatable<Float2>, IFormattable, Json.ICustomValueEqual
     /// </summary>
     /// <returns>The length of the vector.</returns>
     /// <remarks><see cref="Float2.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-    public float Length => (float)Math.Sqrt(X * X + Y * Y);
+    public readonly float Length => (float)Math.Sqrt(X * X + Y * Y);
 
     /// <summary>
     /// Calculates the squared length of the vector.
     /// </summary>
     /// <returns>The squared length of the vector.</returns>
     /// <remarks>This method may be preferred to <see cref="Float2.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-    public float LengthSquared => X * X + Y * Y;
+    public readonly float LengthSquared => X * X + Y * Y;
 
     /// <summary>
     /// Gets the normalized vector. Returned vector has length equal 1.
     /// </summary>
-    public Float2 Normalized
+    public readonly Float2 Normalized
     {
         get
         {
@@ -296,7 +296,7 @@ partial struct Float2 : IEquatable<Float2>, IFormattable, Json.ICustomValueEqual
     /// <summary>
     /// Creates an array containing the elements of the vector.
     /// </summary>
-    public float[] ToArray()
+    public readonly float[] ToArray()
     {
         return new[] { X, Y };
     }
@@ -1597,7 +1597,7 @@ partial struct Float2 : IEquatable<Float2>, IFormattable, Json.ICustomValueEqual
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format(CultureInfo.CurrentCulture, "X:{0} Y:{1}", X, Y);
     }
@@ -1619,7 +1619,7 @@ partial struct Float2 : IEquatable<Float2>, IFormattable, Json.ICustomValueEqual
     /// </summary>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(IFormatProvider formatProvider)
+    public readonly string ToString(IFormatProvider formatProvider)
     {
         return string.Format(formatProvider, _formatString, X, Y);
     }
@@ -1640,7 +1640,7 @@ partial struct Float2 : IEquatable<Float2>, IFormattable, Json.ICustomValueEqual
     /// <summary>
     /// Returns a hash code for this instance.
     /// </summary>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -1661,7 +1661,7 @@ partial struct Float2 : IEquatable<Float2>, IFormattable, Json.ICustomValueEqual
     /// <param name="other">The <see cref="Float2" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Float2" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(ref Float2 other)
+    public readonly bool Equals(ref Float2 other)
     {
         return X == other.X && Y == other.Y;
     }

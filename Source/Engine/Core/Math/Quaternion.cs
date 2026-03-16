@@ -161,12 +161,12 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// <summary>
     /// Gets a value indicting whether this instance is normalized.
     /// </summary>
-    public bool IsNormalized => Mathf.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
+    public readonly bool IsNormalized => Mathf.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
 
     /// <summary>
     /// Gets the euler angle (pitch, yaw, roll) in degrees.
     /// </summary>
-    public Float3 EulerAngles
+    public readonly Float3 EulerAngles
     {
         get
         {
@@ -213,7 +213,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// <summary>
     /// Gets the angle of the quaternion.
     /// </summary>
-    public float Angle
+    public readonly float Angle
     {
         get
         {
@@ -227,7 +227,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// <summary>
     /// Gets the axis components of the quaternion.
     /// </summary>
-    public Float3 Axis
+    public readonly Float3 Axis
     {
         get
         {
@@ -248,7 +248,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0, 3].</exception>
     public float this[int index]
     {
-        get
+        readonly get
         {
             switch (index)
             {
@@ -293,7 +293,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// <summary>
     /// Gets the conjugated quaternion.
     /// </summary>
-    public Quaternion Conjugated()
+    public readonly Quaternion Conjugated()
     {
         return new Quaternion(-X, -Y, -Z, W);
     }
@@ -320,14 +320,14 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// </summary>
     /// <returns>The length of the quaternion.</returns>
     /// <remarks><see cref="Quaternion.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-    public float Length => (float)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+    public readonly float Length => (float)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
 
     /// <summary>
     /// Calculates the squared length of the quaternion.
     /// </summary>
     /// <returns>The squared length of the quaternion.</returns>
     /// <remarks>This method may be preferred to <see cref="Quaternion.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-    public float LengthSquared => X * X + Y * Y + Z * Z + W * W;
+    public readonly float LengthSquared => X * X + Y * Y + Z * Z + W * W;
 
     /// <summary>
     /// Converts the quaternion into a unit quaternion.
@@ -349,7 +349,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// Creates an array containing the elements of the quaternion.
     /// </summary>
     /// <returns>A four-element array containing the components of the quaternion.</returns>
-    public float[] ToArray()
+    public readonly float[] ToArray()
     {
         return new[]
         {
@@ -1619,7 +1619,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format(CultureInfo.CurrentCulture, _formatString, X, Y, Z, W);
     }
@@ -1643,7 +1643,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// </summary>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(IFormatProvider formatProvider)
+    public readonly string ToString(IFormatProvider formatProvider)
     {
         return string.Format(formatProvider, _formatString, X, Y, Z, W);
     }
@@ -1667,7 +1667,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// Returns a hash code for this instance.
     /// </summary>
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -1717,7 +1717,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// <param name="other">The <see cref="Quaternion" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Quaternion" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(ref Quaternion other)
+    public readonly bool Equals(ref Quaternion other)
     {
         return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
     }

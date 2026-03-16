@@ -93,7 +93,7 @@ public class EditorViewport : RenderOutputControl
         /// <summary>
         /// Gets a value indicating whether use is controlling mouse.
         /// </summary>
-        public bool IsControllingMouse => IsMouseMiddleDown || IsMouseRightDown || ((IsAltDown || WasAltDownBefore) && IsMouseLeftDown) || Mathf.Abs(MouseWheelDelta) > 0.1f;
+        public readonly bool IsControllingMouse => IsMouseMiddleDown || IsMouseRightDown || ((IsAltDown || WasAltDownBefore) && IsMouseLeftDown) || Mathf.Abs(MouseWheelDelta) > 0.1f;
 
         /// <summary>
         /// Gathers input from the specified window.

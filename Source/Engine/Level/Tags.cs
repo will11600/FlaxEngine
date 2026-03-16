@@ -90,7 +90,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public bool Equals(Tag other)
+        public readonly bool Equals(Tag other)
         {
             return Index == other.Index;
         }
@@ -114,19 +114,19 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             return obj is Tag other && Index == other.Index;
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return (int)Index;
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return Tags.Internal_GetTagName(Index);
         }

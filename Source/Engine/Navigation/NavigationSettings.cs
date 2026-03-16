@@ -123,7 +123,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return Name;
         }
@@ -132,7 +132,7 @@ namespace FlaxEngine
     partial struct NavAgentProperties
     {
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return $"Radius: {Radius}, Height: {Height}, StepHeight: {StepHeight}, MaxSlopeAngle: {MaxSlopeAngle}, MaxSpeed: {MaxSpeed}";
         }

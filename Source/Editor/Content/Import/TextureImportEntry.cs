@@ -36,7 +36,7 @@ namespace FlaxEngine.Tools
             [EditorOrder(110), VisibleIf(nameof(Resize)), DefaultValue(typeof(Int2), "1024,1024")]
             public Int2 Size
             {
-                get => new(SizeX, SizeY);
+                readonly get => new(SizeX, SizeY);
                 set
                 {
                     SizeX = value.X;
@@ -50,7 +50,7 @@ namespace FlaxEngine.Tools
             [EditorOrder(90), DefaultValue(CustomMaxSizes._8192), EditorDisplay(null, "Max Size")]
             public CustomMaxSizes CustomMaxSize
             {
-                get
+                readonly get
                 {
                     var value = MaxSize;
                     if (!Mathf.IsPowerOfTwo(value))

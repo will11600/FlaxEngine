@@ -376,13 +376,13 @@ public struct ManagedHandle
         handle = IntPtr.Zero;
     }
 
-    public object Target
+    public readonly object Target
     {
         get => ManagedHandlePool.GetObject(handle);
         set => ManagedHandlePool.SetObject(handle, value);
     }
 
-    public bool IsAllocated => handle != IntPtr.Zero;
+    public readonly bool IsAllocated => handle != IntPtr.Zero;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static explicit operator ManagedHandle(IntPtr value) => FromIntPtr(value);
@@ -402,11 +402,11 @@ public struct ManagedHandle
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IntPtr ToIntPtr(ManagedHandle value) => value.handle;
 
-    public override int GetHashCode() => handle.GetHashCode();
+    public override readonly int GetHashCode() => handle.GetHashCode();
 
-    public override bool Equals(object obj) => obj is ManagedHandle other && handle == other.handle;
+    public override readonly bool Equals(object obj) => obj is ManagedHandle other && handle == other.handle;
 
-    public bool Equals(ManagedHandle other) => handle == other.handle;
+    public readonly bool Equals(ManagedHandle other) => handle == other.handle;
 
     public static bool operator ==(ManagedHandle a, ManagedHandle b) => a.handle == b.handle;
 

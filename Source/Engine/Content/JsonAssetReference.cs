@@ -28,7 +28,7 @@ namespace FlaxEngine
         /// <summary>
         /// Gets the instance of the serialized object from the json asset data. Cached internally.
         /// </summary>
-        public T Instance => (T)Asset?.Instance;
+        public readonly T Instance => (T)Asset?.Instance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonAssetReference{T}"/> structure.
@@ -43,7 +43,7 @@ namespace FlaxEngine
         /// Gets the deserialized native object instance of the given type. Returns null if asset is not loaded or loaded object has different type.
         /// </summary>
         /// <returns>The asset instance object or null.</returns>
-        public U GetInstance<U>()
+        public readonly U GetInstance<U>()
         {
             return Asset ? Asset.GetInstance<U>() : default(U);
         }
@@ -110,25 +110,25 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public bool Equals(JsonAssetReference<T> other)
+        public readonly bool Equals(JsonAssetReference<T> other)
         {
             return Asset == other.Asset;
         }
 
         /// <inheritdoc />
-        public int CompareTo(JsonAssetReference<T> other)
+        public readonly int CompareTo(JsonAssetReference<T> other)
         {
             return Object.GetUnmanagedPtr(Asset).CompareTo(Object.GetUnmanagedPtr(other.Asset));
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             return obj is JsonAssetReference<T> other && Asset == other.Asset;
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             return Asset?.ToString() ?? "null";
         }
@@ -140,7 +140,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return (Asset != null ? Asset.GetHashCode() : 0);
         }

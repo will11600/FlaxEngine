@@ -79,7 +79,7 @@ partial class TextureBase
         /// <summary>
         /// Returns true if init data is valid.
         /// </summary>
-        public bool IsValid => Format != PixelFormat.Unknown &&
+        public readonly bool IsValid => Format != PixelFormat.Unknown &&
                                Mathf.IsInRange(Width, 1, MaxTextureSize) &&
                                Mathf.IsInRange(Height, 1, MaxTextureSize) &&
                                Mathf.IsInRange(ArraySize, 1, MaxArraySize) &&

@@ -61,7 +61,7 @@ public struct Color32
     /// <exception cref="System.IndexOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
     public byte this[int index]
     {
-        get
+        readonly get
         {
             switch (index)
             {
@@ -267,7 +267,7 @@ public struct Color32
     /// <summary>
     /// Returns a nicely formatted string of this color.
     /// </summary>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format("RGBA({0}, {1}, {2}, {3})", R, G, B, A);
     }
@@ -276,7 +276,7 @@ public struct Color32
     /// Returns a nicely formatted string of this color.
     /// </summary>
     /// <param name="format"></param>
-    public string ToString(string format)
+    public readonly string ToString(string format)
     {
         return string.Format("RGBA({0}, {1}, {2}, {3})", R.ToString(format), G.ToString(format), B.ToString(format), A.ToString(format));
     }

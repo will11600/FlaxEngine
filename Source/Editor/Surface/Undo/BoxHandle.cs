@@ -41,7 +41,7 @@ public struct BoxHandle : IEquatable<BoxHandle>
     /// </summary>
     /// <param name="context">The Surface context.</param>
     /// <returns>The restored box.</returns>
-    public Box Get(VisjectSurfaceContext context)
+    public readonly Box Get(VisjectSurfaceContext context)
     {
         var node = context.FindNode(_nodeId);
         if (node == null)
@@ -59,14 +59,14 @@ public struct BoxHandle : IEquatable<BoxHandle>
     }
 
     /// <inheritdoc />
-    public bool Equals(BoxHandle other)
+    public readonly bool Equals(BoxHandle other)
     {
         return _nodeId == other._nodeId &&
                _boxId == other._boxId;
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {

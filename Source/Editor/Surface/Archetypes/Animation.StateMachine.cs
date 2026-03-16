@@ -1652,7 +1652,7 @@ public static partial class Animation
             /// </summary>
             public int Unused2;
 
-            public bool HasFlag(FlagTypes flag)
+            public readonly bool HasFlag(FlagTypes flag)
             {
                 return (Flags & flag) == flag;
             }

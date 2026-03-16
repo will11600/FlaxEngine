@@ -246,7 +246,7 @@ namespace FlaxEditor.Windows.Profiler
                 End = e.End + MinEventTimeMs;
             }
 
-            public bool SkipEvent(ref ProfilerCPU.Event e)
+            public readonly bool SkipEvent(ref ProfilerCPU.Event e)
             {
                 return e.Start < Start || e.Start > End;
             }

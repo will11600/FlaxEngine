@@ -56,7 +56,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// </summary>
     public Matrix Matrix
     {
-        get => pMatrix;
+        readonly get => pMatrix;
         set
         {
             pMatrix = value;
@@ -67,32 +67,32 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// <summary>
     /// Gets the near plane of the BoundingFrustum.
     /// </summary>
-    public Plane Near => pNear;
+    public readonly Plane Near => pNear;
 
     /// <summary>
     /// Gets the far plane of the BoundingFrustum.
     /// </summary>
-    public Plane Far => pFar;
+    public readonly Plane Far => pFar;
 
     /// <summary>
     /// Gets the left plane of the BoundingFrustum.
     /// </summary>
-    public Plane Left => pLeft;
+    public readonly Plane Left => pLeft;
 
     /// <summary>
     /// Gets the right plane of the BoundingFrustum.
     /// </summary>
-    public Plane Right => pRight;
+    public readonly Plane Right => pRight;
 
     /// <summary>
     /// Gets the top plane of the BoundingFrustum.
     /// </summary>
-    public Plane Top => pTop;
+    public readonly Plane Top => pTop;
 
     /// <summary>
     /// Gets the bottom plane of the BoundingFrustum.
     /// </summary>
-    public Plane Bottom => pBottom;
+    public readonly Plane Bottom => pBottom;
 
     /// <summary>
     /// Creates a new instance of BoundingFrustum.
@@ -129,7 +129,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// <param name="other">The <see cref="BoundingFrustum" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="BoundingFrustum" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(ref BoundingFrustum other)
+    public readonly bool Equals(ref BoundingFrustum other)
     {
         return pMatrix == other.pMatrix;
     }
@@ -184,7 +184,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// </summary>
     /// <param name="index">Plane index where 0 for Left, 1 for Right, 2 for Top, 3 for Bottom, 4 for Near, 5 for Far</param>
     /// <returns>The frustum plane.</returns>
-    public Plane GetPlane(int index)
+    public readonly Plane GetPlane(int index)
     {
         switch (index)
         {
@@ -413,7 +413,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
         return Contains(ref point);
     }
 
-    private void GetBoxToPlanePVertexNVertex(ref BoundingBox box, ref Vector3 planeNormal, out Vector3 p, out Vector3 n)
+    private readonly void GetBoxToPlanePVertexNVertex(ref BoundingBox box, ref Vector3 planeNormal, out Vector3 p, out Vector3 n)
     {
         p = box.Minimum;
         if (planeNormal.X >= 0)
@@ -580,7 +580,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
         result = Contains(ref box) != ContainmentType.Disjoint;
     }
 
-    private PlaneIntersectionType PlaneIntersectsPoints(ref Plane plane, Vector3[] points)
+    private readonly PlaneIntersectionType PlaneIntersectsPoints(ref Plane plane, Vector3[] points)
     {
         PlaneIntersectionType result = CollisionsHelper.PlaneIntersectsPoint(ref plane, ref points[0]);
         for (var i = 1; i < points.Length; i++)
@@ -614,7 +614,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// </summary>
     /// <param name="depth">the depth at which to calculate frustum width.</param>
     /// <returns>With of the frustum at the specified depth</returns>
-    public float GetWidthAtDepth(float depth)
+    public readonly float GetWidthAtDepth(float depth)
     {
         var hAngle = (float)(Math.PI / 2.0 - Math.Acos(Vector3.Dot(pNear.Normal, pLeft.Normal)));
         return (float)(Math.Tan(hAngle) * depth * 2);
@@ -625,13 +625,13 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// </summary>
     /// <param name="depth">the depth at which to calculate frustum height.</param>
     /// <returns>Height of the frustum at the specified depth</returns>
-    public float GetHeightAtDepth(float depth)
+    public readonly float GetHeightAtDepth(float depth)
     {
         var vAngle = (float)(Math.PI / 2.0 - Math.Acos(Vector3.Dot(pNear.Normal, pTop.Normal)));
         return (float)(Math.Tan(vAngle) * depth * 2);
     }
 
-    private BoundingFrustum GetInsideOutClone()
+    private readonly BoundingFrustum GetInsideOutClone()
     {
         BoundingFrustum frustum = this;
         frustum.pNear.Normal = -frustum.pNear.Normal;
@@ -768,5 +768,5 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// <summary>
     /// Indicate whether the current BoundingFrustum is Orthographic.
     /// </summary>
-    public bool IsOrthographic => (pLeft.Normal == -pRight.Normal) && (pTop.Normal == -pBottom.Normal);
+    public readonly bool IsOrthographic => (pLeft.Normal == -pRight.Normal) && (pTop.Normal == -pBottom.Normal);
 }

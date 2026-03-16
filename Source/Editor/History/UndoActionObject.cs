@@ -46,7 +46,7 @@ public class UndoActionObject : UndoActionBase<UndoActionObject.DataStorage>
         /// Gets the proper value.
         /// </summary>
         [NoSerialize]
-        public object Value => EditorNode ?? FlaxObject ?? Generic ?? Id;
+        public readonly object Value => EditorNode ?? FlaxObject ?? Generic ?? Id;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataValue"/> struct.

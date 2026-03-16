@@ -7,7 +7,7 @@ partial struct NetworkReplicationHierarchyObject
     /// <summary>
     /// Gets the actors context (object itself or parent actor).
     /// </summary>
-    public Actor Actor
+    public readonly Actor Actor
     {
         get
         {

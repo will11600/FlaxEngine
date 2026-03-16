@@ -26,13 +26,13 @@ partial struct SpriteHandle : IEquatable<SpriteHandle>
     /// <summary>
     /// Returns true if sprite is valid.
     /// </summary>
-    public bool IsValid => Atlas != null && Index != -1;
+    public readonly bool IsValid => Atlas != null && Index != -1;
 
     /// <summary>
     /// Gets or sets the sprite name.
     /// </summary>
     [NoSerialize]
-    public string Name
+    public readonly string Name
     {
         get
         {
@@ -71,7 +71,7 @@ partial struct SpriteHandle : IEquatable<SpriteHandle>
     [NoSerialize]
     public Float2 Size
     {
-        get
+        readonly get
         {
             if (Atlas == null)
                 throw new InvalidOperationException("Cannot use invalid sprite.");
@@ -90,7 +90,7 @@ partial struct SpriteHandle : IEquatable<SpriteHandle>
     /// Gets or sets the sprite area in atlas (in normalized atlas coordinates [0;1]).
     /// </summary>
     [NoSerialize]
-    public Rectangle Area
+    public readonly Rectangle Area
     {
         get
         {
@@ -132,7 +132,7 @@ partial struct SpriteHandle : IEquatable<SpriteHandle>
     }
 
     /// <inheritdoc />
-    public bool Equals(SpriteHandle other)
+    public readonly bool Equals(SpriteHandle other)
     {
         return Index == other.Index && Atlas == other.Atlas;
     }
@@ -144,13 +144,13 @@ partial struct SpriteHandle : IEquatable<SpriteHandle>
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         return HashCode.Combine(Atlas, Index);
     }
 
     /// <inheritdoc />
-    public override string ToString()
+    public override readonly string ToString()
     {
         if (Atlas)
             return $"{System.IO.Path.GetFileNameWithoutExtension(Atlas.Path)}[{Index}]";

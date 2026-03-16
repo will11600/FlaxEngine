@@ -26,7 +26,7 @@ partial struct Color : Json.ICustomValueEquals
     /// <exception cref="System.IndexOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
     public float this[int index]
     {
-        get
+        readonly get
         {
             switch (index)
             {
@@ -84,27 +84,27 @@ partial struct Color : Json.ICustomValueEquals
     /// <summary>
     /// Returns the minimum color component value: Min(r,g,b).
     /// </summary>
-    public float MinColorComponent => Mathf.Min(Mathf.Min(R, G), B);
+    public readonly float MinColorComponent => Mathf.Min(Mathf.Min(R, G), B);
 
     /// <summary>
     /// Returns the maximum color component value: Max(r,g,b).
     /// </summary>
-    public float MaxColorComponent => Mathf.Max(Mathf.Max(R, G), B);
+    public readonly float MaxColorComponent => Mathf.Max(Mathf.Max(R, G), B);
 
     /// <summary>
     /// Gets a minimum component value (max of r,g,b,a).
     /// </summary>
-    public float MinValue => Math.Min(R, Math.Min(G, Math.Min(B, A)));
+    public readonly float MinValue => Math.Min(R, Math.Min(G, Math.Min(B, A)));
 
     /// <summary>
     /// Gets a maximum component value (min of r,g,b,a).
     /// </summary>
-    public float MaxValue => Math.Max(R, Math.Max(G, Math.Max(B, A)));
+    public readonly float MaxValue => Math.Max(R, Math.Max(G, Math.Max(B, A)));
 
     /// <summary>
     /// Gets a sum of the component values.
     /// </summary>
-    public float ValuesSum => R + G + B + A;
+    public readonly float ValuesSum => R + G + B + A;
 
     /// <summary>
     /// Constructs a new Color with given r,g,b,a component.
@@ -213,13 +213,13 @@ partial struct Color : Json.ICustomValueEquals
     /// <param name="other">The <see cref="Color" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Color" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(ref Color other)
+    public readonly bool Equals(ref Color other)
     {
         return R == other.R && G == other.G && B == other.B && A == other.A;
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -321,7 +321,7 @@ partial struct Color : Json.ICustomValueEquals
     /// Gets the color value as the hexadecimal string (in RGBA order).
     /// </summary>
     /// <returns>Hex string.</returns>
-    public string ToHexString()
+    public readonly string ToHexString()
     {
         const string digits = "0123456789ABCDEF";
 
@@ -461,7 +461,7 @@ partial struct Color : Json.ICustomValueEquals
     /// Converts the color into a packed integer.
     /// </summary>
     /// <returns>A packed integer containing all four color components.</returns>
-    public int ToBgra()
+    public readonly int ToBgra()
     {
         uint a = (uint)(A * 255.0f) & 255;
         uint r = (uint)(R * 255.0f) & 255;
@@ -480,7 +480,7 @@ partial struct Color : Json.ICustomValueEquals
     /// Converts the color into a packed integer.
     /// </summary>
     /// <returns>A packed integer containing all four color components.</returns>
-    public void ToBgra(out byte r, out byte g, out byte b, out byte a)
+    public readonly void ToBgra(out byte r, out byte g, out byte b, out byte a)
     {
         a = (byte)(A * 255.0f);
         r = (byte)(R * 255.0f);
@@ -492,7 +492,7 @@ partial struct Color : Json.ICustomValueEquals
     /// Converts the color into a packed integer.
     /// </summary>
     /// <returns>A packed integer containing all four color components.</returns>
-    public int ToRgba()
+    public readonly int ToRgba()
     {
         uint a = (uint)(A * 255.0f) & 255;
         uint r = (uint)(R * 255.0f) & 255;
@@ -511,7 +511,7 @@ partial struct Color : Json.ICustomValueEquals
     /// Creates an array containing the elements of the color.
     /// </summary>
     /// <returns>A four-element array containing the components of the color.</returns>
-    public float[] ToArray()
+    public readonly float[] ToArray()
     {
         return new[] { R, G, B, A };
     }
@@ -520,7 +520,7 @@ partial struct Color : Json.ICustomValueEquals
     /// Converts this color from linear space to sRGB space.
     /// </summary>
     /// <returns>A color3 in sRGB space.</returns>
-    public Color ToSRgb()
+    public readonly Color ToSRgb()
     {
         return new Color(Mathf.LinearToSRgb(R), Mathf.LinearToSRgb(G), Mathf.LinearToSRgb(B), A);
     }
@@ -529,7 +529,7 @@ partial struct Color : Json.ICustomValueEquals
     /// Converts this color from sRGB space to linear space.
     /// </summary>
     /// <returns>A Color in linear space.</returns>
-    public Color ToLinear()
+    public readonly Color ToLinear()
     {
         return new Color(Mathf.SRgbToLinear(R), Mathf.SRgbToLinear(G), Mathf.SRgbToLinear(B), A);
     }
@@ -811,7 +811,7 @@ partial struct Color : Json.ICustomValueEquals
     /// </summary>
     /// <param name="multiplier">The multiplier.</param>
     /// <returns>The modified color.</returns>
-    public Color RGBMultiplied(float multiplier)
+    public readonly Color RGBMultiplied(float multiplier)
     {
         return new Color(R * multiplier, G * multiplier, B * multiplier, A);
     }
@@ -821,7 +821,7 @@ partial struct Color : Json.ICustomValueEquals
     /// </summary>
     /// <param name="multiplier">The multiplier.</param>
     /// <returns>The modified color.</returns>
-    public Color RGBMultiplied(Color multiplier)
+    public readonly Color RGBMultiplied(Color multiplier)
     {
         return new Color(R * multiplier.R, G * multiplier.G, B * multiplier.B, A);
     }
@@ -831,7 +831,7 @@ partial struct Color : Json.ICustomValueEquals
     /// </summary>
     /// <param name="multiplier">The multiplier.</param>
     /// <returns>The modified color.</returns>
-    public Color AlphaMultiplied(float multiplier)
+    public readonly Color AlphaMultiplied(float multiplier)
     {
         return new Color(R, G, B, A * multiplier);
     }
@@ -840,7 +840,7 @@ partial struct Color : Json.ICustomValueEquals
     /// Gets Hue[0-360], Saturation[0-1] and Value[0-1] from RGB color.
     /// </summary>
     /// <returns>The HSV color.</returns>
-    public Float3 ToHSV()
+    public readonly Float3 ToHSV()
     {
         float rgbMin = Mathf.Min(R, G, B);
         float rgbMax = Mathf.Max(R, G, B);
@@ -1070,7 +1070,7 @@ partial struct Color : Json.ICustomValueEquals
     /// <summary>
     /// Returns a nicely formatted string of this color.
     /// </summary>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return $"RGBA({R:F3}, {G:F3}, {B:F3}, {A:F3})";
     }
@@ -1079,7 +1079,7 @@ partial struct Color : Json.ICustomValueEquals
     /// Returns a nicely formatted string of this color.
     /// </summary>
     /// <param name="format"></param>
-    public string ToString(string format)
+    public readonly string ToString(string format)
     {
         return $"RGBA({R.ToString(format)}, {G.ToString(format)}, {B.ToString(format)}, {A.ToString(format)})";
     }

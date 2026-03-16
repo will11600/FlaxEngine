@@ -764,7 +764,7 @@ public static class Function
             public ScriptType Type;
             public bool IsOut;
 
-            public override string ToString()
+            public override readonly string ToString()
             {
                 var sb = new StringBuilder();
                 if (IsOut)
@@ -1337,7 +1337,7 @@ public static class Function
             }
 
             /// <inheritdoc />
-            public override string ToString()
+            public override readonly string ToString()
             {
                 if (string.IsNullOrEmpty(Name))
                     return string.Empty;

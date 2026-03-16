@@ -34,7 +34,7 @@ partial struct GPUSamplerDescription : IEquatable<GPUSamplerDescription>
     }
 
     /// <inheritdoc />
-    public bool Equals(GPUSamplerDescription other)
+    public readonly bool Equals(GPUSamplerDescription other)
     {
         return Filter == other.Filter &&
                AddressU == other.AddressU &&
@@ -55,7 +55,7 @@ partial struct GPUSamplerDescription : IEquatable<GPUSamplerDescription>
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {

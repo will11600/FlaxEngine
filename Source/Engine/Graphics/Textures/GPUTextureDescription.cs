@@ -9,52 +9,52 @@ partial struct GPUTextureDescription : IEquatable<GPUTextureDescription>
     /// <summary>
     /// Gets a value indicating whether this instance is a render target.
     /// </summary>
-    public bool IsRenderTarget => (Flags & GPUTextureFlags.RenderTarget) != 0;
+    public readonly bool IsRenderTarget => (Flags & GPUTextureFlags.RenderTarget) != 0;
 
     /// <summary>
     /// Gets a value indicating whether this instance is a depth stencil.
     /// </summary>
-    public bool IsDepthStencil => (Flags & GPUTextureFlags.DepthStencil) != 0;
+    public readonly bool IsDepthStencil => (Flags & GPUTextureFlags.DepthStencil) != 0;
 
     /// <summary>
     /// Gets a value indicating whether this instance is a shader resource.
     /// </summary>
-    public bool IsShaderResource => (Flags & GPUTextureFlags.ShaderResource) != 0;
+    public readonly bool IsShaderResource => (Flags & GPUTextureFlags.ShaderResource) != 0;
 
     /// <summary>
     /// Gets a value indicating whether this instance is a unordered access.
     /// </summary>
-    public bool IsUnorderedAccess => (Flags & GPUTextureFlags.UnorderedAccess) != 0;
+    public readonly bool IsUnorderedAccess => (Flags & GPUTextureFlags.UnorderedAccess) != 0;
 
     /// <summary>
     /// Gets a value indicating whether this instance has per mip level handles.
     /// </summary>
-    public bool HasPerMipViews => (Flags & GPUTextureFlags.PerMipViews) != 0;
+    public readonly bool HasPerMipViews => (Flags & GPUTextureFlags.PerMipViews) != 0;
 
     /// <summary>
     /// Gets a value indicating whether this instance has per slice views.
     /// </summary>
-    public bool HasPerSliceViews => (Flags & GPUTextureFlags.PerSliceViews) != 0;
+    public readonly bool HasPerSliceViews => (Flags & GPUTextureFlags.PerSliceViews) != 0;
 
     /// <summary>
     /// Gets a value indicating whether this instance is a multi sample texture.
     /// </summary>
-    public bool IsMultiSample => MultiSampleLevel > MSAALevel.None;
+    public readonly bool IsMultiSample => MultiSampleLevel > MSAALevel.None;
 
     /// <summary>
     /// Gets a value indicating whether this instance is a cubemap texture.
     /// </summary>
-    public bool IsCubeMap => Dimensions == TextureDimensions.CubeTexture;
+    public readonly bool IsCubeMap => Dimensions == TextureDimensions.CubeTexture;
 
     /// <summary>
     /// Gets a value indicating whether this instance is a volume texture.
     /// </summary>
-    public bool IsVolume => Dimensions == TextureDimensions.VolumeTexture;
+    public readonly bool IsVolume => Dimensions == TextureDimensions.VolumeTexture;
 
     /// <summary>
     /// Gets a value indicating whether this instance is an array texture.
     /// </summary>
-    public bool IsArray => ArraySize != 1;
+    public readonly bool IsArray => ArraySize != 1;
 
     private static int CalculateMipMapCount(int requestedLevel, int width)
     {
@@ -303,7 +303,7 @@ partial struct GPUTextureDescription : IEquatable<GPUTextureDescription>
     /// Gets the staging upload (CPU write) description for this instance.
     /// </summary>
     /// <returns>A staging texture description</returns>
-    public GPUTextureDescription ToStagingUpload()
+    public readonly GPUTextureDescription ToStagingUpload()
     {
         var desc = this;
         desc.Flags = GPUTextureFlags.None;
@@ -315,7 +315,7 @@ partial struct GPUTextureDescription : IEquatable<GPUTextureDescription>
     /// Gets the staging readback (CPU read) description for this instance.
     /// </summary>
     /// <returns>A staging texture description</returns>
-    public GPUTextureDescription ToStagingReadback()
+    public readonly GPUTextureDescription ToStagingReadback()
     {
         var desc = this;
         desc.Flags = GPUTextureFlags.None;
@@ -327,7 +327,7 @@ partial struct GPUTextureDescription : IEquatable<GPUTextureDescription>
     /// Gets the staging (CPU read/write) description for this instance.
     /// </summary>
     /// <returns>A staging texture description</returns>
-    public GPUTextureDescription ToStaging()
+    public readonly GPUTextureDescription ToStaging()
     {
         var desc = this;
         desc.Flags = GPUTextureFlags.None;
@@ -336,7 +336,7 @@ partial struct GPUTextureDescription : IEquatable<GPUTextureDescription>
     }
 
     /// <inheritdoc />
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format("Size: {0}x{1}x{2}[{3}], Type: {4}, Mips: {5}, Format: {6}, MSAA: {7}, Flags: {8}, Usage: {9}",
                              Width,

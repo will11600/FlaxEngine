@@ -145,7 +145,7 @@ public struct InputBinding : IEquatable<InputBinding>
         return ProcessModifiers(window.GetKey);
     }
 
-    private bool ProcessModifiers(Func<KeyboardKeys, bool> getKeyFunc)
+    private readonly bool ProcessModifiers(Func<KeyboardKeys, bool> getKeyFunc)
     {
         bool ctrlPressed = getKeyFunc(KeyboardKeys.Control);
         bool shiftPressed = getKeyFunc(KeyboardKeys.Shift);
@@ -231,7 +231,7 @@ public struct InputBinding : IEquatable<InputBinding>
     }
 
     /// <inheritdoc />
-    public override string ToString()
+    public override readonly string ToString()
     {
         string result = string.Empty;
         if (Modifier2 != KeyboardKeys.None)
@@ -254,7 +254,7 @@ public struct InputBinding : IEquatable<InputBinding>
     }
 
     /// <inheritdoc />
-    public bool Equals(InputBinding other)
+    public readonly bool Equals(InputBinding other)
     {
         return Key == other.Key && Modifier1 == other.Modifier1 && Modifier2 == other.Modifier2;
     }
@@ -266,7 +266,7 @@ public struct InputBinding : IEquatable<InputBinding>
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         return HashCode.Combine((int)Key, (int)Modifier1, (int)Modifier2);
     }

@@ -54,7 +54,7 @@ partial struct MaterialInfo
     /// </summary>
     /// <param name="other">The other info.</param>
     /// <returns>True if both objects are equal, otherwise false.</returns>
-    public bool Equals(MaterialInfo other)
+    public readonly bool Equals(MaterialInfo other)
     {
         return Domain == other.Domain
                && BlendMode == other.BlendMode
@@ -77,7 +77,7 @@ partial struct MaterialInfo
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {

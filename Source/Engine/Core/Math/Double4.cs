@@ -218,47 +218,47 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <summary>
     /// Gets a value indicting whether this instance is normalized.
     /// </summary>
-    public bool IsNormalized => Mathd.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
+    public readonly bool IsNormalized => Mathd.Abs((X * X + Y * Y + Z * Z + W * W) - 1.0f) < 1e-4f;
 
     /// <summary>
     /// Gets a value indicting whether this vector is zero
     /// </summary>
-    public bool IsZero => Mathd.IsZero(X) && Mathd.IsZero(Y) && Mathd.IsZero(Z) && Mathd.IsZero(W);
+    public readonly bool IsZero => Mathd.IsZero(X) && Mathd.IsZero(Y) && Mathd.IsZero(Z) && Mathd.IsZero(W);
 
     /// <summary>
     /// Gets a value indicting whether this vector is one
     /// </summary>
-    public bool IsOne => Mathd.IsOne(X) && Mathd.IsOne(Y) && Mathd.IsOne(Z) && Mathd.IsOne(W);
+    public readonly bool IsOne => Mathd.IsOne(X) && Mathd.IsOne(Y) && Mathd.IsOne(Z) && Mathd.IsOne(W);
 
     /// <summary>
     /// Gets a minimum component value
     /// </summary>
-    public double MinValue => Mathd.Min(X, Mathd.Min(Y, Mathd.Min(Z, W)));
+    public readonly double MinValue => Mathd.Min(X, Mathd.Min(Y, Mathd.Min(Z, W)));
 
     /// <summary>
     /// Gets a maximum component value
     /// </summary>
-    public double MaxValue => Mathd.Max(X, Mathd.Max(Y, Mathd.Max(Z, W)));
+    public readonly double MaxValue => Mathd.Max(X, Mathd.Max(Y, Mathd.Max(Z, W)));
 
     /// <summary>
     /// Gets an arithmetic average value of all vector components.
     /// </summary>
-    public double AvgValue => (X + Y + Z + W) * (1.0 / 4.0);
+    public readonly double AvgValue => (X + Y + Z + W) * (1.0 / 4.0);
 
     /// <summary>
     /// Gets a sum of the component values.
     /// </summary>
-    public double ValuesSum => X + Y + Z + W;
+    public readonly double ValuesSum => X + Y + Z + W;
 
     /// <summary>
     /// Gets a vector with values being absolute values of that vector.
     /// </summary>
-    public Double4 Absolute => new(Math.Abs(X), Math.Abs(Y), Math.Abs(Z), Math.Abs(W));
+    public readonly Double4 Absolute => new(Math.Abs(X), Math.Abs(Y), Math.Abs(Z), Math.Abs(W));
 
     /// <summary>
     /// Gets a vector with values being opposite to values of that vector.
     /// </summary>
-    public Double4 Negative => new(-X, -Y, -Z, -W);
+    public readonly Double4 Negative => new(-X, -Y, -Z, -W);
 
     /// <summary>
     /// Gets or sets the component at the specified index.
@@ -269,7 +269,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0,3].</exception>
     public double this[int index]
     {
-        get
+        readonly get
         {
             switch (index)
             {
@@ -306,14 +306,14 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// </summary>
     /// <returns>The length of the vector.</returns>
     /// <remarks><see cref="Double4.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-    public double Length => Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+    public readonly double Length => Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
 
     /// <summary>
     /// Calculates the squared length of the vector.
     /// </summary>
     /// <returns>The squared length of the vector.</returns>
     /// <remarks>This method may be preferred to <see cref="Double4.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-    public double LengthSquared => X * X + Y * Y + Z * Z + W * W;
+    public readonly double LengthSquared => X * X + Y * Y + Z * Z + W * W;
 
     /// <summary>
     /// Converts the vector into a unit vector.
@@ -335,7 +335,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// Creates an array containing the elements of the vector.
     /// </summary>
     /// <returns>A four-element array containing the components of the vector.</returns>
-    public double[] ToArray()
+    public readonly double[] ToArray()
     {
         return new[] { X, Y, Z, W };
     }
@@ -1315,7 +1315,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format(CultureInfo.CurrentCulture, _formatString, X, Y, Z, W);
     }
@@ -1337,7 +1337,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// </summary>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(IFormatProvider formatProvider)
+    public readonly string ToString(IFormatProvider formatProvider)
     {
         return string.Format(formatProvider, _formatString, X, Y, Z, W);
     }
@@ -1358,7 +1358,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <summary>
     /// Returns a hash code for this instance.
     /// </summary>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -1382,7 +1382,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// </summary>
     /// <param name="other">The <see cref="Double4" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Double4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    public bool Equals(ref Double4 other)
+    public readonly bool Equals(ref Double4 other)
     {
         return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
     }

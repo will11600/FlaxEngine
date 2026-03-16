@@ -166,7 +166,7 @@ public class EventTrack : MemberTrack, IKeyframesEditorContext
         public object[] Parameters;
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             if (Parameters == null || Parameters.Length == 0)
                 return "()";

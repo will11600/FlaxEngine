@@ -134,7 +134,7 @@ public abstract class ConductorTrack : Track, IKeyframesEditorContext
         public List<KeyValuePair<string, object>> Keyframes;
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             if (Keyframes == null || Keyframes.Count == 0)
                 return string.Empty;

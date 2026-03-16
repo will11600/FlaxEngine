@@ -138,7 +138,7 @@ partial struct Plane : IEquatable<Plane>, IFormattable
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0,3].</exception>
     public Real this[int index]
     {
-        get
+        readonly get
         {
             switch (index)
             {
@@ -190,7 +190,7 @@ partial struct Plane : IEquatable<Plane>, IFormattable
     /// Creates an array containing the elements of the plane.
     /// </summary>
     /// <returns>A four-element array containing the components of the plane.</returns>
-    public Real[] ToArray()
+    public readonly Real[] ToArray()
     {
         return new[] { Normal.X, Normal.Y, Normal.Z, D };
     }
@@ -530,7 +530,7 @@ partial struct Plane : IEquatable<Plane>, IFormattable
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format(CultureInfo.CurrentCulture, "A:{0} B:{1} C:{2} D:{3}", Normal.X, Normal.Y, Normal.Z, D);
     }
@@ -540,7 +540,7 @@ partial struct Plane : IEquatable<Plane>, IFormattable
     /// </summary>
     /// <param name="format">The format.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(string format)
+    public readonly string ToString(string format)
     {
         return string.Format(CultureInfo.CurrentCulture, "A:{0} B:{1} C:{2} D:{3}", Normal.X.ToString(format, CultureInfo.CurrentCulture), Normal.Y.ToString(format, CultureInfo.CurrentCulture), Normal.Z.ToString(format, CultureInfo.CurrentCulture), D.ToString(format, CultureInfo.CurrentCulture));
     }
@@ -550,7 +550,7 @@ partial struct Plane : IEquatable<Plane>, IFormattable
     /// </summary>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(IFormatProvider formatProvider)
+    public readonly string ToString(IFormatProvider formatProvider)
     {
         return string.Format(formatProvider, "A:{0} B:{1} C:{2} D:{3}", Normal.X, Normal.Y, Normal.Z, D);
     }
@@ -561,7 +561,7 @@ partial struct Plane : IEquatable<Plane>, IFormattable
     /// <param name="format">The format.</param>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(string format, IFormatProvider formatProvider)
+    public readonly string ToString(string format, IFormatProvider formatProvider)
     {
         return string.Format(formatProvider, "A:{0} B:{1} C:{2} D:{3}", Normal.X.ToString(format, formatProvider), Normal.Y.ToString(format, formatProvider), Normal.Z.ToString(format, formatProvider), D.ToString(format, formatProvider));
     }
@@ -584,7 +584,7 @@ partial struct Plane : IEquatable<Plane>, IFormattable
     /// <param name="other">The <see cref="Vector4" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Vector4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(ref Plane other)
+    public readonly bool Equals(ref Plane other)
     {
         return Normal == other.Normal && D == other.D;
     }

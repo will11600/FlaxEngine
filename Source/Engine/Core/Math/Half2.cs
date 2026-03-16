@@ -144,7 +144,7 @@ public struct Half2 : IEquatable<Half2>
     /// <param name="other">Object to make the comparison with.</param>
     /// <returns>
     /// <c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-    public bool Equals(Half2 other)
+    public readonly bool Equals(Half2 other)
     {
         return ((X == other.X) && (Y == other.Y));
     }
@@ -172,7 +172,7 @@ public struct Half2 : IEquatable<Half2>
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return ((Float2)this).ToString();
     }
