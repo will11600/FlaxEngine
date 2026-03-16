@@ -163,8 +163,7 @@ public sealed class ContentImportingModule : EditorModule
     /// <param name="skipSettingsDialog">True if skip any popup dialogs showing for import options adjusting. Can be used when importing files from code.</param>
     public void Import(IEnumerable<string> files, ContentFolder targetLocation, bool skipSettingsDialog = false)
     {
-        if (targetLocation == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(targetLocation);
         if (files == null)
             return;
 
@@ -193,8 +192,7 @@ public sealed class ContentImportingModule : EditorModule
 
     private void Import(string inputPath, ContentFolder targetLocation, bool skipSettingsDialog, object settings, ref bool skipDialog)
     {
-        if (targetLocation == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(targetLocation);
 
         var extension = System.IO.Path.GetExtension(inputPath) ?? string.Empty;
 

@@ -196,8 +196,7 @@ public unsafe partial struct Vector2 : IEquatable<Vector2>, IFormattable, Json.I
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values" /> contains more or less than two elements.</exception>
     public Vector2(Real[] values)
     {
-        if (values == null)
-            throw new ArgumentNullException(nameof(values));
+        ArgumentNullException.ThrowIfNull(values);
         if (values.Length != 2)
             throw new ArgumentOutOfRangeException(nameof(values), "There must be two and only two input values for Vector2.");
         X = values[0];

@@ -87,8 +87,7 @@ sealed class AddRemoveScript : IUndoAction
     /// <returns>The action.</returns>
     public static AddRemoveScript Added(Script script)
     {
-        if (script == null)
-            throw new ArgumentNullException(nameof(script));
+        ArgumentNullException.ThrowIfNull(script);
         return new AddRemoveScript(true, script);
     }
 
@@ -100,8 +99,7 @@ sealed class AddRemoveScript : IUndoAction
     /// <returns>The action.</returns>
     public static AddRemoveScript Add(Actor parentActor, ScriptType scriptType)
     {
-        if (parentActor == null)
-            throw new ArgumentNullException(nameof(parentActor));
+        ArgumentNullException.ThrowIfNull(parentActor);
         if (!scriptType)
             throw new ArgumentNullException(nameof(scriptType));
         return new AddRemoveScript(true, parentActor, scriptType);
@@ -114,8 +112,7 @@ sealed class AddRemoveScript : IUndoAction
     /// <returns>The action.</returns>
     public static AddRemoveScript Remove(Script script)
     {
-        if (script == null)
-            throw new ArgumentNullException(nameof(script));
+        ArgumentNullException.ThrowIfNull(script);
         return new AddRemoveScript(false, script);
     }
 

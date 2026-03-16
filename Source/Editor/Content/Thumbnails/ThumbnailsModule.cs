@@ -43,8 +43,7 @@ public sealed class ThumbnailsModule : EditorModule, IContentItemOwner
     /// <exception cref="System.ArgumentNullException"></exception>
     public void RequestPreview(ContentItem item)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
 
         // Check if use default icon
         var defaultThumbnail = item.DefaultThumbnail;
@@ -96,8 +95,7 @@ public sealed class ThumbnailsModule : EditorModule, IContentItemOwner
     /// <exception cref="System.ArgumentNullException"></exception>
     public void DeletePreview(ContentItem item)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
 
         // We cache previews only for items with 'ID', for now we support only AssetItems
         var assetItem = item as AssetItem;

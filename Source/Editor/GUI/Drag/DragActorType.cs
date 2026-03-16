@@ -62,8 +62,7 @@ public class DragActorType<U> : DragHelper<ScriptType, U> where U : DragEventArg
     /// <returns>The data</returns>
     public static DragData GetDragData(Type item)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
         return new DragDataText(DragPrefix + item.FullName);
     }
 

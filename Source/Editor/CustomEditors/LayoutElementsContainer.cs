@@ -624,8 +624,7 @@ public abstract class LayoutElementsContainer : LayoutElement
     /// <returns>The created element.</returns>
     public CustomEditor Object(ValueContainer values, CustomEditor overrideEditor = null)
     {
-        if (values == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(values);
 
         var editor = CustomEditorsUtil.CreateEditor(values, overrideEditor);
 
@@ -771,8 +770,7 @@ public abstract class LayoutElementsContainer : LayoutElement
     /// <returns>The element.</returns>
     public PropertiesListElement AddPropertyItem(PropertyNameLabel label, string tooltip = null)
     {
-        if (label == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(label);
 
         var element = AddPropertyItem();
         element.OnAddProperty(label, tooltip);
@@ -785,8 +783,7 @@ public abstract class LayoutElementsContainer : LayoutElement
     /// <param name="element">The element.</param>
     public void AddElement(LayoutElement element)
     {
-        if (element == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(element);
         OnAddElement(element);
     }
 

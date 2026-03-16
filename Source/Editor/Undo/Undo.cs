@@ -317,8 +317,7 @@ public class Undo : IDisposable
     /// <param name="action">The action.</param>
     public void AddAction(IUndoAction action)
     {
-        if (action == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(action);
         if (!Enabled)
             return;
 

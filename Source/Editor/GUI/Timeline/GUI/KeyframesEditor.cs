@@ -792,8 +792,7 @@ public class KeyframesEditor : ContainerControl, IKeyframesEditor
     /// <param name="keyframes">The keyframes.</param>
     public void SetKeyframes(IEnumerable<Keyframe> keyframes)
     {
-        if (keyframes == null)
-            throw new ArgumentNullException(nameof(keyframes));
+        ArgumentNullException.ThrowIfNull(keyframes);
         var keyframesArray = keyframes as Keyframe[] ?? keyframes.ToArray();
         if (_keyframes.SequenceEqual(keyframesArray))
             return;

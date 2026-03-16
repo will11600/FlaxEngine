@@ -297,8 +297,7 @@ public class Panel : ScrollableControl
     /// <param name="fastScroll">True of scroll to the item quickly without smoothing.</param>
     public void ScrollViewTo(Control c, bool fastScroll = false)
     {
-        if (c == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(c);
 
         var location = c.Location;
         var size = c.Size;

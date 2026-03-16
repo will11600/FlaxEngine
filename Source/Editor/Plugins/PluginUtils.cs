@@ -19,8 +19,7 @@ public static class PluginUtils
     /// <returns>The found texture asset to be used as a icon, or null if missing or invalid.</returns>
     public static Texture TryGetPluginIcon(Plugin plugin)
     {
-        if (plugin == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(plugin);
 
         var type = plugin.GetType();
         var assembly = type.Assembly;

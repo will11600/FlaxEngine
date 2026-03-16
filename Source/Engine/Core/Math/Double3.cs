@@ -221,8 +221,7 @@ partial struct Double3 : IEquatable<Double3>, IFormattable, Json.ICustomValueEqu
     /// <exception cref="ArgumentOutOfRangeException"> Thrown when <paramref name="values" /> contains more or less than three elements.</exception>
     public Double3(double[] values)
     {
-        if (values == null)
-            throw new ArgumentNullException(nameof(values));
+        ArgumentNullException.ThrowIfNull(values);
         if (values.Length != 3)
             throw new ArgumentOutOfRangeException(nameof(values), "There must be three and only three input values for Double3.");
         X = values[0];

@@ -1179,8 +1179,7 @@ public partial class Control : IComparable, IDrawable
     /// <returns>Converted point location in parent control coordinates</returns>
     public Float2 PointToParent(ContainerControl parent, Float2 location)
     {
-        if (parent == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(parent);
         Control c = this;
         while (c != null)
         {
@@ -1242,8 +1241,7 @@ public partial class Control : IComparable, IDrawable
     /// <returns>The converted point location in control's space.</returns>
     public Float2 PointFromParent(ContainerControl parent, Float2 location)
     {
-        if (parent == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(parent);
         var path = new List<Control>();
 
         Control c = this;

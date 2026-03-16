@@ -58,8 +58,7 @@ public class PropertiesListElement : LayoutElementsContainer
 
     internal void OnAddProperty(PropertyNameLabel label, string tooltip)
     {
-        if (label == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(label);
         label.Parent = Properties;
         label.TooltipText = tooltip;
         label.FirstChildControlIndex = Properties.Children.Count;

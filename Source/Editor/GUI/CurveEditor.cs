@@ -1285,8 +1285,7 @@ public class LinearCurveEditor<T> : CurveEditor<T> where T : new()
     /// <param name="keyframes">The keyframes.</param>
     public void SetKeyframes(IEnumerable<LinearCurve<T>.Keyframe> keyframes)
     {
-        if (keyframes == null)
-            throw new ArgumentNullException(nameof(keyframes));
+        ArgumentNullException.ThrowIfNull(keyframes);
         var keyframesArray = keyframes as LinearCurve<T>.Keyframe[] ?? keyframes.ToArray();
         if (_keyframes.SequenceEqual(keyframesArray))
             return;
@@ -1833,8 +1832,7 @@ public class BezierCurveEditor<T> : CurveEditor<T> where T : new()
     /// <param name="keyframes">The keyframes.</param>
     public void SetKeyframes(IEnumerable<BezierCurve<T>.Keyframe> keyframes)
     {
-        if (keyframes == null)
-            throw new ArgumentNullException(nameof(keyframes));
+        ArgumentNullException.ThrowIfNull(keyframes);
         var keyframesArray = keyframes as BezierCurve<T>.Keyframe[] ?? keyframes.ToArray();
         if (_keyframes.SequenceEqual(keyframesArray))
             return;

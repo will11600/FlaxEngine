@@ -56,8 +56,7 @@ public class DragScripts<U> : DragHelper<Script, U> where U : DragEventArgs
     /// <returns>The data.</returns>
     public static DragData GetDragData(Script item)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
         return new DragDataText(DragPrefix + item.ID.ToString("N"));
     }
 
@@ -68,8 +67,7 @@ public class DragScripts<U> : DragHelper<Script, U> where U : DragEventArgs
     /// <returns>The data.</returns>
     public static DragData GetDragData(IEnumerable<Script> items)
     {
-        if (items == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(items);
         string text = DragPrefix;
         foreach (var item in items)
             text += item.ID.ToString("N") + '\n';

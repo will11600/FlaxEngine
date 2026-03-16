@@ -202,8 +202,7 @@ public class ContainerControl : Control
     /// <returns>The added control.</returns>
     public T AddChild<T>(T child) where T : Control
     {
-        if (child == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(child);
         if (child.Parent == this && _children.Contains(child))
             throw new InvalidOperationException("Argument child cannot be added, if current container is already its parent.");
 
@@ -219,8 +218,7 @@ public class ContainerControl : Control
     /// <param name="child">The control to remove.</param>
     public void RemoveChild(Control child)
     {
-        if (child == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(child);
         if (child.Parent != this)
             throw new InvalidOperationException("Argument child cannot be removed, if current container is not its parent.");
 
@@ -334,8 +332,7 @@ public class ContainerControl : Control
     /// <returns>The found control or null.</returns>
     public Control GetChildAt(Float2 point, Func<Control, bool> isValid)
     {
-        if (isValid == null)
-            throw new ArgumentNullException(nameof(isValid));
+        ArgumentNullException.ThrowIfNull(isValid);
         Control result = null;
         for (int i = _children.Count - 1; i >= 0; i--)
         {

@@ -337,8 +337,7 @@ partial struct BoundingBox : IEquatable<BoundingBox>, IFormattable
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="points" /> is <c>null</c>.</exception>
     public static void FromPoints(Vector3[] points, out BoundingBox result)
     {
-        if (points == null)
-            throw new ArgumentNullException(nameof(points));
+        ArgumentNullException.ThrowIfNull(points);
         var min = Vector3.Maximum;
         var max = Vector3.Minimum;
         for (var i = 0; i < points.Length; ++i)

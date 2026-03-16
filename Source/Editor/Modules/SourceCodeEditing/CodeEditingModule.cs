@@ -211,8 +211,7 @@ public sealed class CodeEditingModule : EditorModule
     /// <param name="editor">The editor.</param>
     public void AddEditor(ISourceCodeEditor editor)
     {
-        if (editor == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(editor);
         if (_editors.Contains(editor))
             throw new ArgumentException("Editor already added.");
 
@@ -229,8 +228,7 @@ public sealed class CodeEditingModule : EditorModule
     /// <param name="editor">The editor.</param>
     public void RemoveEditor(ISourceCodeEditor editor)
     {
-        if (editor == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(editor);
         if (!_editors.Contains(editor))
             throw new ArgumentException("Editor not added.");
 

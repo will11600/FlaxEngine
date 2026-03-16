@@ -166,8 +166,7 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values"/> contains more or less than nine elements.</exception>
     public Matrix3x3(float[] values)
     {
-        if (values == null)
-            throw new ArgumentNullException(nameof(values));
+        ArgumentNullException.ThrowIfNull(values);
         if (values.Length != 9)
             throw new ArgumentOutOfRangeException(nameof(values), "There must be sixteen and only nine input values for Matrix3x3.");
 

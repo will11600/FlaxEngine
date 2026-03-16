@@ -257,8 +257,7 @@ public partial class ContentView : ContainerControl, IContentItemOwner
     /// <param name="keepSelection">If set to <c>true</c> selected items list will be preserved. Otherwise selection will be cleared before.</param>
     public void ShowItems(List<ContentItem> items, SortType sortType, bool additive = false, bool keepSelection = false)
     {
-        if (items == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(items);
 
         // Check if show nothing or not change view
         if (items.Count == 0)
@@ -344,8 +343,7 @@ public partial class ContentView : ContainerControl, IContentItemOwner
     /// <param name="additive">If set to <c>true</c> items will be added to the current selection. Otherwise selection will be cleared before.</param>
     public void Select(List<ContentItem> items, bool additive = false)
     {
-        if (items == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(items);
 
         // Check if nothing to select
         if (items.Count == 0)
@@ -387,8 +385,7 @@ public partial class ContentView : ContainerControl, IContentItemOwner
     /// <param name="additive">If set to <c>true</c> item will be added to the current selection. Otherwise selection will be cleared before.</param>
     public void Select(ContentItem item, bool additive = false)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
 
         // Lock layout
         var wasLayoutLocked = IsLayoutLocked;
@@ -449,8 +446,7 @@ public partial class ContentView : ContainerControl, IContentItemOwner
     /// <param name="item">The item.</param>
     public void Deselect(ContentItem item)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
 
         // Lock layout
         var wasLayoutLocked = IsLayoutLocked;

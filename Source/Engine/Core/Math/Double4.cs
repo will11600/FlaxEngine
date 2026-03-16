@@ -206,8 +206,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values" /> contains more or less than four elements.</exception>
     public Double4(double[] values)
     {
-        if (values == null)
-            throw new ArgumentNullException(nameof(values));
+        ArgumentNullException.ThrowIfNull(values);
         if (values.Length != 4)
             throw new ArgumentOutOfRangeException(nameof(values), "There must be four and only four input values for Double4.");
         X = values[0];

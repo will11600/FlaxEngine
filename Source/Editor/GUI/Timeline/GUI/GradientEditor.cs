@@ -184,8 +184,7 @@ public class GradientEditor : ContainerControl
         get => _data;
         set
         {
-            if (value == null)
-                throw new ArgumentNullException();
+            ArgumentNullException.ThrowIfNull(value);
             if (value.SequenceEqual(_data))
                 return;
 

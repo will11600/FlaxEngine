@@ -694,8 +694,7 @@ public sealed class ContentDatabaseModule : EditorModule
     /// <param name="deletedByUser">If the file was deleted by the user and not outside the editor.</param>
     public void Delete(ContentItem item, bool deletedByUser = false)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
 
         // Fire events
         if (_enableEvents)

@@ -146,8 +146,7 @@ partial struct OrientedBoundingBox : IEquatable<OrientedBoundingBox>, IFormattab
     /// <param name="corners">An collection to add the corners of the bounding box.</param>
     public void GetCorners(List<Vector3> corners)
     {
-        if (corners == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(corners);
         corners.AddRange(GetCorners());
     }
 

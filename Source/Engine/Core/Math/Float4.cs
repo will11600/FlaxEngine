@@ -188,8 +188,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values" /> contains more or less than four elements.</exception>
     public Float4(float[] values)
     {
-        if (values == null)
-            throw new ArgumentNullException(nameof(values));
+        ArgumentNullException.ThrowIfNull(values);
         if (values.Length != 4)
             throw new ArgumentOutOfRangeException(nameof(values), "There must be four and only four input values for Float4.");
         X = values[0];

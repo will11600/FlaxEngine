@@ -533,8 +533,7 @@ public sealed partial class ContentWindow : EditorWindow
     /// <param name="newShortName">New name (without extension, just the filename).</param>
     public void Rename(ContentItem item, string newShortName)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
 
         // Check if can rename this item
         if (!item.CanRename)
@@ -830,8 +829,7 @@ public sealed partial class ContentWindow : EditorWindow
     public void NewItem(ContentProxy proxy, object argument = null, Action<ContentItem> created = null, string initialName = null, bool withRenaming = true)
     {
         Assert.IsNull(_newElement);
-        if (proxy == null)
-            throw new ArgumentNullException(nameof(proxy));
+        ArgumentNullException.ThrowIfNull(proxy);
 
         // Setup name
         string name = initialName ?? proxy.NewItemName;
@@ -933,8 +931,7 @@ public sealed partial class ContentWindow : EditorWindow
     /// <param name="item">The content item.</param>
     public void Open(ContentItem item)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
 
         // Check if it's a folder
         if (item.IsFolder)
@@ -957,8 +954,7 @@ public sealed partial class ContentWindow : EditorWindow
     /// <param name="asset">The asset to select.</param>
     public void Select(Asset asset)
     {
-        if (asset == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(asset);
 
         var item = Editor.ContentDatabase.Find(asset.ID);
         if (item != null)
@@ -972,8 +968,7 @@ public sealed partial class ContentWindow : EditorWindow
     /// <param name="fastScroll">True of scroll to the item quickly without smoothing.</param>
     public void Select(ContentItem item, bool fastScroll = false)
     {
-        if (item == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(item);
 
         if (!_navigationUnlocked)
             return;

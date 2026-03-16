@@ -69,8 +69,7 @@ public abstract class StateMachine
     /// <exception cref="ArgumentNullException">state</exception>
     public virtual void GoToState(State state)
     {
-        if (state == null)
-            throw new ArgumentNullException(nameof(state));
+        ArgumentNullException.ThrowIfNull(state);
 
         // Prevent from entering the same state
         if (state == currentState)

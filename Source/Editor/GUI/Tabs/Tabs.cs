@@ -329,8 +329,7 @@ public class Tabs : ContainerControl
     /// <returns>The tab.</returns>
     public T AddTab<T>(T tab) where T : Tab
     {
-        if (tab == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(tab);
         FlaxEngine.Assertions.Assert.IsFalse(Children.Contains(tab));
 
         // Add

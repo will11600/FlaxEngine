@@ -227,8 +227,7 @@ partial struct BoundingSphere : IEquatable<BoundingSphere>, IFormattable
     /// <exception cref="System.ArgumentOutOfRangeException">start or count</exception>
     public static void FromPoints(Vector3[] points, int start, int count, out BoundingSphere result)
     {
-        if (points == null)
-            throw new ArgumentNullException(nameof(points));
+        ArgumentNullException.ThrowIfNull(points);
         if (start < 0 || start >= points.Length)
             throw new ArgumentOutOfRangeException(nameof(start), start, string.Format("Must be in the range [0, {0}]", points.Length - 1));
         if (count <= 0 || start + count > points.Length)
@@ -264,8 +263,7 @@ partial struct BoundingSphere : IEquatable<BoundingSphere>, IFormattable
     /// <param name="result">When the method completes, contains the newly constructed bounding sphere.</param>
     public static void FromPoints(Vector3[] points, out BoundingSphere result)
     {
-        if (points == null)
-            throw new ArgumentNullException(nameof(points));
+        ArgumentNullException.ThrowIfNull(points);
         FromPoints(points, 0, points.Length, out result);
     }
 

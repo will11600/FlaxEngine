@@ -22,8 +22,7 @@ partial class CollisionData
     [Obsolete("Use CookCollision with Float3 and Float2 parameters instead")]
     public bool CookCollision(CollisionDataType type, Vector3[] vertices, uint[] triangles, ConvexMeshGenerationFlags convexFlags = ConvexMeshGenerationFlags.None, int convexVertexLimit = 255)
     {
-        if (vertices == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(vertices);
         var tmp = new Float3[vertices.Length];
         for (int i = 0; i < tmp.Length; i++)
             tmp[i] = vertices[i];
@@ -46,8 +45,7 @@ partial class CollisionData
     [Obsolete("Use CookCollision with Float3 and Float2 parameters instead")]
     public bool CookCollision(CollisionDataType type, Vector3[] vertices, int[] triangles, ConvexMeshGenerationFlags convexFlags = ConvexMeshGenerationFlags.None, int convexVertexLimit = 255)
     {
-        if (vertices == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(vertices);
         var tmp = new Float3[vertices.Length];
         for (int i = 0; i < tmp.Length; i++)
             tmp[i] = vertices[i];

@@ -932,8 +932,7 @@ public sealed class GameCookerWindow : EditorWindow
     /// <param name="preset">The preset.</param>
     public void BuildAll(BuildPreset preset)
     {
-        if (preset == null)
-            throw new ArgumentNullException(nameof(preset));
+        ArgumentNullException.ThrowIfNull(preset);
 
         Editor.Log("Building all targets");
         foreach (var e in preset.Targets)
@@ -953,8 +952,7 @@ public sealed class GameCookerWindow : EditorWindow
     /// <param name="target">The target.</param>
     public void Build(BuildPreset preset, BuildTarget target)
     {
-        if (target == null)
-            throw new ArgumentNullException(nameof(target));
+        ArgumentNullException.ThrowIfNull(target);
 
         Editor.Log("Building target");
         _buildingQueue.Enqueue(new QueueItem

@@ -74,8 +74,7 @@ sealed class BreakPrefabLinkAction : IUndoAction
     /// <returns>The action.</returns>
     public static BreakPrefabLinkAction Break(Actor actor)
     {
-        if (actor == null)
-            throw new ArgumentNullException(nameof(actor));
+        ArgumentNullException.ThrowIfNull(actor);
         return new BreakPrefabLinkAction(true, actor.ID);
     }
 
@@ -86,8 +85,7 @@ sealed class BreakPrefabLinkAction : IUndoAction
     /// <returns>The action.</returns>
     public static BreakPrefabLinkAction Linked(Actor actor)
     {
-        if (actor == null)
-            throw new ArgumentNullException(nameof(actor));
+        ArgumentNullException.ThrowIfNull(actor);
         if (!actor.HasPrefabLink)
             throw new Exception("Cannot register missing prefab link.");
         return new BreakPrefabLinkAction(false, actor);

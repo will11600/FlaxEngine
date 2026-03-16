@@ -129,8 +129,7 @@ public sealed class SceneEditingModule : EditorModule
     /// <param name="additive">if set to <c>true</c> will use additive mode, otherwise will clear previous selection.</param>
     public void Select(SceneGraphNode[] selection, bool additive = false)
     {
-        if (selection == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(selection);
 
         Select(selection.ToList(), additive);
     }
@@ -142,8 +141,7 @@ public sealed class SceneEditingModule : EditorModule
     /// <param name="additive">if set to <c>true</c> will use additive mode, otherwise will clear previous selection.</param>
     public void Select(SceneGraphNode selection, bool additive = false)
     {
-        if (selection == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(selection);
 
         // Check if won't change
         if (!additive && Selection.Count == 1 && Selection[0] == selection)

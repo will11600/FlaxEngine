@@ -497,8 +497,7 @@ public sealed partial class PrefabWindow
     /// <param name="autoSelect">True if automatically select the spawned actor, otherwise false.</param>
     public void Spawn(Actor actor, Actor parent, int orderInParent = -1, bool autoSelect = true)
     {
-        if (actor == null)
-            throw new ArgumentNullException(nameof(actor));
+        ArgumentNullException.ThrowIfNull(actor);
 
         // Link it
         actor.Parent = parent ?? throw new ArgumentNullException(nameof(parent));

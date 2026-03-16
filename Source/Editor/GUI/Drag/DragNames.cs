@@ -57,8 +57,7 @@ public class DragNames<U> : DragHelper<string, U> where U : DragEventArgs
     /// <returns>The data.</returns>
     public static DragData GetDragData(string dragPrefix, string name)
     {
-        if (name == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(name);
 
         return new DragDataText(dragPrefix + name);
     }
@@ -71,8 +70,7 @@ public class DragNames<U> : DragHelper<string, U> where U : DragEventArgs
     /// <returns>The data.</returns>
     public static DragData GetDragData(string dragPrefix, IEnumerable<string> names)
     {
-        if (names == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(names);
 
         string text = dragPrefix;
         foreach (var item in names)

@@ -166,8 +166,7 @@ public sealed class WindowRootControl : RootControl
     /// <inheritdoc />
     public override void StartTrackingMouse(Control control, bool useMouseScreenOffset)
     {
-        if (control == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(control);
         if (_trackingControl == control)
             return;
 

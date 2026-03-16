@@ -215,8 +215,7 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
     /// <exception cref="ArgumentOutOfRangeException"> Thrown when <paramref name="values" /> contains more or less than three elements.</exception>
     public Float3(float[] values)
     {
-        if (values == null)
-            throw new ArgumentNullException(nameof(values));
+        ArgumentNullException.ThrowIfNull(values);
         if (values.Length != 3)
             throw new ArgumentOutOfRangeException(nameof(values), "There must be three and only three input values for Float3.");
         X = values[0];

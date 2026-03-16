@@ -115,8 +115,7 @@ public class GizmosCollection : List<GizmoBase>
     /// <param name="mode">The mode.</param>
     public void AddMode(EditorGizmoMode mode)
     {
-        if (mode == null)
-            throw new ArgumentNullException(nameof(mode));
+        ArgumentNullException.ThrowIfNull(mode);
         if (_modes.Contains(mode))
             throw new ArgumentException("Already added.");
         if (mode.Owner != null)
@@ -132,8 +131,7 @@ public class GizmosCollection : List<GizmoBase>
     /// <param name="mode">The mode.</param>
     public void RemoveMode(EditorGizmoMode mode)
     {
-        if (mode == null)
-            throw new ArgumentNullException(nameof(mode));
+        ArgumentNullException.ThrowIfNull(mode);
         if (!_modes.Contains(mode))
             throw new ArgumentException("Not added.");
         if (mode.Owner != _owner)
