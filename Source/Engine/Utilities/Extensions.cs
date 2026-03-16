@@ -9,6 +9,10 @@ using Real = System.Single;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Buffers;
+using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace FlaxEngine.Utilities
 {
@@ -17,6 +21,10 @@ namespace FlaxEngine.Utilities
     /// </summary>
     public static partial class Extensions
     {
+        const int MinArrayCapacity = 8;
+
+        private static readonly string[] _newlineSearchValues = ["\r\n", "\r", "\n"];
+
         /// <summary>
         /// Creates deep clone for a class if all members of this class are marked as serializable (uses Json serialization).
         /// </summary>
@@ -49,36 +57,79 @@ namespace FlaxEngine.Utilities
                 Marshal.FreeHGlobal(ptr);
             }
         }
+        /// <see cref="IsMultiline(ReadOnlySpan{char})"/>
+        public static bool IsMultiline(this string chars) => IsMultiline(chars.AsSpan());
 
         /// <summary>
-        /// Checks if the text is multiline.
+        /// Determines whether the specified characters contains more than one line.
         /// </summary>
-        /// <param name="str">Text to check.</param>
-        /// <returns>True if text is a multiline, otherwise false.</returns>
-        public static bool IsMultiline(this string str)
+        /// <param name="chars">The characters to examine for line breaks.</param>
+        /// <returns>
+        /// <see langword="true"/> if the span contains at least one newline character; 
+        /// otherwise, <see langword="false"/>.
+        /// </returns>
+        public static bool IsMultiline(this ReadOnlySpan<char> chars) => chars.IndexOf('\n') != -1;
+
+        /// <inheritdoc cref="GetLines(ReadOnlySpan{char}, bool)"/>
+        public static string[] GetLines(this string str, bool removeEmptyLines = false) => GetLines(str.AsSpan(), removeEmptyLines);
+
+        /// <summary>
+        /// Splits the specified characters into an array of strings, each representing a line of
+        /// text.
+        /// </summary>
+        /// <param name="chars">The characters to be split into lines.</param>
+        /// <param name="removeEmpty">
+        /// Specifies whether to remove empty lines from the resulting array. If set to <see langword="true"/>, empty
+        /// lines are excluded; otherwise, they are included.
+        /// </param>
+        /// <returns>
+        /// An array of strings containing the lines extracted from the input span. The array will be empty if no lines
+        /// are found.
+        /// </returns>
+        public static string[] GetLines(this ReadOnlySpan<char> chars, bool removeEmpty = false)
         {
-            for (int i = 0; i < str.Length; i++)
+            StringSplitOptions options = removeEmpty ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None;
+
+            Span<string> lines = Rent(0, out string[] rentedArray);
+
+            try
             {
-                if (str[i] == '\n')
-                    return true;
+                Span<Range> ranges = stackalloc Range[3];
+
+                ReadOnlySpan<char> currentSegment;
+                ReadOnlySpan<char> nextSegment = chars;
+
+                while (!nextSegment.IsEmpty)
+                {
+                    currentSegment = nextSegment;
+                    int rangesWritten = currentSegment.SplitAny(ranges, _newlineSearchValues, options);
+                    if (rangesWritten == ranges.Length)
+                    {
+                        rangesWritten -= 1;
+                        Range range = ranges[rangesWritten];
+                        nextSegment = currentSegment[range];
+                    }
+                    else
+                    {
+                        nextSegment = [];
+                    }
+
+                    int li = lines.Length;
+                    lines = Grow(ref rentedArray, li + rangesWritten);
+                    Span<string> additionalLines = lines[li..];
+                    for (int ri = 0; ri < rangesWritten; ri++)
+                    {
+                        Range range = ranges[ri];
+                        additionalLines[ri] = currentSegment[range].ToString();
+                    }
+                }
+
+                return [.. lines];
             }
-            return false;
-        }
-
-        /// <summary>
-        /// Splits string into lines
-        /// </summary>
-        /// <param name="str">Text to split</param>
-        /// <param name="removeEmptyLines">True if remove empty lines, otherwise keep them</param>
-        /// <returns>Array with all lines</returns>
-        public static string[] GetLines(this string str, bool removeEmptyLines = false)
-        {
-            return str.Split(new[]
+            finally
             {
-                "\r\n",
-                "\r",
-                "\n"
-            }, removeEmptyLines ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None);
+                Return(ref rentedArray);
+            }
         }
 
         /// <summary>
@@ -90,11 +141,9 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If <paramref name="destination"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
         public static void AddRange<T>(this ICollection<T> destination, IEnumerable<T> collection)
         {
-            if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
-            foreach (var item in collection)
+            ArgumentNullException.ThrowIfNull(destination);
+            ArgumentNullException.ThrowIfNull(collection);
+            foreach (T item in collection)
             {
                 destination.Add(item);
             }
@@ -109,11 +158,15 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If <paramref name="queue"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
         public static void EnqueueRange<T>(this Queue<T> queue, IEnumerable<T> collection)
         {
-            if (queue == null)
-                throw new ArgumentNullException(nameof(queue));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
-            foreach (var item in collection)
+            ArgumentNullException.ThrowIfNull(queue);
+            ArgumentNullException.ThrowIfNull(collection);
+
+            if (collection.TryGetNonEnumeratedCount(out int count))
+            {
+                queue.EnsureCapacity(queue.Count + count);
+            }
+
+            foreach (T item in collection)
             {
                 queue.Enqueue(item);
             }
@@ -128,11 +181,15 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If <paramref name="stack"/> or <paramref name="collection"/> are <see langword="null"/>.</exception>
         public static void PushRange<T>(this Stack<T> stack, IEnumerable<T> collection)
         {
-            if (stack == null)
-                throw new ArgumentNullException(nameof(stack));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
-            foreach (var item in collection)
+            ArgumentNullException.ThrowIfNull(stack);
+            ArgumentNullException.ThrowIfNull(collection);
+
+            if (collection.TryGetNonEnumeratedCount(out int count))
+            {
+                stack.EnsureCapacity(stack.Count + count);
+            }
+
+            foreach (T item in collection)
             {
                 stack.Push(item);
             }
@@ -147,11 +204,9 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentException"><paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-            foreach (var item in source)
+            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(action);
+            foreach (T item in source)
             {
                 action(item);
             }
@@ -168,10 +223,8 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If the collection is null.</exception>
         public static T Choose<T>(this Random random, IList<T> collection)
         {
-            if (random == null)
-                throw new ArgumentNullException(nameof(random));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
+            ArgumentNullException.ThrowIfNull(random);
+            ArgumentNullException.ThrowIfNull(collection);
             return collection[random.Next(collection.Count)];
         }
 
@@ -186,10 +239,8 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If the collection is null.</exception>
         public static T Choose<T>(this Random random, params T[] collection)
         {
-            if (random == null)
-                throw new ArgumentNullException(nameof(random));
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
+            ArgumentNullException.ThrowIfNull(random);
+            ArgumentNullException.ThrowIfNull(collection);
             return collection[random.Next(collection.Length)];
         }
 
@@ -203,16 +254,8 @@ namespace FlaxEngine.Utilities
         /// <exception cref="ArgumentNullException">If the random collection is null.</exception>
         public static void Shuffle<T>(this Random random, IList<T> collection)
         {
-            if (random == null)
-            {
-                throw new ArgumentNullException(nameof(random));
-            }
-
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-
+            ArgumentNullException.ThrowIfNull(random);
+            ArgumentNullException.ThrowIfNull(collection);
             int n = collection.Count;
             while (n > 1)
             {
@@ -442,6 +485,61 @@ namespace FlaxEngine.Utilities
         {
             Array values = Enum.GetValues(typeof(TEnum));
             return (TEnum)values.GetValue(random.Next(values.Length));
+        }
+
+        private static Span<T> Rent<T>(int desiredLength, out T[] rentedArray)
+        {
+            int minLength = desiredLength < MinArrayCapacity ? MinArrayCapacity : desiredLength;
+            rentedArray = ArrayPool<T>.Shared.Rent(minLength);
+            try
+            {
+                return new Span<T>(rentedArray, 0, desiredLength);
+            }
+            catch
+            {
+                Return(ref rentedArray);
+                throw;
+            }
+        }
+
+        private static Span<T> Grow<T>(scoped ref T[] rentedArray, int newLength)
+        {
+            int currentLength = rentedArray.Length;
+            if (newLength > currentLength)
+            {
+                int optimumLength = currentLength;
+                do { optimumLength *= 2; }
+                while (optimumLength < newLength);
+
+                T[] newArray = ArrayPool<T>.Shared.Rent(optimumLength);
+                try
+                {
+                    Array.Copy(rentedArray, newArray, currentLength);
+                    Return(ref rentedArray);
+                    rentedArray = newArray;
+                }
+                catch
+                {
+                    Return(ref newArray);
+                    throw;
+                }
+            }
+
+            return new Span<T>(rentedArray, 0, newLength);
+        }
+
+        private static bool Return<T>([AllowNull, MaybeNullWhen(true)] ref T[] rentedArray)
+        {
+            if (rentedArray is null)
+            {
+                return false;
+            }
+
+            bool clearArray = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
+            ArrayPool<T>.Shared.Return(rentedArray, clearArray);
+            rentedArray = null;
+
+            return true;
         }
     }
 }
