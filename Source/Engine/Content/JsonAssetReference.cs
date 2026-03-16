@@ -134,7 +134,7 @@ namespace FlaxEngine
         }
 
         /// <inheritdoc />
-        public int CompareTo(object obj)
+        public readonly int CompareTo(object obj)
         {
             return obj is JsonAssetReference<T> other ? CompareTo(other) : 1;
         }

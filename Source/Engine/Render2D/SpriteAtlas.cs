@@ -56,7 +56,7 @@ partial struct SpriteHandle : IEquatable<SpriteHandle>
     [NoSerialize]
     public Float2 Location
     {
-        get => Area.Location * Atlas.Size;
+        readonly get => Area.Location * Atlas.Size;
         set
         {
             var area = Area;
@@ -138,7 +138,7 @@ partial struct SpriteHandle : IEquatable<SpriteHandle>
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         return obj is SpriteHandle other && Equals(other);
     }

@@ -49,7 +49,7 @@ partial struct GPUSamplerDescription : IEquatable<GPUSamplerDescription>
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         return obj is GPUSamplerDescription other && Equals(other);
     }

@@ -119,7 +119,7 @@ partial struct BoundingBox : IEquatable<BoundingBox>, IFormattable
     /// Retrieves the eight corners of the bounding box.
     /// </summary>
     /// <returns>An array of points representing the eight corners of the bounding box.</returns>
-    public Vector3[] GetCorners()
+    public readonly Vector3[] GetCorners()
     {
         var results = new Vector3[8];
         GetCorners(results);
@@ -617,7 +617,7 @@ partial struct BoundingBox : IEquatable<BoundingBox>, IFormattable
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format(CultureInfo.CurrentCulture, "Minimum:{0} Maximum:{1}", Minimum.ToString(), Maximum.ToString());
     }
@@ -639,7 +639,7 @@ partial struct BoundingBox : IEquatable<BoundingBox>, IFormattable
     /// </summary>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(IFormatProvider formatProvider)
+    public readonly string ToString(IFormatProvider formatProvider)
     {
         return string.Format(formatProvider, "Minimum:{0} Maximum:{1}", Minimum.ToString(), Maximum.ToString());
     }
@@ -661,7 +661,7 @@ partial struct BoundingBox : IEquatable<BoundingBox>, IFormattable
     /// Returns a hash code for this instance.
     /// </summary>
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -686,7 +686,7 @@ partial struct BoundingBox : IEquatable<BoundingBox>, IFormattable
     /// <param name="other">The <see cref="Vector4" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Vector4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(BoundingBox other)
+    public readonly bool Equals(BoundingBox other)
     {
         return Equals(ref other);
     }
@@ -696,7 +696,7 @@ partial struct BoundingBox : IEquatable<BoundingBox>, IFormattable
     /// </summary>
     /// <param name="value">The <see cref="System.Object" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    public override bool Equals(object value)
+    public override readonly bool Equals(object value)
     {
         return value is BoundingBox other && Equals(ref other);
     }

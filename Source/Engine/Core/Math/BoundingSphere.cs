@@ -419,7 +419,7 @@ partial struct BoundingSphere : IEquatable<BoundingSphere>, IFormattable
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format(CultureInfo.CurrentCulture, "Center:{0} Radius:{1}", Center.ToString(), Radius.ToString());
     }
@@ -445,7 +445,7 @@ partial struct BoundingSphere : IEquatable<BoundingSphere>, IFormattable
     /// </summary>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(IFormatProvider formatProvider)
+    public readonly string ToString(IFormatProvider formatProvider)
     {
         return string.Format(formatProvider,
                              "Center:{0} Radius:{1}",
@@ -474,7 +474,7 @@ partial struct BoundingSphere : IEquatable<BoundingSphere>, IFormattable
     /// Returns a hash code for this instance.
     /// </summary>
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -499,7 +499,7 @@ partial struct BoundingSphere : IEquatable<BoundingSphere>, IFormattable
     /// <param name="other">The <see cref="Vector4" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Vector4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(BoundingSphere other)
+    public readonly bool Equals(BoundingSphere other)
     {
         return Equals(ref other);
     }
@@ -509,7 +509,7 @@ partial struct BoundingSphere : IEquatable<BoundingSphere>, IFormattable
     /// </summary>
     /// <param name="value">The <see cref="System.Object" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    public override bool Equals(object value)
+    public override readonly bool Equals(object value)
     {
         return value is BoundingSphere other && Equals(ref other);
     }

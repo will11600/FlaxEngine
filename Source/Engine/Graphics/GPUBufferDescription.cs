@@ -403,7 +403,7 @@ partial struct GPUBufferDescription : IEquatable<GPUBufferDescription>
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         return obj is GPUBufferDescription other && Equals(other);
     }
@@ -462,7 +462,7 @@ partial struct VertexElement : IEquatable<VertexElement>
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         return obj is VertexElement other && Equals(other);
     }

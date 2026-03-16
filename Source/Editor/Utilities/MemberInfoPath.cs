@@ -223,14 +223,14 @@ public struct MemberInfoPath
     /// </summary>
     /// <param name="instance">The top object instance.</param>
     /// <returns>The result value.</returns>
-    public object GetLastValue(object instance)
+    public readonly object GetLastValue(object instance)
     {
         var member = GetLastMember(ref instance);
         return member.GetValue(instance);
     }
 
     /// <inheritdoc />
-    public override string ToString()
+    public override readonly string ToString()
     {
         return Path;
     }

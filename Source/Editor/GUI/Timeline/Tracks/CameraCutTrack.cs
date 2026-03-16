@@ -383,7 +383,7 @@ public class CameraCutThumbnailRenderer
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override readonly bool Equals(object obj)
         {
             return obj is Request other && Equals(other);
         }

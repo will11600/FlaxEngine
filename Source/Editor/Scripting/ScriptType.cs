@@ -430,7 +430,7 @@ public readonly struct ScriptMemberInfo : IEquatable<ScriptMemberInfo>
         }
 
         /// <inheritdoc />
-        public override string ToString()
+        public override readonly string ToString()
         {
             var sb = new StringBuilder();
             ToString(sb);

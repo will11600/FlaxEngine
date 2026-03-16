@@ -357,7 +357,7 @@ public static unsafe class SystemObjectArrayMarshaller
             handle = ManagedHandle.FromIntPtr(unmanaged);
         }
 
-        public object[] ToManaged()
+        public readonly object[] ToManaged()
         {
             object[] result = null;
             if (handle.IsAllocated)
@@ -608,7 +608,7 @@ public static unsafe class ArrayMarshaller<T, TUnmanagedElement> where TUnmanage
 
         public readonly T[] ToManaged() => sourceArray;
 
-        public void Free()
+        public readonly void Free()
         {
             if (handle.IsAllocated)
                 managedArray.FreePooled();

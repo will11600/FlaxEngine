@@ -116,7 +116,7 @@ public struct FloatR10G10B10A2
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return ToFloat4().ToString();
     }

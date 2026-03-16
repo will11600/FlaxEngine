@@ -180,14 +180,14 @@ partial struct Color : Json.ICustomValueEquals
     }
 
     /// <inheritdoc />
-    public bool ValueEquals(object other)
+    public readonly bool ValueEquals(object other)
     {
         var o = (Color)other;
         return Equals(ref o);
     }
 
     /// <inheritdoc />
-    public override bool Equals(object value)
+    public override readonly bool Equals(object value)
     {
         return value is Color other && Equals(ref other);
     }

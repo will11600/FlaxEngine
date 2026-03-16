@@ -324,7 +324,7 @@ partial struct Transform : IEquatable<Transform>, IFormattable, Json.ICustomValu
     /// </summary>
     /// <param name="point">World space point</param>
     /// <returns>Local space point</returns>
-    public Vector3 WorldToLocal(Vector3 point)
+    public readonly Vector3 WorldToLocal(Vector3 point)
     {
         var invScale = Scale;
         if (invScale.X != 0.0f)
@@ -344,7 +344,7 @@ partial struct Transform : IEquatable<Transform>, IFormattable, Json.ICustomValu
     /// </summary>
     /// <param name="vector">World space vector</param>
     /// <returns>Local space vector</returns>
-    public Vector3 WorldToLocalVector(Vector3 vector)
+    public readonly Vector3 WorldToLocalVector(Vector3 vector)
     {
         var invScale = Scale;
         if (invScale.X != 0.0f)
@@ -364,7 +364,7 @@ partial struct Transform : IEquatable<Transform>, IFormattable, Json.ICustomValu
     /// <param name="point">World space point</param>
     /// <param name="result">When the method completes, contains the local space point.</param>
     /// <returns>Local space point</returns>
-    public void WorldToLocal(ref Vector3 point, out Vector3 result)
+    public readonly void WorldToLocal(ref Vector3 point, out Vector3 result)
     {
         var invScale = Scale;
         if (invScale.X != 0.0f)
@@ -384,7 +384,7 @@ partial struct Transform : IEquatable<Transform>, IFormattable, Json.ICustomValu
     /// </summary>
     /// <param name="vector">World space vector</param>
     /// <param name="result">Local space vector</param>
-    public void WorldToLocalVector(ref Vector3 vector, out Vector3 result)
+    public readonly void WorldToLocalVector(ref Vector3 vector, out Vector3 result)
     {
         var invScale = Scale;
         if (invScale.X != 0.0f)
@@ -403,7 +403,7 @@ partial struct Transform : IEquatable<Transform>, IFormattable, Json.ICustomValu
     /// </summary>
     /// <param name="points">World space points</param>
     /// <param name="result">Local space points</param>
-    public void WorldToLocal(Vector3[] points, Vector3[] result)
+    public readonly void WorldToLocal(Vector3[] points, Vector3[] result)
     {
         var invScale = Scale;
         if (invScale.X != 0.0f)
@@ -660,13 +660,13 @@ partial struct Transform : IEquatable<Transform>, IFormattable, Json.ICustomValu
     /// Returns a hash code for this instance.
     /// </summary>
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         return HashCode.Combine(Translation, Orientation, Scale);
     }
 
     /// <inheritdoc />
-    public bool ValueEquals(object other)
+    public readonly bool ValueEquals(object other)
     {
         var o = (Transform)other;
         return Equals(ref o);
@@ -713,7 +713,7 @@ partial struct Transform : IEquatable<Transform>, IFormattable, Json.ICustomValu
     /// <param name="other">The <see cref="Transform" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Transform" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(Transform other)
+    public readonly bool Equals(Transform other)
     {
         return Equals(ref other);
     }
@@ -723,7 +723,7 @@ partial struct Transform : IEquatable<Transform>, IFormattable, Json.ICustomValu
     /// </summary>
     /// <param name="value">The <see cref="System.Object" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    public override bool Equals(object value)
+    public override readonly bool Equals(object value)
     {
         return value is Transform other && Equals(ref other);
     }

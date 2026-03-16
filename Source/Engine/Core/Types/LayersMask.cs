@@ -34,7 +34,7 @@ partial struct LayersMask : IComparable, IComparable<LayersMask>
     /// </summary>
     /// <param name="layerName">Name of the layer (from Layers settings).</param>
     /// <returns><c>true</c> if the specified layer is set; otherwise, <c>false</c>.</returns>
-    public bool HasLayer(string layerName)
+    public readonly bool HasLayer(string layerName)
     {
         return HasLayer(Level.GetLayerIndex(layerName));
     }
@@ -180,7 +180,7 @@ partial struct LayersMask : IComparable, IComparable<LayersMask>
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         return obj is LayersMask other && Equals(other);
     }

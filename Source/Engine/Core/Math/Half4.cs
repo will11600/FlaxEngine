@@ -116,7 +116,7 @@ public struct Half4 : IEquatable<Half4>
     /// Returns the hash code for this instance.
     /// </summary>
     /// <returns>A 32-bit signed integer hash code.</returns>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         int num2 = W.GetHashCode() + Z.GetHashCode();
         int num = Y.GetHashCode() + num2;
@@ -173,7 +173,7 @@ public struct Half4 : IEquatable<Half4>
     /// <param name="obj">Object to make the comparison with.</param>
     /// <returns>
     /// <c>true</c> if the current instance is equal to the specified object; <c>false</c> otherwise.</returns>
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         if (obj == null)
         {

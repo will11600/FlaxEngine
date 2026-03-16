@@ -59,7 +59,7 @@ public struct MemberComparison
     /// </summary>
     /// <param name="instance">The instance.</param>
     /// <param name="value">The value.</param>
-    public void SetMemberValue(object instance, object value)
+    public readonly void SetMemberValue(object instance, object value)
     {
         var originalInstance = instance;
         var finalMember = MemberPath.GetLastMember(ref instance);
@@ -102,7 +102,7 @@ public struct MemberComparison
     }
 
     /// <inheritdoc />
-    public override string ToString()
+    public override readonly string ToString()
     {
         return MemberPath.Path + ": " + (Value1 ?? "<null>") + (JsonSerializer.ValueEquals(Value1, Value2) ? " == " : " != ") + (Value2 ?? "<null>");
     }

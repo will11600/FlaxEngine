@@ -118,7 +118,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// Returns a hash code for this instance.
     /// </summary>
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         return pMatrix.GetHashCode();
     }
@@ -140,7 +140,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// <param name="other">The <see cref="BoundingFrustum" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="BoundingFrustum" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(BoundingFrustum other)
+    public readonly bool Equals(BoundingFrustum other)
     {
         return Equals(ref other);
     }
@@ -150,7 +150,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// </summary>
     /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         return obj is BoundingFrustum other && Equals(ref other);
     }
@@ -437,7 +437,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// </summary>
     /// <param name="box">The box.</param>
     /// <returns>Type of the containment</returns>
-    public ContainmentType Contains(ref BoundingBox box)
+    public readonly ContainmentType Contains(ref BoundingBox box)
     {
         var result = ContainmentType.Contains;
         for (var i = 0; i < 6; i++)
@@ -712,7 +712,7 @@ public struct BoundingFrustum : IEquatable<BoundingFrustum>
     /// </summary>
     /// <param name="points">The points.</param>
     /// <returns>The zoom to fit distance</returns>
-    public Real GetZoomToExtentsShiftDistance(Vector3[] points)
+    public readonly Real GetZoomToExtentsShiftDistance(Vector3[] points)
     {
         var vAngle = (float)(Math.PI / 2.0 - Math.Acos(Vector3.Dot(pNear.Normal, pTop.Normal)));
         var vSin = (float)Math.Sin(vAngle);

@@ -602,7 +602,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="row" /> or <paramref name="column" />is out of the range [0, 3].</exception>
     public float this[int row, int column]
     {
-        get
+        readonly get
         {
             if (row < 0 || row > 3)
                 throw new ArgumentOutOfRangeException(nameof(row), "Rows and columns for matrices run from 0 to 3, inclusive.");
@@ -3153,7 +3153,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     /// <param name="format">The format.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(string format)
+    public readonly string ToString(string format)
     {
         if (format == null)
             return ToString();
@@ -3185,7 +3185,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// <param name="format">The format.</param>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(string format, IFormatProvider formatProvider)
+    public readonly string ToString(string format, IFormatProvider formatProvider)
     {
         if (format == null)
             return ToString(formatProvider);
@@ -3254,7 +3254,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// <param name="other">The <see cref="Matrix" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Matrix" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(Matrix other)
+    public readonly bool Equals(Matrix other)
     {
         return Equals(ref other);
     }
@@ -3264,7 +3264,7 @@ partial struct Matrix : IEquatable<Matrix>, IFormattable
     /// </summary>
     /// <param name="value">The <see cref="System.Object" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    public override bool Equals(object value)
+    public override readonly bool Equals(object value)
     {
         return value is Matrix other && Equals(ref other);
     }

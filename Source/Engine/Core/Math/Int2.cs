@@ -893,7 +893,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// </summary>
     /// <param name="format">The format.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(string format)
+    public readonly string ToString(string format)
     {
         if (format == null)
             return ToString();
@@ -916,7 +916,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// <param name="format">The format.</param>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(string format, IFormatProvider formatProvider)
+    public readonly string ToString(string format, IFormatProvider formatProvider)
     {
         if (format == null)
             return ToString(formatProvider);
@@ -936,7 +936,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     }
 
     /// <inheritdoc />
-    public bool ValueEquals(object other)
+    public readonly bool ValueEquals(object other)
     {
         var o = (Int2)other;
         return Equals(ref o);
@@ -967,7 +967,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// <param name="other">The <see cref="Int2" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Int2" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(Int2 other)
+    public readonly bool Equals(Int2 other)
     {
         return Equals(ref other);
     }
@@ -977,7 +977,7 @@ partial struct Int2 : IEquatable<Int2>, IFormattable, Json.ICustomValueEquals
     /// </summary>
     /// <param name="value">The <see cref="System.Object" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    public override bool Equals(object value)
+    public override readonly bool Equals(object value)
     {
         return value is Int2 other && Equals(ref other);
     }

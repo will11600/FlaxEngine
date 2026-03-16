@@ -187,7 +187,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     /// <param name="value">The rectangle to evaluate</param>
     /// <returns>True if this rectangle entirely contains the specified rectangle, or false if not</returns>
-    public bool Contains(Rectangle value)
+    public readonly bool Contains(Rectangle value)
     {
         return (Location.X <= value.Location.X) && (value.Right <= Right) && (Location.Y <= value.Location.Y) && (value.Bottom <= Bottom);
     }
@@ -197,7 +197,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     /// <param name="value">The rectangle to evaluate</param>
     /// <returns>True if this rectangle entirely contains the specified rectangle, or false if not</returns>
-    public bool Contains(ref Rectangle value)
+    public readonly bool Contains(ref Rectangle value)
     {
         return (Location.X <= value.Location.X) && (value.Right <= Right) && (Location.Y <= value.Location.Y) && (value.Bottom <= Bottom);
     }
@@ -207,7 +207,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     /// <param name="value">The rectangle to evaluate</param>
     /// <returns>True if the specified rectangle intersects with this one, otherwise false</returns>
-    public bool Intersects(Rectangle value)
+    public readonly bool Intersects(Rectangle value)
     {
         return (value.Location.X <= Right) && (Location.X <= value.Right) && (value.Location.Y <= Bottom) && (Location.Y <= value.Bottom);
     }
@@ -217,7 +217,7 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     /// </summary>
     /// <param name="value">The rectangle to evaluate</param>
     /// <returns>True if the specified rectangle intersects with this one, otherwise false</returns>
-    public bool Intersects(ref Rectangle value)
+    public readonly bool Intersects(ref Rectangle value)
     {
         return (value.Location.X <= Right) && (Location.X <= value.Right) && (value.Location.Y <= Bottom) && (Location.Y <= value.Bottom);
     }
@@ -503,19 +503,19 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     }
 
     /// <inheritdoc />
-    public bool Equals(Rectangle other)
+    public readonly bool Equals(Rectangle other)
     {
         return Equals(ref other);
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         return obj is Rectangle other && Equals(ref other);
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -524,14 +524,14 @@ partial struct Rectangle : IEquatable<Rectangle>, Json.ICustomValueEquals
     }
 
     /// <inheritdoc />
-    public bool ValueEquals(object other)
+    public readonly bool ValueEquals(object other)
     {
         var o = (Rectangle)other;
         return Equals(ref o);
     }
 
     /// <inheritdoc />
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format(CultureInfo.CurrentCulture, "X:{0} Y:{1} Width:{2} Height:{3}", X, Y, Width, Height);
     }

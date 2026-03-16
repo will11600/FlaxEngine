@@ -64,7 +64,7 @@ public struct SoftObjectReference : IComparable, IComparable<SoftObjectReference
     }
 
     /// <inheritdoc />
-    public int CompareTo(object obj)
+    public readonly int CompareTo(object obj)
     {
         if (obj is SoftObjectReference other)
             return CompareTo(other);

@@ -377,7 +377,7 @@ partial struct Ray : IEquatable<Ray>, IFormattable
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override string ToString()
+    public override readonly string ToString()
     {
         return string.Format(CultureInfo.CurrentCulture, "Position:{0} Direction:{1}", Position.ToString(), Direction.ToString());
     }
@@ -397,7 +397,7 @@ partial struct Ray : IEquatable<Ray>, IFormattable
     /// </summary>
     /// <param name="formatProvider">The format provider.</param>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public string ToString(IFormatProvider formatProvider)
+    public readonly string ToString(IFormatProvider formatProvider)
     {
         return string.Format(formatProvider, "Position:{0} Direction:{1}", Position.ToString(), Direction.ToString());
     }
@@ -417,7 +417,7 @@ partial struct Ray : IEquatable<Ray>, IFormattable
     /// Returns a hash code for this instance.
     /// </summary>
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -442,7 +442,7 @@ partial struct Ray : IEquatable<Ray>, IFormattable
     /// <param name="other">The <see cref="Vector4" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="Vector4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(Ray other)
+    public readonly bool Equals(Ray other)
     {
         return Equals(ref other);
     }
@@ -452,7 +452,7 @@ partial struct Ray : IEquatable<Ray>, IFormattable
     /// </summary>
     /// <param name="value">The <see cref="System.Object" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    public override bool Equals(object value)
+    public override readonly bool Equals(object value)
     {
         return value is Ray other && Equals(ref other);
     }

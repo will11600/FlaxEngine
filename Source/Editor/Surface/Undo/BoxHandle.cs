@@ -53,7 +53,7 @@ public struct BoxHandle : IEquatable<BoxHandle>
     }
 
     /// <inheritdoc />
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         return obj is BoxHandle handle && Equals(handle);
     }

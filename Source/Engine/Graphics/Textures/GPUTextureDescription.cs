@@ -352,7 +352,7 @@ partial struct GPUTextureDescription : IEquatable<GPUTextureDescription>
     }
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         HashCode hash = new HashCode();
         hash.Add(Dimensions);
@@ -376,7 +376,7 @@ partial struct GPUTextureDescription : IEquatable<GPUTextureDescription>
     }
 
     /// <inheritdoc />
-    public bool Equals(GPUTextureDescription other)
+    public readonly bool Equals(GPUTextureDescription other)
     {
         return Dimensions == other.Dimensions &&
                Width == other.Width &&
