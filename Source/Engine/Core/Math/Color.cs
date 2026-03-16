@@ -221,14 +221,7 @@ partial struct Color : Json.ICustomValueEquals
     /// <inheritdoc />
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            int hashCode = R.GetHashCode();
-            hashCode = (hashCode * 397) ^ G.GetHashCode();
-            hashCode = (hashCode * 397) ^ B.GetHashCode();
-            hashCode = (hashCode * 397) ^ A.GetHashCode();
-            return hashCode;
-        }
+        return HashCode.Combine(R, G, B, A);
     }
 
     /// <summary>

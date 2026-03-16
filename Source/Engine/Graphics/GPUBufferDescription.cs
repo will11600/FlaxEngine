@@ -470,14 +470,6 @@ partial struct VertexElement : IEquatable<VertexElement>
     /// <inheritdoc />
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            var hashCode = (int)Type;
-            hashCode = (hashCode * 397) ^ Slot;
-            hashCode = (hashCode * 397) ^ Offset;
-            hashCode = (hashCode * 397) ^ PerInstance;
-            hashCode = (hashCode * 397) ^ (int)Format;
-            return hashCode;
-        }
+        return HashCode.Combine(Type, Slot, Offset, PerInstance, Format);
     }
 }

@@ -57,19 +57,17 @@ partial struct GPUSamplerDescription : IEquatable<GPUSamplerDescription>
     /// <inheritdoc />
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            var hashCode = (int)Filter;
-            hashCode = (hashCode * 397) ^ (int)AddressU;
-            hashCode = (hashCode * 397) ^ (int)AddressV;
-            hashCode = (hashCode * 397) ^ (int)AddressW;
-            hashCode = (hashCode * 397) ^ (int)MipBias;
-            hashCode = (hashCode * 397) ^ (int)MinMipLevel;
-            hashCode = (hashCode * 397) ^ (int)MaxMipLevel;
-            hashCode = (hashCode * 397) ^ MaxAnisotropy;
-            hashCode = (hashCode * 397) ^ (int)BorderColor;
-            hashCode = (hashCode * 397) ^ (int)ComparisonFunction;
-            return hashCode;
-        }
+        HashCode hash = new HashCode();
+        hash.Add(Filter);
+        hash.Add(AddressU);
+        hash.Add(AddressV);
+        hash.Add(AddressW);
+        hash.Add(MipBias);
+        hash.Add(MinMipLevel);
+        hash.Add(MaxMipLevel);
+        hash.Add(MaxAnisotropy);
+        hash.Add(BorderColor);
+        hash.Add(ComparisonFunction);
+        return hash.ToHashCode();
     }
 }

@@ -210,16 +210,7 @@ public struct Viewport : IEquatable<Viewport>
     /// </returns>
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            int hashCode = X.GetHashCode();
-            hashCode = (hashCode * 397) ^ Y.GetHashCode();
-            hashCode = (hashCode * 397) ^ Width.GetHashCode();
-            hashCode = (hashCode * 397) ^ Height.GetHashCode();
-            hashCode = (hashCode * 397) ^ MinDepth.GetHashCode();
-            hashCode = (hashCode * 397) ^ MaxDepth.GetHashCode();
-            return hashCode;
-        }
+        return HashCode.Combine(X, Y, Width, Height, MinDepth, MaxDepth);
     }
 
     /// <summary>

@@ -465,14 +465,7 @@ public struct Matrix2x2 : IEquatable<Matrix2x2>, IFormattable
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. </returns>
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            var hashCode = M11.GetHashCode();
-            hashCode = (hashCode * 397) ^ M12.GetHashCode();
-            hashCode = (hashCode * 397) ^ M21.GetHashCode();
-            hashCode = (hashCode * 397) ^ M22.GetHashCode();
-            return hashCode;
-        }
+        return HashCode.Combine(M11, M12, M21, M22);
     }
 
     /// <summary>

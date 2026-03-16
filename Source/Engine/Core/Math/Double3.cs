@@ -1861,13 +1861,7 @@ partial struct Double3 : IEquatable<Double3>, IFormattable, Json.ICustomValueEqu
     /// </summary>
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            int hashCode = X.GetHashCode();
-            hashCode = (hashCode * 397) ^ Y.GetHashCode();
-            hashCode = (hashCode * 397) ^ Z.GetHashCode();
-            return hashCode;
-        }
+        return HashCode.Combine(X, Y, Z);
     }
 
     /// <inheritdoc />

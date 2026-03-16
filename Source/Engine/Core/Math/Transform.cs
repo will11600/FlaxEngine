@@ -662,13 +662,7 @@ partial struct Transform : IEquatable<Transform>, IFormattable, Json.ICustomValu
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
     public override int GetHashCode()
     {
-        unchecked
-        {
-            int hashCode = Translation.GetHashCode();
-            hashCode = (hashCode * 397) ^ Orientation.GetHashCode();
-            hashCode = (hashCode * 397) ^ Scale.GetHashCode();
-            return hashCode;
-        }
+        return HashCode.Combine(Translation, Orientation, Scale);
     }
 
     /// <inheritdoc />

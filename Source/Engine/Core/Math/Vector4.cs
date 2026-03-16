@@ -1515,14 +1515,7 @@ public partial struct Vector4 : IEquatable<Vector4>, IFormattable, Json.ICustomV
     /// </summary>
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            int hashCode = X.GetHashCode();
-            hashCode = (hashCode * 397) ^ Y.GetHashCode();
-            hashCode = (hashCode * 397) ^ Z.GetHashCode();
-            hashCode = (hashCode * 397) ^ W.GetHashCode();
-            return hashCode;
-        }
+        return HashCode.Combine(X, Y, Z, W);
     }
 
     /// <inheritdoc />

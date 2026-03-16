@@ -1669,14 +1669,7 @@ partial struct Quaternion : IEquatable<Quaternion>, IFormattable, Json.ICustomVa
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            int hashCode = X.GetHashCode();
-            hashCode = (hashCode * 397) ^ Y.GetHashCode();
-            hashCode = (hashCode * 397) ^ Z.GetHashCode();
-            hashCode = (hashCode * 397) ^ W.GetHashCode();
-            return hashCode;
-        }
+        return HashCode.Combine(X, Y, Z, W);
     }
 
     /// <inheritdoc />

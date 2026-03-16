@@ -2150,13 +2150,7 @@ public unsafe partial struct Vector3 : IEquatable<Vector3>, IFormattable, Json.I
     /// </summary>
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            int hashCode = X.GetHashCode();
-            hashCode = (hashCode * 397) ^ Y.GetHashCode();
-            hashCode = (hashCode * 397) ^ Z.GetHashCode();
-            return hashCode;
-        }
+        return HashCode.Combine(X, Y, Z);
     }
 
     /// <inheritdoc />

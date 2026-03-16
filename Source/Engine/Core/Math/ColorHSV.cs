@@ -129,14 +129,7 @@ public struct ColorHSV : IEquatable<ColorHSV>, IFormattable
     /// <inheritdoc/>
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            int result = H.GetHashCode();
-            result = (result * 397) ^ S.GetHashCode();
-            result = (result * 397) ^ V.GetHashCode();
-            result = (result * 397) ^ A.GetHashCode();
-            return result;
-        }
+        return HashCode.Combine(H, S, V, A);
     }
 
     /// <summary>

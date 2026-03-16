@@ -255,10 +255,10 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
         {
             switch (index)
             {
-            case 0: return X;
-            case 1: return Y;
-            case 2: return Z;
-            case 3: return W;
+                case 0: return X;
+                case 1: return Y;
+                case 2: return Z;
+                case 3: return W;
             }
             throw new ArgumentOutOfRangeException(nameof(index), "Indices for Float4 run from 0 to 3, inclusive.");
         }
@@ -266,19 +266,19 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
         {
             switch (index)
             {
-            case 0:
-                X = value;
-                break;
-            case 1:
-                Y = value;
-                break;
-            case 2:
-                Z = value;
-                break;
-            case 3:
-                W = value;
-                break;
-            default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Float4 run from 0 to 3, inclusive.");
+                case 0:
+                    X = value;
+                    break;
+                case 1:
+                    Y = value;
+                    break;
+                case 2:
+                    Z = value;
+                    break;
+                case 3:
+                    W = value;
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Float4 run from 0 to 3, inclusive.");
             }
         }
     }
@@ -1400,14 +1400,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// </summary>
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            int hashCode = X.GetHashCode();
-            hashCode = (hashCode * 397) ^ Y.GetHashCode();
-            hashCode = (hashCode * 397) ^ Z.GetHashCode();
-            hashCode = (hashCode * 397) ^ W.GetHashCode();
-            return hashCode;
-        }
+        return HashCode.Combine(X, Y, Z, W);
     }
 
     /// <inheritdoc />

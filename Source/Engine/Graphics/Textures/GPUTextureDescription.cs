@@ -354,21 +354,19 @@ partial struct GPUTextureDescription : IEquatable<GPUTextureDescription>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        unchecked
-        {
-            var hashCode = (int)Dimensions;
-            hashCode = (hashCode * 397) ^ Width;
-            hashCode = (hashCode * 397) ^ Height;
-            hashCode = (hashCode * 397) ^ Depth;
-            hashCode = (hashCode * 397) ^ ArraySize;
-            hashCode = (hashCode * 397) ^ MipLevels;
-            hashCode = (hashCode * 397) ^ (int)Format;
-            hashCode = (hashCode * 397) ^ (int)MultiSampleLevel;
-            hashCode = (hashCode * 397) ^ (int)Flags;
-            hashCode = (hashCode * 397) ^ (int)Usage;
-            hashCode = (hashCode * 397) ^ DefaultClearColor.GetHashCode();
-            return hashCode;
-        }
+        HashCode hash = new HashCode();
+        hash.Add(Dimensions);
+        hash.Add(Width);
+        hash.Add(Height);
+        hash.Add(Depth);
+        hash.Add(ArraySize);
+        hash.Add(MipLevels);
+        hash.Add(Format);
+        hash.Add(MultiSampleLevel);
+        hash.Add(Flags);
+        hash.Add(Usage);
+        hash.Add(DefaultClearColor);
+        return hash.ToHashCode();
     }
 
     /// <inheritdoc />

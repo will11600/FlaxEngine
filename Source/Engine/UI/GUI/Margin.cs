@@ -234,14 +234,7 @@ public struct Margin : IEquatable<Margin>, IFormattable
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            int hashCode = Left.GetHashCode();
-            hashCode = (hashCode * 397) ^ Right.GetHashCode();
-            hashCode = (hashCode * 397) ^ Top.GetHashCode();
-            hashCode = (hashCode * 397) ^ Bottom.GetHashCode();
-            return hashCode;
-        }
+        return HashCode.Combine(Left, Right, Top, Bottom);
     }
 
     /// <summary>

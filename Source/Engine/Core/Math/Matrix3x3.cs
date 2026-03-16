@@ -2101,19 +2101,17 @@ partial struct Matrix3x3 : IEquatable<Matrix3x3>, IFormattable
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
     public override readonly int GetHashCode()
     {
-        unchecked
-        {
-            var hashCode = M11.GetHashCode();
-            hashCode = (hashCode * 397) ^ M12.GetHashCode();
-            hashCode = (hashCode * 397) ^ M13.GetHashCode();
-            hashCode = (hashCode * 397) ^ M21.GetHashCode();
-            hashCode = (hashCode * 397) ^ M22.GetHashCode();
-            hashCode = (hashCode * 397) ^ M23.GetHashCode();
-            hashCode = (hashCode * 397) ^ M31.GetHashCode();
-            hashCode = (hashCode * 397) ^ M32.GetHashCode();
-            hashCode = (hashCode * 397) ^ M33.GetHashCode();
-            return hashCode;
-        }
+        HashCode hash = new HashCode();
+        hash.Add(M11);
+        hash.Add(M12);
+        hash.Add(M13);
+        hash.Add(M21);
+        hash.Add(M22);
+        hash.Add(M23);
+        hash.Add(M31);
+        hash.Add(M32);
+        hash.Add(M33);
+        return hash.ToHashCode();
     }
 
     /// <summary>
