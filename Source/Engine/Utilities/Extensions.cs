@@ -13,6 +13,7 @@ using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 
 namespace FlaxEngine.Utilities;
 
@@ -32,10 +33,9 @@ public static partial class Extensions
     /// <typeparam name="T">The instance type of an object.</typeparam>
     /// <returns>Returns new object of provided class.</returns>
     public static T DeepClone<T>(this T instance)
-    where T : new()
     {
-        var json = Json.JsonSerializer.Serialize(instance);
-        return (T)Json.JsonSerializer.Deserialize(json, instance.GetType());
+        string json = Json.JsonSerializer.Serialize(instance);
+        return Json.JsonSerializer.Deserialize<T>(json);
     }
 
     /// <summary>
@@ -44,13 +44,13 @@ public static partial class Extensions
     /// <param name="instance">The input instance of an object.</param>
     /// <typeparam name="T">The instance type of an object.</typeparam>
     /// <returns>Returns new object of provided structure.</returns>
-    public static T RawClone<T>(this T instance)
+    public static T RawClone<T>(this T instance) where T : struct
     {
-        IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(instance));
+        IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<T>());
         try
         {
             Marshal.StructureToPtr(instance, ptr, false);
-            return (T)Marshal.PtrToStructure(ptr, instance.GetType());
+            return Marshal.PtrToStructure<T>(ptr);
         }
         finally
         {
