@@ -49,6 +49,7 @@
 * THE SOFTWARE.
 */
 
+using FlaxEngine.Json;
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -60,19 +61,14 @@ namespace FlaxEngine;
 #if FLAX_EDITOR
 [System.ComponentModel.TypeConverter(typeof(TypeConverters.Float4Converter))]
 #endif
-partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEquals
+partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
 {
     private static readonly string _formatString = "X:{0:F2} Y:{1:F2} Z:{2:F2} W:{3:F2}";
 
     /// <summary>
-    /// The size of the <see cref="Float4" /> type, in bytes.
-    /// </summary>
-    public static unsafe readonly int SizeInBytes = sizeof(Float4);
-
-    /// <summary>
     /// A <see cref="Float4" /> with all of its components set to zero.
     /// </summary>
-    public static readonly Float4 Zero;
+    public static Float4 Zero { get; } = new Float4();
 
     /// <summary>
     /// The X unit <see cref="Float4" /> (1, 0, 0, 0).
@@ -97,22 +93,22 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <summary>
     /// A <see cref="Float4" /> with all of its components set to half.
     /// </summary>
-    public static readonly Float4 Half = new(0.5f, 0.5f, 0.5f, 0.5f);
+    public static Float4 Half { get; } = new(0.5f, 0.5f, 0.5f, 0.5f);
 
     /// <summary>
     /// A <see cref="Float4" /> with all of its components set to one.
     /// </summary>
-    public static readonly Float4 One = new(1.0f, 1.0f, 1.0f, 1.0f);
+    public static Float4 One { get; } = new(1.0f, 1.0f, 1.0f, 1.0f);
 
     /// <summary>
     /// A <see cref="Float4" /> with all components equal to <see cref="float.MinValue"/>.
     /// </summary>
-    public static readonly Float4 Minimum = new(float.MinValue);
+    public static Float4 Minimum { get; } = new(float.MinValue);
 
     /// <summary>
     /// A <see cref="Float4" /> with all components equal to <see cref="float.MaxValue"/>.
     /// </summary>
-    public static readonly Float4 Maximum = new(float.MaxValue);
+    public static Float4 Maximum { get; } = new(float.MaxValue);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Float4" /> struct.
@@ -205,7 +201,7 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <remarks>
     /// This property checks if the squared length of the vector is within a small epsilon of 1.0.
     /// </remarks>
-    public readonly bool IsNormalized => IsNormalizedWithLength(out _);
+    public readonly bool IsNormalized => MathF.Abs(LengthSquared - 1.0f) < 1e-4f;
 
     /// <summary>
     /// Gets a value indicating whether this vector is zero (0, 0, 0, 0).
@@ -285,29 +281,32 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
         }
     }
 
-    /// <remarks>
-    /// Uses a fast approximation for the inverse square root, so the result may not be precise. 
-    /// For a more accurate result, use <see cref="Float4.PreciseLength" />.
-    /// </remarks>
-    /// <inheritdoc cref="PreciseLength" />
-    public readonly float Length => IsNormalizedWithLength(out float lengthSquared) ? 1.0f : MathF.ReciprocalSqrtEstimate(lengthSquared);
+    /// <inheritdoc/>
+    public readonly float Length
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            float lengthSquared = LengthSquared;
+            return lengthSquared * MathF.ReciprocalSqrtEstimate(lengthSquared);
+        }
+    }
 
-    /// <summary>
-    /// Calculates the length of the vector.
-    /// </summary>
-    /// <returns>The length of the vector.</returns>
-    public readonly float PreciseLength => IsNormalizedWithLength(out float lengthSquared) ? 1.0f : MathF.Sqrt(lengthSquared);
+    /// <inheritdoc/>
+    public readonly float PreciseLength
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            float lengthSquared = LengthSquared;
+            return lengthSquared / MathF.Sqrt(lengthSquared);
+        }
+    }
 
-    /// <summary>
-    /// Calculates the squared length of the vector.
-    /// </summary>
-    /// <returns>The squared length of the vector.</returns>
-    /// <remarks>
-    /// This method may be preferred to <see cref="Float4.Length" /> when only a relative 
-    /// length is needed and speed is of the essence.
-    /// </remarks>
+    /// <inheritdoc/>
     public readonly float LengthSquared
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
             Vector128<float> vValue = this.AsVector128();
@@ -315,674 +314,117 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
         }
     }
 
-    /// <remarks>
-    /// Uses a fast approximation for the inverse square root, so the result may not be precise. 
-    /// For a more accurate result, use <see cref="Float4.NormalizePrecise" />.
-    /// </remarks>
-    /// <inheritdoc cref="Float4.NormalizePrecise" />
-    public void Normalize()
-    {
-        if (IsNormalizedWithLength(out float lengthSquared))
-        {
-            return;
-        }
+    /// <inheritdoc/>
+    public static int Count => 4;
 
-        float inv = MathF.ReciprocalSqrtEstimate(lengthSquared);
-        Vector128<float> vInv = Vector128.Create(inv);
-        this = (this.AsVector128() * vInv).AsVector4();
-    }
+    /// <inheritdoc/>
+    public static Float4 Create(float value) => new(value);
 
-    /// <summary>
-    /// Converts the vector into a unit vector with a length of 1.
-    /// </summary>
-    public void NormalizePrecise()
-    {
-        if (IsNormalizedWithLength(out float lengthSquared))
-        {
-            return;
-        }
+    /// <inheritdoc/>
+    public static Float4 Create(ReadOnlySpan<float> values) => new(values);
 
-        float inv = 1.0f / MathF.Sqrt(lengthSquared);
-        Vector128<float> vInv = Vector128.Create(inv);
-        this = (this.AsVector128() * vInv).AsVector4();
-    }
+    /// <inheritdoc/>
+    public void Normalize() => this = Multiply(in this, new Float4(MathF.ReciprocalSqrtEstimate(LengthSquared)));
 
-    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-    private readonly bool IsNormalizedWithLength(out float lengthSquared)
-    {
-        lengthSquared = LengthSquared;
-        return MathF.Abs(lengthSquared - 1.0f) < 1e-4f;
-    }
+    /// <inheritdoc/>
+    public void NormalizePrecise() => this = Multiply(in this, new Float4(1.0f / MathF.Sqrt(LengthSquared)));
 
-    /// <summary>
-    /// Creates an array containing the elements of the vector.
-    /// </summary>
-    /// <returns>A four-element array containing the components of the vector.</returns>
-    public readonly float[] ToArray()
-    {
-        return [X, Y, Z, W];
-    }
+    /// <inheritdoc/>
+    public readonly float[] ToArray() => [X, Y, Z, W];
 
-    /// <summary>
-    /// Adds two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to add.</param>
-    /// <param name="right">The second vector to add.</param>
-    /// <param name="result">When the method completes, contains the sum of the two vectors.</param>
-    public static void Add(ref Float4 left, ref Float4 right, out Float4 result)
-    {
-        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
-        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
-        Vector128<float> vResult = vLeft + vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Adds two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to add.</param>
-    /// <param name="right">The second vector to add.</param>
-    /// <returns>The sum of the two vectors.</returns>
-    public static Float4 Add(Float4 left, Float4 right)
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float4 Add(in Float4 left, in Float4 right)
     {
         return (left.AsVector128() + right.AsVector128()).AsVector4();
     }
 
-    /// <summary>
-    /// Performs a component-wise addition.
-    /// </summary>
-    /// <param name="left">The input vector</param>
-    /// <param name="right">The scalar value to be added to elements</param>
-    /// <param name="result">The vector with added scalar for each element.</param>
-    public static void Add(ref Float4 left, ref float right, out Float4 result)
-    {
-        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
-        Vector128<float> vRight = Vector128.Create(right);
-        Vector128<float> vResult = vLeft + vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Performs a component-wise addition.
-    /// </summary>
-    /// <param name="left">The input vector</param>
-    /// <param name="right">The scalar value to be added to elements</param>
-    /// <returns>The vector with added scalar for each element.</returns>
-    public static Float4 Add(Float4 left, float right)
-    {
-        return (left.AsVector128() + Vector128.Create(right)).AsVector4();
-    }
-
-    /// <summary>
-    /// Subtracts two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to subtract.</param>
-    /// <param name="right">The second vector to subtract.</param>
-    /// <param name="result">When the method completes, contains the difference of the two vectors.</param>
-    public static void Subtract(ref Float4 left, ref Float4 right, out Float4 result)
-    {
-        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
-        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
-        Vector128<float> vResult = vLeft - vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Subtracts two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to subtract.</param>
-    /// <param name="right">The second vector to subtract.</param>
-    /// <returns>The difference of the two vectors.</returns>
-    public static Float4 Subtract(Float4 left, Float4 right)
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float4 Subtract(in Float4 left, in Float4 right)
     {
         return (left.AsVector128() - right.AsVector128()).AsVector4();
     }
 
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="left">The input vector</param>
-    /// <param name="right">The scalar value to be subtracted from elements</param>
-    /// <param name="result">The vector with subtracted scalar for each element.</param>
-    public static void Subtract(ref Float4 left, ref float right, out Float4 result)
-    {
-        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
-        Vector128<float> vRight = Vector128.Create(right);
-        Vector128<float> vResult = vLeft - vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="left">The input vector</param>
-    /// <param name="right">The scalar value to be subtracted from elements</param>
-    /// <returns>The vector with subtracted scalar for each element.</returns>
-    public static Float4 Subtract(Float4 left, float right)
-    {
-        return (left.AsVector128() - Vector128.Create(right)).AsVector4();
-    }
-
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="left">The scalar value to be subtracted from elements</param>
-    /// <param name="right">The input vector.</param>
-    /// <param name="result">The vector with subtracted scalar for each element.</param>
-    public static void Subtract(ref float left, ref Float4 right, out Float4 result)
-    {
-        Vector128<float> vLeft = Vector128.Create(left);
-        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
-        Vector128<float> vResult = vLeft - vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="left">The scalar value to be subtracted from elements</param>
-    /// <param name="right">The input vector.</param>
-    /// <returns>The vector with subtracted scalar for each element.</returns>
-    public static Float4 Subtract(float left, Float4 right)
-    {
-        return (Vector128.Create(left) - right.AsVector128()).AsVector4();
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <param name="result">When the method completes, contains the scaled vector.</param>
-    public static void Multiply(ref Float4 value, float scale, out Float4 result)
-    {
-        ref Vector128<float> vValue = ref VectorExtensions.AsVector128(ref value);
-        Vector128<float> vScale = Vector128.Create(scale);
-        Vector128<float> vResult = vValue * vScale;
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 Multiply(Float4 value, float scale)
-    {
-        return (value.AsVector128() * Vector128.Create(scale)).AsVector4();
-    }
-
-    /// <summary>
-    /// Multiplies a vector with another by performing component-wise multiplication.
-    /// </summary>
-    /// <param name="left">The first vector to multiply.</param>
-    /// <param name="right">The second vector to multiply.</param>
-    /// <param name="result">When the method completes, contains the multiplied vector.</param>
-    public static void Multiply(ref Float4 left, ref Float4 right, out Float4 result)
-    {
-        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
-        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
-        Vector128<float> vResult = vLeft * vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Multiplies a vector with another by performing component-wise multiplication.
-    /// </summary>
-    /// <param name="left">The first vector to multiply.</param>
-    /// <param name="right">The second vector to multiply.</param>
-    /// <returns>The multiplied vector.</returns>
-    public static Float4 Multiply(Float4 left, Float4 right)
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float4 Multiply(in Float4 left, in Float4 right)
     {
         return (left.AsVector128() * right.AsVector128()).AsVector4();
     }
 
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <param name="result">When the method completes, contains the scaled vector.</param>
-    public static void Divide(ref Float4 value, float scale, out Float4 result)
+    /// <inheritdoc/>
+    public static Float4 Divide(in Float4 left, in Float4 right)
     {
-        ref Vector128<float> vValue = ref VectorExtensions.AsVector128(ref value);
-        Vector128<float> vScale = Vector128.Create(scale);
-        Vector128<float> vResult = vValue / vScale;
-        result = VectorExtensions.AsVector4(ref vResult);
+        return (left.AsVector128() / right.AsVector128()).AsVector4();
     }
 
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 Divide(Float4 value, float scale)
+    /// <inheritdoc/>
+    public static Float4 Modulus(in Float4 left, in Float4 right)
     {
-        return (value.AsVector128() / Vector128.Create(scale)).AsVector4();
+        Vector128<float> vLeft = left.AsVector128();
+        Vector128<float> vRight = right.AsVector128();
+
+        Vector128<float> div = vLeft / vRight;
+        Vector128<float> trunc = Vector128.Truncate(div);
+        Vector128<float> result = vLeft - (vRight * trunc);
+
+        return result.AsVector4();
     }
 
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="result">When the method completes, contains the scaled vector.</param>
-    public static void Divide(float scale, ref Float4 value, out Float4 result)
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float4 Negate(in Float4 value)
     {
-        Vector128<float> vScale = Vector128.Create(scale);
-        ref Vector128<float> vValue = ref VectorExtensions.AsVector128(ref value);
-        Vector128<float> vResult = vScale / vValue;
-        result = VectorExtensions.AsVector4(ref vResult);
+        Vector128<float> vResult = Vector128.Negate(value.AsVector128());
+        return vResult.AsVector4();
     }
 
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 Divide(float scale, Float4 value)
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float4 Barycentric(in Float4 value1, in Float4 value2, in Float4 value3, float amount1, float amount2)
     {
-        return (Vector128.Create(scale) / value.AsVector128()).AsVector4();
+        Vector128<float> result = VectorMath.Barycentric(value1.AsVector128(), value2.AsVector128(), value3.AsVector128(), amount1, amount2);
+        return result.AsVector4();
     }
 
-    /// <summary>
-    /// Reverses the direction of a given vector.
-    /// </summary>
-    /// <param name="value">The vector to negate.</param>
-    /// <param name="result">When the method completes, contains a vector facing in the opposite direction.</param>
-    public static void Negate(ref Float4 value, out Float4 result)
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float4 Clamp(in Float4 value, in Float4 min, in Float4 max)
     {
-        ref Vector128<float> vValue = ref VectorExtensions.AsVector128(ref value);
-        Vector128<float> vResult = Vector128.Negate(vValue);
-        result = VectorExtensions.AsVector4(ref vResult);
+        var result = Vector128.Clamp(value.AsVector128(), min.AsVector128(), max.AsVector128());
+        return result.AsVector4();
     }
 
-    /// <summary>
-    /// Reverses the direction of a given vector.
-    /// </summary>
-    /// <param name="value">The vector to negate.</param>
-    /// <returns>A vector facing in the opposite direction.</returns>
-    public static Float4 Negate(Float4 value)
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Distance(in Float4 value1, in Float4 value2)
     {
-        Negate(ref value, out Float4 result);
-        return result;
+        float sqrDistance = DistanceSquared(value1, value2);
+        return sqrDistance * MathF.ReciprocalSqrtEstimate(sqrDistance);
     }
 
-    /// <summary>
-    /// Returns a <see cref="Float4" /> containing the 4D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 4D triangle.
-    /// </summary>
-    /// <param name="value1">A <see cref="Float4" /> containing the 4D Cartesian coordinates of vertex 1 of the triangle.</param>
-    /// <param name="value2">A <see cref="Float4" /> containing the 4D Cartesian coordinates of vertex 2 of the triangle.</param>
-    /// <param name="value3">A <see cref="Float4" /> containing the 4D Cartesian coordinates of vertex 3 of the triangle.</param>
-    /// <param name="amount1">Barycentric coordinate b2, which expresses the weighting factor toward vertex 2 (specified in <paramref name="value2" />).</param>
-    /// <param name="amount2">Barycentric coordinate b3, which expresses the weighting factor toward vertex 3 (specified in <paramref name="value3" />).</param>
-    /// <param name="result">When the method completes, contains the 4D Cartesian coordinates of the specified point.</param>
-    public static void Barycentric(ref Float4 value1, ref Float4 value2, ref Float4 value3, float amount1, float amount2, out Float4 result)
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float PreciseDistance(in Float4 value1, in Float4 value2)
     {
-        Vector128<float> v1 = VectorExtensions.AsVector128(ref value1);
-        Vector128<float> v2 = VectorExtensions.AsVector128(ref value2);
-        Vector128<float> v3 = VectorExtensions.AsVector128(ref value3);
-
-        Vector128<float> a1 = Vector128.Create(amount1);
-        Vector128<float> a2 = Vector128.Create(amount2);
-
-        Vector128<float> vResult = v1 + (a1 * (v2 - v1)) + (a2 * (v3 - v1));
-
-        result = VectorExtensions.AsVector4(ref vResult);
+        float sqrDistance = DistanceSquared(value1, value2);
+        return MathF.Sqrt(sqrDistance);
     }
 
-    /// <summary>
-    /// Returns a <see cref="Float4" /> containing the 4D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 4D triangle.
-    /// </summary>
-    /// <param name="value1">A <see cref="Float4" /> containing the 4D Cartesian coordinates of vertex 1 of the triangle.</param>
-    /// <param name="value2">A <see cref="Float4" /> containing the 4D Cartesian coordinates of vertex 2 of the triangle.</param>
-    /// <param name="value3">A <see cref="Float4" /> containing the 4D Cartesian coordinates of vertex 3 of the triangle.</param>
-    /// <param name="amount1">Barycentric coordinate b2, which expresses the weighting factor toward vertex 2 (specified in <paramref name="value2" />).</param>
-    /// <param name="amount2">Barycentric coordinate b3, which expresses the weighting factor toward vertex 3 (specified in <paramref name="value3" />).</param>
-    /// <returns>A new <see cref="Float4" /> containing the 4D Cartesian coordinates of the specified point.</returns>
-    public static Float4 Barycentric(Float4 value1, Float4 value2, Float4 value3, float amount1, float amount2)
+    /// <inheritdoc/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float DistanceSquared(in Float4 value1, in Float4 value2)
     {
-        Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out Float4 result);
-        return result;
+        Vector128<float> difference = value1.AsVector128() - value2.AsVector128();
+        return Vector128.Sum(difference * difference);
     }
 
-    /// <summary>
-    /// Restricts a value to be within a specified range.
-    /// </summary>
-    /// <param name="value">The value to clamp.</param>
-    /// <param name="min">The minimum value.</param>
-    /// <param name="max">The maximum value.</param>
-    /// <param name="result">When the method completes, contains the clamped value.</param>
-    public static void Clamp(ref Float4 value, ref Float4 min, ref Float4 max, out Float4 result)
+    /// <inheritdoc/>
+    public static Float4 Hermite(in Float4 value1, in Float4 tangent1, in Float4 value2, in Float4 tangent2, float amount)
     {
-        ref Vector128<float> vValue = ref VectorExtensions.AsVector128(ref value);
-        ref Vector128<float> vMin = ref VectorExtensions.AsVector128(ref min);
-        ref Vector128<float> vMax = ref VectorExtensions.AsVector128(ref max);
-        Vector128<float> vResult = Vector128.Clamp(vValue, vMin, vMax);
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Restricts a value to be within a specified range.
-    /// </summary>
-    /// <param name="value">The value to clamp.</param>
-    /// <param name="min">The minimum value.</param>
-    /// <param name="max">The maximum value.</param>
-    /// <returns>The clamped value.</returns>
-    public static Float4 Clamp(Float4 value, Float4 min, Float4 max)
-    {
-        Clamp(ref value, ref min, ref max, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Calculates the distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <param name="result">When the method completes, contains the distance between the two vectors.</param>
-    /// <remarks><see cref="Float4.DistanceSquared(ref Float4, ref Float4, out float)" /> may be preferred when only the relative distance is needed and speed is of the essence.</remarks>
-    public static void Distance(ref Float4 value1, ref Float4 value2, out float result)
-    {
-        DistanceSquared(ref value1, ref value2, out float sqrDistance);
-        result = MathF.Sqrt(sqrDistance);
-    }
-
-    /// <summary>
-    /// Calculates the distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <returns>The distance between the two vectors.</returns>
-    /// <remarks><see cref="Float4.DistanceSquared(Float4, Float4)" /> may be preferred when only the relative distance is needed and speed is of the essence.</remarks>
-    public static float Distance(Float4 value1, Float4 value2)
-    {
-        Distance(ref value1, ref value2, out float result);
-        return result;
-    }
-
-    /// <summary>
-    /// Calculates the squared distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <param name="result">When the method completes, contains the squared distance between the two vectors.</param>
-    public static void DistanceSquared(ref Float4 value1, ref Float4 value2, out float result)
-    {
-        ref Vector128<float> vValue1 = ref VectorExtensions.AsVector128(ref value1);
-        ref Vector128<float> vValue2 = ref VectorExtensions.AsVector128(ref value2);
-        Vector128<float> vDiff = Vector128.Subtract(vValue1, vValue2);
-        Vector128<float> vSqr = Vector128.Multiply(vDiff, vDiff);
-        result = Vector128.Sum(vSqr);
-    }
-
-    /// <summary>
-    /// Calculates the squared distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <returns>The squared distance between the two vectors.</returns>
-    public static float DistanceSquared(Float4 value1, Float4 value2)
-    {
-        DistanceSquared(ref value1, ref value2, out float result);
-        return result;
-    }
-
-    /// <summary>
-    /// Tests whether one vector is near another vector.
-    /// </summary>
-    /// <param name="left">The left vector.</param>
-    /// <param name="right">The right vector.</param>
-    /// <param name="epsilon">The epsilon.</param>
-    /// <returns><c>true</c> if left and right are near another, <c>false</c> otherwise</returns>
-    public static bool NearEqual(Float4 left, Float4 right, float epsilon = Mathf.Epsilon)
-    {
-        return NearEqual(ref left, ref right, epsilon);
-    }
-
-    /// <summary>
-    /// Tests whether one vector is near another vector.
-    /// </summary>
-    /// <param name="left">The left vector.</param>
-    /// <param name="right">The right vector.</param>
-    /// <param name="epsilon">The epsilon.</param>
-    /// <returns><c>true</c> if left and right are near another, <c>false</c> otherwise</returns>
-    public static bool NearEqual(ref Float4 left, ref Float4 right, float epsilon = Mathf.Epsilon)
-    {
-        return Mathf.WithinEpsilon(left.X, right.X, epsilon) && Mathf.WithinEpsilon(left.Y, right.Y, epsilon) && Mathf.WithinEpsilon(left.Z, right.Z, epsilon) && Mathf.WithinEpsilon(left.W, right.W, epsilon);
-    }
-
-    /// <summary>
-    /// Calculates the dot product of two vectors.
-    /// </summary>
-    /// <param name="left">First source vector</param>
-    /// <param name="right">Second source vector.</param>
-    /// <param name="result">When the method completes, contains the dot product of the two vectors.</param>
-    public static void Dot(ref Float4 left, ref Float4 right, out float result)
-    {
-        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
-        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
-        result = Vector128.Dot(vLeft, vRight);
-    }
-
-    /// <summary>
-    /// Calculates the dot product of two vectors.
-    /// </summary>
-    /// <param name="left">First source vector.</param>
-    /// <param name="right">Second source vector.</param>
-    /// <returns>The dot product of the two vectors.</returns>
-    public static float Dot(Float4 left, Float4 right)
-    {
-        Dot(ref left, ref right, out float result);
-        return result;
-    }
-
-    /// <summary>
-    /// Converts the vector into a unit vector.
-    /// </summary>
-    /// <param name="value">The vector to normalize.</param>
-    /// <param name="result">When the method completes, contains the normalized vector.</param>
-    public static void Normalize(ref Float4 value, out Float4 result)
-    {
-        result = value;
-        result.Normalize();
-    }
-
-    /// <summary>
-    /// Converts the vector into a unit vector.
-    /// </summary>
-    /// <param name="value">The vector to normalize.</param>
-    /// <returns>The normalized vector.</returns>
-    public static Float4 Normalize(Float4 value)
-    {
-        value.Normalize();
-        return value;
-    }
-
-    /// <summary>
-    /// Makes sure that Length of the output vector is always below max and above 0.
-    /// </summary>
-    /// <param name="vector">Input vector.</param>
-    /// <param name="max">Max Length</param>
-    public static Float4 ClampLength(Float4 vector, float max)
-    {
-        return ClampLength(vector, 0, max);
-    }
-
-    /// <summary>
-    /// Makes sure that Length of the output vector is always below max and above min.
-    /// </summary>
-    /// <param name="vector">Input vector.</param>
-    /// <param name="min">Min Length</param>
-    /// <param name="max">Max Length</param>
-    public static Float4 ClampLength(Float4 vector, float min, float max)
-    {
-        ClampLength(vector, min, max, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Makes sure that Length of the output vector is always below max and above min.
-    /// </summary>
-    /// <param name="vector">Input vector.</param>
-    /// <param name="min">Min Length</param>
-    /// <param name="max">Max Length</param>
-    /// <param name="result">The result vector.</param>
-    public static void ClampLength(Float4 vector, float min, float max, out Float4 result)
-    {
-        result = vector;
-        Vector128<float> vVector = vector.AsVector128();
-        float lenSq = Vector128.Sum(vVector * vVector);
-        if (lenSq > max * max)
-        {
-            Vector128<float> scaleFactor = Vector128.Create(max * MathF.ReciprocalSqrtEstimate(lenSq));
-            result = VectorExtensions.AsVector4(scaleFactor * vVector);
-        }
-        if (lenSq < min * min)
-        {
-            Vector128<float> scaleFactor = Vector128.Create(min * MathF.ReciprocalSqrtEstimate(lenSq));
-            result = VectorExtensions.AsVector4(scaleFactor * vVector);
-        }
-    }
-
-    /// <summary>
-    /// Performs a linear interpolation between two vectors.
-    /// </summary>
-    /// <param name="start">Start vector.</param>
-    /// <param name="end">End vector.</param>
-    /// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end" />.</param>
-    /// <param name="result">When the method completes, contains the linear interpolation of the two vectors.</param>
-    /// <remarks>Passing <paramref name="amount" /> a value of 0 will cause <paramref name="start" /> to be returned; a value of 1 will cause <paramref name="end" /> to be returned.</remarks>
-    public static void Lerp(ref Float4 start, ref Float4 end, float amount, out Float4 result)
-    {
-        ref Vector128<float> vStart = ref VectorExtensions.AsVector128(ref start);
-        ref Vector128<float> vEnd = ref VectorExtensions.AsVector128(ref end);
-        Vector128<float> vAmount = Vector128.Create(amount);
-        Vector128<float> vResult = vStart + (vEnd - vStart) * vAmount;
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Performs a linear interpolation between two vectors.
-    /// </summary>
-    /// <param name="start">Start vector.</param>
-    /// <param name="end">End vector.</param>
-    /// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end" />.</param>
-    /// <returns>The linear interpolation of the two vectors.</returns>
-    /// <remarks>Passing <paramref name="amount" /> a value of 0 will cause <paramref name="start" /> to be returned; a value of 1 will cause <paramref name="end" /> to be returned.</remarks>
-    public static Float4 Lerp(Float4 start, Float4 end, float amount)
-    {
-        Lerp(ref start, ref end, amount, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Performs a cubic interpolation between two vectors.
-    /// </summary>
-    /// <param name="start">Start vector.</param>
-    /// <param name="end">End vector.</param>
-    /// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end" />.</param>
-    /// <param name="result">When the method completes, contains the cubic interpolation of the two vectors.</param>
-    public static void SmoothStep(ref Float4 start, ref Float4 end, float amount, out Float4 result)
-    {
-        amount = Mathf.SmoothStep(amount);
-        Lerp(ref start, ref end, amount, out result);
-    }
-
-    /// <summary>
-    /// Performs a cubic interpolation between two vectors.
-    /// </summary>
-    /// <param name="start">Start vector.</param>
-    /// <param name="end">End vector.</param>
-    /// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end" />.</param>
-    /// <returns>The cubic interpolation of the two vectors.</returns>
-    public static Float4 SmoothStep(Float4 start, Float4 end, float amount)
-    {
-        SmoothStep(ref start, ref end, amount, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Performs a Hermite spline interpolation.
-    /// </summary>
-    /// <param name="value1">First source position vector.</param>
-    /// <param name="tangent1">First source tangent vector.</param>
-    /// <param name="value2">Second source position vector.</param>
-    /// <param name="tangent2">Second source tangent vector.</param>
-    /// <param name="amount">Weighting factor.</param>
-    /// <param name="result">When the method completes, contains the result of the Hermite spline interpolation.</param>
-    public static void Hermite(ref Float4 value1, ref Float4 tangent1, ref Float4 value2, ref Float4 tangent2, float amount, out Float4 result)
-    {
-        float squared = amount * amount;
-        float cubed = amount * squared;
-
-        float part1 = 2.0f * cubed - 3.0f * squared + 1.0f;
-        float part2 = -2.0f * cubed + 3.0f * squared;
-        float part3 = cubed - 2.0f * squared + amount;
-        float part4 = cubed - squared;
-
-        Vector128<float> v1 = VectorExtensions.AsVector128(ref value1);
-        Vector128<float> t1 = VectorExtensions.AsVector128(ref tangent1);
-        Vector128<float> v2 = VectorExtensions.AsVector128(ref value2);
-        Vector128<float> t2 = VectorExtensions.AsVector128(ref tangent2);
-
-        Vector128<float> vp1 = Vector128.Create(part1);
-        Vector128<float> vp2 = Vector128.Create(part2);
-        Vector128<float> vp3 = Vector128.Create(part3);
-        Vector128<float> vp4 = Vector128.Create(part4);
-
-        Vector128<float> vResult = (v1 * vp1) + (v2 * vp2) + (t1 * vp3) + (t2 * vp4);
-
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Performs a Hermite spline interpolation.
-    /// </summary>
-    /// <param name="value1">First source position vector.</param>
-    /// <param name="tangent1">First source tangent vector.</param>
-    /// <param name="value2">Second source position vector.</param>
-    /// <param name="tangent2">Second source tangent vector.</param>
-    /// <param name="amount">Weighting factor.</param>
-    /// <returns>The result of the Hermite spline interpolation.</returns>
-    public static Float4 Hermite(Float4 value1, Float4 tangent1, Float4 value2, Float4 tangent2, float amount)
-    {
-        Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Performs a Catmull-Rom interpolation using the specified positions.
-    /// </summary>
-    /// <param name="value1">The first position in the interpolation.</param>
-    /// <param name="value2">The second position in the interpolation.</param>
-    /// <param name="value3">The third position in the interpolation.</param>
-    /// <param name="value4">The fourth position in the interpolation.</param>
-    /// <param name="amount">Weighting factor.</param>
-    /// <param name="result">When the method completes, contains the result of the Catmull-Rom interpolation.</param>
-    public static void CatmullRom(ref Float4 value1, ref Float4 value2, ref Float4 value3, ref Float4 value4, float amount, out Float4 result)
-    {
-        float squared = amount * amount;
-        float cubed = amount * squared;
-
-        Vector128<float> v1 = VectorExtensions.AsVector128(ref value1);
-        Vector128<float> v2 = VectorExtensions.AsVector128(ref value2);
-        Vector128<float> v3 = VectorExtensions.AsVector128(ref value3);
-        Vector128<float> v4 = VectorExtensions.AsVector128(ref value4);
-
-        Vector128<float> vT  = Vector128.Create(amount);
-        Vector128<float> vT2 = Vector128.Create(squared);
-        Vector128<float> vT3 = Vector128.Create(cubed);
-
-        Vector128<float> term0 = Vector128.Create(2.0f) * v2;
-        Vector128<float> term1 = (-v1 + v3) * vT;
-        Vector128<float> term2 = (Vector128.Create(2.0f) * v1 - Vector128.Create(5.0f) * v2 + Vector128.Create(4.0f) * v3 - v4) * vT2;
-        Vector128<float> term3 = (-v1 + Vector128.Create(3.0f) * v2 - Vector128.Create(3.0f) * v3 + v4) * vT3;
-
-        result = (Vector128.Create(0.5f) * (term0 + term1 + term2 + term3)).AsVector4();
+        Vector128<float> result = VectorMath.Hermite(value1.AsVector128(), tangent1.AsVector128(), value2.AsVector128(), tangent2.AsVector128(), amount);
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -994,437 +436,33 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
     /// <param name="value4">The fourth position in the interpolation.</param>
     /// <param name="amount">Weighting factor.</param>
     /// <returns>A vector that is the result of the Catmull-Rom interpolation.</returns>
-    public static Float4 CatmullRom(Float4 value1, Float4 value2, Float4 value3, Float4 value4, float amount)
+    public static Float4 CatmullRom(in Float4 value1, in Float4 value2, in Float4 value3, in Float4 value4, float amount)
     {
-        CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Returns a vector containing the largest components of the specified vectors.
-    /// </summary>
-    /// <param name="left">The first source vector.</param>
-    /// <param name="right">The second source vector.</param>
-    /// <param name="result">When the method completes, contains an new vector composed of the largest components of the source vectors.</param>
-    public static void Max(ref Float4 left, ref Float4 right, out Float4 result)
-    {
-        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
-        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
-        Vector128<float> vResult = Vector128.Max(vLeft, vRight);
-        result = vResult.AsVector4();
-    }
-
-    /// <summary>
-    /// Returns a vector containing the largest components of the specified vectors.
-    /// </summary>
-    /// <param name="left">The first source vector.</param>
-    /// <param name="right">The second source vector.</param>
-    /// <returns>A vector containing the largest components of the source vectors.</returns>
-    public static Float4 Max(Float4 left, Float4 right)
-    {
-        Max(ref left, ref right, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Returns a vector containing the smallest components of the specified vectors.
-    /// </summary>
-    /// <param name="left">The first source vector.</param>
-    /// <param name="right">The second source vector.</param>
-    /// <param name="result">When the method completes, contains an new vector composed of the smallest components of the source vectors.</param>
-    public static void Min(ref Float4 left, ref Float4 right, out Float4 result)
-    {
-        ref Vector128<float> vLeft = ref VectorExtensions.AsVector128(ref left);
-        ref Vector128<float> vRight = ref VectorExtensions.AsVector128(ref right);
-        Vector128<float> vResult = Vector128.Min(vLeft, vRight);
-        result = vResult.AsVector4();
-    }
-
-    /// <summary>
-    /// Returns a vector containing the smallest components of the specified vectors.
-    /// </summary>
-    /// <param name="left">The first source vector.</param>
-    /// <param name="right">The second source vector.</param>
-    /// <returns>A vector containing the smallest components of the source vectors.</returns>
-    public static Float4 Min(Float4 left, Float4 right)
-    {
-        Min(ref left, ref right, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Returns the absolute value of a vector.
-    /// </summary>
-    /// <param name="v">The value.</param>
-    /// <returns> A vector which components are less or equal to 0.</returns>
-    public static Float4 Abs(Float4 v)
-    {
-        Vector128<float> result = Vector128.Abs(v.AsVector128());
+        Vector128<float> result = VectorMath.CatmullRom(value1.AsVector128(), value2.AsVector128(), value3.AsVector128(), value3.AsVector128(), amount);
         return result.AsVector4();
     }
 
-    /// <summary>
-    /// Transforms a 4D vector by the given <see cref="Quaternion" /> rotation.
-    /// </summary>
-    /// <param name="vector">The vector to rotate.</param>
-    /// <param name="rotation">The <see cref="Quaternion" /> rotation to apply.</param>
-    /// <param name="result">When the method completes, contains the transformed <see cref="Float4" />.</param>
-    public static void Transform(ref Float4 vector, ref Quaternion rotation, out Float4 result)
+    /// <inheritdoc/>
+    public static Float4 Abs(in Float4 value)
     {
-        float x = rotation.X + rotation.X;
-        float y = rotation.Y + rotation.Y;
-        float z = rotation.Z + rotation.Z;
-        float wx = rotation.W * x, wy = rotation.W * y, wz = rotation.W * z;
-        float xx = rotation.X * x, xy = rotation.X * y, xz = rotation.X * z;
-        float yy = rotation.Y * y, yz = rotation.Y * z, zz = rotation.Z * z;
-
-        Vector128<float> vX = Vector128.Create(vector.X);
-        Vector128<float> vY = Vector128.Create(vector.Y);
-        Vector128<float> vZ = Vector128.Create(vector.Z);
-
-        Vector128<float> col1 = Vector128.Create(1.0f - yy - zz, xy + wz, xz - wy, 0.0f);
-        Vector128<float> col2 = Vector128.Create(xy - wz, 1.0f - xx - zz, yz + wx, 0.0f);
-        Vector128<float> col3 = Vector128.Create(xz + wy, yz - wx, 1.0f - xx - yy, 0.0f);
-
-        Vector128<float> vResult = (vX * col1) + (vY * col2) + (vZ * col3);
-
-        result = VectorExtensions.AsVector4(ref vResult);
-
-        result.W = vector.W;
-    }
-
-    /// <summary>
-    /// Transforms a 4D vector by the given <see cref="Quaternion" /> rotation.
-    /// </summary>
-    /// <param name="vector">The vector to rotate.</param>
-    /// <param name="rotation">The <see cref="Quaternion" /> rotation to apply.</param>
-    /// <returns>The transformed <see cref="Float4" />.</returns>
-    public static Float4 Transform(Float4 vector, Quaternion rotation)
-    {
-        Transform(ref vector, ref rotation, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Transforms a 4D vector by the given <see cref="Matrix" />.
-    /// </summary>
-    /// <param name="vector">The source vector.</param>
-    /// <param name="transform">The transformation <see cref="Matrix" />.</param>
-    /// <param name="result">When the method completes, contains the transformed <see cref="Float4" />.</param>
-    public static void Transform(ref Float4 vector, ref Matrix transform, out Float4 result)
-    {
-        Vector128<float> vX = Vector128.Create(vector.X);
-        Vector128<float> vY = Vector128.Create(vector.Y);
-        Vector128<float> vZ = Vector128.Create(vector.Z);
-        Vector128<float> vW = Vector128.Create(vector.W);
-
-        ref Vector128<float> row1 = ref Unsafe.As<float, Vector128<float>>(ref transform.M11);
-        ref Vector128<float> row2 = ref Unsafe.As<float, Vector128<float>>(ref transform.M21);
-        ref Vector128<float> row3 = ref Unsafe.As<float, Vector128<float>>(ref transform.M31);
-        ref Vector128<float> row4 = ref Unsafe.As<float, Vector128<float>>(ref transform.M41);
-
-        Vector128<float> vResult = (vX * row1) + (vY * row2) + (vZ * row3) + (vW * row4);
-
-        result = VectorExtensions.AsVector4(ref vResult);
-    }
-
-    /// <summary>
-    /// Transforms a 4D vector by the given <see cref="Matrix" />.
-    /// </summary>
-    /// <param name="vector">The source vector.</param>
-    /// <param name="transform">The transformation <see cref="Matrix" />.</param>
-    /// <returns>The transformed <see cref="Float4" />.</returns>
-    public static Float4 Transform(Float4 vector, Matrix transform)
-    {
-        Transform(ref vector, ref transform, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Adds two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to add.</param>
-    /// <param name="right">The second vector to add.</param>
-    /// <returns>The sum of the two vectors.</returns>
-    public static Float4 operator +(Float4 left, Float4 right)
-    {
-        Add(ref left, ref right, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Multiplies a vector with another by performing component-wise multiplication equivalent to <see cref="Multiply(ref Float4,ref Float4,out Float4)" />.
-    /// </summary>
-    /// <param name="left">The first vector to multiply.</param>
-    /// <param name="right">The second vector to multiply.</param>
-    /// <returns>The multiplication of the two vectors.</returns>
-    public static Float4 operator *(Float4 left, Float4 right)
-    {
-        Multiply(ref left, ref right, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Assert a vector (return it unchanged).
-    /// </summary>
-    /// <param name="value">The vector to assert (unchanged).</param>
-    /// <returns>The asserted (unchanged) vector.</returns>
-    public static Float4 operator +(Float4 value)
-    {
-        return value;
-    }
-
-    /// <summary>
-    /// Subtracts two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to subtract.</param>
-    /// <param name="right">The second vector to subtract.</param>
-    /// <returns>The difference of the two vectors.</returns>
-    public static Float4 operator -(Float4 left, Float4 right)
-    {
-        Subtract(ref left, ref right, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Reverses the direction of a given vector.
-    /// </summary>
-    /// <param name="value">The vector to negate.</param>
-    /// <returns>A vector facing in the opposite direction.</returns>
-    public static Float4 operator -(Float4 value)
-    {
-        Negate(ref value, out Float4 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 operator *(float scale, Float4 value)
-    {
-        Vector128<float> result = Vector128.Create(scale) * value.AsVector128();
+        Vector128<float> result = Vector128.Abs(value.AsVector128());
         return result.AsVector4();
     }
 
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 operator *(Float4 value, float scale)
-    {
-        Vector128<float> result = value.AsVector128() * Vector128.Create(scale);
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 operator /(Float4 value, float scale)
-    {
-        Vector128<float> result = value.AsVector128() / Vector128.Create(scale);
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <param name="value">The vector to scale.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 operator /(float scale, Float4 value)
-    {
-        Vector128<float> result = Vector128.Create(scale) / value.AsVector128();
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 operator *(double scale, Float4 value)
-    {
-        return (float)scale * value;
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 operator *(Float4 value, double scale)
-    {
-        return value * (float)scale;
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 operator /(Float4 value, double scale)
-    {
-        return value / (float)scale;
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <param name="value">The vector to scale.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 operator /(double scale, Float4 value)
-    {
-        return (float)scale / value;
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float4 operator /(Float4 value, Float4 scale)
-    {
-        Vector128<float> result = value.AsVector128() / scale.AsVector128();
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Remainder of value divided by scale.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The remained vector.</returns>
-    public static Float4 operator %(Float4 value, float scale)
-    {
-        Vector128<float> vValue = value.AsVector128();
-        Vector128<float> vScale = Vector128.Create(scale);
-
-        Vector128<float> div = vValue / vScale;
-        Vector128<float> trunc = Vector128.Truncate(div);
-        Vector128<float> result = vValue - (vScale * trunc);
-
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Remainder of value divided by scale.
-    /// </summary>
-    /// <param name="value">The amount by which to scale the vector.</param>
-    /// <param name="scale">The vector to scale.</param>
-    /// <returns>The remained vector.</returns>
-    public static Float4 operator %(float value, Float4 scale)
-    {
-        Vector128<float> vValue = Vector128.Create(value);
-        Vector128<float> vScale = scale.AsVector128();
-
-        Vector128<float> div = vValue / vScale;
-        Vector128<float> trunc = Vector128.Truncate(div);
-        Vector128<float> result = vValue - (vScale * trunc);
-
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Remainder of value divided by scale.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The remained vector.</returns>
-    public static Float4 operator %(Float4 value, Float4 scale)
-    {
-        Vector128<float> vValue = value.AsVector128();
-        Vector128<float> vScale = scale.AsVector128();
-
-        Vector128<float> div = vValue / vScale;
-        Vector128<float> trunc = Vector128.Truncate(div);
-        Vector128<float> result = vValue - (vScale * trunc);
-
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Performs a component-wise addition.
-    /// </summary>
-    /// <param name="value">The input vector.</param>
-    /// <param name="scalar">The scalar value to be added on elements</param>
-    /// <returns>The vector with added scalar for each element.</returns>
-    public static Float4 operator +(Float4 value, float scalar)
-    {
-        Vector128<float> result = value.AsVector128() + Vector128.Create(scalar);
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Performs a component-wise addition.
-    /// </summary>
-    /// <param name="value">The input vector.</param>
-    /// <param name="scalar">The scalar value to be added on elements</param>
-    /// <returns>The vector with added scalar for each element.</returns>
-    public static Float4 operator +(float scalar, Float4 value)
-    {
-        Vector128<float> result = Vector128.Create(scalar) + value.AsVector128();
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="value">The input vector.</param>
-    /// <param name="scalar">The scalar value to be subtracted from elements</param>
-    /// <returns>The vector with subtracted scalar from each element.</returns>
-    public static Float4 operator -(Float4 value, float scalar)
-    {
-        Vector128<float> result = value.AsVector128() - Vector128.Create(scalar);
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="value">The input vector.</param>
-    /// <param name="scalar">The scalar value to be subtracted from elements</param>
-    /// <returns>The vector with subtracted scalar from each element.</returns>
-    public static Float4 operator -(float scalar, Float4 value)
-    {
-        Vector128<float> result = Vector128.Create(scalar) - value.AsVector128();
-        return result.AsVector4();
-    }
-
-    /// <summary>
-    /// Tests for equality between two objects.
-    /// </summary>
-    /// <param name="left">The first value to compare.</param>
-    /// <param name="right">The second value to compare.</param>
-    /// <returns><c>true</c> if <paramref name="left" /> has the same value as <paramref name="right" />; otherwise, <c>false</c>.</returns>
+    /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator ==(Float4 left, Float4 right)
+    public static Float4 Transform(in Float4 vector, in Quaternion rotation)
     {
-        return left.Equals(ref right);
+        Vector128<float> result = VectorMath.Transform(vector.AsVector128(), in rotation);
+        return result.AsVector4();
     }
 
-    /// <summary>
-    /// Tests for inequality between two objects.
-    /// </summary>
-    /// <param name="left">The first value to compare.</param>
-    /// <param name="right">The second value to compare.</param>
-    /// <returns><c>true</c> if <paramref name="left" /> has a different value than <paramref name="right" />; otherwise, <c>false</c>.</returns>
+    /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator !=(Float4 left, Float4 right)
+    public static Float4 Transform(in Float4 vector, in Matrix transform)
     {
-        return !left.Equals(ref right);
+        Vector128<float> result = VectorMath.Transform(vector.AsVector128(), in transform);
+        return result.AsVector4();
     }
 
     /// <summary>
@@ -1535,42 +573,70 @@ partial struct Float4 : IEquatable<Float4>, IFormattable, Json.ICustomValueEqual
         return HashCode.Combine(X, Y, Z, W);
     }
 
-    /// <inheritdoc />
-    public readonly bool ValueEquals(object other)
-    {
-        var o = (Float4)other;
-        return Equals(ref o);
-    }
-
-    /// <summary>
-    /// Determines whether the specified <see cref="Float4" /> is equal to this instance.
-    /// </summary>
-    /// <param name="other">The <see cref="Float4" /> to compare with this instance.</param>
-    /// <returns><c>true</c> if the specified <see cref="Float4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    public readonly bool Equals(ref Float4 other)
-    {
-        ref Vector128<float> vOther = ref VectorExtensions.AsVector128(ref other);
-        return this.AsVector128().Equals(vOther);
-    }
-
-    /// <summary>
-    /// Determines whether the specified <see cref="Float4" /> is equal to this instance.
-    /// </summary>
-    /// <param name="other">The <see cref="Float4" /> to compare with this instance.</param>
-    /// <returns><c>true</c> if the specified <see cref="Float4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+    /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool Equals(Float4 other)
+    public readonly bool Equals(in Float4 other)
     {
         return this.AsVector128().Equals(other.AsVector128());
     }
 
-    /// <summary>
-    /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
-    /// </summary>
-    /// <param name="value">The <see cref="System.Object" /> to compare with this instance.</param>
-    /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+    /// <inheritdoc/>
     public override readonly bool Equals(object value)
     {
-        return value is Float4 other && Equals(ref other);
+        return value is Float4 other && Equals(in other);
     }
+
+    /// <inheritdoc/>
+    public static bool NearEqual(in Float4 left, in Float4 right, float tolerance)
+    {
+        Vector128<float> difference = Vector128.Abs(left.AsVector128() - right.AsVector128());
+        return Vector128.LessThanOrEqualAll(difference, Vector128.Create(tolerance));
+    }
+
+    /// <inheritdoc/>
+    public static Float4 ClampLength(in Float4 vector, float min, float max)
+    {
+        Vector128<float> vVector = vector.AsVector128();
+        float lenSq = Vector128.Sum(vVector * vVector);
+        if (lenSq > max * max)
+        {
+            Vector128<float> scaleFactor = Vector128.Create(max * MathF.ReciprocalSqrtEstimate(lenSq));
+            return VectorMath.AsVector4(scaleFactor * vVector);
+        }
+        if (lenSq < min * min)
+        {
+            Vector128<float> scaleFactor = Vector128.Create(min * MathF.ReciprocalSqrtEstimate(lenSq));
+            return VectorMath.AsVector4(scaleFactor * vVector);
+        }
+        return vector;
+    }
+
+    /// <inheritdoc/>
+    public static Float4 Lerp(in Float4 start, in Float4 end, float amount)
+    {
+        Vector128<float> vStart = start.AsVector128();
+        Vector128<float> vAmount = Vector128.Create(amount);
+        Vector128<float> result = vStart + (end.AsVector128() - vStart) * vAmount;
+        return result.AsVector4();
+    }
+
+    /// <inheritdoc/>
+    public static Float4 SmoothStep(in Float4 start, in Float4 end, float amount) => Lerp(in start, in end, Mathf.SmoothStep(amount));
+
+    /// <inheritdoc/>
+    public static float Dot(in Float4 left, in Float4 right) => Vector128.Dot(left.AsVector128(), right.AsVector128());
+
+    /// <inheritdoc/>
+    public static Float4 Max(in Float4 left, in Float4 right)
+    {
+        return Vector128.Max(left.AsVector128(), right.AsVector128()).AsVector4();
+    }
+
+    /// <inheritdoc/>
+    public static Float4 Min(in Float4 left, in Float4 right)
+    {
+        return Vector128.Min(left.AsVector128(), right.AsVector128()).AsVector4();
+    }
+
+    readonly bool ICustomValueEquals.ValueEquals(object other) => Equals(other);
 }

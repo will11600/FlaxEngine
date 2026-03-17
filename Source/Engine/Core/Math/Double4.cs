@@ -382,10 +382,10 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains the sum of the two vectors.</param>
     public static void Add(ref Double4 left, ref Double4 right, out Double4 result)
     {
-        ref Vector256<double> vLeft = ref VectorExtensions.AsVector256(ref left);
-        ref Vector256<double> vRight = ref VectorExtensions.AsVector256(ref right);
+        ref Vector256<double> vLeft = ref VectorMath.AsVector256(ref left);
+        ref Vector256<double> vRight = ref VectorMath.AsVector256(ref right);
         Vector256<double> vResult = vLeft + vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -407,10 +407,10 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">The vector with added scalar for each element.</param>
     public static void Add(ref Double4 left, ref double right, out Double4 result)
     {
-        ref Vector256<double> vLeft = ref VectorExtensions.AsVector256(ref left);
+        ref Vector256<double> vLeft = ref VectorMath.AsVector256(ref left);
         Vector256<double> vRight = Vector256.Create(right);
         Vector256<double> vResult = vLeft + vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -432,10 +432,10 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains the difference of the two vectors.</param>
     public static void Subtract(ref Double4 left, ref Double4 right, out Double4 result)
     {
-        ref Vector256<double> vLeft = ref VectorExtensions.AsVector256(ref left);
-        ref Vector256<double> vRight = ref VectorExtensions.AsVector256(ref right);
+        ref Vector256<double> vLeft = ref VectorMath.AsVector256(ref left);
+        ref Vector256<double> vRight = ref VectorMath.AsVector256(ref right);
         Vector256<double> vResult = vLeft - vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -457,10 +457,10 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">The vector with subtracted scalar for each element.</param>
     public static void Subtract(ref Double4 left, ref double right, out Double4 result)
     {
-        ref Vector256<double> vLeft = ref VectorExtensions.AsVector256(ref left);
+        ref Vector256<double> vLeft = ref VectorMath.AsVector256(ref left);
         Vector256<double> vRight = Vector256.Create(right);
         Vector256<double> vResult = vLeft - vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -483,9 +483,9 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     public static void Subtract(ref double left, ref Double4 right, out Double4 result)
     {
         Vector256<double> vLeft = Vector256.Create(left);
-        ref Vector256<double> vRight = ref VectorExtensions.AsVector256(ref right);
+        ref Vector256<double> vRight = ref VectorMath.AsVector256(ref right);
         Vector256<double> vResult = vLeft - vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -507,10 +507,10 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains the scaled vector.</param>
     public static void Multiply(ref Double4 value, double scale, out Double4 result)
     {
-        ref Vector256<double> vValue = ref VectorExtensions.AsVector256(ref value);
+        ref Vector256<double> vValue = ref VectorMath.AsVector256(ref value);
         Vector256<double> vScale = Vector256.Create(scale);
         Vector256<double> vResult = vValue * vScale;
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -532,10 +532,10 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains the multiplied vector.</param>
     public static void Multiply(ref Double4 left, ref Double4 right, out Double4 result)
     {
-        ref Vector256<double> vLeft = ref VectorExtensions.AsVector256(ref left);
-        ref Vector256<double> vRight = ref VectorExtensions.AsVector256(ref right);
+        ref Vector256<double> vLeft = ref VectorMath.AsVector256(ref left);
+        ref Vector256<double> vRight = ref VectorMath.AsVector256(ref right);
         Vector256<double> vResult = vLeft * vRight;
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -557,10 +557,10 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains the scaled vector.</param>
     public static void Divide(ref Double4 value, double scale, out Double4 result)
     {
-        ref Vector256<double> vValue = ref VectorExtensions.AsVector256(ref value);
+        ref Vector256<double> vValue = ref VectorMath.AsVector256(ref value);
         Vector256<double> vScale = Vector256.Create(scale);
         Vector256<double> vResult = vValue / vScale;
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -583,9 +583,9 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     public static void Divide(double scale, ref Double4 value, out Double4 result)
     {
         Vector256<double> vScale = Vector256.Create(scale);
-        ref Vector256<double> vValue = ref VectorExtensions.AsVector256(ref value);
+        ref Vector256<double> vValue = ref VectorMath.AsVector256(ref value);
         Vector256<double> vResult = vScale / vValue;
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -606,9 +606,9 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains a vector facing in the opposite direction.</param>
     public static void Negate(ref Double4 value, out Double4 result)
     {
-        ref Vector256<double> vValue = ref VectorExtensions.AsVector256(ref value);
+        ref Vector256<double> vValue = ref VectorMath.AsVector256(ref value);
         Vector256<double> vResult = Vector256.Negate(vValue);
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -633,16 +633,16 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains the 4D Cartesian coordinates of the specified point.</param>
     public static void Barycentric(ref Double4 value1, ref Double4 value2, ref Double4 value3, double amount1, double amount2, out Double4 result)
     {
-        Vector256<double> v1 = VectorExtensions.AsVector256(ref value1);
-        Vector256<double> v2 = VectorExtensions.AsVector256(ref value2);
-        Vector256<double> v3 = VectorExtensions.AsVector256(ref value3);
+        Vector256<double> v1 = VectorMath.AsVector256(ref value1);
+        Vector256<double> v2 = VectorMath.AsVector256(ref value2);
+        Vector256<double> v3 = VectorMath.AsVector256(ref value3);
 
         Vector256<double> a1 = Vector256.Create(amount1);
         Vector256<double> a2 = Vector256.Create(amount2);
 
         Vector256<double> vResult = v1 + (a1 * (v2 - v1)) + (a2 * (v3 - v1));
 
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -669,11 +669,11 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains the clamped value.</param>
     public static void Clamp(ref Double4 value, ref Double4 min, ref Double4 max, out Double4 result)
     {
-        ref Vector256<double> vValue = ref VectorExtensions.AsVector256(ref value);
-        ref Vector256<double> vMin = ref VectorExtensions.AsVector256(ref min);
-        ref Vector256<double> vMax = ref VectorExtensions.AsVector256(ref max);
+        ref Vector256<double> vValue = ref VectorMath.AsVector256(ref value);
+        ref Vector256<double> vMin = ref VectorMath.AsVector256(ref min);
+        ref Vector256<double> vMax = ref VectorMath.AsVector256(ref max);
         Vector256<double> vResult = Vector256.Clamp(vValue, vMin, vMax);
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -723,8 +723,8 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains the squared distance between the two vectors.</param>
     public static void DistanceSquared(ref Double4 value1, ref Double4 value2, out double result)
     {
-        ref Vector256<double> vValue1 = ref VectorExtensions.AsVector256(ref value1);
-        ref Vector256<double> vValue2 = ref VectorExtensions.AsVector256(ref value2);
+        ref Vector256<double> vValue1 = ref VectorMath.AsVector256(ref value1);
+        ref Vector256<double> vValue2 = ref VectorMath.AsVector256(ref value2);
         Vector256<double> vDiff = Vector256.Subtract(vValue1, vValue2);
         Vector256<double> vSqr = Vector256.Multiply(vDiff, vDiff);
         result = Vector256.Sum(vSqr);
@@ -774,8 +774,8 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains the dot product of the two vectors.</param>
     public static void Dot(ref Double4 left, ref Double4 right, out double result)
     {
-        ref Vector256<double> vLeft = ref VectorExtensions.AsVector256(ref left);
-        ref Vector256<double> vRight = ref VectorExtensions.AsVector256(ref right);
+        ref Vector256<double> vLeft = ref VectorMath.AsVector256(ref left);
+        ref Vector256<double> vRight = ref VectorMath.AsVector256(ref right);
         result = Vector256.Dot(vLeft, vRight);
     }
 
@@ -850,12 +850,12 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
         if (lenSq > max * max)
         {
             Vector256<double> scaleFactor = Vector256.Create(max / Math.Sqrt(lenSq));
-            result = VectorExtensions.AsVector4(scaleFactor * vVector);
+            result = VectorMath.AsVector4(scaleFactor * vVector);
         }
         if (lenSq < min * min)
         {
             Vector256<double> scaleFactor = Vector256.Create(min / Math.Sqrt(lenSq));
-            result = VectorExtensions.AsVector4(scaleFactor * vVector);
+            result = VectorMath.AsVector4(scaleFactor * vVector);
         }
     }
 
@@ -869,11 +869,11 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <remarks>Passing <paramref name="amount" /> a value of 0 will cause <paramref name="start" /> to be returned; a value of 1 will cause <paramref name="end" /> to be returned.</remarks>
     public static void Lerp(ref Double4 start, ref Double4 end, double amount, out Double4 result)
     {
-        ref Vector256<double> vStart = ref VectorExtensions.AsVector256(ref start);
-        ref Vector256<double> vEnd = ref VectorExtensions.AsVector256(ref end);
+        ref Vector256<double> vStart = ref VectorMath.AsVector256(ref start);
+        ref Vector256<double> vEnd = ref VectorMath.AsVector256(ref end);
         Vector256<double> vAmount = Vector256.Create(amount);
         Vector256<double> vResult = vStart + (vEnd - vStart) * vAmount;
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -935,10 +935,10 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
         double part3 = cubed - 2.0 * squared + amount;
         double part4 = cubed - squared;
 
-        Vector256<double> v1 = VectorExtensions.AsVector256(ref value1);
-        Vector256<double> t1 = VectorExtensions.AsVector256(ref tangent1);
-        Vector256<double> v2 = VectorExtensions.AsVector256(ref value2);
-        Vector256<double> t2 = VectorExtensions.AsVector256(ref tangent2);
+        Vector256<double> v1 = VectorMath.AsVector256(ref value1);
+        Vector256<double> t1 = VectorMath.AsVector256(ref tangent1);
+        Vector256<double> v2 = VectorMath.AsVector256(ref value2);
+        Vector256<double> t2 = VectorMath.AsVector256(ref tangent2);
 
         Vector256<double> vp1 = Vector256.Create(part1);
         Vector256<double> vp2 = Vector256.Create(part2);
@@ -947,7 +947,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
 
         Vector256<double> vResult = (v1 * vp1) + (v2 * vp2) + (t1 * vp3) + (t2 * vp4);
 
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -979,10 +979,10 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
         double squared = amount * amount;
         double cubed = amount * squared;
 
-        Vector256<double> v1 = VectorExtensions.AsVector256(ref value1);
-        Vector256<double> v2 = VectorExtensions.AsVector256(ref value2);
-        Vector256<double> v3 = VectorExtensions.AsVector256(ref value3);
-        Vector256<double> v4 = VectorExtensions.AsVector256(ref value4);
+        Vector256<double> v1 = VectorMath.AsVector256(ref value1);
+        Vector256<double> v2 = VectorMath.AsVector256(ref value2);
+        Vector256<double> v3 = VectorMath.AsVector256(ref value3);
+        Vector256<double> v4 = VectorMath.AsVector256(ref value4);
 
         Vector256<double> vT = Vector256.Create(amount);
         Vector256<double> vT2 = Vector256.Create(squared);
@@ -1019,8 +1019,8 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains an new vector composed of the largest components of the source vectors.</param>
     public static void Max(ref Double4 left, ref Double4 right, out Double4 result)
     {
-        ref Vector256<double> vLeft = ref VectorExtensions.AsVector256(ref left);
-        ref Vector256<double> vRight = ref VectorExtensions.AsVector256(ref right);
+        ref Vector256<double> vLeft = ref VectorMath.AsVector256(ref left);
+        ref Vector256<double> vRight = ref VectorMath.AsVector256(ref right);
         Vector256<double> vResult = Vector256.Max(vLeft, vRight);
         result = vResult.AsVector4();
     }
@@ -1045,8 +1045,8 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <param name="result">When the method completes, contains an new vector composed of the smallest components of the source vectors.</param>
     public static void Min(ref Double4 left, ref Double4 right, out Double4 result)
     {
-        ref Vector256<double> vLeft = ref VectorExtensions.AsVector256(ref left);
-        ref Vector256<double> vRight = ref VectorExtensions.AsVector256(ref right);
+        ref Vector256<double> vLeft = ref VectorMath.AsVector256(ref left);
+        ref Vector256<double> vRight = ref VectorMath.AsVector256(ref right);
         Vector256<double> vResult = Vector256.Min(vLeft, vRight);
         result = vResult.AsVector4();
     }
@@ -1099,7 +1099,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
 
         Vector256<double> vResult = (vX * col1) + (vY * col2) + (vZ * col3);
 
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
 
         result.W = vector.W;
     }
@@ -1137,7 +1137,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
 
         Vector256<double> vResult = (vX * row1) + (vY * row2) + (vZ * row3) + (vW * row4);
 
-        result = VectorExtensions.AsVector4(ref vResult);
+        result = VectorMath.AsVector4(ref vResult);
     }
 
     /// <summary>
@@ -1507,7 +1507,7 @@ partial struct Double4 : IEquatable<Double4>, IFormattable, Json.ICustomValueEqu
     /// <returns><c>true</c> if the specified <see cref="Double4" /> is equal to this instance; otherwise, <c>false</c>.</returns>
     public readonly bool Equals(ref Double4 other)
     {
-        ref Vector256<double> vOther = ref VectorExtensions.AsVector256(ref other);
+        ref Vector256<double> vOther = ref VectorMath.AsVector256(ref other);
         return this.AsVector256().Equals(vOther);
     }
 
