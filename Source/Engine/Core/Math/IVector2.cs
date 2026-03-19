@@ -3,8 +3,7 @@ using System.Numerics;
 namespace FlaxEngine;
 
 /// <summary>
-/// Defines an interface for two-dimensional vectors with floating-point components, providing methods for vector
-/// comparison, clamping, and interpolation operations.
+/// Defines a contract for a two-dimensional vector with floating-point components.
 /// </summary>
 /// <inheritdoc/>
 public interface IVector2<TSelf, TComponent> : IVector<TSelf, TComponent>

@@ -2,6 +2,10 @@ using System.Numerics;
 
 namespace FlaxEngine;
 
+/// <summary>
+/// Defines a contract for a three-dimensional vector with floating-point components.
+/// </summary>
+/// <inheritdoc/>
 public interface IVector3<TSelf, TComponent> : IVector2<TSelf, TComponent>
     where TSelf : unmanaged, IVector3<TSelf, TComponent>
     where TComponent : IFloatingPointIeee754<TComponent>

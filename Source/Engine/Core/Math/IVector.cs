@@ -3,6 +3,10 @@ using System.Numerics;
 
 namespace FlaxEngine;
 
+/// <summary>
+/// Defines a contract for vector types that support common vector operations.
+/// </summary>
+/// <typeparam name="TSelf">The type that implements the vector interface.</typeparam>
 public interface IVector<TSelf> : IEquatable<TSelf>, IFormattable where TSelf : unmanaged, IVector<TSelf>
 {
     /// <summary>
@@ -103,6 +107,9 @@ public interface IVector<TSelf> : IEquatable<TSelf>, IFormattable where TSelf : 
     static abstract TSelf Clamp(in TSelf value, in TSelf min, in TSelf max);
 }
 
+/// <typeparam name="TComponent">The numeric type of the vector's components.</typeparam>
+/// <inheritdoc/>
+/// <typeparam name="TSelf"/>
 public interface IVector<TSelf, TComponent> : IVector<TSelf>
     where TSelf : unmanaged, IVector<TSelf, TComponent> 
     where TComponent : INumberBase<TComponent>
@@ -137,7 +144,7 @@ public interface IVector<TSelf, TComponent> : IVector<TSelf>
     /// Gets the squared length of the vector.
     /// </summary>
     /// <remarks>
-    /// This method may be preferred to <see cref="Length" /> when only a relative 
+    /// This method may be preferred to <see cref="IVector{TSelf}.Length" /> when only a relative 
     /// length is needed and speed is of the essence.
     /// </remarks>
     TComponent LengthSquared { get; }
@@ -157,6 +164,10 @@ public interface IVector<TSelf, TComponent> : IVector<TSelf>
     /// A new <typeparamref name="TSelf"/> with it's elements set to the first 
     /// <see cref="IVector{TSelf}.Count"/> elements from values.
     /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when <c><paramref name="values"/>.Length</c> does not equal 
+    /// <see cref="IVector{TSelf}.Count"/>.
+    /// </exception>
     static abstract TSelf Create(ReadOnlySpan<TComponent> values);
 
     /// <summary>
