@@ -38,12 +38,6 @@ public interface IVector<TSelf> : IEquatable<TSelf>, IFormattable where TSelf : 
     /// </summary>
     void NormalizePrecise();
 
-    /// <summary>
-    /// Creates an array containing the elements of the vector.
-    /// </summary>
-    /// <returns>An array of <see cref="Count"/> elements.</returns>
-    float[] ToArray();
-
     /// <inheritdoc cref="IEquatable{TSelf}.Equals(TSelf)" />
     bool Equals(in TSelf other);
     bool IEquatable<TSelf>.Equals(TSelf other) => Equals(in other);
@@ -169,6 +163,12 @@ public interface IVector<TSelf, TComponent> : IVector<TSelf>
     /// <see cref="IVector{TSelf}.Count"/>.
     /// </exception>
     static abstract TSelf Create(ReadOnlySpan<TComponent> values);
+
+    /// <summary>
+    /// Creates an array containing the elements of the vector.
+    /// </summary>
+    /// <returns>An array of <see cref="IVector{TSelf}.Count"/> elements.</returns>
+    TComponent[] ToArray();
 
     /// <summary>
     /// Calculates the dot product of two vectors.
