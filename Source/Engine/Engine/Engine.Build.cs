@@ -14,6 +14,8 @@ public class Engine : EngineModule
     {
         base.Setup(options);
 
+        options.ScriptingAPI.SystemReferences.Add("System.Numerics.Vectors");
+
         options.PublicDependencies.Add("AI");
         options.PublicDependencies.Add("Animations");
         options.PublicDependencies.Add("Audio");
