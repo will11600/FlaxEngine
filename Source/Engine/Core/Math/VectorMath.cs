@@ -20,6 +20,18 @@ public static class VectorMath
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Vector128<int> AsVector128(this Int4 int4)
+    {
+        return Unsafe.BitCast<Int4, Vector128<int>>(int4);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Int4 AsVector4(this Vector128<int> vector)
+    {
+        return Unsafe.BitCast<Vector128<int>, Int4>(vector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static Vector128<float> AsVector128(this Float4 float4)
     {
         return Unsafe.BitCast<Float4, Vector128<float>>(float4);
