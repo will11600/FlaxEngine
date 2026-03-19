@@ -14,6 +14,16 @@ public interface IVector<TSelf> : IEquatable<TSelf>, IFormattable where TSelf : 
     /// </summary>
     static abstract int Count { get; }
 
+    /// <summary>
+    /// Gets a value indicting whether this vector is zero
+    /// </summary>
+    bool IsZero { get; }
+
+    /// <summary>
+    /// Gets a value indicting whether this vector is one
+    /// </summary>
+    bool IsOne { get; }
+
     /// <inheritdoc cref="IEquatable{TSelf}.Equals(TSelf)" />
     bool Equals(in TSelf other);
     bool IEquatable<TSelf>.Equals(TSelf other) => Equals(in other);
