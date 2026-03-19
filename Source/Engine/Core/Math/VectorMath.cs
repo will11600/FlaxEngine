@@ -4,71 +4,71 @@ using System.Runtime.Intrinsics;
 
 namespace FlaxEngine;
 
-internal static class VectorMath
+public static class VectorMath
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector128<float> AsVector128(this Float4 float4)
+    internal static Vector128<float> AsVector128(this Float4 float4)
     {
         return Unsafe.BitCast<Float4, Vector128<float>>(float4);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float4 AsVector4(this Vector128<float> vector)
+    internal static Float4 AsVector4(this Vector128<float> vector)
     {
         return Unsafe.BitCast<Vector128<float>, Float4>(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Vector128<float> AsVector128(ref Float4 float4)
+    internal static ref Vector128<float> AsVector128(ref Float4 float4)
     {
         return ref Unsafe.As<Float4, Vector128<float>>(ref float4);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Float4 AsVector4(ref Vector128<float> vector)
+    internal static ref Float4 AsVector4(ref Vector128<float> vector)
     {
         return ref Unsafe.As<Vector128<float>, Float4>(ref vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> AsVector256(this Double4 double4)
+    internal static Vector256<double> AsVector256(this Double4 double4)
     {
         return Unsafe.BitCast<Float4, Vector256<double>>(double4);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Double4 AsVector4(this Vector256<double> vector)
+    internal static Double4 AsVector4(this Vector256<double> vector)
     {
         return Unsafe.BitCast<Vector256<double>, Float4>(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Vector256<double> AsVector256(ref Double4 double4)
+    internal static ref Vector256<double> AsVector256(ref Double4 double4)
     {
         return ref Unsafe.As<Double4, Vector256<double>>(ref double4);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Double4 AsVector4(ref Vector256<double> vector)
+    internal static ref Double4 AsVector4(ref Vector256<double> vector)
     {
         return ref Unsafe.As<Vector256<double>, Double4>(ref vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector256<double> Widen(this Vector128<float> value)
+    internal static Vector256<double> Widen(this Vector128<float> value)
     {
         (Vector128<double> lower, Vector128<double> upper) = Vector128.Widen(value);
         return Vector256.Create(lower, upper);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector128<float> Narrow(this Vector256<double> value)
+    internal static Vector128<float> Narrow(this Vector256<double> value)
     {
         Vector256<float> narrowed = Vector256.Narrow(value, Vector256<double>.Zero);
         return narrowed.GetLower();
     }
 
-    public static Vector<T> CatmullRom<T>(in Vector<T> value1, in Vector<T> value2, in Vector<T> value3, in Vector<T> value4, T amount)
+    internal static Vector<T> CatmullRom<T>(in Vector<T> value1, in Vector<T> value2, in Vector<T> value3, in Vector<T> value4, T amount)
         where T : struct, IFloatingPoint<T>
     {
         T squared = amount * amount;
@@ -94,7 +94,7 @@ internal static class VectorMath
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector128<T> CatmullRom<T>(in Vector128<T> value1, in Vector128<T> value2, in Vector128<T> value3, in Vector128<T> value4, T amount)
+    internal static Vector128<T> CatmullRom<T>(in Vector128<T> value1, in Vector128<T> value2, in Vector128<T> value3, in Vector128<T> value4, T amount)
         where T : struct, IFloatingPoint<T>
     {
         Vector<T> result = CatmullRom(value1.AsVector(), value2.AsVector(), value3.AsVector(), value4.AsVector(), amount);
@@ -102,14 +102,14 @@ internal static class VectorMath
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector256<T> CatmullRom<T>(in Vector256<T> value1, in Vector256<T> value2, in Vector256<T> value3, in Vector256<T> value4, T amount)
+    internal static Vector256<T> CatmullRom<T>(in Vector256<T> value1, in Vector256<T> value2, in Vector256<T> value3, in Vector256<T> value4, T amount)
         where T : struct, IFloatingPoint<T>
     {
         Vector<T> result = CatmullRom(value1.AsVector(), value2.AsVector(), value3.AsVector(), value4.AsVector(), amount);
         return result.AsVector256();
     }
 
-    public static Vector<T> Hermite<T>(in Vector<T> value1, in Vector<T> tangent1, in Vector<T> value2, in Vector<T> tangent2, T amount)
+    internal static Vector<T> Hermite<T>(in Vector<T> value1, in Vector<T> tangent1, in Vector<T> value2, in Vector<T> tangent2, T amount)
         where T : struct, IFloatingPoint<T>
     {
         T squared = amount * amount;
@@ -127,7 +127,7 @@ internal static class VectorMath
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector128<T> Hermite<T>(in Vector128<T> value1, in Vector128<T> tangent1, in Vector128<T> value2, in Vector128<T> tangent2, T amount)
+    internal static Vector128<T> Hermite<T>(in Vector128<T> value1, in Vector128<T> tangent1, in Vector128<T> value2, in Vector128<T> tangent2, T amount)
         where T : struct, IFloatingPoint<T>
     {
         Vector<T> result = Hermite(value1.AsVector(), tangent1.AsVector(), value2.AsVector(), tangent2.AsVector(), amount);
@@ -135,14 +135,14 @@ internal static class VectorMath
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector256<T> Hermite<T>(in Vector256<T> value1, in Vector256<T> tangent1, in Vector256<T> value2, in Vector256<T> tangent2, T amount)
+    internal static Vector256<T> Hermite<T>(in Vector256<T> value1, in Vector256<T> tangent1, in Vector256<T> value2, in Vector256<T> tangent2, T amount)
         where T : struct, IFloatingPoint<T>
     {
         Vector<T> result = Hermite(value1.AsVector(), tangent1.AsVector(), value2.AsVector(), tangent2.AsVector(), amount);
         return result.AsVector256();
     }
 
-    public static Vector<T> Barycentric<T>(in Vector<T> value1, in Vector<T> value2, in Vector<T> value3, T amount1, T amount2)
+    internal static Vector<T> Barycentric<T>(in Vector<T> value1, in Vector<T> value2, in Vector<T> value3, T amount1, T amount2)
         where T : struct, IFloatingPoint<T>
     {
         Vector<T> a1 = Vector.Create(amount1);
@@ -151,7 +151,7 @@ internal static class VectorMath
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector128<T> Barycentric<T>(in Vector128<T> value1, in Vector128<T> value2, in Vector128<T> value3, T amount1, T amount2)
+    internal static Vector128<T> Barycentric<T>(in Vector128<T> value1, in Vector128<T> value2, in Vector128<T> value3, T amount1, T amount2)
         where T : struct, IFloatingPoint<T>
     {
         Vector<T> result = Barycentric(value1.AsVector(), value2.AsVector(), value3.AsVector(), amount1, amount2);
@@ -159,7 +159,7 @@ internal static class VectorMath
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector256<T> Barycentric<T>(in Vector256<T> value1, in Vector256<T> value2, in Vector256<T> value3, T amount1, T amount2)
+    internal static Vector256<T> Barycentric<T>(in Vector256<T> value1, in Vector256<T> value2, in Vector256<T> value3, T amount1, T amount2)
         where T : struct, IFloatingPoint<T>
     {
         Vector<T> result = Barycentric(value1.AsVector(), value2.AsVector(), value3.AsVector(), amount1, amount2);
@@ -167,7 +167,7 @@ internal static class VectorMath
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector128<float> Transform(in Vector128<float> vector, in Quaternion rotation)
+    internal static Vector128<float> Transform(in Vector128<float> vector, in Quaternion rotation)
     {
         float x = rotation.X + rotation.X;
         float y = rotation.Y + rotation.Y;
@@ -190,7 +190,7 @@ internal static class VectorMath
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector128<float> Transform(in Vector128<float> vector, in Matrix transform)
+    internal static Vector128<float> Transform(in Vector128<float> vector, in Matrix transform)
     {
         Vector128<float> vX = Vector128.Create(vector.GetElement(0));
         Vector128<float> vY = Vector128.Create(vector.GetElement(1));
@@ -203,5 +203,448 @@ internal static class VectorMath
         ref Vector128<float> row4 = ref Unsafe.As<float, Vector128<float>>(ref Unsafe.AsRef(in transform.M41));
 
         return (vX * row1) + (vY * row2) + (vZ * row3) + (vW * row4);
+    }
+
+    extension<TSelf>(TSelf) where TSelf : unmanaged, IVector<TSelf>
+    {
+        /// <summary>
+        /// Gets size of <typeparamref name="TSelf"/>, in bytes.
+        /// </summary>
+        public static unsafe int SizeInBytes => sizeof(TSelf);
+
+        /// <param name="result">
+        /// When the method completes, contains the sum of <paramref name="left"/> 
+        /// and <paramref name="right"/>.
+        /// </param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector{TSelf}.Add(in TSelf, in TSelf)"/>
+        /// <param name="left"/>
+        /// <param name="right"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Add(in TSelf left, in TSelf right, out TSelf result) => result = TSelf.Add(in left, in right);
+
+        /// <inheritdoc cref="IVector{TSelf}.Add(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator +(in TSelf left, in TSelf right) => TSelf.Add(in left, in right);
+
+        /// <param name="result">When the method completes, contains the difference of the two vectors.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector{TSelf}.Subtract(in TSelf, in TSelf)"/>
+        /// <param name="left"/>
+        /// <param name="right"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Subtract(in TSelf left, in TSelf right, out TSelf result) => result = TSelf.Subtract(in left, in right);
+
+        /// <inheritdoc cref="IVector{TSelf}.Subtract(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator -(in TSelf left, in TSelf right) => TSelf.Subtract(in left, in right);
+
+        /// <param name="result">
+        /// When the method completes, contains the product of <paramref name="left"/> 
+        /// multiplied by <paramref name="right"/>.
+        /// </param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector{TSelf}.Multiply(in TSelf, in TSelf)"/>
+        /// <param name="left"/>
+        /// <param name="right"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Multiply(in TSelf left, in TSelf right, out TSelf result) => result = TSelf.Multiply(in left, in right);
+
+        /// <inheritdoc cref="IVector{TSelf}.Multiply(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator *(in TSelf left, in TSelf right) => TSelf.Multiply(in left, in right);
+
+        /// <param name="result">
+        /// When this method returns, contains the quotient of <paramref name="left"/> 
+        /// divided by <paramref name="right"/>.
+        /// </param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector{TSelf}.Divide(in TSelf, in TSelf)"/>
+        /// <param name="left"/>
+        /// <param name="right"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Divide(in TSelf left, in TSelf right, out TSelf result) => result = TSelf.Divide(in left, in right);
+
+        /// <inheritdoc cref="IVector{TSelf}.Divide(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator /(in TSelf left, in TSelf right) => TSelf.Divide(in left, in right);
+
+        /// <param name="result">When the method completes, contains a vector facing in the opposite direction.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector{TSelf}.Negate(in TSelf)"/>
+        /// <param name="value"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Negate(in TSelf value, out TSelf result) => result = TSelf.Negate(in value);
+
+        /// <inheritdoc cref="IVector{TSelf}.Negate(in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator -(in TSelf value) => TSelf.Negate(in value);
+
+        /// <summary>
+        /// Assert a vector (return it unchanged).
+        /// </summary>
+        /// <param name="value">The vector to assert (unchanged).</param>
+        /// <returns>The asserted (unchanged) vector.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator +(TSelf value) => value;
+
+        /// <param name="result">
+        /// When this method returns, contains the modulus or remainder of <paramref name="left"/> 
+        /// divided by <paramref name="right"/>.
+        /// </param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector{TSelf}.Modulus(in TSelf, in TSelf)"/>
+        /// <param name="left"/>
+        /// <param name="right"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Modulus(in TSelf left, in TSelf right, out TSelf result) => result = TSelf.Modulus(in left, in right);
+
+        /// <inheritdoc cref="IVector{TSelf}.Modulus(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator %(in TSelf left, in TSelf right) => TSelf.Modulus(in left, in right);
+
+        /// <summary>
+        /// Compares two <typeparamref name="TSelf"/> instances to determine equality.
+        /// </summary>
+        /// <param name="left">The value to compare with <paramref name="right"/>.</param>
+        /// <param name="right">The value to compare with <paramref name="left"/>.</param>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="left"/> is equal to <paramref name="right"/>; 
+        /// otherwise, <see langword="false"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(in TSelf left, in TSelf right) => left.Equals(in right);
+
+        /// <summary>
+        /// Compares two <typeparamref name="TSelf"/> instances to determine inequality.
+        /// </summary>
+        /// <param name="left">The value to compare with <paramref name="right"/>.</param>
+        /// <param name="right">The value to compare with <paramref name="left"/>.</param>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="left"/> is not equal to <paramref name="right"/>; 
+        /// otherwise, <see langword="false"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(in TSelf left, in TSelf right) => !left.Equals(in right);
+
+        /// <summary>
+        /// Creates a vector with the same direction as the specified vector, but with a length of one.
+        /// </summary>
+        /// <param name="value">The vector to normalize.</param>
+        /// <param name="result">When the method completes, contains the normalized vector.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Normalize(in TSelf value, out TSelf result) => result = Normalize(in value);
+
+        /// <returns>The normalized vector.</returns>
+        /// <inheritdoc cref="Normalize{TSelf}(in TSelf, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf Normalize(in TSelf value)
+        {
+            TSelf result = value;
+            result.Normalize();
+            return result;
+        }
+
+        /// <param name="result">When the method completes, contains the clamped value.</param>
+        /// <inheritdoc cref="IVector{TSelf}.Clamp(in TSelf, in TSelf, in TSelf)"/>
+        /// <param name="value"/>
+        /// <param name="min"/>
+        /// <param name="max"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Clamp(in TSelf value, in TSelf min, in TSelf max, out TSelf result) => result = TSelf.Clamp(in value, in min, in max);
+    }
+
+    extension<TSelf, TComponent>(TSelf) where TSelf : unmanaged, IVector<TSelf, TComponent> where TComponent : struct, INumberBase<TComponent>
+    {
+        #region Addition
+        /// <inheritdoc cref="IVector{TSelf}.Add(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator +(in TSelf left, TComponent right) => TSelf.Add(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="IVector{TSelf}.Add(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator +(TComponent left, in TSelf right) => TSelf.Add(TSelf.Create(left), in right);
+
+        /// <inheritdoc cref="IVector{TSelf}.Add(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Add(in TSelf left, TComponent right) => TSelf.Add(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="IVector{TSelf}.Add(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Add(TComponent left, in TSelf right) => TSelf.Add(TSelf.Create(left), in right);
+
+        /// <inheritdoc cref="Add{TSelf}(in TSelf, in TSelf, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Add(in TSelf left, TComponent right, out TSelf result) => result = TSelf.Add(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="Add{TSelf, TComponent}(in TSelf, TComponent, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Add(TComponent left, in TSelf right, out TSelf result) => result = TSelf.Add(TSelf.Create(left), in right);
+        #endregion
+
+        #region Subtraction
+        /// <inheritdoc cref="IVector{TSelf}.Subtract(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator -(in TSelf left, TComponent right) => TSelf.Subtract(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="IVector{TSelf}.Subtract(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator -(TComponent left, in TSelf right) => TSelf.Subtract(TSelf.Create(left), in right);
+
+        /// <inheritdoc cref="IVector{TSelf}.Subtract(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Subtract(in TSelf left, TComponent right) => TSelf.Subtract(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="IVector{TSelf}.Subtract(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Subtract(TComponent left, in TSelf right) => TSelf.Subtract(TSelf.Create(left), in right);
+
+        /// <inheritdoc cref="Subtract{TSelf}(in TSelf, in TSelf, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Subtract(in TSelf left, TComponent right, out TSelf result) => result = TSelf.Subtract(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="Subtract{TSelf, TComponent}(in TSelf, TComponent, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Subtract(TComponent left, in TSelf right, out TSelf result) => result = TSelf.Subtract(TSelf.Create(left), in right);
+        #endregion
+
+        #region Multiplication
+        /// <inheritdoc cref="IVector{TSelf}.Multiply(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator *(in TSelf left, TComponent right) => TSelf.Multiply(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="IVector{TSelf}.Multiply(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator *(TComponent left, in TSelf right) => TSelf.Multiply(TSelf.Create(left), in right);
+
+        /// <inheritdoc cref="IVector{TSelf}.Multiply(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Multiply(in TSelf left, TComponent right) => TSelf.Multiply(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="IVector{TSelf}.Multiply(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Multiply(TComponent left, in TSelf right) => TSelf.Multiply(TSelf.Create(left), in right);
+
+        /// <inheritdoc cref="Multiply{TSelf}(in TSelf, in TSelf, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Multiply(in TSelf left, TComponent right, out TSelf result) => result = TSelf.Multiply(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="Multiply{TSelf, TComponent}(in TSelf, TComponent, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Multiply(TComponent left, in TSelf right, out TSelf result) => result = TSelf.Multiply(TSelf.Create(left), in right);
+        #endregion
+
+        #region Division
+        /// <inheritdoc cref="IVector{TSelf}.Divide(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator /(in TSelf left, TComponent right) => TSelf.Divide(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="IVector{TSelf}.Divide(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator /(TComponent left, in TSelf right) => TSelf.Divide(TSelf.Create(left), in right);
+
+        /// <inheritdoc cref="IVector{TSelf}.Divide(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Divide(in TSelf left, TComponent right) => TSelf.Divide(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="IVector{TSelf}.Divide(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Divide(TComponent left, in TSelf right) => TSelf.Divide(TSelf.Create(left), in right);
+
+        /// <inheritdoc cref="Divide{TSelf}(in TSelf, in TSelf, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Divide(in TSelf left, TComponent right, out TSelf result) => result = TSelf.Divide(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="Divide{TSelf, TComponent}(in TSelf, TComponent, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Divide(TComponent left, in TSelf right, out TSelf result) => result = TSelf.Divide(TSelf.Create(left), in right);
+        #endregion
+
+        #region Modulus
+        /// <inheritdoc cref="IVector{TSelf}.Modulus(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator %(in TSelf left, TComponent right) => TSelf.Modulus(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="IVector{TSelf}.Modulus(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf operator %(TComponent left, in TSelf right) => TSelf.Modulus(TSelf.Create(left), in right);
+
+        /// <inheritdoc cref="IVector{TSelf}.Modulus(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Modulus(in TSelf left, TComponent right) => TSelf.Modulus(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="IVector{TSelf}.Modulus(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Modulus(TComponent left, in TSelf right) => TSelf.Modulus(TSelf.Create(left), in right);
+
+        /// <inheritdoc cref="Modulus{TSelf}(in TSelf, in TSelf, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Modulus(in TSelf left, TComponent right, out TSelf result) => result = TSelf.Modulus(in left, TSelf.Create(right));
+
+        /// <inheritdoc cref="Modulus{TSelf, TComponent}(in TSelf, TComponent, out TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Modulus(TComponent left, in TSelf right, out TSelf result) => result = TSelf.Modulus(TSelf.Create(left), in right);
+        #endregion
+    }
+
+    extension<TSelf, TComponent>(TSelf) where TSelf : unmanaged, IVector2<TSelf, TComponent> where TComponent : struct, IFloatingPointIeee754<TComponent>
+    {
+        /// <remarks>
+        /// <para>Uses a fast approximation for the inverse square root, so the result may not be precise. 
+        /// For a more accurate result, use <see cref="PreciseDistance{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)" />.</para>
+        /// <para>Consider using <see cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)"/> when only relative 
+        /// distance is required.</para>
+        /// </remarks>
+        /// <returns/>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.Distance(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Distance(in TSelf value1, in TSelf value2, out TComponent result) => result = TSelf.Distance(in value1, in value2);
+
+        /// <param name="result">When the method completes, contains the distance between the two vectors.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.PreciseDistance(in TSelf, in TSelf)"/>
+        /// <param name="value1"/>
+        /// <param name="value2"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TComponent PreciseDistance(in TSelf value1, in TSelf value2, out TComponent result) => result = TSelf.Distance(in value1, in value2);
+
+        /// <param name="result">When the method completes, contains the squared distance between the two vectors.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.DistanceSquared(in TSelf, in TSelf)"/>
+        /// <param name="value1"/>
+        /// <param name="value2"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TComponent DistanceSquared(in TSelf value1, in TSelf value2, out TComponent result) => result = TSelf.DistanceSquared(in value1, in value2);
+
+        /// <returns>
+        /// <see langword="true"/> if the absolute difference between <paramref name="left"/> 
+        /// and <paramref name="right"/> is less than <c><typeparamref name="TComponent"/>.Epsilon</c>;
+        /// otherwise, <see langword="false"/>.
+        /// </returns>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.NearEqual(in TSelf, in TSelf, TComponent)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool NearEqual(in TSelf left, in TSelf right) => TSelf.NearEqual(in left, in right, TComponent.Epsilon);
+
+        /// <summary>
+        /// Clamps the length of the specified vector to a maximum length.
+        /// </summary>
+        /// <returns>
+        /// The result of clamping <paramref name="vector"/> to the inclusive range of 
+        /// <c><typeparamref name="TComponent"/>.Zero</c> and <paramref name="max"/>.
+        /// </returns>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.ClampLength(in TSelf, TComponent, TComponent)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TSelf ClampLength(in TSelf vector, TComponent max) => TSelf.ClampLength(in vector, TComponent.Zero, max);
+
+        /// <param name="result">
+        /// When this method returns, contains the result of clamping <paramref name="vector"/> to 
+        /// the inclusive range of <paramref name="min"/> and <paramref name="max"/>.
+        /// </param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.ClampLength(in TSelf, TComponent, TComponent)"/>
+        /// <param name="vector"/>
+        /// <param name="min"/>
+        /// <param name="max"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ClampLength(in TSelf vector, TComponent min, TComponent max, out TSelf result) => result = TSelf.ClampLength(in vector, min, max);
+
+        /// <param name="result">
+        /// When this method returns, contains the result of clamping <paramref name="vector"/> to 
+        /// the inclusive range of <c><typeparamref name="TComponent"/>.Zero</c> and <paramref name="max"/>.
+        /// </param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.ClampLength(in TSelf, TComponent, TComponent)"/>
+        /// <param name="vector"/>
+        /// <param name="max"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ClampLength(in TSelf vector, TComponent max, out TSelf result) => result = TSelf.ClampLength(in vector, TComponent.Zero, max);
+
+        /// <param name="result">When this method returns, contains the interpolated value.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.Lerp(in TSelf, in TSelf, TComponent)"/>
+        /// <param name="start"/>
+        /// <param name="end"/>
+        /// <param name="amount"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Lerp(in TSelf start, in TSelf end, TComponent amount, out TSelf result) => result = TSelf.Lerp(in start, in end, amount);
+
+        /// <param name="result">When the method completes, contains the interpolated value.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.SmoothStep(in TSelf, in TSelf, TComponent)"/>
+        /// <param name="start"/>
+        /// <param name="end"/>
+        /// <param name="amount"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SmoothStep(in TSelf start, in TSelf end, TComponent amount, out TSelf result) => result = TSelf.SmoothStep(in start, in end, amount);
+    }
+
+    extension<TSelf, TComponent>(TSelf) where TSelf : unmanaged, IVector3<TSelf, TComponent> where TComponent : struct, IFloatingPointIeee754<TComponent>
+    {
+        /// <param name="result">When the method completes, contains the result of the Catmull-Rom interpolation.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector3{TSelf, TComponent}.CatmullRom(in TSelf, in TSelf, in TSelf, in TSelf, TComponent)"/>
+        /// <param name="value1"/>
+        /// <param name="value2"/>
+        /// <param name="value3"/>
+        /// <param name="value4"/>
+        /// <param name="amount"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void CatmullRom(in TSelf value1, in TSelf value2, in TSelf value3, in TSelf value4, TComponent amount, out TSelf result)
+        {
+            result = TSelf.CatmullRom(in value1, in value2, in value3, in value4, amount);
+        }
+
+        /// <param name="result">When the method completes, contains the result of the Hermite spline interpolation.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector3{TSelf, TComponent}.Hermite(in TSelf, in TSelf, in TSelf, in TSelf, TComponent)"/>
+        /// <param name="value1"/>
+        /// <param name="tangent1"/>
+        /// <param name="value2"/>
+        /// <param name="tangent2"/>
+        /// <param name="amount"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Hermite(in TSelf value1, in TSelf tangent1, in TSelf value2, in TSelf tangent2, TComponent amount, out TSelf result)
+        {
+            result = TSelf.Hermite(in value1, in tangent1, in value2, in tangent2, amount);
+        }
+    }
+
+    extension<TSelf, TComponent>(TSelf) where TSelf : unmanaged, IVector4<TSelf, TComponent> where TComponent : struct, IFloatingPointIeee754<TComponent>
+    {
+        /// <param name="result">When the method completes, contains the 4D Cartesian coordinates of the specified point.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector4{TSelf, TComponent}.Barycentric(in TSelf, in TSelf, in TSelf, TComponent, TComponent)"/>
+        /// <param name="value1"/>
+        /// <param name="value2"/>
+        /// <param name="value3"/>
+        /// <param name="amount1"/>
+        /// <param name="amount2"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Barycentric(in TSelf value1, in TSelf value2, in TSelf value3, TComponent amount1, TComponent amount2, out TSelf result)
+        {
+            result = TSelf.Barycentric(in value1, in value2, in value3, amount1, amount2);
+        }
+
+        /// <param name="result">When the method completes, contains the transformed vector.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector4{TSelf, TComponent}.Transform(in TSelf, in Quaternion)"/>
+        /// <param name="vector"/>
+        /// <param name="rotation"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Transform(in TSelf vector, in Quaternion rotation, out TSelf result)
+        {
+            result = TSelf.Transform(in vector, in rotation);
+        }
+
+        /// <param name="result">When the method completes, contains the transformed vector.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector4{TSelf, TComponent}.Transform(in TSelf, in Matrix)"/>
+        /// <param name="vector"/>
+        /// <param name="transform"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Transform(in TSelf vector, in Matrix transform, out TSelf result)
+        {
+            result = TSelf.Transform(in vector, in transform);
+        }
     }
 }
