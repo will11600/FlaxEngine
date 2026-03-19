@@ -189,10 +189,10 @@ partial struct Float4 : IVector4<Float4, float>, Json.ICustomValueEquals
     public readonly bool IsNormalized => MathF.Abs(LengthSquared - 1.0f) < 1e-4f;
 
     /// <inheritdoc/>
-    public readonly bool IsZero => this.AsVector128() == Vector128<float>.Zero;
+    public readonly bool IsZero => Vector128.All(this.AsVector128(), 0.0f);
 
     /// <inheritdoc/>
-    public readonly bool IsOne => this.AsVector128() == Vector128.Create(1.0f);
+    public readonly bool IsOne => Vector128.All(this.AsVector128(), 1.0f);
 
     /// <inheritdoc/>
     public readonly float MinValue => Mathf.Min(X, Mathf.Min(Y, Mathf.Min(Z, W)));

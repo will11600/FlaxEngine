@@ -104,7 +104,7 @@ partial struct Int2 : IVector<Int2, int>, IMeasurableVector<Int2, float>, Json.I
     public static Int2 Create(ReadOnlySpan<int> values) => new(values);
 
     /// <inheritdoc/>
-    public readonly bool IsZero => Vector64.EqualsAll(this.AsVector64(), Vector64<int>.Zero);
+    public readonly bool IsZero => Vector64.All(this.AsVector64(), 0);
 
     /// <inheritdoc/>
     public readonly int MinValue => Mathf.Min(X, Y);
