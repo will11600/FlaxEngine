@@ -6,7 +6,7 @@ namespace FlaxEngine;
 /// Defines a contract for a two-dimensional vector with floating-point components.
 /// </summary>
 /// <inheritdoc/>
-public interface IVector2<TSelf, TComponent> : IVector<TSelf, TComponent>
+public interface IVector2<TSelf, TComponent> : IVector<TSelf, TComponent>, IMeasurableVector<TSelf, TComponent>
     where TSelf : unmanaged, IVector2<TSelf, TComponent>
     where TComponent : IFloatingPointIeee754<TComponent>
 {
@@ -15,32 +15,13 @@ public interface IVector2<TSelf, TComponent> : IVector<TSelf, TComponent>
     /// </summary>
     static abstract TSelf Half { get; }
 
-    /// <remarks>
-    /// <para>Uses a fast approximation for the inverse square root, so the result may not be precise. 
-    /// For a more accurate result, use <see cref="PreciseDistance(in TSelf, in TSelf)" />.</para>
-    /// <para>Consider using <see cref="DistanceSquared(in TSelf, in TSelf)"/> when only relative 
-    /// distance is required.</para>
-    /// </remarks>
-    /// <inheritdoc cref="PreciseDistance(in TSelf, in TSelf)"/>
-    static abstract TComponent Distance(in TSelf value1, in TSelf value2);
+    /// <summary>Converts the vector into a unit vector with a length of 1.</summary>
+    /// <inheritdoc cref="IMeasurableVector{TSelf, TResult}.Length" />
+    void Normalize();
 
-    /// <summary>
-    /// Calculates the distance between two vectors.
-    /// </summary>
-    /// <remarks>
-    /// Only use this method if <see cref="Distance(in TSelf, in TSelf)"/> does not provide sufficient precision.
-    /// </remarks>
-    /// <returns>The distance between the two vectors.</returns>
-    /// <inheritdoc cref="DistanceSquared(in TSelf, in TSelf)"/>
-    static abstract TComponent PreciseDistance(in TSelf value1, in TSelf value2);
-
-    /// <summary>
-    /// Calculates the squared distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <returns>The squared distance between the two vectors.</returns>
-    static abstract TComponent DistanceSquared(in TSelf value1, in TSelf value2);
+    /// <summary>Converts the vector into a unit vector with a length of 1.</summary>
+    /// <remarks>Only use this method if <see cref="Normalize"/> does not provide sufficient precision.</remarks>
+    void NormalizePrecise();
 
     /// <summary>
     /// Compares two values to determine approximate equality.

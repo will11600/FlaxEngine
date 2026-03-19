@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
@@ -217,7 +218,7 @@ public static class VectorMath
         return (vX * row1) + (vY * row2) + (vZ * row3) + (vW * row4);
     }
 
-    extension<TSelf>(TSelf value) where TSelf : unmanaged, IVector<TSelf>
+    extension<TSelf>(TSelf vector) where TSelf : unmanaged, IVector<TSelf>
     {
         /// <summary>
         /// Gets size of <typeparamref name="TSelf"/>, in bytes.
@@ -227,12 +228,12 @@ public static class VectorMath
         /// <summary>
         /// Gets a vector with values being absolute values of that vector.
         /// </summary>
-        public TSelf Absolute => TSelf.Abs(value);
+        public TSelf Absolute => TSelf.Abs(vector);
 
         /// <summary>
         /// Gets a vector with values being opposite to values of that vector.
         /// </summary>
-        public TSelf Negative => TSelf.Negate(value);
+        public TSelf Negative => TSelf.Negate(vector);
 
         /// <param name="result">
         /// When the method completes, contains the sum of <paramref name="left"/> 
@@ -349,24 +350,6 @@ public static class VectorMath
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator !=(in TSelf left, in TSelf right) => !left.Equals(in right);
 
-        /// <summary>
-        /// Creates a vector with the same direction as the specified vector, but with a length of one.
-        /// </summary>
-        /// <param name="value">The vector to normalize.</param>
-        /// <param name="result">When the method completes, contains the normalized vector.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Normalize(in TSelf value, out TSelf result) => result = Normalize(in value);
-
-        /// <returns>The normalized vector.</returns>
-        /// <inheritdoc cref="Normalize{TSelf}(in TSelf, out TSelf)"/>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TSelf Normalize(in TSelf value)
-        {
-            TSelf result = value;
-            result.Normalize();
-            return result;
-        }
-
         /// <param name="result">When the method completes, contains the clamped value.</param>
         /// <inheritdoc cref="IVector{TSelf}.Clamp(in TSelf, in TSelf, in TSelf)"/>
         /// <param name="value"/>
@@ -376,8 +359,38 @@ public static class VectorMath
         public static void Clamp(in TSelf value, in TSelf min, in TSelf max, out TSelf result) => result = TSelf.Clamp(in value, in min, in max);
     }
 
+    extension<TSelf, TResult>(TSelf) where TSelf : unmanaged, IMeasurableVector<TSelf, TResult> where TResult : struct, IFloatingPoint<TResult>
+    {
+        /// <remarks>
+        /// <para>Uses a fast approximation for the inverse square root, so the result may not be precise. 
+        /// For a more accurate result, use <see cref="PreciseDistance{TSelf, TResult}(in TSelf, in TSelf, out TResult)" />.</para>
+        /// <para>Consider using <see cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)"/> when only relative 
+        /// distance is required.</para>
+        /// </remarks>
+        /// <returns/>
+        /// <inheritdoc cref="IMeasurableVector{TSelf, TResult}.Distance(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Distance(in TSelf value1, in TSelf value2, out TResult result) => result = TSelf.Distance(in value1, in value2);
+
+        /// <param name="result">When the method completes, contains the distance between the two vectors.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IMeasurableVector{TSelf, TResult}.PreciseDistance(in TSelf, in TSelf)"/>
+        /// <param name="value1"/>
+        /// <param name="value2"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult PreciseDistance(in TSelf value1, in TSelf value2, out TResult result) => result = TSelf.Distance(in value1, in value2);
+    }
+
     extension<TSelf, TComponent>(TSelf) where TSelf : unmanaged, IVector<TSelf, TComponent> where TComponent : struct, INumberBase<TComponent>
     {
+        /// <param name="result">When the method completes, contains the squared distance between the two vectors.</param>
+        /// <returns/>
+        /// <inheritdoc cref="IVector{TSelf, TComponent}.DistanceSquared(in TSelf, in TSelf)"/>
+        /// <param name="value1"/>
+        /// <param name="value2"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TComponent DistanceSquared(in TSelf value1, in TSelf value2, out TComponent result) => result = TSelf.DistanceSquared(in value1, in value2);
+
         #region Addition
         /// <inheritdoc cref="IVector{TSelf}.Add(in TSelf, in TSelf)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -511,32 +524,33 @@ public static class VectorMath
 
     extension<TSelf, TComponent>(TSelf) where TSelf : unmanaged, IVector2<TSelf, TComponent> where TComponent : struct, IFloatingPointIeee754<TComponent>
     {
-        /// <remarks>
-        /// <para>Uses a fast approximation for the inverse square root, so the result may not be precise. 
-        /// For a more accurate result, use <see cref="PreciseDistance{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)" />.</para>
-        /// <para>Consider using <see cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)"/> when only relative 
-        /// distance is required.</para>
-        /// </remarks>
-        /// <returns/>
-        /// <inheritdoc cref="IVector2{TSelf, TComponent}.Distance(in TSelf, in TSelf)"/>
+        /// <param name="value">The vector to normalize.</param>
+        /// <param name="result">When the method completes, contains the normalized vector.</param>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.Normalize"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Distance(in TSelf value1, in TSelf value2, out TComponent result) => result = TSelf.Distance(in value1, in value2);
+        public static void Normalize(in TSelf value, out TSelf result) => result = Normalize<TSelf, TComponent>(value);
 
-        /// <param name="result">When the method completes, contains the distance between the two vectors.</param>
-        /// <returns/>
-        /// <inheritdoc cref="IVector2{TSelf, TComponent}.PreciseDistance(in TSelf, in TSelf)"/>
-        /// <param name="value1"/>
-        /// <param name="value2"/>
+        /// <returns>The normalized vector.</returns>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.Normalize"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TComponent PreciseDistance(in TSelf value1, in TSelf value2, out TComponent result) => result = TSelf.Distance(in value1, in value2);
+        public static TSelf Normalize(TSelf value)
+        {
+            value.Normalize();
+            return value;
+        }
 
-        /// <param name="result">When the method completes, contains the squared distance between the two vectors.</param>
-        /// <returns/>
-        /// <inheritdoc cref="IVector2{TSelf, TComponent}.DistanceSquared(in TSelf, in TSelf)"/>
-        /// <param name="value1"/>
-        /// <param name="value2"/>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TComponent DistanceSquared(in TSelf value1, in TSelf value2, out TComponent result) => result = TSelf.DistanceSquared(in value1, in value2);
+        /// <param name="value">The vector to normalize.</param>
+        /// <param name="result">When the method completes, contains the normalized vector.</param>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.NormalizePrecise"/>
+        public static void NormalizePrecise(in TSelf value, out TSelf result) => result = NormalizePrecise<TSelf, TComponent>(value);
+
+        /// <returns>The normalized vector.</returns>
+        /// <inheritdoc cref="IVector2{TSelf, TComponent}.NormalizePrecise"/>
+        public static TSelf NormalizePrecise(TSelf value)
+        {
+            value.NormalizePrecise();
+            return value;
+        }
 
         /// <returns>
         /// <see langword="true"/> if the absolute difference between <paramref name="left"/> 

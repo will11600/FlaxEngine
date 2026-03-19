@@ -4,7 +4,7 @@ using System.Numerics;
 namespace FlaxEngine;
 
 /// <summary>
-/// Defines a contract for vector types that support common vector operations.
+/// Defines a vector type that support common vector operations.
 /// </summary>
 /// <typeparam name="TSelf">The type that implements the vector interface.</typeparam>
 public interface IVector<TSelf> : IEquatable<TSelf>, IFormattable where TSelf : unmanaged, IVector<TSelf>
@@ -13,35 +13,6 @@ public interface IVector<TSelf> : IEquatable<TSelf>, IFormattable where TSelf : 
     /// Gets the number of elements stored in the vector.
     /// </summary>
     static abstract int Count { get; }
-
-    /// <remarks>
-    /// Uses a fast approximation for the inverse square root, so the result may not be precise. 
-    /// For a more accurate result, use <see cref="PreciseLength" />.
-    /// </remarks>
-    /// <inheritdoc cref="PreciseLength" />
-    float Length { get; }
-
-    /// <summary>
-    /// Gets the length of the vector.
-    /// </summary>
-    float PreciseLength { get; }
-
-    /// <summary>
-    /// Gets an arithmetic average value of all vector components.
-    /// </summary>
-    float AvgValue { get; }
-
-    /// <remarks>
-    /// Uses a fast approximation for the inverse square root, so the result may not be precise. 
-    /// For a more accurate result, use <see cref="NormalizePrecise" />.
-    /// </remarks>
-    /// <inheritdoc cref="NormalizePrecise" />
-    void Normalize();
-
-    /// <summary>
-    /// Converts the vector into a unit vector with a length of 1.
-    /// </summary>
-    void NormalizePrecise();
 
     /// <inheritdoc cref="IEquatable{TSelf}.Equals(TSelf)" />
     bool Equals(in TSelf other);
@@ -165,7 +136,7 @@ public interface IVector<TSelf, TComponent> : IVector<TSelf>
     /// Gets the squared length of the vector.
     /// </summary>
     /// <remarks>
-    /// This method may be preferred to <see cref="IVector{TSelf}.Length" /> when only a relative 
+    /// This method may be preferred to <see cref="IMeasurableVector{TSelf, TResult}.Length" /> when only a relative 
     /// length is needed and speed is of the essence.
     /// </remarks>
     TComponent LengthSquared { get; }
@@ -232,4 +203,12 @@ public interface IVector<TSelf, TComponent> : IVector<TSelf>
     /// <returns>The minimum vector.</returns>
     /// <inheritdoc cref="Min(in TSelf, in TSelf, out TSelf)" />
     static abstract TSelf Min(in TSelf left, in TSelf right);
+
+    /// <summary>
+    /// Calculates the squared distance between two vectors.
+    /// </summary>
+    /// <param name="value1">The first vector.</param>
+    /// <param name="value2">The second vector.</param>
+    /// <returns>The squared distance between the two vectors.</returns>
+    static abstract TComponent DistanceSquared(in TSelf value1, in TSelf value2);
 }
