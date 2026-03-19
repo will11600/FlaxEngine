@@ -1,6 +1,7 @@
 // Copyright (c) Wojciech Figat. All rights reserved.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
@@ -14,6 +15,7 @@ namespace FlaxEngine;
 #if FLAX_EDITOR
 [System.ComponentModel.TypeConverter(typeof(TypeConverters.Int2Converter))]
 #endif
+[SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "Implemented as extension members in VectorMath.")]
 partial struct Int2 : IVector<Int2, int>, IMeasurableVector<Int2, float>, Json.ICustomValueEquals
 {
     private static readonly string _formatString = "X:{0} Y:{1}";
