@@ -49,11 +49,11 @@
 * THE SOFTWARE.
 */
 
-using FlaxEngine.Json;
 using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FlaxEngine;
 
@@ -61,13 +61,12 @@ namespace FlaxEngine;
 #if FLAX_EDITOR
 [System.ComponentModel.TypeConverter(typeof(TypeConverters.Float4Converter))]
 #endif
-partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
+[SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "Implemented as extension members in VectorMath.")]
+partial struct Float4 : IVector4<Float4, float>, Json.ICustomValueEquals
 {
     private static readonly string _formatString = "X:{0:F2} Y:{1:F2} Z:{2:F2} W:{3:F2}";
 
-    /// <summary>
-    /// A <see cref="Float4" /> with all of its components set to zero.
-    /// </summary>
+    /// <inheritdoc/>
     public static Float4 Zero { get; } = new Float4();
 
     /// <summary>
@@ -90,30 +89,23 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
     /// </summary>
     public static readonly Float4 UnitW = new(0.0f, 0.0f, 0.0f, 1.0f);
 
-    /// <summary>
-    /// A <see cref="Float4" /> with all of its components set to half.
-    /// </summary>
+    /// <inheritdoc/>
     public static Float4 Half { get; } = new(0.5f, 0.5f, 0.5f, 0.5f);
 
-    /// <summary>
-    /// A <see cref="Float4" /> with all of its components set to one.
-    /// </summary>
+    /// <inheritdoc/>
     public static Float4 One { get; } = new(1.0f, 1.0f, 1.0f, 1.0f);
 
-    /// <summary>
-    /// A <see cref="Float4" /> with all components equal to <see cref="float.MinValue"/>.
-    /// </summary>
+    /// <inheritdoc/>
     public static Float4 Minimum { get; } = new(float.MinValue);
 
-    /// <summary>
-    /// A <see cref="Float4" /> with all components equal to <see cref="float.MaxValue"/>.
-    /// </summary>
+    /// <inheritdoc/>
     public static Float4 Maximum { get; } = new(float.MaxValue);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Float4" /> struct.
     /// </summary>
-    /// <param name="value">The value that will be assigned to all components.</param>
+    /// <returns/>
+    /// <inheritdoc cref="IVector{TSelf, TComponent}.Create(TComponent)"/>
     public Float4(float value)
     {
         X = value;
@@ -180,53 +172,35 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
     /// <summary>
     /// Initializes a new instance of the <see cref="Float4" /> struct.
     /// </summary>
-    /// <param name="values">The span of values to assign to the X, Y, Z, and W components. Must contain exactly four elements.</param>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values" /> does not contain exactly four elements.</exception>
+    /// <inheritdoc cref="IVector{TSelf, TComponent}.Create(ReadOnlySpan{TComponent})"/>
     public Float4(ReadOnlySpan<float> values)
     {
-        if (values.Length != 4)
-        {
-            throw new ArgumentOutOfRangeException(nameof(values), "There must be four and only four input values for Float4.");
-        }
-
+        ArgumentOutOfRangeException.ThrowIfNotEqual(values.Length, Count, nameof(values));
         X = values[0];
         Y = values[1];
         Z = values[2];
         W = values[3];
     }
 
-    /// <summary>
-    /// Gets a value indicating whether this instance is normalized.
-    /// </summary>
     /// <remarks>
     /// This property checks if the squared length of the vector is within a small epsilon of 1.0.
     /// </remarks>
+    /// <inheritdoc/>
     public readonly bool IsNormalized => MathF.Abs(LengthSquared - 1.0f) < 1e-4f;
 
-    /// <summary>
-    /// Gets a value indicating whether this vector is zero (0, 0, 0, 0).
-    /// </summary>
+    /// <inheritdoc/>
     public readonly bool IsZero => this.AsVector128() == Vector128<float>.Zero;
 
-    /// <summary>
-    /// Gets a value indicating whether this vector is one (1, 1, 1, 1).
-    /// </summary>
+    /// <inheritdoc/>
     public readonly bool IsOne => this.AsVector128() == Vector128.Create(1.0f);
 
-    /// <summary>
-    /// Gets a minimum component value
-    /// </summary>
+    /// <inheritdoc/>
     public readonly float MinValue => Mathf.Min(X, Mathf.Min(Y, Mathf.Min(Z, W)));
 
-    /// <summary>
-    /// Gets a maximum component value
-    /// </summary>
+    /// <inheritdoc/>
     public readonly float MaxValue => Mathf.Max(X, Mathf.Max(Y, Mathf.Max(Z, W)));
 
-
-    /// <summary>
-    /// Gets an arithmetic average value of all vector components.
-    /// </summary>
+    /// <inheritdoc/>
     public readonly float AvgValue
     {
         get
@@ -236,28 +210,10 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
         }
     }
 
-    /// <summary>
-    /// Gets the sum of all vector components (X + Y + Z + W).
-    /// </summary>
+    /// <inheritdoc/>
     public readonly float ValuesSum => Vector128.Sum(this.AsVector128());
 
-    /// <summary>
-    /// Gets a vector with values being absolute values of that vector.
-    /// </summary>
-    public readonly Float4 Absolute => Vector128.Abs(this.AsVector128()).AsVector4();
-
-    /// <summary>
-    /// Gets a vector with values being opposite to values of that vector.
-    /// </summary>
-    public readonly Float4 Negative => Negate(this);
-
-    /// <summary>
-    /// Gets or sets the component at the specified index.
-    /// </summary>
-    /// <value>The value of the X, Y, Z, or W component, depending on the index.</value>
-    /// <param name="index">The index of the component to access. Use 0 for the X component, 1 for the Y component, 2 for the Z component, and 3 for the W component.</param>
-    /// <returns>The value of the component at the specified index.</returns>
-    /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0,3].</exception>
+    /// <inheritdoc/>
     public float this[int index]
     {
         readonly get => index switch
@@ -284,7 +240,6 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
     /// <inheritdoc/>
     public readonly float Length
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
             float lengthSquared = LengthSquared;
@@ -293,15 +248,7 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
     }
 
     /// <inheritdoc/>
-    public readonly float PreciseLength
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get
-        {
-            float lengthSquared = LengthSquared;
-            return lengthSquared / MathF.Sqrt(lengthSquared);
-        }
-    }
+    public readonly float PreciseLength => MathF.Sqrt(LengthSquared);
 
     /// <inheritdoc/>
     public readonly float LengthSquared
@@ -389,7 +336,6 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
     }
 
     /// <inheritdoc/>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float4 Clamp(in Float4 value, in Float4 min, in Float4 max)
     {
         var result = Vector128.Clamp(value.AsVector128(), min.AsVector128(), max.AsVector128());
@@ -397,7 +343,6 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
     }
 
     /// <inheritdoc/>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Distance(in Float4 value1, in Float4 value2)
     {
         float sqrDistance = DistanceSquared(value1, value2);
@@ -405,7 +350,6 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
     }
 
     /// <inheritdoc/>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float PreciseDistance(in Float4 value1, in Float4 value2)
     {
         float sqrDistance = DistanceSquared(value1, value2);
@@ -413,7 +357,6 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
     }
 
     /// <inheritdoc/>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float DistanceSquared(in Float4 value1, in Float4 value2)
     {
         Vector128<float> difference = value1.AsVector128() - value2.AsVector128();
@@ -427,15 +370,7 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
         return result.AsVector4();
     }
 
-    /// <summary>
-    /// Performs a Catmull-Rom interpolation using the specified positions.
-    /// </summary>
-    /// <param name="value1">The first position in the interpolation.</param>
-    /// <param name="value2">The second position in the interpolation.</param>
-    /// <param name="value3">The third position in the interpolation.</param>
-    /// <param name="value4">The fourth position in the interpolation.</param>
-    /// <param name="amount">Weighting factor.</param>
-    /// <returns>A vector that is the result of the Catmull-Rom interpolation.</returns>
+    /// <inheritdoc/>
     public static Float4 CatmullRom(in Float4 value1, in Float4 value2, in Float4 value3, in Float4 value4, float amount)
     {
         Vector128<float> result = VectorMath.CatmullRom(value1.AsVector128(), value2.AsVector128(), value3.AsVector128(), value3.AsVector128(), amount);
@@ -516,19 +451,15 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
     }
 
     /// <summary>
-    /// Returns a <see cref="System.String" /> that represents this instance.
+    /// Returns a <see cref="string" /> that represents this instance.
     /// </summary>
-    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    /// <returns>A <see cref="string" /> that represents this instance.</returns>
     public override readonly string ToString()
     {
         return string.Format(CultureInfo.CurrentCulture, _formatString, X, Y, Z, W);
     }
 
-    /// <summary>
-    /// Returns a <see cref="System.String" /> that represents this instance.
-    /// </summary>
-    /// <param name="format">The format.</param>
-    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    /// <inheritdoc cref="ToString(string, IFormatProvider)"/>
     public readonly string ToString(string format)
     {
         if (format is null)
@@ -536,25 +467,20 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
             return ToString();
         }
 
-        return string.Format(CultureInfo.CurrentCulture, _formatString, X.ToString(format, CultureInfo.CurrentCulture), Y.ToString(format, CultureInfo.CurrentCulture), Z.ToString(format, CultureInfo.CurrentCulture), W.ToString(format, CultureInfo.CurrentCulture));
+        string x = X.ToString(format, CultureInfo.CurrentCulture);
+        string y = Y.ToString(format, CultureInfo.CurrentCulture);
+        string z = Z.ToString(format, CultureInfo.CurrentCulture);
+        string w = W.ToString(format, CultureInfo.CurrentCulture);
+        return string.Format(CultureInfo.CurrentCulture, _formatString, x, y, z, w);
     }
 
-    /// <summary>
-    /// Returns a <see cref="System.String" /> that represents this instance.
-    /// </summary>
-    /// <param name="formatProvider">The format provider.</param>
-    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    /// <inheritdoc cref="ToString(string, IFormatProvider)"/>
     public readonly string ToString(IFormatProvider formatProvider)
     {
         return string.Format(formatProvider, _formatString, X, Y, Z, W);
     }
 
-    /// <summary>
-    /// Returns a <see cref="System.String" /> that represents this instance.
-    /// </summary>
-    /// <param name="format">The format.</param>
-    /// <param name="formatProvider">The format provider.</param>
-    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    /// <inheritdoc/>
     public readonly string ToString(string format, IFormatProvider formatProvider)
     {
         if (format is null)
@@ -562,16 +488,17 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
             return ToString(formatProvider);
         }
 
-        return string.Format(formatProvider, "X:{0} Y:{1} Z:{2} W:{3}", X.ToString(format, formatProvider), Y.ToString(format, formatProvider), Z.ToString(format, formatProvider), W.ToString(format, formatProvider));
+        string x = X.ToString(format, formatProvider);
+        string y = Y.ToString(format, formatProvider);
+        string z = Z.ToString(format, formatProvider);
+        string w = W.ToString(format, formatProvider);
+        return string.Format(formatProvider, "X:{0} Y:{1} Z:{2} W:{3}", x, y, z, w);
     }
 
     /// <summary>
     /// Returns a hash code for this instance.
     /// </summary>
-    public override readonly int GetHashCode()
-    {
-        return HashCode.Combine(X, Y, Z, W);
-    }
+    public override readonly int GetHashCode() => HashCode.Combine(X, Y, Z, W);
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -638,5 +565,5 @@ partial struct Float4 : IVector4<Float4, float>, ICustomValueEquals
         return Vector128.Min(left.AsVector128(), right.AsVector128()).AsVector4();
     }
 
-    readonly bool ICustomValueEquals.ValueEquals(object other) => Equals(other);
+    readonly bool Json.ICustomValueEquals.ValueEquals(object other) => Equals(other);
 }

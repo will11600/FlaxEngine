@@ -7,6 +7,18 @@ namespace FlaxEngine;
 public static class VectorMath
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Vector64<int> AsVector64(this Int2 int2)
+    {
+        return Unsafe.BitCast<Int2, Vector64<int>>(int2);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Int2 AsVector2(this Vector64<int> vector)
+    {
+        return Unsafe.BitCast<Vector64<int>, Int2>(vector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static Vector128<float> AsVector128(this Float4 float4)
     {
         return Unsafe.BitCast<Float4, Vector128<float>>(float4);
@@ -205,12 +217,22 @@ public static class VectorMath
         return (vX * row1) + (vY * row2) + (vZ * row3) + (vW * row4);
     }
 
-    extension<TSelf>(TSelf) where TSelf : unmanaged, IVector<TSelf>
+    extension<TSelf>(TSelf value) where TSelf : unmanaged, IVector<TSelf>
     {
         /// <summary>
         /// Gets size of <typeparamref name="TSelf"/>, in bytes.
         /// </summary>
         public static unsafe int SizeInBytes => sizeof(TSelf);
+
+        /// <summary>
+        /// Gets a vector with values being absolute values of that vector.
+        /// </summary>
+        public TSelf Absolute => TSelf.Abs(value);
+
+        /// <summary>
+        /// Gets a vector with values being opposite to values of that vector.
+        /// </summary>
+        public TSelf Negative => TSelf.Negate(value);
 
         /// <param name="result">
         /// When the method completes, contains the sum of <paramref name="left"/> 

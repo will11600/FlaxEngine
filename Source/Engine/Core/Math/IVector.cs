@@ -26,6 +26,11 @@ public interface IVector<TSelf> : IEquatable<TSelf>, IFormattable where TSelf : 
     /// </summary>
     float PreciseLength { get; }
 
+    /// <summary>
+    /// Gets an arithmetic average value of all vector components.
+    /// </summary>
+    float AvgValue { get; }
+
     /// <remarks>
     /// Uses a fast approximation for the inverse square root, so the result may not be precise. 
     /// For a more accurate result, use <see cref="NormalizePrecise" />.
@@ -92,6 +97,13 @@ public interface IVector<TSelf> : IEquatable<TSelf>, IFormattable where TSelf : 
     static abstract TSelf Negate(in TSelf value);
 
     /// <summary>
+    /// Computes the absolute of a value.
+    /// </summary>
+    /// <param name="value">The value for which to get its absolute.</param>
+    /// <returns>The absolute of value.</returns>
+    static abstract TSelf Abs(in TSelf value);
+
+    /// <summary>
     /// Restricts a value to be within a specified range.
     /// </summary>
     /// <param name="value">The value to clamp.</param>
@@ -127,6 +139,21 @@ public interface IVector<TSelf, TComponent> : IVector<TSelf>
     /// Gets a <typeparamref name="TSelf"/> with all components equal to the largest possible value of the component type.
     /// </summary>
     static abstract TSelf Maximum { get; }
+
+    /// <summary>
+    /// Gets a minimum component value
+    /// </summary>
+    TComponent MinValue { get; }
+
+    /// <summary>
+    /// Gets a maximum component value
+    /// </summary>
+    TComponent MaxValue { get; }
+
+    /// <summary>
+    /// Gets a sum of the component values.
+    /// </summary>
+    TComponent ValuesSum { get; }
 
     /// <summary>
     /// Gets or sets the component at the specified index.
@@ -205,11 +232,4 @@ public interface IVector<TSelf, TComponent> : IVector<TSelf>
     /// <returns>The minimum vector.</returns>
     /// <inheritdoc cref="Min(in TSelf, in TSelf, out TSelf)" />
     static abstract TSelf Min(in TSelf left, in TSelf right);
-
-    /// <summary>
-    /// Calculates a new vector whose elements are the absolute values of the given vector's elements.
-    /// </summary>
-    /// <param name="value">The source vector.</param>
-    /// <returns>The absolute value vector.</returns>
-    static abstract TSelf Abs(in TSelf value);
 }
