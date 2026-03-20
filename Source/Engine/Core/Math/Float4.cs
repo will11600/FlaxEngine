@@ -367,27 +367,6 @@ partial struct Float4 : IVector4<Float4, float>, Json.ICustomValueEquals
     }
 
     /// <inheritdoc/>
-    public static float Distance(in Float4 value1, in Float4 value2)
-    {
-        float sqrDistance = DistanceSquared(value1, value2);
-        return sqrDistance * MathF.ReciprocalSqrtEstimate(sqrDistance);
-    }
-
-    /// <inheritdoc/>
-    public static float PreciseDistance(in Float4 value1, in Float4 value2)
-    {
-        float sqrDistance = DistanceSquared(value1, value2);
-        return MathF.Sqrt(sqrDistance);
-    }
-
-    /// <inheritdoc/>
-    public static float DistanceSquared(in Float4 value1, in Float4 value2)
-    {
-        Vector128<float> difference = value1.AsVector128() - value2.AsVector128();
-        return Vector128.Sum(difference * difference);
-    }
-
-    /// <inheritdoc/>
     public static Float4 Hermite(in Float4 value1, in Float4 tangent1, in Float4 value2, in Float4 tangent2, float amount)
     {
         Vector128<float> result = VectorMath.Hermite(value1.AsVector128(), tangent1.AsVector128(), value2.AsVector128(), tangent2.AsVector128(), amount);

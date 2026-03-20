@@ -213,12 +213,4 @@ public interface IVector<TSelf, TComponent> : IVector<TSelf>
     /// <returns>The minimum vector.</returns>
     /// <inheritdoc cref="Min(in TSelf, in TSelf, out TSelf)" />
     static abstract TSelf Min(in TSelf left, in TSelf right);
-
-    /// <summary>
-    /// Calculates the squared distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <returns>The squared distance between the two vectors.</returns>
-    static abstract TComponent DistanceSquared(in TSelf value1, in TSelf value2);
 }

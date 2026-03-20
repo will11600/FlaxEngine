@@ -371,8 +371,36 @@ public static class VectorMath
         public static void Clamp(in TSelf value, in TSelf min, in TSelf max, out TSelf result) => result = TSelf.Clamp(in value, in min, in max);
     }
 
-    extension<TSelf, TResult>(TSelf) where TSelf : unmanaged, IMeasurableVector<TSelf, TResult> where TResult : struct, IFloatingPoint<TResult>
+    extension<TSelf, TResult>(TSelf) where TSelf : unmanaged, IVector<TSelf>, IMeasurableVector<TSelf, TResult> where TResult : struct, IFloatingPoint<TResult>
     {
+        /// <remarks>
+        /// <para>On x86/x64 hardware this may use the <c>RSQRTSS</c> instruction which has a maximum relative error of <c>1.5 * 2^-12</c>.</para>
+        /// <para>On Arm64 hardware this may use the <c>FRSQRTE</c> instruction which has a maximum relative error of <c>1.5 * 2^-8</c>.</para>
+        /// <para>On unsupported hardware this method will fall back to a precise normalization which does not use an estimate and has no error.</para>
+        /// </remarks>
+        /// <inheritdoc cref="PreciseDistance{TSelf, TResult}(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult Distance(in TSelf value1, in TSelf value2)
+        {
+            TSelf result = TSelf.Abs(value1 - value2);
+            return result.Length;
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors.
+        /// </summary>
+        /// <remarks>
+        /// Only use this method if <see cref="Distance{TSelf, TResult}(in TSelf, in TSelf)"/> does not provide sufficient precision.
+        /// </remarks>
+        /// <returns>The distance between the two vectors.</returns>
+        /// <inheritdoc cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult PreciseDistance(in TSelf value1, in TSelf value2)
+        {
+            TSelf result = TSelf.Abs(value1 - value2);
+            return result.PreciseLength;
+        }
+
         /// <remarks>
         /// <para>Uses a fast approximation for the inverse square root, so the result may not be precise. 
         /// For a more accurate result, use <see cref="PreciseDistance{TSelf, TResult}(in TSelf, in TSelf, out TResult)" />.</para>
@@ -380,28 +408,60 @@ public static class VectorMath
         /// distance is required.</para>
         /// </remarks>
         /// <returns/>
-        /// <inheritdoc cref="IMeasurableVector{TSelf, TResult}.Distance(in TSelf, in TSelf)"/>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Distance(in TSelf value1, in TSelf value2, out TResult result) => result = TSelf.Distance(in value1, in value2);
-
         /// <param name="result">When the method completes, contains the distance between the two vectors.</param>
-        /// <returns/>
-        /// <inheritdoc cref="IMeasurableVector{TSelf, TResult}.PreciseDistance(in TSelf, in TSelf)"/>
+        /// <inheritdoc cref="Distance{TSelf, TResult}(in TSelf, in TSelf)"/>
         /// <param name="value1"/>
         /// <param name="value2"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult PreciseDistance(in TSelf value1, in TSelf value2, out TResult result) => result = TSelf.Distance(in value1, in value2);
+        public static void Distance(in TSelf value1, in TSelf value2, out TResult result) => result = Distance<TSelf, TResult>(in value1, in value2);
+
+        /// <remarks>
+        /// Only use this method if <see cref="Distance{TSelf, TResult}(in TSelf, in TSelf, out TResult)"/> does not provide sufficient precision.
+        /// </remarks>
+        /// <param name="result">When the method completes, contains the distance between the two vectors.</param>
+        /// <returns/>
+        /// <inheritdoc cref="PreciseDistance{TSelf, TResult}(in TSelf, in TSelf)"/>
+        /// <param name="value1"/>
+        /// <param name="value2"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult PreciseDistance(in TSelf value1, in TSelf value2, out TResult result) => result = Distance<TSelf, TResult>(in value1, in value2);
     }
 
-    extension<TSelf, TComponent>(TSelf) where TSelf : unmanaged, IVector<TSelf, TComponent> where TComponent : struct, INumberBase<TComponent>
+    extension<TSelf, TResult>(TSelf) where TSelf : unmanaged, ITrigonometricVector<TSelf, TResult> where TResult : struct, INumberBase<TResult>
+    {
+        /// <param name="result">When this method returns, contains the cross product.</param>
+        /// <returns/>
+        /// <inheritdoc cref="ITrigonometricVector{TSelf, TResult}.Cross(in TSelf, in TSelf)"/>
+        /// <param name="left"/>
+        /// <param name="right"/>
+        public static void Cross(in TSelf left, in TSelf right, out TSelf result) => result = TSelf.Cross(in left, in right);
+    }
+
+    extension<TSelf, TComponent>(TSelf) where TSelf : unmanaged, IVector<TSelf, TComponent> where TComponent : INumberBase<TComponent>
     {
         /// <param name="result">When the method completes, contains the squared distance between the two vectors.</param>
         /// <returns/>
-        /// <inheritdoc cref="IVector{TSelf, TComponent}.DistanceSquared(in TSelf, in TSelf)"/>
+        /// <inheritdoc cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf)"/>
         /// <param name="value1"/>
         /// <param name="value2"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TComponent DistanceSquared(in TSelf value1, in TSelf value2, out TComponent result) => result = TSelf.DistanceSquared(in value1, in value2);
+        public static TComponent DistanceSquared(in TSelf value1, in TSelf value2, out TComponent result)
+        {
+            return result = DistanceSquared<TSelf, TComponent>(in value1, in value2);
+        }
+
+        /// <summary>
+        /// Calculates the squared distance between two vectors.
+        /// </summary>
+        /// <param name="value1">The first vector.</param>
+        /// <param name="value2">The second vector.</param>
+        /// <returns>The squared distance between the two vectors.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TComponent DistanceSquared(in TSelf value1, in TSelf value2)
+        {
+            TSelf result = TSelf.Abs(value1 - value2);
+            return result.LengthSquared;
+        }
 
         #region Addition
         /// <inheritdoc cref="IVector{TSelf}.Add(in TSelf, in TSelf)"/>
@@ -655,13 +715,10 @@ public static class VectorMath
         {
             result = TSelf.Hermite(in value1, in tangent1, in value2, in tangent2, amount);
         }
-    }
 
-    extension<TSelf, TComponent>(TSelf) where TSelf : unmanaged, IVector4<TSelf, TComponent> where TComponent : struct, IFloatingPointIeee754<TComponent>
-    {
         /// <param name="result">When the method completes, contains the 4D Cartesian coordinates of the specified point.</param>
         /// <returns/>
-        /// <inheritdoc cref="IVector4{TSelf, TComponent}.Barycentric(in TSelf, in TSelf, in TSelf, TComponent, TComponent)"/>
+        /// <inheritdoc cref="IVector3{TSelf, TComponent}.Barycentric(in TSelf, in TSelf, in TSelf, TComponent, TComponent)"/>
         /// <param name="value1"/>
         /// <param name="value2"/>
         /// <param name="value3"/>
@@ -675,7 +732,7 @@ public static class VectorMath
 
         /// <param name="result">When the method completes, contains the transformed vector.</param>
         /// <returns/>
-        /// <inheritdoc cref="IVector4{TSelf, TComponent}.Transform(in TSelf, in Quaternion)"/>
+        /// <inheritdoc cref="IVector3{TSelf, TComponent}.Transform(in TSelf, in Quaternion)"/>
         /// <param name="vector"/>
         /// <param name="rotation"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -686,13 +743,202 @@ public static class VectorMath
 
         /// <param name="result">When the method completes, contains the transformed vector.</param>
         /// <returns/>
-        /// <inheritdoc cref="IVector4{TSelf, TComponent}.Transform(in TSelf, in Matrix)"/>
+        /// <inheritdoc cref="IVector3{TSelf, TComponent}.Transform(in TSelf, in Matrix)"/>
         /// <param name="vector"/>
         /// <param name="transform"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Transform(in TSelf vector, in Matrix transform, out TSelf result)
         {
             result = TSelf.Transform(in vector, in transform);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the XY plane (ignoring Z).
+        /// </summary>
+        /// <inheritdoc cref="Distance{TSelf, TResult}(in TSelf, in TSelf)"/>
+        public static TComponent DistanceXY(in TSelf value1, in TSelf value2)
+        {
+            TSelf v1 = value1 with { Z = TComponent.Zero };
+            TSelf v2 = value2 with { Z = TComponent.Zero };
+            return Distance<TSelf, TComponent>(in v1, in v2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the XY plane (ignoring Z).
+        /// </summary>
+        /// <inheritdoc cref="Distance{TSelf, TResult}(in TSelf, in TSelf, out TResult)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DistanceXY(in TSelf value1, in TSelf value2, out TComponent result)
+        {
+            result = DistanceXY<TSelf, TComponent>(in value1, in value2);
+        }
+
+        /// <summary>
+        /// Calculates the squared distance between two vectors on the XY plane (ignoring Z).
+        /// </summary>
+        /// <inheritdoc cref="PreciseDistance{TSelf, TComponent}(in TSelf, in TSelf)"/>
+        public static TComponent DistanceXYPrecise(in TSelf value1, in TSelf value2)
+        {
+            TSelf v1 = value1 with { Z = TComponent.Zero };
+            TSelf v2 = value2 with { Z = TComponent.Zero };
+            return PreciseDistance<TSelf, TComponent>(in v1, in v2);
+        }
+
+        /// <summary>
+        /// Calculates the squared distance between two vectors on the XY plane (ignoring Z).
+        /// </summary>
+        /// <inheritdoc cref="PreciseDistance{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DistanceXYPrecise(in TSelf value1, in TSelf value2, out TComponent result)
+        {
+            result = DistanceXYPrecise<TSelf, TComponent>(in value1, in value2);
+        }
+
+        /// <summary>
+        /// Calculates the squared distance between two vectors on the XY plane (ignoring Z).
+        /// </summary>
+        /// <inheritdoc cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf)"/>
+        public static TComponent DistanceXYSquared(in TSelf value1, in TSelf value2)
+        {
+            TSelf v1 = value1 with { Z = TComponent.Zero };
+            TSelf v2 = value2 with { Z = TComponent.Zero };
+            return DistanceSquared<TSelf, TComponent>(in v1, in v2);
+        }
+
+        /// <summary>
+        /// Calculates the squared distance between two vectors on the XY plane (ignoring Z).
+        /// </summary>
+        /// <inheritdoc cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DistanceXYSquared(in TSelf value1, in TSelf value2, out TComponent result)
+        {
+            result = DistanceXYSquared<TSelf, TComponent>(in value1, in value2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the XZ plane (ignoring Y).
+        /// </summary>
+        /// <inheritdoc cref="Distance{TSelf, TResult}(in TSelf, in TSelf)"/>
+        public static TComponent DistanceXZ(in TSelf value1, in TSelf value2)
+        {
+            TSelf v1 = value1 with { Y = TComponent.Zero };
+            TSelf v2 = value2 with { Y = TComponent.Zero };
+            return Distance<TSelf, TComponent>(in v1, in v2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the XZ plane (ignoring Y).
+        /// </summary>
+        /// <inheritdoc cref="Distance{TSelf, TResult}(in TSelf, in TSelf, out TResult)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DistanceXZ(in TSelf value1, in TSelf value2, out TComponent result)
+        {
+            result = DistanceXY<TSelf, TComponent>(in value1, in value2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the XZ plane (ignoring Y).
+        /// </summary>
+        /// <inheritdoc cref="PreciseDistance{TSelf, TComponent}(in TSelf, in TSelf)"/>
+        public static TComponent DistanceXZPrecise(in TSelf value1, in TSelf value2)
+        {
+            TSelf v1 = value1 with { Y = TComponent.Zero };
+            TSelf v2 = value2 with { Y = TComponent.Zero };
+            return PreciseDistance<TSelf, TComponent>(in v1, in v2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the XZ plane (ignoring Y).
+        /// </summary>
+        /// <inheritdoc cref="PreciseDistance{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DistanceXZPrecise(in TSelf value1, in TSelf value2, out TComponent result)
+        {
+            result = DistanceXYPrecise<TSelf, TComponent>(in value1, in value2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the XZ plane (ignoring Y).
+        /// </summary>
+        /// <inheritdoc cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf)"/>
+        public static TComponent DistanceXZSquared(in TSelf value1, in TSelf value2)
+        {
+            TSelf v1 = value1 with { Y = TComponent.Zero };
+            TSelf v2 = value2 with { Y = TComponent.Zero };
+            return DistanceSquared<TSelf, TComponent>(in v1, in v2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the XZ plane (ignoring Y).
+        /// </summary>
+        /// <inheritdoc cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DistanceXZSquared(in TSelf value1, in TSelf value2, out TComponent result)
+        {
+            result = DistanceXYSquared<TSelf, TComponent>(in value1, in value2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the YZ plane (ignoring X).
+        /// </summary>
+        /// <inheritdoc cref="Distance{TSelf, TResult}(in TSelf, in TSelf)"/>
+        public static TComponent DistanceYZ(in TSelf value1, in TSelf value2)
+        {
+            TSelf v1 = value1 with { X = TComponent.Zero };
+            TSelf v2 = value2 with { X = TComponent.Zero };
+            return Distance<TSelf, TComponent>(in v1, in v2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the YZ plane (ignoring X).
+        /// </summary>
+        /// <inheritdoc cref="Distance{TSelf, TResult}(in TSelf, in TSelf, out TResult)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DistanceYZ(in TSelf value1, in TSelf value2, out TComponent result)
+        {
+            result = DistanceXY<TSelf, TComponent>(in value1, in value2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the YZ plane (ignoring X).
+        /// </summary>
+        /// <inheritdoc cref="PreciseDistance{TSelf, TComponent}(in TSelf, in TSelf)"/>
+        public static TComponent DistanceYZPrecise(in TSelf value1, in TSelf value2)
+        {
+            TSelf v1 = value1 with { X = TComponent.Zero };
+            TSelf v2 = value2 with { X = TComponent.Zero };
+            return PreciseDistance<TSelf, TComponent>(in v1, in v2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the YZ plane (ignoring X).
+        /// </summary>
+        /// <inheritdoc cref="PreciseDistance{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DistanceYZPrecise(in TSelf value1, in TSelf value2, out TComponent result)
+        {
+            result = DistanceXYPrecise<TSelf, TComponent>(in value1, in value2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the YZ plane (ignoring X).
+        /// </summary>
+        /// <inheritdoc cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf)"/>
+        public static TComponent DistanceYZSquared(in TSelf value1, in TSelf value2)
+        {
+            TSelf v1 = value1 with { X = TComponent.Zero };
+            TSelf v2 = value2 with { X = TComponent.Zero };
+            return DistanceSquared<TSelf, TComponent>(in v1, in v2);
+        }
+
+        /// <summary>
+        /// Calculates the distance between two vectors on the YZ plane (ignoring X).
+        /// </summary>
+        /// <inheritdoc cref="DistanceSquared{TSelf, TComponent}(in TSelf, in TSelf, out TComponent)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DistanceYZSquared(in TSelf value1, in TSelf value2, out TComponent result)
+        {
+            result = DistanceXYSquared<TSelf, TComponent>(in value1, in value2);
         }
     }
 }

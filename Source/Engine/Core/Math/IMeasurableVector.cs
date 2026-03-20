@@ -32,22 +32,4 @@ public interface IMeasurableVector<TSelf, TResult> where TSelf : unmanaged, IMea
     /// Gets an arithmetic average value of all vector components.
     /// </summary>
     TResult AvgValue { get; }
-
-    /// <remarks>
-    /// <para>On x86/x64 hardware this may use the <c>RSQRTSS</c> instruction which has a maximum relative error of <c>1.5 * 2^-12</c>.</para>
-    /// <para>On Arm64 hardware this may use the <c>FRSQRTE</c> instruction which has a maximum relative error of <c>1.5 * 2^-8</c>.</para>
-    /// <para>On unsupported hardware this method will fall back to a precise normalization which does not use an estimate and has no error.</para>
-    /// </remarks>
-    /// <inheritdoc cref="PreciseDistance(in TSelf, in TSelf)"/>
-    static abstract TResult Distance(in TSelf value1, in TSelf value2);
-
-    /// <summary>
-    /// Calculates the distance between two vectors.
-    /// </summary>
-    /// <remarks>
-    /// Only use this method if <see cref="Distance(in TSelf, in TSelf)"/> does not provide sufficient precision.
-    /// </remarks>
-    /// <returns>The distance between the two vectors.</returns>
-    /// <inheritdoc cref="IVector{TSelf, TComponent}.DistanceSquared(in TSelf, in TSelf)"/>
-    static abstract TResult PreciseDistance(in TSelf value1, in TSelf value2);
 }
