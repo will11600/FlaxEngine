@@ -655,13 +655,10 @@ public static class VectorMath
         {
             result = TSelf.Hermite(in value1, in tangent1, in value2, in tangent2, amount);
         }
-    }
 
-    extension<TSelf, TComponent>(TSelf) where TSelf : unmanaged, IVector4<TSelf, TComponent> where TComponent : struct, IFloatingPointIeee754<TComponent>
-    {
         /// <param name="result">When the method completes, contains the 4D Cartesian coordinates of the specified point.</param>
         /// <returns/>
-        /// <inheritdoc cref="IVector4{TSelf, TComponent}.Barycentric(in TSelf, in TSelf, in TSelf, TComponent, TComponent)"/>
+        /// <inheritdoc cref="IVector3{TSelf, TComponent}.Barycentric(in TSelf, in TSelf, in TSelf, TComponent, TComponent)"/>
         /// <param name="value1"/>
         /// <param name="value2"/>
         /// <param name="value3"/>
@@ -675,7 +672,7 @@ public static class VectorMath
 
         /// <param name="result">When the method completes, contains the transformed vector.</param>
         /// <returns/>
-        /// <inheritdoc cref="IVector4{TSelf, TComponent}.Transform(in TSelf, in Quaternion)"/>
+        /// <inheritdoc cref="IVector3{TSelf, TComponent}.Transform(in TSelf, in Quaternion)"/>
         /// <param name="vector"/>
         /// <param name="rotation"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -686,7 +683,7 @@ public static class VectorMath
 
         /// <param name="result">When the method completes, contains the transformed vector.</param>
         /// <returns/>
-        /// <inheritdoc cref="IVector4{TSelf, TComponent}.Transform(in TSelf, in Matrix)"/>
+        /// <inheritdoc cref="IVector3{TSelf, TComponent}.Transform(in TSelf, in Matrix)"/>
         /// <param name="vector"/>
         /// <param name="transform"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
