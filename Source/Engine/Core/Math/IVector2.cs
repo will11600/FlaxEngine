@@ -15,6 +15,16 @@ public interface IVector2<TSelf, TComponent> : IVector<TSelf, TComponent>, IMeas
     /// </summary>
     static abstract TSelf Half { get; }
 
+    /// <summary>
+    /// Gets or sets the X component of the vector.
+    /// </summary>
+    TComponent X { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Y component of the vector.
+    /// </summary>
+    TComponent Y { get; set; }
+
     /// <summary>Converts the vector into a unit vector with a length of 1.</summary>
     /// <inheritdoc cref="IMeasurableVector{TSelf, TResult}.Length" />
     void Normalize();

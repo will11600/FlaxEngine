@@ -264,6 +264,30 @@ partial struct Float4 : IVector4<Float4, float>, Json.ICustomValueEquals
     /// <inheritdoc/>
     public static int Count => 4;
 
+    float IVector2<Float4, float>.X
+    {
+        readonly get => X;
+        set => X = value;
+    }
+
+    float IVector2<Float4, float>.Y
+    {
+        readonly get => Y;
+        set => Y = value;
+    }
+
+    float IVector3<Float4, float>.Z
+    {
+        readonly get => Z;
+        set => Z = value;
+    }
+
+    float IVector4<Float4, float>.W
+    {
+        readonly get => W;
+        set => W = value;
+    }
+
     /// <inheritdoc/>
     public static Float4 Create(float value) => new(value);
 

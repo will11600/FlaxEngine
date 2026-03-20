@@ -172,6 +172,9 @@ partial struct Int2 : IVector<Int2, int>, IMeasurableVector<Int2, float>, Json.I
     }
 
     /// <inheritdoc/>
+    public readonly bool IsOne => Vector64.All(this.AsVector64(), 1);
+
+    /// <inheritdoc/>
     public readonly int[] ToArray() => [X, Y];
 
     /// <inheritdoc/>
