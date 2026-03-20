@@ -49,9 +49,12 @@
 * THE SOFTWARE.
 */
 
+using FlaxEngine.Json;
 using System;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics;
 
 namespace FlaxEngine;
 
@@ -59,49 +62,38 @@ namespace FlaxEngine;
 #if FLAX_EDITOR
 [System.ComponentModel.TypeConverter(typeof(TypeConverters.Float3Converter))]
 #endif
-partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEquals
+partial struct Float3 : IVector3<Float3, float>, ITrigonometricVector<Float3, float>, Json.ICustomValueEquals
 {
     private static readonly string _formatString = "X:{0:F2} Y:{1:F2} Z:{2:F2}";
 
-    /// <summary>
-    /// The size of the <see cref="Float3" /> type, in bytes.
-    /// </summary>
-    public static unsafe readonly int SizeInBytes = sizeof(Float3);
-
-    /// <summary>
-    /// A <see cref="Float3" /> with all of its components set to zero.
-    /// </summary>
-    public static readonly Float3 Zero;
+    /// <inheritdoc/>
+    public static Float3 Zero { get; } = new();
 
     /// <summary>
     /// The X unit <see cref="Float3" /> (1, 0, 0).
     /// </summary>
-    public static readonly Float3 UnitX = new(1.0f, 0.0f, 0.0f);
+    public static Float3 UnitX { get; } = new(1.0f, 0.0f, 0.0f);
 
     /// <summary>
     /// The Y unit <see cref="Float3" /> (0, 1, 0).
     /// </summary>
-    public static readonly Float3 UnitY = new(0.0f, 1.0f, 0.0f);
+    public static Float3 UnitY { get; } = new(0.0f, 1.0f, 0.0f);
 
     /// <summary>
     /// The Z unit <see cref="Float3" /> (0, 0, 1).
     /// </summary>
-    public static readonly Float3 UnitZ = new(0.0f, 0.0f, 1.0f);
+    public static Float3 UnitZ { get; } = new(0.0f, 0.0f, 1.0f);
 
-    /// <summary>
-    /// A <see cref="Float3" /> with all of its components set to one.
-    /// </summary>
-    public static readonly Float3 One = new(1.0f, 1.0f, 1.0f);
+    /// <inheritdoc/>
+    public static Float3 One { get; } = new(1.0f, 1.0f, 1.0f);
 
-    /// <summary>
-    /// A <see cref="Float3" /> with all of its components set to half.
-    /// </summary>
-    public static readonly Float3 Half = new(0.5f, 0.5f, 0.5f);
+    /// <inheritdoc/>
+    public static Float3 Half { get; } = new(0.5f, 0.5f, 0.5f);
 
     /// <summary>
     /// A unit <see cref="Float3" /> designating up (0, 1, 0).
     /// </summary>
-    public static readonly Float3 Up = new(0.0f, 1.0f, 0.0f);
+    public static Float3 Up { get; } = new(0.0f, 1.0f, 0.0f);
 
     /// <summary>
     /// A unit <see cref="Float3" /> designating down (0, -1, 0).
@@ -116,32 +108,130 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
     /// <summary>
     /// A unit <see cref="Float3" /> designating right (1, 0, 0).
     /// </summary>
-    public static readonly Float3 Right = new(1.0f, 0.0f, 0.0f);
+    public static Float3 Right { get; } = new(1.0f, 0.0f, 0.0f);
 
     /// <summary>
     /// A unit <see cref="Float3" /> designating forward in a left-handed coordinate system (0, 0, 1).
     /// </summary>
-    public static readonly Float3 Forward = new(0.0f, 0.0f, 1.0f);
+    public static Float3 Forward { get; } = new(0.0f, 0.0f, 1.0f);
 
     /// <summary>
     /// A unit <see cref="Float3" /> designating backward in a left-handed coordinate system (0, 0, -1).
     /// </summary>
-    public static readonly Float3 Backward = new(0.0f, 0.0f, -1.0f);
+    public static Float3 Backward { get; } = new(0.0f, 0.0f, -1.0f);
+
+    /// <inheritdoc/>
+    public static Float3 Minimum { get; } = new(float.MinValue);
+
+    /// <inheritdoc/>
+    public static Float3 Maximum { get; } = new(float.MaxValue);
 
     /// <summary>
-    /// A <see cref="Float3" /> with all components equal to <see cref="float.MinValue"/>.
+    /// Gets a value indicting whether this instance is normalized.
     /// </summary>
-    public static readonly Float3 Minimum = new(float.MinValue);
+    public readonly bool IsNormalized => Mathf.Abs(ComputeLengthSquared(in this, out _) - 1.0f) < 1e-4f;
 
     /// <summary>
-    /// A <see cref="Float3" /> with all components equal to <see cref="float.MaxValue"/>.
+    /// Gets the normalized vector. Returned vector has length equal 1.
     /// </summary>
-    public static readonly Float3 Maximum = new(float.MaxValue);
+    public readonly Float3 Normalized
+    {
+        get
+        {
+            Float3 result = this;
+            result.Normalize();
+            return result;
+        }
+    }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Float3" /> struct.
-    /// </summary>
+    /// <inheritdoc/>
+    public readonly bool IsZero => Mathf.IsZero(X) && Mathf.IsZero(Y) && Mathf.IsZero(Z);
+
+    /// <inheritdoc/>
+    public readonly bool IsOne => Mathf.IsOne(X) && Mathf.IsOne(Y) && Mathf.IsOne(Z);
+
+    /// <inheritdoc/>
+    public readonly float MinValue => Mathf.Min(X, Mathf.Min(Y, Z));
+
+    /// <inheritdoc/>
+    public readonly float MaxValue => Mathf.Max(X, Mathf.Max(Y, Z));
+
+    /// <inheritdoc/>
+    public readonly float AvgValue
+    {
+        get
+        {
+            const float InverseCount = 1.0f / 3.0f;
+            return Vector128.Sum(this.AsVector128()) * InverseCount;
+        }
+    }
+
+    /// <inheritdoc/>
+    public readonly float ValuesSum => Vector128.Sum(this.AsVector128());
+
+    /// <inheritdoc/>
+    public static int Count => 3;
+
+    /// <inheritdoc/>
+    public readonly float Length
+    {
+        get
+        {
+            float lengthSqr = ComputeLengthSquared(in this, out _);
+            return lengthSqr * MathF.ReciprocalSqrtEstimate(lengthSqr);
+        }
+    }
+
+    /// <inheritdoc/>
+    public readonly float LengthSquared => ComputeLengthSquared(in this, out _);
+
+    /// <inheritdoc/>
+    public readonly float PreciseLength
+    {
+        get
+        {
+            float lengthSqr = ComputeLengthSquared(in this, out _);
+            return MathF.Sqrt(lengthSqr);
+        }
+    }
+
+    float IVector2<Float3, float>.X
+    {
+        readonly get => X;
+        set => X = value;
+    }
+
+    float IVector2<Float3, float>.Y
+    {
+        readonly get => Y;
+        set => Y = value;
+    }
+
+    float IVector3<Float3, float>.Z
+    {
+        readonly get => Z;
+        set => Z = value;
+    }
+
+    /// <inheritdoc/>
+    public float this[int index]
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        readonly get
+        {
+            Float3.ThrowIfOutOfRange(index);
+            return VectorMath.GetRef<Float3, float>(ref Unsafe.AsRef(in this), index);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        set
+        {
+            Float3.ThrowIfOutOfRange(index);
+            VectorMath.GetRef<Float3, float>(ref this, index) = value;
+        }
+    }
+
     /// <param name="value">The value that will be assigned to all components.</param>
+    /// <inheritdoc cref="Float3(float, float, float)"/>
     public Float3(float value)
     {
         X = value;
@@ -162,11 +252,9 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
         Z = z;
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Float3" /> struct.
-    /// </summary>
     /// <param name="value">A vector containing the values with which to initialize the X and Y components.</param>
-    /// <param name="z">Initial value for the Z component of the vector.</param>
+    /// <inheritdoc cref="Float3(float, float, float)"/>
+    /// <param name="z"/>
     public Float3(Float2 value, float z)
     {
         X = value.X;
@@ -174,10 +262,8 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
         Z = z;
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Float3" /> struct.
-    /// </summary>
     /// <param name="value">A vector containing the values with which to initialize the X, Y and Z components.</param>
+    /// <inheritdoc cref="Float3(float, float, float)"/>
     public Float3(Vector3 value)
     {
         X = (float)value.X;
@@ -185,10 +271,8 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
         Z = (float)value.Z;
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Float3" /> struct.
-    /// </summary>
     /// <param name="value">A vector containing the values with which to initialize the X, Y and Z components.</param>
+    /// <inheritdoc cref="Float3(float, float, float)"/>
     public Float3(Double3 value)
     {
         X = (float)value.X;
@@ -196,12 +280,11 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
         Z = (float)value.Z;
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Float3" /> struct.
-    /// </summary>
     /// <param name="value">A vector containing the values with which to initialize the X, Y and Z components.</param>
+    /// <inheritdoc cref="Float3(float, float, float)"/>
     public Float3(Float4 value)
     {
+
         X = value.X;
         Y = value.Y;
         Z = value.Z;
@@ -210,699 +293,123 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
     /// <summary>
     /// Initializes a new instance of the <see cref="Float3" /> struct.
     /// </summary>
-    /// <param name="values">The values to assign to the X, Y, and Z components of the vector. This must be an array with three elements.</param>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="values" /> is <c>null</c>.</exception>
-    /// <exception cref="ArgumentOutOfRangeException"> Thrown when <paramref name="values" /> contains more or less than three elements.</exception>
-    public Float3(float[] values)
+    /// <returns/>
+    /// <inheritdoc cref="Create(ReadOnlySpan{float})"/>
+    public Float3(ReadOnlySpan<float> values)
     {
-        ArgumentNullException.ThrowIfNull(values);
-        if (values.Length != 3)
-            throw new ArgumentOutOfRangeException(nameof(values), "There must be three and only three input values for Float3.");
+        ArgumentOutOfRangeException.ThrowIfNotEqual(values.Length, Count, nameof(values));
         X = values[0];
         Y = values[1];
         Z = values[2];
     }
 
-    /// <summary>
-    /// Gets a value indicting whether this instance is normalized.
-    /// </summary>
-    public readonly bool IsNormalized => Mathf.Abs((X * X + Y * Y + Z * Z) - 1.0f) < 1e-4f;
+    /// <inheritdoc/>
+    public static Float3 Create(float value) => new(value);
 
-    /// <summary>
-    /// Gets the normalized vector. Returned vector has length equal 1.
-    /// </summary>
-    public readonly Float3 Normalized
-    {
-        get
-        {
-            Float3 result = this;
-            result.Normalize();
-            return result;
-        }
-    }
+    /// <inheritdoc/>
+    public static Float3 Create(ReadOnlySpan<float> values) => new(values);
 
-    /// <summary>
-    /// Gets a value indicting whether this vector is zero
-    /// </summary>
-    public readonly bool IsZero => Mathf.IsZero(X) && Mathf.IsZero(Y) && Mathf.IsZero(Z);
-
-    /// <summary>
-    /// Gets a value indicting whether this vector is one
-    /// </summary>
-    public readonly bool IsOne => Mathf.IsOne(X) && Mathf.IsOne(Y) && Mathf.IsOne(Z);
-
-    /// <summary>
-    /// Gets a minimum component value
-    /// </summary>
-    public readonly float MinValue => Mathf.Min(X, Mathf.Min(Y, Z));
-
-    /// <summary>
-    /// Gets a maximum component value
-    /// </summary>
-    public readonly float MaxValue => Mathf.Max(X, Mathf.Max(Y, Z));
-
-    /// <summary>
-    /// Gets an arithmetic average value of all vector components.
-    /// </summary>
-    public readonly float AvgValue => (X + Y + Z) * (1.0f / 3.0f);
-
-    /// <summary>
-    /// Gets a sum of the component values.
-    /// </summary>
-    public readonly float ValuesSum => X + Y + Z;
-
-    /// <summary>
-    /// Gets a vector with values being absolute values of that vector.
-    /// </summary>
-    public readonly Float3 Absolute => new(Mathf.Abs(X), Mathf.Abs(Y), Mathf.Abs(Z));
-
-    /// <summary>
-    /// Gets a vector with values being opposite to values of that vector.
-    /// </summary>
-    public readonly Float3 Negative => new(-X, -Y, -Z);
-
-    /// <summary>
-    /// Gets or sets the component at the specified index.
-    /// </summary>
-    /// <value>The value of the X, Y, or Z component, depending on the index.</value>
-    /// <param name="index">The index of the component to access. Use 0 for the X component, 1 for the Y component, and 2 for the Z component.</param>
-    /// <returns>The value of the component at the specified index.</returns>
-    /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index" /> is out of the range [0, 2].</exception>
-    public float this[int index]
-    {
-        readonly get => index switch
-        {
-            0 => X,
-            1 => Y,
-            2 => Z,
-            _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Float3 run from 0 to 2, inclusive."),
-        };
-        set
-        {
-            switch (index)
-            {
-                case 0:
-                    X = value;
-                    break;
-                case 1:
-                    Y = value;
-                    break;
-                case 2:
-                    Z = value;
-                    break;
-                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Float3 run from 0 to 2, inclusive.");
-            }
-        }
-    }
-
-    /// <summary>
-    /// Calculates the length of the vector.
-    /// </summary>
-    /// <returns>The length of the vector.</returns>
-    /// <remarks><see cref="Float3.LengthSquared" /> may be preferred when only the relative length is needed and speed is of the essence.</remarks>
-    public readonly float Length => (float)Math.Sqrt(X * X + Y * Y + Z * Z);
-
-    /// <summary>
-    /// Calculates the squared length of the vector.
-    /// </summary>
-    /// <returns>The squared length of the vector.</returns>
-    /// <remarks>This method may be preferred to <see cref="Float3.Length" /> when only a relative length is needed and speed is of the essence.</remarks>
-    public readonly float LengthSquared => X * X + Y * Y + Z * Z;
-
-    /// <summary>
-    /// Converts the vector into a unit vector.
-    /// </summary>
+    /// <inheritdoc/>
     public void Normalize()
     {
-        float length = Length;
-        if (length >= Mathf.Epsilon)
-        {
-            float inv = 1.0f / length;
-            X *= inv;
-            Y *= inv;
-            Z *= inv;
-        }
+        float lengthSqr = ComputeLengthSquared(in this, out Vector128<float> vector);
+        Vector128<float> result = vector * MathF.ReciprocalSqrtEstimate(lengthSqr);
+        this = result.AsVector3();
     }
 
-    /// <summary>
-    /// Creates an array containing the elements of the vector.
-    /// </summary>
-    /// <returns>A three-element array containing the components of the vector.</returns>
-    public readonly float[] ToArray()
+    /// <inheritdoc/>
+    public void NormalizePrecise()
     {
-        return new[] { X, Y, Z };
+        float lengthSqr = ComputeLengthSquared(in this, out Vector128<float> vector);
+        Vector128<float> result = vector * (1.0f / MathF.Sqrt(lengthSqr));
+        this = result.AsVector3();
     }
 
-    /// <summary>
-    /// Adds two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to add.</param>
-    /// <param name="right">The second vector to add.</param>
-    /// <param name="result">When the method completes, contains the sum of the two vectors.</param>
-    public static void Add(ref Float3 left, ref Float3 right, out Float3 result)
+    /// <inheritdoc/>
+    public readonly float[] ToArray() => [X, Y, Z];
+
+    /// <inheritdoc/>
+    public static Float3 Add(in Float3 left, in Float3 right)
     {
-        result = new Float3(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
+        Vector128<float> result = left.AsVector128Unsafe() + right.AsVector128Unsafe();
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Adds two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to add.</param>
-    /// <param name="right">The second vector to add.</param>
-    /// <returns>The sum of the two vectors.</returns>
-    public static Float3 Add(Float3 left, Float3 right)
+    /// <inheritdoc/>
+    public static Float3 Subtract(in Float3 left, in Float3 right)
     {
-        return new Float3(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
+        Vector128<float> result = left.AsVector128Unsafe() - right.AsVector128Unsafe();
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Performs a component-wise addition.
-    /// </summary>
-    /// <param name="left">The input vector</param>
-    /// <param name="right">The scalar value to be added to elements</param>
-    /// <param name="result">The vector with added scalar for each element.</param>
-    public static void Add(ref Float3 left, ref float right, out Float3 result)
+    /// <inheritdoc/>
+    public static Float3 Multiply(in Float3 left, in Float3 right)
     {
-        result = new Float3(left.X + right, left.Y + right, left.Z + right);
+        Vector128<float> result = left.AsVector128Unsafe() * right.AsVector128Unsafe();
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Performs a component-wise addition.
-    /// </summary>
-    /// <param name="left">The input vector</param>
-    /// <param name="right">The scalar value to be added to elements</param>
-    /// <returns>The vector with added scalar for each element.</returns>
-    public static Float3 Add(Float3 left, float right)
+    /// <inheritdoc/>
+    public static Float3 Divide(in Float3 left, in Float3 right)
     {
-        return new Float3(left.X + right, left.Y + right, left.Z + right);
+        Vector128<float> result = left.AsVector128Unsafe() / right.AsVector128Unsafe();
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Subtracts two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to subtract.</param>
-    /// <param name="right">The second vector to subtract.</param>
-    /// <param name="result">When the method completes, contains the difference of the two vectors.</param>
-    public static void Subtract(ref Float3 left, ref Float3 right, out Float3 result)
+    /// <inheritdoc/>
+    public static Float3 Modulus(in Float3 left, in Float3 right)
     {
-        result = new Float3(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
+        Vector128<float> result = VectorMath.Modulus(left.AsVector128Unsafe(), right.AsVector128Unsafe());
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Subtracts two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to subtract.</param>
-    /// <param name="right">The second vector to subtract.</param>
-    /// <returns>The difference of the two vectors.</returns>
-    public static Float3 Subtract(Float3 left, Float3 right)
+    /// <inheritdoc/>
+    public static Float3 Negate(in Float3 value)
     {
-        return new Float3(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
+        Vector128<float> result = -value.AsVector128Unsafe();
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="left">The input vector</param>
-    /// <param name="right">The scalar value to be subtracted from elements</param>
-    /// <param name="result">The vector with subtracted scalar for each element.</param>
-    public static void Subtract(ref Float3 left, ref float right, out Float3 result)
+    /// <inheritdoc/>
+    public static Float3 Barycentric(in Float3 value1, in Float3 value2, in Float3 value3, float amount1, float amount2)
     {
-        result = new Float3(left.X - right, left.Y - right, left.Z - right);
+        Vector128<float> origin = value1.AsVector128Unsafe();
+        Vector128<float> edge1 = value2.AsVector128Unsafe() - origin;
+        Vector128<float> edge2 = value3.AsVector128Unsafe() - origin;
+        Vector128<float> result = origin + Vector128.Create(amount1) * edge1 + Vector128.Create(amount2) * edge2;
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="left">The input vector</param>
-    /// <param name="right">The scalar value to be subtracted from elements</param>
-    /// <returns>The vector with subtracted scalar for each element.</returns>
-    public static Float3 Subtract(Float3 left, float right)
+    /// <inheritdoc/>
+    public static Float3 Clamp(in Float3 value, in Float3 min, in Float3 max)
     {
-        return new Float3(left.X - right, left.Y - right, left.Z - right);
+        Vector128<float> result = Vector128.Clamp(value.AsVector128Unsafe(), min.AsVector128Unsafe(), max.AsVector128Unsafe());
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="left">The scalar value to be subtracted from elements</param>
-    /// <param name="right">The input vector.</param>
-    /// <param name="result">The vector with subtracted scalar for each element.</param>
-    public static void Subtract(ref float left, ref Float3 right, out Float3 result)
+    /// <inheritdoc/>
+    public static Float3 Cross(in Float3 left, in Float3 right)
     {
-        result = new Float3(left - right.X, left - right.Y, left - right.Z);
+        Vector128<float> v1 = left.AsVector128Unsafe();
+        Vector128<float> v2 = right.AsVector128Unsafe();
+
+        Vector128<float> temp1 = Vector128.Shuffle(v1, Vector128.Create(1, 2, 0, 0)) * Vector128.Shuffle(v2, Vector128.Create(2, 0, 1, 0));
+        Vector128<float> temp2 = Vector128.Shuffle(v1, Vector128.Create(2, 0, 1, 0)) * Vector128.Shuffle(v2, Vector128.Create(1, 2, 0, 0));
+
+        return (temp1 - temp2).AsVector3();
     }
 
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="left">The scalar value to be subtracted from elements</param>
-    /// <param name="right">The input vector.</param>
-    /// <returns>The vector with subtracted scalar for each element.</returns>
-    public static Float3 Subtract(float left, Float3 right)
+    /// <inheritdoc/>
+    public static bool NearEqual(in Float3 left, in Float3 right, float threshold)
     {
-        return new Float3(left - right.X, left - right.Y, left - right.Z);
+        Vector128<float> difference = Vector128.Abs(left.AsVector128() - right.AsVector128());
+        return Vector128.LessThanOrEqualAll(difference, Vector128.Create(threshold));
     }
 
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <param name="result">When the method completes, contains the scaled vector.</param>
-    public static void Multiply(ref Float3 value, float scale, out Float3 result)
+    /// <inheritdoc/>
+    public static float Dot(in Float3 left, in Float3 right)
     {
-        result = new Float3(value.X * scale, value.Y * scale, value.Z * scale);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 Multiply(Float3 value, float scale)
-    {
-        return new Float3(value.X * scale, value.Y * scale, value.Z * scale);
-    }
-
-    /// <summary>
-    /// Multiply a vector with another by performing component-wise multiplication.
-    /// </summary>
-    /// <param name="left">The first vector to multiply.</param>
-    /// <param name="right">The second vector to multiply.</param>
-    /// <param name="result">When the method completes, contains the multiplied vector.</param>
-    public static void Multiply(ref Float3 left, ref Float3 right, out Float3 result)
-    {
-        result = new Float3(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
-    }
-
-    /// <summary>
-    /// Multiply a vector with another by performing component-wise multiplication.
-    /// </summary>
-    /// <param name="left">The first vector to Multiply.</param>
-    /// <param name="right">The second vector to multiply.</param>
-    /// <returns>The multiplied vector.</returns>
-    public static Float3 Multiply(Float3 left, Float3 right)
-    {
-        return new Float3(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
-    }
-
-    /// <summary>
-    /// Divides a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector (per component).</param>
-    /// <param name="result">When the method completes, contains the divided vector.</param>
-    public static void Divide(ref Float3 value, ref Float3 scale, out Float3 result)
-    {
-        result = new Float3(value.X / scale.X, value.Y / scale.Y, value.Z / scale.Z);
-    }
-
-    /// <summary>
-    /// Divides a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector (per component).</param>
-    /// <returns>The divided vector.</returns>
-    public static Float3 Divide(Float3 value, Float3 scale)
-    {
-        return new Float3(value.X / scale.X, value.Y / scale.Y, value.Z / scale.Z);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <param name="result">When the method completes, contains the scaled vector.</param>
-    public static void Divide(ref Float3 value, float scale, out Float3 result)
-    {
-        result = new Float3(value.X / scale, value.Y / scale, value.Z / scale);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 Divide(Float3 value, float scale)
-    {
-        return new Float3(value.X / scale, value.Y / scale, value.Z / scale);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="result">When the method completes, contains the scaled vector.</param>
-    public static void Divide(float scale, ref Float3 value, out Float3 result)
-    {
-        result = new Float3(scale / value.X, scale / value.Y, scale / value.Z);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 Divide(float scale, Float3 value)
-    {
-        return new Float3(scale / value.X, scale / value.Y, scale / value.Z);
-    }
-
-    /// <summary>
-    /// Reverses the direction of a given vector.
-    /// </summary>
-    /// <param name="value">The vector to negate.</param>
-    /// <param name="result">When the method completes, contains a vector facing in the opposite direction.</param>
-    public static void Negate(ref Float3 value, out Float3 result)
-    {
-        result = new Float3(-value.X, -value.Y, -value.Z);
-    }
-
-    /// <summary>
-    /// Reverses the direction of a given vector.
-    /// </summary>
-    /// <param name="value">The vector to negate.</param>
-    /// <returns>A vector facing in the opposite direction.</returns>
-    public static Float3 Negate(Float3 value)
-    {
-        return new Float3(-value.X, -value.Y, -value.Z);
-    }
-
-    /// <summary>
-    /// Returns a <see cref="Float3" /> containing the 3D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 3D triangle.
-    /// </summary>
-    /// <param name="value1">A <see cref="Float3" /> containing the 3D Cartesian coordinates of vertex 1 of the triangle.</param>
-    /// <param name="value2">A <see cref="Float3" /> containing the 3D Cartesian coordinates of vertex 2 of the triangle.</param>
-    /// <param name="value3">A <see cref="Float3" /> containing the 3D Cartesian coordinates of vertex 3 of the triangle.</param>
-    /// <param name="amount1">Barycentric coordinate b2, which expresses the weighting factor toward vertex 2 (specified in <paramref name="value2" />).</param>
-    /// <param name="amount2">Barycentric coordinate b3, which expresses the weighting factor toward vertex 3 (specified in <paramref name="value3" />).</param>
-    /// <param name="result">When the method completes, contains the 3D Cartesian coordinates of the specified point.</param>
-    public static void Barycentric(ref Float3 value1, ref Float3 value2, ref Float3 value3, float amount1, float amount2, out Float3 result)
-    {
-        result = new Float3(value1.X + amount1 * (value2.X - value1.X) + amount2 * (value3.X - value1.X),
-                            value1.Y + amount1 * (value2.Y - value1.Y) + amount2 * (value3.Y - value1.Y),
-                            value1.Z + amount1 * (value2.Z - value1.Z) + amount2 * (value3.Z - value1.Z));
-    }
-
-    /// <summary>
-    /// Returns a <see cref="Float3" /> containing the 3D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 3D triangle.
-    /// </summary>
-    /// <param name="value1">A <see cref="Float3" /> containing the 3D Cartesian coordinates of vertex 1 of the triangle.</param>
-    /// <param name="value2">A <see cref="Float3" /> containing the 3D Cartesian coordinates of vertex 2 of the triangle.</param>
-    /// <param name="value3">A <see cref="Float3" /> containing the 3D Cartesian coordinates of vertex 3 of the triangle.</param>
-    /// <param name="amount1">Barycentric coordinate b2, which expresses the weighting factor toward vertex 2 (specified in <paramref name="value2" />).</param>
-    /// <param name="amount2">Barycentric coordinate b3, which expresses the weighting factor toward vertex 3 (specified in <paramref name="value3" />).</param>
-    /// <returns>A new <see cref="Float3" /> containing the 3D Cartesian coordinates of the specified point.</returns>
-    public static Float3 Barycentric(Float3 value1, Float3 value2, Float3 value3, float amount1, float amount2)
-    {
-        Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out var result);
-        return result;
-    }
-
-    /// <summary>
-    /// Restricts a value to be within a specified range.
-    /// </summary>
-    /// <param name="value">The value to clamp.</param>
-    /// <param name="min">The minimum value.</param>
-    /// <param name="max">The maximum value.</param>
-    /// <param name="result">When the method completes, contains the clamped value.</param>
-    public static void Clamp(ref Float3 value, ref Float3 min, ref Float3 max, out Float3 result)
-    {
-        float x = value.X;
-        x = x > max.X ? max.X : x;
-        x = x < min.X ? min.X : x;
-        float y = value.Y;
-        y = y > max.Y ? max.Y : y;
-        y = y < min.Y ? min.Y : y;
-        float z = value.Z;
-        z = z > max.Z ? max.Z : z;
-        z = z < min.Z ? min.Z : z;
-        result = new Float3(x, y, z);
-    }
-
-    /// <summary>
-    /// Restricts a value to be within a specified range.
-    /// </summary>
-    /// <param name="value">The value to clamp.</param>
-    /// <param name="min">The minimum value.</param>
-    /// <param name="max">The maximum value.</param>
-    /// <returns>The clamped value.</returns>
-    public static Float3 Clamp(Float3 value, Float3 min, Float3 max)
-    {
-        Clamp(ref value, ref min, ref max, out var result);
-        return result;
-    }
-
-    /// <summary>
-    /// Calculates the cross product of two vectors.
-    /// </summary>
-    /// <param name="left">First source vector.</param>
-    /// <param name="right">Second source vector.</param>
-    /// <param name="result">When the method completes, contains he cross product of the two vectors.</param>
-    public static void Cross(ref Float3 left, ref Float3 right, out Float3 result)
-    {
-        result = new Float3(left.Y * right.Z - left.Z * right.Y,
-                            left.Z * right.X - left.X * right.Z,
-                            left.X * right.Y - left.Y * right.X);
-    }
-
-    /// <summary>
-    /// Calculates the cross product of two vectors.
-    /// </summary>
-    /// <param name="left">First source vector.</param>
-    /// <param name="right">Second source vector.</param>
-    /// <returns>The cross product of the two vectors.</returns>
-    public static Float3 Cross(Float3 left, Float3 right)
-    {
-        Cross(ref left, ref right, out var result);
-        return result;
-    }
-
-    /// <summary>
-    /// Calculates the distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <param name="result">When the method completes, contains the distance between the two vectors.</param>
-    /// <remarks><see cref="Float3.DistanceSquared(ref Float3, ref Float3, out float)" /> may be preferred when only the relative distance is needed and speed is of the essence.</remarks>
-    public static void Distance(ref Float3 value1, ref Float3 value2, out float result)
-    {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        result = (float)Math.Sqrt(x * x + y * y + z * z);
-    }
-
-    /// <summary>
-    /// Calculates the distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <returns>The distance between the two vectors.</returns>
-    /// <remarks><see cref="Float3.DistanceSquared(ref Float3, ref Float3, out float)" /> may be preferred when only the relative distance is needed and speed is of the essence.</remarks>
-    public static float Distance(ref Float3 value1, ref Float3 value2)
-    {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        return (float)Math.Sqrt(x * x + y * y + z * z);
-    }
-
-    /// <summary>
-    /// Calculates the distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <returns>The distance between the two vectors.</returns>
-    /// <remarks><see cref="Float3.DistanceSquared(Float3, Float3)" /> may be preferred when only the relative distance is needed and speed is of the essence.</remarks>
-    public static float Distance(Float3 value1, Float3 value2)
-    {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        return (float)Math.Sqrt(x * x + y * y + z * z);
-    }
-
-    /// <summary>
-    /// Calculates the squared distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <param name="result">When the method completes, contains the squared distance between the two vectors.</param>
-    public static void DistanceSquared(ref Float3 value1, ref Float3 value2, out float result)
-    {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        result = x * x + y * y + z * z;
-    }
-
-    /// <summary>
-    /// Calculates the squared distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <returns>The squared distance between the two vectors.</returns>
-    public static float DistanceSquared(ref Float3 value1, ref Float3 value2)
-    {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        return x * x + y * y + z * z;
-    }
-
-    /// <summary>
-    /// Calculates the squared distance between two vectors.
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <returns>The squared distance between the two vectors.</returns>
-    public static float DistanceSquared(Float3 value1, Float3 value2)
-    {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        return x * x + y * y + z * z;
-    }
-
-    /// <summary>
-    /// Calculates the distance between two vectors on the XY plane (ignoring Z).
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <param name="result">When the method completes, contains the distance between the two vectors in the XY plane.</param>
-    public static void DistanceXY(ref Float3 value1, ref Float3 value2, out float result)
-    {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        result = (float)Math.Sqrt(x * x + y * y);
-    }
-
-    /// <summary>
-    /// Calculates the squared distance between two vectors on the XY plane (ignoring Z).
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector</param>
-    /// <param name="result">When the method completes, contains the squared distance between the two vectors in the XY plane.</param>
-    public static void DistanceXYSquared(ref Float3 value1, ref Float3 value2, out float result)
-    {
-        float x = value1.X - value2.X;
-        float y = value1.Y - value2.Y;
-        result = x * x + y * y;
-    }
-
-    /// <summary>
-    /// Calculates the distance between two vectors on the XZ plane (ignoring Y).
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <param name="result">When the method completes, contains the distance between the two vectors in the XY plane.</param>
-    public static void DistanceXZ(ref Float3 value1, ref Float3 value2, out float result)
-    {
-        float x = value1.X - value2.X;
-        float z = value1.Z - value2.Z;
-        result = (float)Math.Sqrt(x * x + z * z);
-    }
-
-    /// <summary>
-    /// Calculates the squared distance between two vectors on the XZ plane (ignoring Y).
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector</param>
-    /// <param name="result">When the method completes, contains the squared distance between the two vectors in the XY plane.</param>
-    public static void DistanceXZSquared(ref Float3 value1, ref Float3 value2, out float result)
-    {
-        float x = value1.X - value2.X;
-        float z = value1.Z - value2.Z;
-        result = x * x + z * z;
-    }
-
-    /// <summary>
-    /// Calculates the distance between two vectors on the YZ plane (ignoring X).
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector.</param>
-    /// <param name="result">When the method completes, contains the distance between the two vectors in the YZ plane.</param>
-    public static void DistanceYZ(ref Float3 value1, ref Float3 value2, out float result)
-    {
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        result = (float)Math.Sqrt(y * y + z * z);
-    }
-
-    /// <summary>
-    /// Calculates the squared distance between two vectors on the YZ plane (ignoring X).
-    /// </summary>
-    /// <param name="value1">The first vector.</param>
-    /// <param name="value2">The second vector</param>
-    /// <param name="result">When the method completes, contains the squared distance between the two vectors in the YZ plane.</param>
-    public static void DistanceYZSquared(ref Float3 value1, ref Float3 value2, out float result)
-    {
-        float y = value1.Y - value2.Y;
-        float z = value1.Z - value2.Z;
-        result = y * y + z * z;
-    }
-
-    /// <summary>
-    /// Tests whether one vector is near another vector.
-    /// </summary>
-    /// <param name="left">The left vector.</param>
-    /// <param name="right">The right vector.</param>
-    /// <param name="epsilon">The epsilon.</param>
-    /// <returns><c>true</c> if left and right are near another, <c>false</c> otherwise</returns>
-    public static bool NearEqual(Float3 left, Float3 right, float epsilon = Mathf.Epsilon)
-    {
-        return NearEqual(ref left, ref right, epsilon);
-    }
-
-    /// <summary>
-    /// Tests whether one vector is near another vector.
-    /// </summary>
-    /// <param name="left">The left vector.</param>
-    /// <param name="right">The right vector.</param>
-    /// <param name="epsilon">The epsilon.</param>
-    /// <returns><c>true</c> if left and right are near another, <c>false</c> otherwise</returns>
-    public static bool NearEqual(ref Float3 left, ref Float3 right, float epsilon = Mathf.Epsilon)
-    {
-        return Mathf.WithinEpsilon(left.X, right.X, epsilon) && Mathf.WithinEpsilon(left.Y, right.Y, epsilon) && Mathf.WithinEpsilon(left.Z, right.Z, epsilon);
-    }
-
-    /// <summary>
-    /// Calculates the dot product of two vectors.
-    /// </summary>
-    /// <param name="left">First source vector.</param>
-    /// <param name="right">Second source vector.</param>
-    /// <param name="result">When the method completes, contains the dot product of the two vectors.</param>
-    public static void Dot(ref Float3 left, ref Float3 right, out float result)
-    {
-        result = left.X * right.X + left.Y * right.Y + left.Z * right.Z;
-    }
-
-    /// <summary>
-    /// Calculates the dot product of two vectors.
-    /// </summary>
-    /// <param name="left">First source vector.</param>
-    /// <param name="right">Second source vector.</param>
-    /// <returns>The dot product of the two vectors.</returns>
-    public static float Dot(ref Float3 left, ref Float3 right)
-    {
-        return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
-    }
-
-    /// <summary>
-    /// Calculates the dot product of two vectors.
-    /// </summary>
-    /// <param name="left">First source vector.</param>
-    /// <param name="right">Second source vector.</param>
-    /// <returns>The dot product of the two vectors.</returns>
-    public static float Dot(Float3 left, Float3 right)
-    {
-        return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
+        return Vector128.Dot(left.AsVector128Unsafe(), right.AsVector128Unsafe());
     }
 
     /// <summary>
@@ -921,117 +428,30 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
     /// </summary>
     /// <param name="value">The vector to normalize.</param>
     /// <returns>The normalized vector.</returns>
-    public static Float3 Normalize(Float3 value)
+    public static Float3 Normalize(in Float3 value)
     {
         value.Normalize();
         return value;
     }
 
-    /// <summary>
-    /// Makes sure that Length of the output vector is always below max and above 0.
-    /// </summary>
-    /// <param name="vector">Input vector.</param>
-    /// <param name="max">Max Length</param>
-    public static Float3 ClampLength(Float3 vector, float max)
+    /// <inheritdoc/>
+    public static Float3 ClampLength(in Float3 vector, float min, float max) => ComputeLengthSquared(in vector, out Vector128<float> vVector) switch
     {
-        return ClampLength(vector, 0, max);
+        float lengthSqr when lengthSqr < (min * min) => Scale(in vVector, min * MathF.ReciprocalSqrtEstimate(lengthSqr)),
+        float lengthSqr when lengthSqr > (max * max) => Scale(in vVector, max * MathF.ReciprocalSqrtEstimate(lengthSqr)),
+        _ => vector,
+    };
+
+    /// <inheritdoc/>
+    public static Float3 Lerp(in Float3 start, in Float3 end, float amount)
+    {
+        Vector128<float> vStart = start.AsVector128Unsafe();
+        Vector128<float> result = vStart + (end.AsVector128Unsafe() - vStart) * Vector128.Create(amount);
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Makes sure that Length of the output vector is always below max and above min.
-    /// </summary>
-    /// <param name="vector">Input vector.</param>
-    /// <param name="min">Min Length</param>
-    /// <param name="max">Max Length</param>
-    public static Float3 ClampLength(Float3 vector, float min, float max)
-    {
-        ClampLength(vector, min, max, out Float3 result);
-        return result;
-    }
-
-    /// <summary>
-    /// Makes sure that Length of the output vector is always below max and above min.
-    /// </summary>
-    /// <param name="vector">Input vector.</param>
-    /// <param name="min">Min Length</param>
-    /// <param name="max">Max Length</param>
-    /// <param name="result">The result vector.</param>
-    public static void ClampLength(Float3 vector, float min, float max, out Float3 result)
-    {
-        result.X = vector.X;
-        result.Y = vector.Y;
-        result.Z = vector.Z;
-        float lenSq = result.LengthSquared;
-        if (lenSq > max * max)
-        {
-            float scaleFactor = max / (float)Math.Sqrt(lenSq);
-            result.X *= scaleFactor;
-            result.Y *= scaleFactor;
-            result.Z *= scaleFactor;
-        }
-        if (lenSq < min * min)
-        {
-            float scaleFactor = min / (float)Math.Sqrt(lenSq);
-            result.X *= scaleFactor;
-            result.Y *= scaleFactor;
-            result.Z *= scaleFactor;
-        }
-    }
-
-    /// <summary>
-    /// Performs a linear interpolation between two vectors.
-    /// </summary>
-    /// <param name="start">Start vector.</param>
-    /// <param name="end">End vector.</param>
-    /// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end" />.</param>
-    /// <param name="result">When the method completes, contains the linear interpolation of the two vectors.</param>
-    /// <remarks>Passing <paramref name="amount" /> a value of 0 will cause <paramref name="start" /> to be returned; a value of 1 will cause <paramref name="end" /> to be returned.</remarks>
-    public static void Lerp(ref Float3 start, ref Float3 end, float amount, out Float3 result)
-    {
-        result.X = Mathf.Lerp(start.X, end.X, amount);
-        result.Y = Mathf.Lerp(start.Y, end.Y, amount);
-        result.Z = Mathf.Lerp(start.Z, end.Z, amount);
-    }
-
-    /// <summary>
-    /// Performs a linear interpolation between two vectors.
-    /// </summary>
-    /// <param name="start">Start vector.</param>
-    /// <param name="end">End vector.</param>
-    /// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end" />.</param>
-    /// <returns>The linear interpolation of the two vectors.</returns>
-    /// <remarks>Passing <paramref name="amount" /> a value of 0 will cause <paramref name="start" /> to be returned; a value of 1 will cause <paramref name="end" /> to be returned.</remarks>
-    public static Float3 Lerp(Float3 start, Float3 end, float amount)
-    {
-        Lerp(ref start, ref end, amount, out var result);
-        return result;
-    }
-
-    /// <summary>
-    /// Performs a cubic interpolation between two vectors.
-    /// </summary>
-    /// <param name="start">Start vector.</param>
-    /// <param name="end">End vector.</param>
-    /// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end" />.</param>
-    /// <param name="result">When the method completes, contains the cubic interpolation of the two vectors.</param>
-    public static void SmoothStep(ref Float3 start, ref Float3 end, float amount, out Float3 result)
-    {
-        amount = Mathf.SmoothStep(amount);
-        Lerp(ref start, ref end, amount, out result);
-    }
-
-    /// <summary>
-    /// Performs a cubic interpolation between two vectors.
-    /// </summary>
-    /// <param name="start">Start vector.</param>
-    /// <param name="end">End vector.</param>
-    /// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end" />.</param>
-    /// <returns>The cubic interpolation of the two vectors.</returns>
-    public static Float3 SmoothStep(Float3 start, Float3 end, float amount)
-    {
-        SmoothStep(ref start, ref end, amount, out var result);
-        return result;
-    }
+    /// <inheritdoc/>
+    public static Float3 SmoothStep(in Float3 start, in Float3 end, float amount) => Lerp(in start, in end, Mathf.SmoothStep(amount));
 
     /// <summary>
     /// Moves a value current towards target.
@@ -1040,150 +460,77 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
     /// <param name="target">The position to move towards.</param>
     /// <param name="maxDistanceDelta">The maximum distance that can be applied to the value.</param>
     /// <returns>The new position.</returns>
-    public static Float3 MoveTowards(Float3 current, Float3 target, float maxDistanceDelta)
+    public static Float3 MoveTowards(in Float3 current, in Float3 target, float maxDistanceDelta)
     {
-        var to = target - current;
-        var distanceSq = to.LengthSquared;
-        if (distanceSq == 0 || (maxDistanceDelta >= 0 && distanceSq <= maxDistanceDelta * maxDistanceDelta))
-            return target;
-        var scale = maxDistanceDelta / Mathf.Sqrt(distanceSq);
-        return new Float3(current.X + to.X * scale, current.Y + to.Y * scale, current.Z + to.Z * scale);
+        float distanceSqr = ComputeLengthSquared(target - current, out Vector128<float> to);
+
+        if (distanceSqr != 0 && (maxDistanceDelta < 0 || distanceSqr > maxDistanceDelta * maxDistanceDelta))
+        {
+            float scale = maxDistanceDelta * MathF.ReciprocalSqrtEstimate(distanceSqr);
+            Vector128<float> result = current.AsVector128Unsafe() + to * Vector128.Create(scale);
+            return result.AsVector3();
+        }
+
+        return target;
     }
 
-    /// <summary>
-    /// Performs a Hermite spline interpolation.
-    /// </summary>
-    /// <param name="value1">First source position vector.</param>
-    /// <param name="tangent1">First source tangent vector.</param>
-    /// <param name="value2">Second source position vector.</param>
-    /// <param name="tangent2">Second source tangent vector.</param>
-    /// <param name="amount">Weighting factor.</param>
-    /// <param name="result">When the method completes, contains the result of the Hermite spline interpolation.</param>
-    public static void Hermite(ref Float3 value1, ref Float3 tangent1, ref Float3 value2, ref Float3 tangent2, float amount, out Float3 result)
+    /// <inheritdoc/>
+    public static Float3 CatmullRom(in Float3 value1, in Float3 value2, in Float3 value3, in Float3 value4, float amount)
     {
-        float squared = amount * amount;
-        float cubed = amount * squared;
+        VectorMath.Cube(amount, out float squared, out float cubed);
+        
+        Vector128<float> v1 = value1.AsVector128Unsafe();
+        Vector128<float> v2 = value2.AsVector128Unsafe();
+        Vector128<float> v3 = value3.AsVector128Unsafe();
+        Vector128<float> v4 = value4.AsVector128Unsafe();
+        
+        Vector128<float> vAmount = Vector128.Create(amount);
+        Vector128<float> vSquared = Vector128.Create(squared);
+        Vector128<float> vCubed = Vector128.Create(cubed);
+        
+        Vector128<float> term1 = Vector128.Create(2.0f) * v2;
+        Vector128<float> term2 = (v3 - v1) * vAmount;
+        Vector128<float> term3 = (Vector128.Create(2.0f) * v1 - Vector128.Create(5.0f) * v2 + Vector128.Create(4.0f) * v3 - v4) * vSquared;
+        Vector128<float> term4 = (-v1 + Vector128.Create(3.0f) * v2 - Vector128.Create(3.0f) * v3 + v4) * vCubed;
+        
+        Vector128<float> result = Vector128.Create(0.5f) * (term1 + term2 + term3 + term4);
+        return result.AsVector3();
+    }
+
+    /// <inheritdoc/>
+    public static Float3 Hermite(in Float3 value1, in Float3 tangent1, in Float3 value2, in Float3 tangent2, float amount)
+    {
+        VectorMath.Cube(amount, out float squared, out float cubed);
         float part1 = 2.0f * cubed - 3.0f * squared + 1.0f;
         float part2 = -2.0f * cubed + 3.0f * squared;
         float part3 = cubed - 2.0f * squared + amount;
         float part4 = cubed - squared;
+        Unsafe.SkipInit(out Float3 result);
         result.X = value1.X * part1 + value2.X * part2 + tangent1.X * part3 + tangent2.X * part4;
         result.Y = value1.Y * part1 + value2.Y * part2 + tangent1.Y * part3 + tangent2.Y * part4;
         result.Z = value1.Z * part1 + value2.Z * part2 + tangent1.Z * part3 + tangent2.Z * part4;
-    }
-
-    /// <summary>
-    /// Performs a Hermite spline interpolation.
-    /// </summary>
-    /// <param name="value1">First source position vector.</param>
-    /// <param name="tangent1">First source tangent vector.</param>
-    /// <param name="value2">Second source position vector.</param>
-    /// <param name="tangent2">Second source tangent vector.</param>
-    /// <param name="amount">Weighting factor.</param>
-    /// <returns>The result of the Hermite spline interpolation.</returns>
-    public static Float3 Hermite(Float3 value1, Float3 tangent1, Float3 value2, Float3 tangent2, float amount)
-    {
-        Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out var result);
         return result;
     }
 
-    /// <summary>
-    /// Performs a Catmull-Rom interpolation using the specified positions.
-    /// </summary>
-    /// <param name="value1">The first position in the interpolation.</param>
-    /// <param name="value2">The second position in the interpolation.</param>
-    /// <param name="value3">The third position in the interpolation.</param>
-    /// <param name="value4">The fourth position in the interpolation.</param>
-    /// <param name="amount">Weighting factor.</param>
-    /// <param name="result">When the method completes, contains the result of the Catmull-Rom interpolation.</param>
-    public static void CatmullRom(ref Float3 value1, ref Float3 value2, ref Float3 value3, ref Float3 value4, float amount, out Float3 result)
+    /// <inheritdoc/>
+    public static Float3 Max(in Float3 left, in Float3 right)
     {
-        float squared = amount * amount;
-        float cubed = amount * squared;
-        result.X = 0.5f * (2.0f * value2.X + (-value1.X + value3.X) * amount +
-                           (2.0f * value1.X - 5.0f * value2.X + 4.0f * value3.X - value4.X) * squared +
-                           (-value1.X + 3.0f * value2.X - 3.0f * value3.X + value4.X) * cubed);
-        result.Y = 0.5f * (2.0f * value2.Y + (-value1.Y + value3.Y) * amount +
-                           (2.0f * value1.Y - 5.0f * value2.Y + 4.0f * value3.Y - value4.Y) * squared +
-                           (-value1.Y + 3.0f * value2.Y - 3.0f * value3.Y + value4.Y) * cubed);
-        result.Z = 0.5f * (2.0f * value2.Z + (-value1.Z + value3.Z) * amount +
-                           (2.0f * value1.Z - 5.0f * value2.Z + 4.0f * value3.Z - value4.Z) * squared +
-                           (-value1.Z + 3.0f * value2.Z - 3.0f * value3.Z + value4.Z) * cubed);
+        Vector128<float> result = Vector128.Max(left.AsVector128Unsafe(), right.AsVector128Unsafe());
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Performs a Catmull-Rom interpolation using the specified positions.
-    /// </summary>
-    /// <param name="value1">The first position in the interpolation.</param>
-    /// <param name="value2">The second position in the interpolation.</param>
-    /// <param name="value3">The third position in the interpolation.</param>
-    /// <param name="value4">The fourth position in the interpolation.</param>
-    /// <param name="amount">Weighting factor.</param>
-    /// <returns>A vector that is the result of the Catmull-Rom interpolation.</returns>
-    public static Float3 CatmullRom(Float3 value1, Float3 value2, Float3 value3, Float3 value4, float amount)
+    /// <inheritdoc/>
+    public static Float3 Min(in Float3 left, in Float3 right)
     {
-        CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out var result);
-        return result;
+        Vector128<float> result = Vector128.Min(left.AsVector128Unsafe(), right.AsVector128Unsafe());
+        return result.AsVector3();
     }
 
-    /// <summary>
-    /// Returns a vector containing the largest components of the specified vectors.
-    /// </summary>
-    /// <param name="left">The first source vector.</param>
-    /// <param name="right">The second source vector.</param>
-    /// <param name="result">When the method completes, contains an new vector composed of the largest components of the source vectors.</param>
-    public static void Max(ref Float3 left, ref Float3 right, out Float3 result)
+    /// <inheritdoc/>
+    public static Float3 Abs(in Float3 value)
     {
-        result.X = left.X > right.X ? left.X : right.X;
-        result.Y = left.Y > right.Y ? left.Y : right.Y;
-        result.Z = left.Z > right.Z ? left.Z : right.Z;
-    }
-
-    /// <summary>
-    /// Returns a vector containing the largest components of the specified vectors.
-    /// </summary>
-    /// <param name="left">The first source vector.</param>
-    /// <param name="right">The second source vector.</param>
-    /// <returns>A vector containing the largest components of the source vectors.</returns>
-    public static Float3 Max(Float3 left, Float3 right)
-    {
-        Max(ref left, ref right, out var result);
-        return result;
-    }
-
-    /// <summary>
-    /// Returns a vector containing the smallest components of the specified vectors.
-    /// </summary>
-    /// <param name="left">The first source vector.</param>
-    /// <param name="right">The second source vector.</param>
-    /// <param name="result">When the method completes, contains an new vector composed of the smallest components of the source vectors.</param>
-    public static void Min(ref Float3 left, ref Float3 right, out Float3 result)
-    {
-        result.X = left.X < right.X ? left.X : right.X;
-        result.Y = left.Y < right.Y ? left.Y : right.Y;
-        result.Z = left.Z < right.Z ? left.Z : right.Z;
-    }
-
-    /// <summary>
-    /// Returns a vector containing the smallest components of the specified vectors.
-    /// </summary>
-    /// <param name="left">The first source vector.</param>
-    /// <param name="right">The second source vector.</param>
-    /// <returns>A vector containing the smallest components of the source vectors.</returns>
-    public static Float3 Min(Float3 left, Float3 right)
-    {
-        Min(ref left, ref right, out var result);
-        return result;
-    }
-
-    /// <summary>
-    /// Returns the absolute value of a vector.
-    /// </summary>
-    /// <param name="v">The value.</param>
-    /// <returns> A vector which components are less or equal to 0.</returns>
-    public static Float3 Abs(Float3 v)
-    {
-        return new Float3(Math.Abs(v.X), Math.Abs(v.Y), Math.Abs(v.Z));
+        Vector128<float> result = Vector128.Abs(value.AsVector128Unsafe());
+        return result.AsVector3();
     }
 
     /// <summary>
@@ -1195,9 +542,7 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
     public static Float3 Project(Float3 vector, Float3 onNormal)
     {
         float sqrMag = Dot(onNormal, onNormal);
-        if (sqrMag < Mathf.Epsilon)
-            return Zero;
-        return onNormal * Dot(vector, onNormal) / sqrMag;
+        return sqrMag < Mathf.Epsilon ? Zero : onNormal * Dot(vector, onNormal) / sqrMag;
     }
 
     /// <summary>
@@ -1220,9 +565,7 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
     public static float Angle(Float3 from, Float3 to)
     {
         float dot = Mathf.Clamp(Dot(from.Normalized, to.Normalized), -1.0f, 1.0f);
-        if (Mathf.Abs(dot) > (1.0f - Mathf.Epsilon))
-            return dot > 0.0f ? 0.0f : 180.0f;
-        return (float)Math.Acos(dot) * Mathf.RadiansToDegrees;
+        return Mathf.Abs(dot) > (1.0f - Mathf.Epsilon) ? dot > 0.0f ? 0.0f : 180.0f : MathF.Acos(dot) * Mathf.RadiansToDegrees;
     }
 
     /// <summary>
@@ -1532,273 +875,78 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
         return pos;
     }
 
-    /// <summary>
-    /// Adds two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to add.</param>
-    /// <param name="right">The second vector to add.</param>
-    /// <returns>The sum of the two vectors.</returns>
-    public static Float3 operator +(Float3 left, Float3 right)
+    /// <inheritdoc/>
+    public override readonly string ToString() => string.Format(CultureInfo.CurrentCulture, _formatString, X, Y, Z);
+
+    /// <inheritdoc cref="ToString(string, IFormatProvider)"/>
+    public readonly string ToString(string format)
     {
-        return new Float3(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
+        if (format is null)
+        {
+            return ToString();
+        }
+
+        string x = X.ToString(format, CultureInfo.CurrentCulture);
+        string y = Y.ToString(format, CultureInfo.CurrentCulture);
+        string z = Z.ToString(format, CultureInfo.CurrentCulture);
+        return string.Format(CultureInfo.CurrentCulture, _formatString, x, y, z);
+    }
+
+    /// <inheritdoc cref="ToString(string, IFormatProvider)"/>
+    public readonly string ToString(IFormatProvider formatProvider)
+    {
+        return string.Format(formatProvider, _formatString, X, Y, Z);
+    }
+
+    /// <inheritdoc/>
+    public readonly string ToString(string format, IFormatProvider formatProvider)
+    {
+        if (format == null)
+        {
+            return ToString(formatProvider);
+        }
+
+        string x = X.ToString(format, formatProvider);
+        string y = Y.ToString(format, formatProvider);
+        string z = Z.ToString(format, formatProvider);
+        return string.Format(formatProvider, "X:{0} Y:{1} Z:{2}", x, y, z);
     }
 
     /// <summary>
-    /// Multiplies a vector with another by performing component-wise multiplication equivalent to <see cref="Multiply(ref Float3,ref Float3,out Float3)" />.
+    /// Returns a hash code for this instance.
     /// </summary>
-    /// <param name="left">The first vector to multiply.</param>
-    /// <param name="right">The second vector to multiply.</param>
-    /// <returns>The multiplication of the two vectors.</returns>
-    public static Float3 operator *(Float3 left, Float3 right)
-    {
-        return new Float3(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
-    }
+    public override readonly int GetHashCode() => HashCode.Combine(X, Y, Z);
 
-    /// <summary>
-    /// Assert a vector (return it unchanged).
-    /// </summary>
-    /// <param name="value">The vector to assert (unchanged).</param>
-    /// <returns>The asserted (unchanged) vector.</returns>
-    public static Float3 operator +(Float3 value)
-    {
-        return value;
-    }
-
-    /// <summary>
-    /// Subtracts two vectors.
-    /// </summary>
-    /// <param name="left">The first vector to subtract.</param>
-    /// <param name="right">The second vector to subtract.</param>
-    /// <returns>The difference of the two vectors.</returns>
-    public static Float3 operator -(Float3 left, Float3 right)
-    {
-        return new Float3(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
-    }
-
-    /// <summary>
-    /// Reverses the direction of a given vector.
-    /// </summary>
-    /// <param name="value">The vector to negate.</param>
-    /// <returns>A vector facing in the opposite direction.</returns>
-    public static Float3 operator -(Float3 value)
-    {
-        return new Float3(-value.X, -value.Y, -value.Z);
-    }
-
-    /// <summary>
-    /// Transforms a vector by the given rotation.
-    /// </summary>
-    /// <param name="vector">The vector to transform.</param>
-    /// <param name="rotation">The quaternion.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 operator *(Float3 vector, Quaternion rotation)
-    {
-        Transform(ref vector, ref rotation, out var result);
-        return result;
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 operator *(float scale, Float3 value)
-    {
-        return new Float3(value.X * scale, value.Y * scale, value.Z * scale);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 operator *(Float3 value, float scale)
-    {
-        return new Float3(value.X * scale, value.Y * scale, value.Z * scale);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 operator /(Float3 value, float scale)
-    {
-        return new Float3(value.X / scale, value.Y / scale, value.Z / scale);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <param name="value">The vector to scale.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 operator /(float scale, Float3 value)
-    {
-        return new Float3(scale / value.X, scale / value.Y, scale / value.Z);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 operator *(double scale, Float3 value)
-    {
-        var s = (float)scale;
-        return new Float3(value.X * s, value.Y * s, value.Z * s);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 operator *(Float3 value, double scale)
-    {
-        var s = (float)scale;
-        return new Float3(value.X * s, value.Y * s, value.Z * s);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 operator /(Float3 value, double scale)
-    {
-        var s = (float)scale;
-        return new Float3(value.X / s, value.Y / s, value.Z / s);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <param name="value">The vector to scale.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 operator /(double scale, Float3 value)
-    {
-        var s = (float)scale;
-        return new Float3(s / value.X, s / value.Y, s / value.Z);
-    }
-
-    /// <summary>
-    /// Scales a vector by the given value.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The scaled vector.</returns>
-    public static Float3 operator /(Float3 value, Float3 scale)
-    {
-        return new Float3(value.X / scale.X, value.Y / scale.Y, value.Z / scale.Z);
-    }
-
-    /// <summary>
-    /// Remainder of value divided by scale.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The remained vector.</returns>
-    public static Float3 operator %(Float3 value, float scale)
-    {
-        return new Float3(value.X % scale, value.Y % scale, value.Z % scale);
-    }
-
-    /// <summary>
-    /// Remainder of value divided by scale.
-    /// </summary>
-    /// <param name="value">The amount by which to scale the vector.</param>
-    /// <param name="scale">The vector to scale.</param>
-    /// <returns>The remained vector.</returns>
-    public static Float3 operator %(float value, Float3 scale)
-    {
-        return new Float3(value % scale.X, value % scale.Y, value % scale.Z);
-    }
-
-    /// <summary>
-    /// Remainder of value divided by scale.
-    /// </summary>
-    /// <param name="value">The vector to scale.</param>
-    /// <param name="scale">The amount by which to scale the vector.</param>
-    /// <returns>The remained vector.</returns>
-    public static Float3 operator %(Float3 value, Float3 scale)
-    {
-        return new Float3(value.X % scale.X, value.Y % scale.Y, value.Z % scale.Z);
-    }
-
-    /// <summary>
-    /// Performs a component-wise addition.
-    /// </summary>
-    /// <param name="value">The input vector.</param>
-    /// <param name="scalar">The scalar value to be added on elements</param>
-    /// <returns>The vector with added scalar for each element.</returns>
-    public static Float3 operator +(Float3 value, float scalar)
-    {
-        return new Float3(value.X + scalar, value.Y + scalar, value.Z + scalar);
-    }
-
-    /// <summary>
-    /// Performs a component-wise addition.
-    /// </summary>
-    /// <param name="value">The input vector.</param>
-    /// <param name="scalar">The scalar value to be added on elements</param>
-    /// <returns>The vector with added scalar for each element.</returns>
-    public static Float3 operator +(float scalar, Float3 value)
-    {
-        return new Float3(scalar + value.X, scalar + value.Y, scalar + value.Z);
-    }
-
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="value">The input vector.</param>
-    /// <param name="scalar">The scalar value to be subtracted from elements</param>
-    /// <returns>The vector with added scalar from each element.</returns>
-    public static Float3 operator -(Float3 value, float scalar)
-    {
-        return new Float3(value.X - scalar, value.Y - scalar, value.Z - scalar);
-    }
-
-    /// <summary>
-    /// Performs a component-wise subtraction.
-    /// </summary>
-    /// <param name="value">The input vector.</param>
-    /// <param name="scalar">The scalar value to be subtracted from elements</param>
-    /// <returns>The vector with subtracted scalar from each element.</returns>
-    public static Float3 operator -(float scalar, Float3 value)
-    {
-        return new Float3(scalar - value.X, scalar - value.Y, scalar - value.Z);
-    }
-
-    /// <summary>
-    /// Tests for equality between two objects.
-    /// </summary>
-    /// <param name="left">The first value to compare.</param>
-    /// <param name="right">The second value to compare.</param>
-    /// <returns><c>true</c> if <paramref name="left" /> has the same value as <paramref name="right" />; otherwise, <c>false</c>.</returns>
+    /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator ==(Float3 left, Float3 right)
+    public readonly bool Equals(in Float3 other) => Vector128.EqualsAll(this.AsVector128(), other.AsVector128());
+
+    /// <inheritdoc/>
+    public override readonly bool Equals(object value) => value is Float3 other && Equals(in other);
+
+    public static Float3 Transform(in Float3 vector, in Quaternion rotation)
     {
-        return left.Equals(ref right);
+        throw new NotImplementedException();
     }
 
-    /// <summary>
-    /// Tests for inequality between two objects.
-    /// </summary>
-    /// <param name="left">The first value to compare.</param>
-    /// <param name="right">The second value to compare.</param>
-    /// <returns><c>true</c> if <paramref name="left" /> has a different value than <paramref name="right" />; otherwise, <c>false</c>.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator !=(Float3 left, Float3 right)
+    public static Float3 Transform(in Float3 vector, in Matrix transform)
     {
-        return !left.Equals(ref right);
+        throw new NotImplementedException();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Float3 Scale(ref readonly Vector128<float> vector, float scale)
+    {
+        Vector128<float> scaleVector = Vector128.Create(scale);
+        Vector128<float> result = vector * scaleVector;
+        return result.AsVector3();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static float ComputeLengthSquared(in Float3 value, out Vector128<float> vector)
+    {
+        vector = value.AsVector128();
+        return Vector128.Sum(vector * vector);
     }
 
     /// <summary>
@@ -1806,129 +954,28 @@ partial struct Float3 : IEquatable<Float3>, IFormattable, Json.ICustomValueEqual
     /// </summary>
     /// <param name="value">The value.</param>
     /// <returns>The result of the conversion.</returns>
-    public static implicit operator Vector3(Float3 value)
-    {
-        return new Vector3(value.X, value.Y, value.Z);
-    }
+    public static implicit operator Vector3(Float3 value) => new(value.X, value.Y, value.Z);
 
     /// <summary>
     /// Performs an implicit conversion from <see cref="Float3" /> to <see cref="Double3" />.
     /// </summary>
     /// <param name="value">The value.</param>
     /// <returns>The result of the conversion.</returns>
-    public static implicit operator Double3(Float3 value)
-    {
-        return new Double3(value.X, value.Y, value.Z);
-    }
+    public static implicit operator Double3(Float3 value) => new(value.X, value.Y, value.Z);
 
     /// <summary>
     /// Performs an explicit conversion from <see cref="Float3" /> to <see cref="Float2" />.
     /// </summary>
     /// <param name="value">The value.</param>
     /// <returns>The result of the conversion.</returns>
-    public static explicit operator Float2(Float3 value)
-    {
-        return new Float2(value.X, value.Y);
-    }
+    public static explicit operator Float2(Float3 value) => new(value.X, value.Y);
 
     /// <summary>
     /// Performs an explicit conversion from <see cref="Float3" /> to <see cref="Float4" />.
     /// </summary>
     /// <param name="value">The value.</param>
     /// <returns>The result of the conversion.</returns>
-    public static explicit operator Float4(Float3 value)
-    {
-        return new Float4(value, 0.0f);
-    }
+    public static explicit operator Float4(Float3 value) => new(value, 0.0f);
 
-    /// <summary>
-    /// Returns a <see cref="System.String" /> that represents this instance.
-    /// </summary>
-    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public override readonly string ToString()
-    {
-        return string.Format(CultureInfo.CurrentCulture, _formatString, X, Y, Z);
-    }
-
-    /// <summary>
-    /// Returns a <see cref="System.String" /> that represents this instance.
-    /// </summary>
-    /// <param name="format">The format.</param>
-    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public readonly string ToString(string format)
-    {
-        if (format == null)
-            return ToString();
-        return string.Format(CultureInfo.CurrentCulture, _formatString, X.ToString(format, CultureInfo.CurrentCulture), Y.ToString(format, CultureInfo.CurrentCulture), Z.ToString(format, CultureInfo.CurrentCulture));
-    }
-
-    /// <summary>
-    /// Returns a <see cref="System.String" /> that represents this instance.
-    /// </summary>
-    /// <param name="formatProvider">The format provider.</param>
-    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public readonly string ToString(IFormatProvider formatProvider)
-    {
-        return string.Format(formatProvider, _formatString, X, Y, Z);
-    }
-
-    /// <summary>
-    /// Returns a <see cref="System.String" /> that represents this instance.
-    /// </summary>
-    /// <param name="format">The format.</param>
-    /// <param name="formatProvider">The format provider.</param>
-    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    public readonly string ToString(string format, IFormatProvider formatProvider)
-    {
-        if (format == null)
-            return ToString(formatProvider);
-        return string.Format(formatProvider, "X:{0} Y:{1} Z:{2}", X.ToString(format, formatProvider), Y.ToString(format, formatProvider), Z.ToString(format, formatProvider));
-    }
-
-    /// <summary>
-    /// Returns a hash code for this instance.
-    /// </summary>
-    public override readonly int GetHashCode()
-    {
-        return HashCode.Combine(X, Y, Z);
-    }
-
-    /// <inheritdoc />
-    public readonly bool ValueEquals(object other)
-    {
-        var o = (Float3)other;
-        return Equals(ref o);
-    }
-
-    /// <summary>
-    /// Determines whether the specified <see cref="Float3" /> is equal to this instance.
-    /// </summary>
-    /// <param name="other">The <see cref="Float3" /> to compare with this instance.</param>
-    /// <returns><c>true</c> if the specified <see cref="Float3" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool Equals(ref Float3 other)
-    {
-        return X == other.X && Y == other.Y && Z == other.Z;
-    }
-
-    /// <summary>
-    /// Determines whether the specified <see cref="Float3" /> is equal to this instance.
-    /// </summary>
-    /// <param name="other">The <see cref="Float3" /> to compare with this instance.</param>
-    /// <returns><c>true</c> if the specified <see cref="Float3" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool Equals(Float3 other)
-    {
-        return Equals(ref other);
-    }
-
-    /// <summary>
-    /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
-    /// </summary>
-    /// <param name="value">The <see cref="System.Object" /> to compare with this instance.</param>
-    /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    public override readonly bool Equals(object value)
-    {
-        return value is Float3 other && Equals(ref other);
-    }
+    readonly bool ICustomValueEquals.ValueEquals(object other) => Equals(other);
 }
