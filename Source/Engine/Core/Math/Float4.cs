@@ -216,24 +216,17 @@ partial struct Float4 : IVector4<Float4, float>, Json.ICustomValueEquals
     /// <inheritdoc/>
     public float this[int index]
     {
-        readonly get => index switch
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        readonly get
         {
-            0 => X,
-            1 => Y,
-            2 => Z,
-            3 => W,
-            _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Float4 run from 0 to 3, inclusive."),
-        };
+            Float4.ThrowIfOutOfRange(index);
+            return VectorMath.GetRef<Float4, float>(ref Unsafe.AsRef(in this), index);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set
         {
-            switch (index)
-            {
-                case 0: X = value; break;
-                case 1: Y = value; break;
-                case 2: Z = value; break;
-                case 3: W = value; break;
-                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Float4 run from 0 to 3, inclusive.");
-            }
+            Float4.ThrowIfOutOfRange(index);
+            VectorMath.GetRef<Float4, float>(ref this, index) = value;
         }
     }
 
@@ -404,56 +397,6 @@ partial struct Float4 : IVector4<Float4, float>, Json.ICustomValueEquals
     }
 
     /// <summary>
-    /// Performs an explicit conversion from <see cref="Float4" /> to <see cref="Vector4" />.
-    /// </summary>
-    /// <param name="value">The value.</param>
-    /// <returns>The result of the conversion.</returns>
-    public static implicit operator Vector4(Float4 value)
-    {
-        return new Vector4(value.X, value.Y, value.Z, value.W);
-    }
-
-    /// <summary>
-    /// Performs an implicit conversion from <see cref="Float4" /> to <see cref="Double4" />.
-    /// </summary>
-    /// <param name="value">The value.</param>
-    /// <returns>The result of the conversion.</returns>
-    public static implicit operator Double4(Float4 value)
-    {
-        return new Double4(value.X, value.Y, value.Z, value.W);
-    }
-
-    /// <summary>
-    /// Performs an explicit conversion from <see cref="Float4" /> to <see cref="Float2" />.
-    /// </summary>
-    /// <param name="value">The value.</param>
-    /// <returns>The result of the conversion.</returns>
-    public static explicit operator Float2(Float4 value)
-    {
-        return new Float2(value.X, value.Y);
-    }
-
-    /// <summary>
-    /// Performs an explicit conversion from <see cref="Float4" /> to <see cref="Float3" />.
-    /// </summary>
-    /// <param name="value">The value.</param>
-    /// <returns>The result of the conversion.</returns>
-    public static explicit operator Float3(Float4 value)
-    {
-        return new Float3(value.X, value.Y, value.Z);
-    }
-
-    /// <summary>
-    /// Performs an explicit conversion from <see cref="Float4" /> to <see cref="Int4" />.
-    /// </summary>
-    /// <param name="value">The value.</param>
-    /// <returns>The result of the conversion.</returns>
-    public static implicit operator Int4(Float4 value)
-    {
-        return new Int4((int)value.X, (int)value.Y, (int)value.Z, (int)value.W);
-    }
-
-    /// <summary>
     /// Returns a <see cref="string" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="string" /> that represents this instance.</returns>
@@ -524,21 +467,19 @@ partial struct Float4 : IVector4<Float4, float>, Json.ICustomValueEquals
     }
 
     /// <inheritdoc/>
-    public static Float4 ClampLength(in Float4 vector, float min, float max)
+    public static Float4 ClampLength(in Float4 vector, float min, float max) => ComputeLengthSquared(in vector, out Vector128<float> vVector) switch
     {
-        Vector128<float> vVector = vector.AsVector128();
-        float lenSq = Vector128.Sum(vVector * vVector);
-        if (lenSq > max * max)
-        {
-            Vector128<float> scaleFactor = Vector128.Create(max * MathF.ReciprocalSqrtEstimate(lenSq));
-            return VectorMath.AsVector4(scaleFactor * vVector);
-        }
-        if (lenSq < min * min)
-        {
-            Vector128<float> scaleFactor = Vector128.Create(min * MathF.ReciprocalSqrtEstimate(lenSq));
-            return VectorMath.AsVector4(scaleFactor * vVector);
-        }
-        return vector;
+        float lengthSqr when lengthSqr < (min * min) => Scale(in vVector, min * MathF.ReciprocalSqrtEstimate(lengthSqr)),
+        float lengthSqr when lengthSqr > (max * max) => Scale(in vVector, max * MathF.ReciprocalSqrtEstimate(lengthSqr)),
+        _ => vector,
+    };
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Float4 Scale(ref readonly Vector128<float> vector, float scale)
+    {
+        Vector128<float> scaleVector = Vector128.Create(scale);
+        Vector128<float> result = vector * scaleVector;
+        return result.AsVector4();
     }
 
     /// <inheritdoc/>
@@ -566,6 +507,63 @@ partial struct Float4 : IVector4<Float4, float>, Json.ICustomValueEquals
     public static Float4 Min(in Float4 left, in Float4 right)
     {
         return Vector128.Min(left.AsVector128(), right.AsVector128()).AsVector4();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static float ComputeLengthSquared(in Float4 value, out Vector128<float> vector)
+    {
+        vector = value.AsVector128();
+        return Vector128.Sum(vector * vector);
+    }
+
+    /// <summary>
+    /// Performs an explicit conversion from <see cref="Float4" /> to <see cref="Vector4" />.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>The result of the conversion.</returns>
+    public static implicit operator Vector4(Float4 value)
+    {
+        return new Vector4(value.X, value.Y, value.Z, value.W);
+    }
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="Float4" /> to <see cref="Double4" />.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>The result of the conversion.</returns>
+    public static implicit operator Double4(Float4 value)
+    {
+        return new Double4(value.X, value.Y, value.Z, value.W);
+    }
+
+    /// <summary>
+    /// Performs an explicit conversion from <see cref="Float4" /> to <see cref="Float2" />.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>The result of the conversion.</returns>
+    public static explicit operator Float2(Float4 value)
+    {
+        return new Float2(value.X, value.Y);
+    }
+
+    /// <summary>
+    /// Performs an explicit conversion from <see cref="Float4" /> to <see cref="Float3" />.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>The result of the conversion.</returns>
+    public static explicit operator Float3(Float4 value)
+    {
+        return new Float3(value.X, value.Y, value.Z);
+    }
+
+    /// <summary>
+    /// Performs an explicit conversion from <see cref="Float4" /> to <see cref="Int4" />.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>The result of the conversion.</returns>
+    public static implicit operator Int4(Float4 value)
+    {
+        return new Int4((int)value.X, (int)value.Y, (int)value.Z, (int)value.W);
     }
 
     readonly bool Json.ICustomValueEquals.ValueEquals(object other) => Equals(other);

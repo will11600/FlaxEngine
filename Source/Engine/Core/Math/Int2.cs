@@ -130,20 +130,17 @@ partial struct Int2 : IVector<Int2, int>, IMeasurableVector<Int2, float>, Json.I
     /// <inheritdoc/>
     public int this[int index]
     {
-        readonly get => index switch
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        readonly get
         {
-            0 => X,
-            1 => Y,
-            _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices for Int2 run from 0 to 1, inclusive."),
-        };
+            Int2.ThrowIfOutOfRange(index);
+            return VectorMath.GetRef<Int2, int>(ref Unsafe.AsRef(in this), index);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set
         {
-            switch (index)
-            {
-                case 0: X = value; break;
-                case 1: Y = value; break;
-                default: throw new ArgumentOutOfRangeException(nameof(index), "Indices for Int2 run from 0 to 1, inclusive.");
-            }
+            Int2.ThrowIfOutOfRange(index);
+            VectorMath.GetRef<Int2, int>(ref this, index) = value;
         }
     }
 

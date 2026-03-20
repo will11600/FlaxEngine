@@ -9,6 +9,8 @@ namespace FlaxEngine;
 /// <typeparam name="TSelf">The type that implements the vector interface.</typeparam>
 public interface IVector<TSelf> : IEquatable<TSelf>, IFormattable where TSelf : unmanaged, IVector<TSelf>
 {
+    internal static virtual string ComponentIndexOutOfRangeMessage { get; } = $"Indices for {typeof(TSelf).Name} run from 0 to {TSelf.Count}, inclusive.";
+
     /// <summary>
     /// Gets the number of elements stored in the vector.
     /// </summary>

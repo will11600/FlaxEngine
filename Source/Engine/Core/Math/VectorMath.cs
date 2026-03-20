@@ -5,92 +5,26 @@ using System.Runtime.Intrinsics;
 
 namespace FlaxEngine;
 
+/// <summary>
+/// Provides static methods and extension methods for performing mathematical operations on vector types, including
+/// conversions, arithmetic, interpolation, and geometric computations.
+/// </summary>
 public static class VectorMath
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Vector64<int> AsVector64(this Int2 int2)
+    internal static Vector128<float> Modulus(in Vector128<float> left, in Vector128<float> right)
     {
-        return Unsafe.BitCast<Int2, Vector64<int>>(int2);
+        Vector128<float> quotient = left / right;
+        Vector128<float> truncated = Vector128.Truncate(quotient);
+        return left - (truncated * right);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Int2 AsVector2(this Vector64<int> vector)
+    internal static Vector128<double> Modulus(in Vector128<double> left, in Vector128<double> right)
     {
-        return Unsafe.BitCast<Vector64<int>, Int2>(vector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Vector128<int> AsVector128(this Int4 int4)
-    {
-        return Unsafe.BitCast<Int4, Vector128<int>>(int4);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Int4 AsVector4(this Vector128<int> vector)
-    {
-        return Unsafe.BitCast<Vector128<int>, Int4>(vector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Vector128<float> AsVector128(this Float4 float4)
-    {
-        return Unsafe.BitCast<Float4, Vector128<float>>(float4);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float4 AsVector4(this Vector128<float> vector)
-    {
-        return Unsafe.BitCast<Vector128<float>, Float4>(vector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static ref Vector128<float> AsVector128(ref Float4 float4)
-    {
-        return ref Unsafe.As<Float4, Vector128<float>>(ref float4);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static ref Float4 AsVector4(ref Vector128<float> vector)
-    {
-        return ref Unsafe.As<Vector128<float>, Float4>(ref vector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Vector256<double> AsVector256(this Double4 double4)
-    {
-        return Unsafe.BitCast<Float4, Vector256<double>>(double4);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Double4 AsVector4(this Vector256<double> vector)
-    {
-        return Unsafe.BitCast<Vector256<double>, Float4>(vector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static ref Vector256<double> AsVector256(ref Double4 double4)
-    {
-        return ref Unsafe.As<Double4, Vector256<double>>(ref double4);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static ref Double4 AsVector4(ref Vector256<double> vector)
-    {
-        return ref Unsafe.As<Vector256<double>, Double4>(ref vector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Vector256<double> Widen(this Vector128<float> value)
-    {
-        (Vector128<double> lower, Vector128<double> upper) = Vector128.Widen(value);
-        return Vector256.Create(lower, upper);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Vector128<float> Narrow(this Vector256<double> value)
-    {
-        Vector256<float> narrowed = Vector256.Narrow(value, Vector256<double>.Zero);
-        return narrowed.GetLower();
+        Vector128<double> quotient = left / right;
+        Vector128<double> truncated = Vector128.Truncate(quotient);
+        return left - (truncated * right);
     }
 
     internal static Vector<T> CatmullRom<T>(in Vector<T> value1, in Vector<T> value2, in Vector<T> value3, in Vector<T> value4, T amount)
@@ -167,6 +101,13 @@ public static class VectorMath
         return result.AsVector256();
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static T Barycentric<T>(in T value1, in T value2, in T value3, in T amount1, in T amount2)
+        where T : struct, IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IMultiplyOperators<T, T, T>
+    {
+        return value1 + amount1 * (value2 - value1) + amount2 * (value3 - value1);
+    }
+
     internal static Vector<T> Barycentric<T>(in Vector<T> value1, in Vector<T> value2, in Vector<T> value3, T amount1, T amount2)
         where T : struct, IFloatingPoint<T>
     {
@@ -228,6 +169,14 @@ public static class VectorMath
         ref Vector128<float> row4 = ref Unsafe.As<float, Vector128<float>>(ref Unsafe.AsRef(in transform.M41));
 
         return (vX * row1) + (vY * row2) + (vZ * row3) + (vW * row4);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static ref TComponent GetRef<TSelf, TComponent>(ref this TSelf vector, int index) 
+        where TSelf : unmanaged, IVector<TSelf, TComponent> 
+        where TComponent : struct, INumberBase<TComponent>
+    {
+        return ref Unsafe.Add(ref Unsafe.As<TSelf, TComponent>(ref vector), index);
     }
 
     extension<TSelf>(TSelf vector) where TSelf : unmanaged, IVector<TSelf>
