@@ -8,7 +8,7 @@ namespace FlaxEngine;
 /// <inheritdoc/>
 public interface IVector3<TSelf, TComponent> : IVector2<TSelf, TComponent>
     where TSelf : unmanaged, IVector3<TSelf, TComponent>
-    where TComponent : IFloatingPointIeee754<TComponent>
+    where TComponent : INumberBase<TComponent>
 {
     /// <summary>
     /// Gets or sets the Z component of the vector.

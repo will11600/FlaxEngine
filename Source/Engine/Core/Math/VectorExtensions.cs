@@ -129,21 +129,27 @@ internal static class VectorExtensions
         return Unsafe.BitCast<Vector256<double>, Float4>(vector);
     }
 
-    extension<T>(T) where T : unmanaged, IVector<T>
+    extension<TVector>(TVector) where TVector : unmanaged, IVector<TVector>
     {
         [StackTraceHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ThrowIfOutOfRange(int index, [CallerArgumentExpression(nameof(index))] string paramName = null)
         {
-            if ((uint)index >= T.Count)
+            if ((uint)index >= TVector.Count)
             {
-                ThrowOutOfRangeException<T>(index, paramName);
+                ThrowOutOfRangeException<TVector>(index, paramName);
             }
         }
 
         [DoesNotReturn]
         public static void ThrowOutOfRangeException(int index, [CallerArgumentExpression(nameof(index))] string paramName = null)
         {
-            throw new ArgumentOutOfRangeException(paramName, T.ComponentIndexOutOfRangeMessage);
+            throw new ArgumentOutOfRangeException(paramName, TVector.ComponentIndexOutOfRangeMessage);
+        }
+
+        [DoesNotReturn]
+        public static void ThrowNotSupportedException([CallerMemberName] string callerMemberName = null)
+        {
+            throw new NotSupportedException($"{callerMemberName} is not supported for {typeof(TVector).Name}.");
         }
     }
 }

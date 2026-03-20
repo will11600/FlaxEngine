@@ -62,7 +62,7 @@ namespace FlaxEngine;
 [System.ComponentModel.TypeConverter(typeof(TypeConverters.Float4Converter))]
 #endif
 [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "Implemented as extension members in VectorMath.")]
-partial struct Float4 : IVector4<Float4, float>, Json.ICustomValueEquals
+partial struct Float4 : IVector4<Float4, float>, IMeasurableVector<Float4, float>, Json.ICustomValueEquals
 {
     private static readonly string _formatString = "X:{0:F2} Y:{1:F2} Z:{2:F2} W:{3:F2}";
 

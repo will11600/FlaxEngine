@@ -6,9 +6,9 @@ namespace FlaxEngine;
 /// Defines a contract for a two-dimensional vector with floating-point components.
 /// </summary>
 /// <inheritdoc/>
-public interface IVector2<TSelf, TComponent> : IVector<TSelf, TComponent>, IMeasurableVector<TSelf, TComponent>
+public interface IVector2<TSelf, TComponent> : IVector<TSelf, TComponent>
     where TSelf : unmanaged, IVector2<TSelf, TComponent>
-    where TComponent : IFloatingPointIeee754<TComponent>
+    where TComponent : INumberBase<TComponent>
 {
     /// <summary>
     /// Gets a <typeparamref name="TSelf"/> with all of its components set to half.

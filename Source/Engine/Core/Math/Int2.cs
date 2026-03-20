@@ -16,7 +16,7 @@ namespace FlaxEngine;
 [System.ComponentModel.TypeConverter(typeof(TypeConverters.Int2Converter))]
 #endif
 [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "Implemented as extension members in VectorMath.")]
-partial struct Int2 : IVector<Int2, int>, IMeasurableVector<Int2, float>, Json.ICustomValueEquals
+partial struct Int2 : IVector2<Int2, int>, IMeasurableVector<Int2, float>, Json.ICustomValueEquals
 {
     private static readonly string _formatString = "X:{0} Y:{1}";
 
@@ -170,6 +170,27 @@ partial struct Int2 : IVector<Int2, int>, IMeasurableVector<Int2, float>, Json.I
 
     /// <inheritdoc/>
     public readonly bool IsOne => Vector64.All(this.AsVector64(), 1);
+
+    int IVector2<Int2, int>.X
+    {
+        readonly get => X;
+        set => X = value;
+    }
+
+    int IVector2<Int2, int>.Y
+    {
+        readonly get => Y;
+        set => Y = value;
+    }
+
+    static Int2 IVector2<Int2, int>.Half
+    {
+        get
+        {
+            Int2.ThrowNotSupportedException();
+            return default;
+        }
+    }
 
     /// <inheritdoc/>
     public readonly int[] ToArray() => [X, Y];
@@ -375,4 +396,32 @@ partial struct Int2 : IVector<Int2, int>, IMeasurableVector<Int2, float>, Json.I
     public static explicit operator Vector3(Int2 value) => new(value.X, value.Y, 0.0f);
 
     readonly bool Json.ICustomValueEquals.ValueEquals(object other) => Equals(other);
+
+    readonly void IVector2<Int2, int>.Normalize() => Int2.ThrowNotSupportedException();
+
+    readonly void IVector2<Int2, int>.NormalizePrecise() => Int2.ThrowNotSupportedException();
+
+    static bool IVector2<Int2, int>.NearEqual(in Int2 left, in Int2 right, int tolerance)
+    {
+        Int2.ThrowNotSupportedException();
+        return default;
+    }
+
+    static Int2 IVector2<Int2, int>.ClampLength(in Int2 vector, int min, int max)
+    {
+        Int2.ThrowNotSupportedException();
+        return default;
+    }
+
+    static Int2 IVector2<Int2, int>.Lerp(in Int2 start, in Int2 end, int amount)
+    {
+        Int2.ThrowNotSupportedException();
+        return default;
+    }
+
+    static Int2 IVector2<Int2, int>.SmoothStep(in Int2 start, in Int2 end, int amount)
+    {
+        Int2.ThrowNotSupportedException();
+        return default;
+    }
 }
